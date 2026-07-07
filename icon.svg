@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-<rect width="512" height="512" rx="96" fill="#10131a"/>
-<circle cx="256" cy="256" r="170" fill="#202636" stroke="#7ab7ff" stroke-width="18"/>
-<path d="M150 280c20-70 55-105 106-105s86 35 106 105" fill="none" stroke="#f3f6fb" stroke-width="28" stroke-linecap="round"/>
-<circle cx="180" cy="310" r="34" fill="#7ab7ff"/>
-<circle cx="332" cy="310" r="34" fill="#7ab7ff"/>
-<text x="256" y="410" text-anchor="middle" font-size="64" font-family="Arial" font-weight="700" fill="#f3f6fb">MB</text>
-</svg>
