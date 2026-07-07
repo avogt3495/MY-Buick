@@ -1,0 +1,25 @@
+const state={mode:'explore',layer:0,scale:1,x:0,y:0,drag:false,last:null,done:new Set(),step:1};
+const fasteners=[
+ {id:'t25_1',x:8,y:96},{id:'t25_2',x:18,y:43},{id:'t25_3',x:47,y:41},{id:'t25_4',x:73,y:47},{id:'t25_5',x:86,y:75},{id:'t25_6',x:84,y:95},{id:'t25_7',x:56,y:95}
+];
+const stage=document.getElementById('stage'),world=document.getElementById('world'),dots=document.getElementById('dots');
+const repairHud=document.getElementById('repairHud'),removedCount=document.getElementById('removedCount'),totalCount=document.getElementById('totalCount'),nextStep=document.getElementById('nextStep'),hint=document.getElementById('hint');
+totalCount.textContent=fasteners.length;
+const tabs={overview:`<p><b>Purpose:</b> Filters incoming air before it reaches the MAF sensor, intake tube, throttle body, and upper intake.</p>`,tips:`<ul><li>Uses T25 Torx screws.</li><li>Lift the lid carefully after all fasteners are loose.</li><li>Do not yank on the MAF wiring.</li><li>Vacuum leaves/debris from the lower box.</li></ul>`,inspect:`<ul><li>Check the air filter seal.</li><li>Look for cracks in the intake tube.</li><li>Check MAF connector lock tab.</li><li>Check lower airbox for debris.</li></ul>`,layers:`<p><b>Layer 0:</b> Installed lid<br><b>Layer 1:</b> Filter visible<br><b>Layer 2:</b> Lower box exposed</p>`};
+function setTab(name){document.getElementById('tabContent').innerHTML=tabs[name];document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===name));}
+setTab('overview');document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
+function renderDots(){dots.innerHTML='';fasteners.forEach((f,i)=>{let d=document.createElement('button');d.className='dot'+(state.done.has(f.id)?' done':'');d.style.left=f.x+'%';d.style.top=f.y+'%';d.textContent=state.done.has(f.id)?'✓':i+1;d.onclick=(e)=>{e.stopPropagation();if(state.mode!=='repair')return;state.done.has(f.id)?state.done.delete(f.id):state.done.add(f.id);update();};dots.appendChild(d);});}
+function update(){stage.classList.toggle('selected',state.mode!=='explore');stage.classList.toggle('dim',state.mode!=='explore');stage.classList.toggle('repair',state.mode==='repair');repairHud.classList.toggle('hidden',state.mode!=='repair');document.querySelectorAll('.layerImg').forEach((img,i)=>img.classList.toggle('active',i===state.layer));removedCount.textContent=state.done.size;nextStep.disabled=state.step===1&&state.done.size<fasteners.length;hint.textContent=state.mode==='repair'?'Tap blue dots. Green means removed. Drag with one finger to move.':'Drag to move • Pinch to zoom • Tap Repair for blue dots';renderDots();applyTransform();}
+function setMode(m){state.mode=m;document.querySelectorAll('.modebar button').forEach(b=>b.classList.remove('active'));if(m==='explore')exploreBtn.classList.add('active');if(m==='repair')repairBtn.classList.add('active');if(m==='layer')layerBtn.classList.add('active');update();}
+exploreBtn.onclick=()=>setMode('explore');repairBtn.onclick=()=>setMode('repair');guideBtn.onclick=()=>setMode('repair');fastenersBtn.onclick=()=>setMode('repair');
+layerBtn.onclick=()=>{state.layer=(state.layer+1)%3;setMode('layer')};
+resetBtn.onclick=()=>{state.scale=1;state.x=0;state.y=0;state.done.clear();state.layer=0;state.step=1;setMode('explore')};
+nextStep.onclick=()=>{if(state.step===1){state.step=2;state.layer=1;document.getElementById('stepTitle').textContent='Step 2: Lift lid and inspect filter';document.getElementById('stepSub').textContent='Layer changed: air filter visible.';nextStep.textContent='Show lower box';nextStep.disabled=false;}else if(state.step===2){state.step=3;state.layer=2;document.getElementById('stepTitle').textContent='Step 3: Filter removed';document.getElementById('stepSub').textContent='Inspect and clean lower airbox.';nextStep.textContent='Complete';}else{alert('Airbox module complete. This is the template.');}update();};
+function applyTransform(){world.style.transform=`translate(${state.x}px,${state.y}px) scale(${state.scale})`;}
+stage.addEventListener('pointerdown',e=>{state.drag=true;state.last={x:e.clientX,y:e.clientY};stage.setPointerCapture(e.pointerId)});
+stage.addEventListener('pointermove',e=>{if(!state.drag||!state.last)return;state.x+=e.clientX-state.last.x;state.y+=e.clientY-state.last.y;state.last={x:e.clientX,y:e.clientY};applyTransform();});
+stage.addEventListener('pointerup',()=>{state.drag=false;state.last=null});
+stage.addEventListener('wheel',e=>{e.preventDefault();const delta=e.deltaY>0?.92:1.08;state.scale=Math.min(3.5,Math.max(1,state.scale*delta));applyTransform();},{passive:false});
+stage.addEventListener('touchmove',e=>{if(e.touches.length===2){e.preventDefault();const [a,b]=e.touches;const dist=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);if(state.lastDist){state.scale=Math.min(3.5,Math.max(1,state.scale*(dist/state.lastDist)));applyTransform();}state.lastDist=dist;}},{passive:false});
+stage.addEventListener('touchend',()=>state.lastDist=null);
+update();
