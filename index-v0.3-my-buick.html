@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Buick App</title>
+  <style>
+    :root {
+      --bg: #080b10;
+      --panel: #111827;
+      --panel2: #172033;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #60a5fa;
+      --accent2: #22c55e;
+      --danger: #fb7185;
+      --border: rgba(255,255,255,.10);
+      --shadow: 0 18px 50px rgba(0,0,0,.35);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: radial-gradient(circle at top, #1e3a8a 0, #080b10 38%, #05070a 100%);
+      color: var(--text);
+      padding-bottom: 88px;
+    }
+    header {
+      padding: 22px 18px 10px;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      backdrop-filter: blur(18px);
+      background: rgba(8,11,16,.72);
+      border-bottom: 1px solid var(--border);
+    }
+    .eyebrow { color: var(--accent); font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    h1 { margin: 6px 0 2px; font-size: 34px; line-height: 1; }
+    .sub { color: var(--muted); margin: 0; font-size: 14px; }
+    main { padding: 16px; max-width: 920px; margin: 0 auto; }
+    .grid { display: grid; gap: 12px; grid-template-columns: repeat(3, 1fr); }
+    .stat, .card, .part-card, .tool-card {
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.035));
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+    }
+    .stat { padding: 14px; }
+    .stat b { display:block; font-size: 21px; }
+    .stat span { color: var(--muted); font-size: 12px; }
+    .card { padding: 16px; margin: 13px 0; }
+    h2 { margin: 0 0 12px; font-size: 22px; }
+    h3 { margin: 0 0 6px; }
+    .row { display:flex; gap:10px; align-items:center; justify-content:space-between; }
+    input, select, textarea {
+      width: 100%;
+      background: rgba(255,255,255,.08);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 16px;
+      padding: 13px 14px;
+      font-size: 16px;
+      outline: none;
+    }
+    textarea { min-height: 88px; resize: vertical; }
+    button {
+      border: 0;
+      border-radius: 16px;
+      padding: 12px 14px;
+      background: var(--accent);
+      color: #06111f;
+      font-weight: 800;
+      font-size: 15px;
+      cursor: pointer;
+    }
+    button.secondary { background: rgba(255,255,255,.10); color: var(--text); border: 1px solid var(--border); }
+    .category-pills { display:flex; gap:8px; overflow-x:auto; padding-bottom: 8px; }
+    .pill { white-space: nowrap; background: rgba(255,255,255,.08); border:1px solid var(--border); color: var(--text); border-radius: 999px; padding: 9px 12px; font-weight:700; }
+    .pill.active { background: var(--accent); color:#06111f; }
+    .parts { display:grid; gap:12px; }
+    .part-card { padding: 14px; }
+    .tag { display:inline-block; margin: 4px 5px 0 0; padding: 6px 9px; border-radius:999px; background: rgba(96,165,250,.15); color:#bfdbfe; font-size:12px; font-weight:700; }
+    .small { color: var(--muted); font-size: 13px; line-height: 1.35; }
+    .detail { display:none; margin-top: 10px; border-top: 1px solid var(--border); padding-top: 10px; }
+    .detail.open { display:block; }
+    .mini-grid { display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin: 10px 0; }
+    .mini { background: rgba(0,0,0,.22); border:1px solid var(--border); border-radius:14px; padding:10px; }
+    .mini span { color: var(--muted); display:block; font-size:12px; }
+    .checkline { display:flex; gap:9px; align-items:flex-start; padding: 10px 0; border-bottom: 1px solid var(--border); }
+    .checkline input { width:auto; margin-top:3px; }
+    .tabs {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 20;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      padding: 10px;
+      background: rgba(8,11,16,.88);
+      backdrop-filter: blur(18px);
+      border-top: 1px solid var(--border);
+    }
+    .tab { background: transparent; color: var(--muted); border: 1px solid transparent; padding: 11px 4px; }
+    .tab.active { background: rgba(96,165,250,.16); color: var(--text); border-color: rgba(96,165,250,.28); }
+    section { display:none; }
+    section.active { display:block; }
+    .progress { height: 12px; background: rgba(255,255,255,.08); border-radius:999px; overflow:hidden; }
+    .bar { height:100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); width: 0%; }
+    @media (max-width: 620px) { .grid { grid-template-columns: 1fr; } h1{font-size:30px;} }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="eyebrow">Alex's 2010 LaCrosse CXL FWD</div>
+    <h1>My Buick</h1>
+    <p class="sub">v0.3 Garage Edition · parts, weight, maintenance, and build planning</p>
+  </header>
+
+  <main>
+    <section id="home" class="active">
+      <div class="grid">
+        <div class="stat"><b id="partsCount">0</b><span>parts loaded</span></div>
+        <div class="stat"><b>4,026 lb</b><span>baseline curb weight</span></div>
+        <div class="stat"><b id="plannedCount">0</b><span>planned upgrades</span></div>
+      </div>
+
+      <div class="card">
+        <h2>Build Hub</h2>
+        <p class="small">This is turning into your personal Buick garage app. Use Parts for info, Planner for mods, Weight for weight reduction, and Garage for maintenance notes.</p>
+        <div class="mini-grid">
+          <div class="mini"><span>Current focus</span><b>Suspension + brakes</b></div>
+          <div class="mini"><span>Build style</span><b>Daily / canyon / track-ish</b></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Best Next Mods</h2>
+        <div id="topMods"></div>
+      </div>
+    </section>
+
+    <section id="parts">
+      <div class="card">
+        <h2>Parts Catalog</h2>
+        <input id="search" placeholder="Search parts, symptoms, tools..." />
+        <div class="category-pills" id="categoryPills"></div>
+      </div>
+      <div class="parts" id="partsList"></div>
+    </section>
+
+    <section id="planner">
+      <div class="card">
+        <h2>Build Planner</h2>
+        <p class="small">Check upgrades you want. It saves on this phone/browser.</p>
+        <div class="progress"><div class="bar" id="planBar"></div></div>
+        <p class="small"><span id="planText">0</span> planned upgrades</p>
+      </div>
+      <div class="card" id="plannerList"></div>
+    </section>
+
+    <section id="weight">
+      <div class="card">
+        <h2>Weight Reduction</h2>
+        <div class="grid">
+          <div class="stat"><b id="removedWeight">0 lb</b><span>removed</span></div>
+          <div class="stat"><b id="newWeight">4,026 lb</b><span>estimated weight</span></div>
+          <div class="stat"><b id="ptw">15.9</b><span>lb per hp est.</span></div>
+        </div>
+      </div>
+      <div class="card" id="weightList"></div>
+    </section>
+
+    <section id="garage">
+      <div class="card">
+        <h2>Maintenance Log</h2>
+        <input id="logTitle" placeholder="Repair / service name" />
+        <br><br>
+        <input id="logMiles" placeholder="Mileage" />
+        <br><br>
+        <textarea id="logNotes" placeholder="Notes, parts used, torque specs, what you noticed..."></textarea>
+        <br><br>
+        <button onclick="addLog()">Save log</button>
+      </div>
+      <div class="card" id="logList"><h2>Saved Logs</h2></div>
+    </section>
+  </main>
+
+  <nav class="tabs">
+    <button class="tab active" onclick="showTab('home', this)">Home</button>
+    <button class="tab" onclick="showTab('parts', this)">Parts</button>
+    <button class="tab" onclick="showTab('planner', this)">Planner</button>
+    <button class="tab" onclick="showTab('weight', this)">Weight</button>
+  </nav>
+
+  <script>
+    const baselineWeight = 4026;
+    const estHp = 253;
+
+    const parts = [
+      {cat:'Engine', name:'Air Filter / Intake Box', weight:7, difficulty:'Easy', time:'10 min', tools:'Phillips / 8mm', symptoms:'Dirty filter, weak throttle response, intake noise changes', upgrade:'High quality panel filter or sealed intake', notes:'Keep it sealed from engine bay heat for best daily performance.'},
+      {cat:'Engine', name:'Throttle Body', weight:3, difficulty:'Medium', time:'45 min', tools:'10mm, cleaner, rag', symptoms:'Rough idle, hesitation, reduced power', upgrade:'Clean OEM unit before replacing', notes:'Disconnect battery after cleaning if idle relearn acts weird.'},
+      {cat:'Engine', name:'Mass Air Flow Sensor', weight:1, difficulty:'Easy', time:'10 min', tools:'Torx / screwdriver', symptoms:'Lean/rich codes, stumble, poor MPG', upgrade:'OEM/ACDelco preferred', notes:'Use MAF-safe cleaner only.'},
+      {cat:'Engine', name:'Spark Plugs', weight:1, difficulty:'Medium', time:'1-2 hr', tools:'Spark plug socket, extension, torque wrench', symptoms:'Misfire, rough idle, poor power', upgrade:'OEM heat range iridium plugs', notes:'Check gap and use proper torque.'},
+      {cat:'Engine', name:'Ignition Coils', weight:3, difficulty:'Medium', time:'1 hr', tools:'10mm, scan tool helpful', symptoms:'Misfire under load, flashing CEL', upgrade:'OEM quality coils', notes:'Do not shotgun parts unless misfire data supports it.'},
+      {cat:'Cooling', name:'Radiator', weight:14, difficulty:'Hard', time:'3-5 hr', tools:'Pliers, sockets, coolant funnel', symptoms:'Overheating, coolant leak, cracked tanks', upgrade:'Fresh OEM-style radiator', notes:'Bleed cooling system carefully after service.'},
+      {cat:'Cooling', name:'Thermostat', weight:1, difficulty:'Medium', time:'1-2 hr', tools:'Sockets, coolant drain pan', symptoms:'Overheating or runs too cold', upgrade:'OEM temp thermostat', notes:'Cheap thermostats can cause annoying issues.'},
+      {cat:'Suspension', name:'Front Struts', weight:28, difficulty:'Hard', time:'2-4 hr', tools:'Sockets, spring compressor or quick struts', symptoms:'Bounce, clunk, tire wear, floaty steering', upgrade:'Quality struts or lowering setup', notes:'Alignment needed afterward.'},
+      {cat:'Suspension', name:'Lower Control Arms', weight:20, difficulty:'Hard', time:'2-3 hr', tools:'18mm, 21mm, pry bar, torque wrench', symptoms:'Clunking, wandering, bad bushings', upgrade:'Fresh arms with good bushings', notes:'Torque suspension bushings at ride height when possible.'},
+      {cat:'Suspension', name:'Sway Bar End Links', weight:4, difficulty:'Easy', time:'30-60 min', tools:'Wrenches, Allen key, penetrating oil', symptoms:'Rattle/clunk over bumps', upgrade:'Heavy duty links', notes:'Great first suspension refresh item.'},
+      {cat:'Steering', name:'Outer Tie Rod Ends', weight:4, difficulty:'Medium', time:'1 hr', tools:'Wrenches, separator, torque wrench', symptoms:'Loose steering, toe wear, clunk', upgrade:'Quality greaseable or OEM-style ends', notes:'Alignment needed after replacement.'},
+      {cat:'Steering', name:'Wheel Bearing / Hub', weight:9, difficulty:'Medium', time:'1-2 hr', tools:'Axle socket, breaker bar, torque wrench', symptoms:'Growling, ABS light, vibration', upgrade:'Timken/ACDelco quality hub', notes:'Bad hubs can trigger ABS/StabiliTrak lights.'},
+      {cat:'Brakes', name:'Front Brake Pads', weight:5, difficulty:'Easy', time:'45 min', tools:'Caliper tool, sockets, brake lube', symptoms:'Squeal, dust, weak bite', upgrade:'Performance street pads', notes:'Pad compound changes the whole feel of the car.'},
+      {cat:'Brakes', name:'Front Rotors', weight:38, difficulty:'Easy', time:'1 hr', tools:'Sockets, rotor screw bit if equipped', symptoms:'Pulsation, scoring, vibration', upgrade:'Quality blank rotors', notes:'Blank rotors are usually better than cheap drilled rotors.'},
+      {cat:'Brakes', name:'Brake Fluid', weight:0, difficulty:'Medium', time:'1 hr', tools:'Bleeder bottle, wrench', symptoms:'Soft pedal, old dark fluid', upgrade:'High quality DOT fluid', notes:'Huge confidence upgrade for spirited driving.'},
+      {cat:'Transmission', name:'Transmission Fluid Service', weight:0, difficulty:'Medium', time:'1-2 hr', tools:'Drain pan, sockets, correct fluid', symptoms:'Harsh shifts, delayed engagement', upgrade:'Correct spec fluid only', notes:'Use the right fluid. Do not guess.'},
+      {cat:'Drivetrain', name:'CV Axles', weight:22, difficulty:'Hard', time:'2-3 hr', tools:'Axle socket, pry bar, drain pan', symptoms:'Clicking turns, vibration, torn boots', upgrade:'OEM quality axle', notes:'Inspect boots during oil changes.'},
+      {cat:'Electrical', name:'Battery', weight:38, difficulty:'Easy', time:'15 min', tools:'10mm, battery brush', symptoms:'Slow crank, voltage codes, weird electronics', upgrade:'Quality AGM if compatible', notes:'Bad voltage can cause random warning lights.'},
+      {cat:'Interior', name:'Front Seats', weight:110, difficulty:'Medium', time:'1 hr', tools:'Sockets, trim tools', symptoms:'Weight reduction, interior repair', upgrade:'Lightweight seat setup for track only', notes:'Be careful with airbags and wiring.'},
+      {cat:'Exterior', name:'Hood', weight:42, difficulty:'Medium', time:'30 min with helper', tools:'Sockets, marker', symptoms:'Damage or weight reduction', upgrade:'Lighter hood if available', notes:'Mark hinge position before removing.'}
+    ];
+
+    const upgrades = [
+      {name:'Performance brake pads', score:9, cost:'$80-$180', why:'Best feel/safety upgrade for spirited driving.'},
+      {name:'Fresh struts + alignment', score:9, cost:'$450-$900', why:'Makes the car feel tighter and more predictable.'},
+      {name:'Good tires', score:10, cost:'$500-$900', why:'Biggest grip upgrade by far.'},
+      {name:'Brake fluid flush', score:8, cost:'$20-$120', why:'Improves pedal confidence.'},
+      {name:'Rear sway bar / bushings', score:7, cost:'$80-$250', why:'Helps reduce lazy body roll.'},
+      {name:'Weight reduction basics', score:6, cost:'Free', why:'Spare tire/jack/trunk junk adds up fast.'}
+    ];
+
+    const weightItems = [
+      {name:'Spare tire', lb:32}, {name:'Jack/tools', lb:8}, {name:'Trunk liner + junk', lb:12},
+      {name:'Rear seat bottom/back', lb:58}, {name:'Passenger front seat', lb:55}, {name:'Floor mats', lb:8},
+      {name:'Engine cover / plastic trim', lb:4}, {name:'Extra interior trim', lb:15}
+    ];
+
+    let currentCat = 'All';
+    const planned = JSON.parse(localStorage.getItem('plannedMods') || '[]');
+    const removed = JSON.parse(localStorage.getItem('removedWeight') || '[]');
+    const logs = JSON.parse(localStorage.getItem('garageLogs') || '[]');
+
+    function showTab(id, btn){
+      document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    function renderCats(){
+      const cats = ['All', ...new Set(parts.map(p => p.cat))];
+      categoryPills.innerHTML = cats.map(c => `<button class="pill ${c===currentCat?'active':''}" onclick="currentCat='${c}'; renderParts(); renderCats();">${c}</button>`).join('');
+    }
+
+    function renderParts(){
+      const q = search.value.toLowerCase();
+      const filtered = parts.filter(p => (currentCat === 'All' || p.cat === currentCat) && JSON.stringify(p).toLowerCase().includes(q));
+      partsCount.textContent = parts.length;
+      partsList.innerHTML = filtered.map((p, i) => `
+        <div class="part-card">
+          <div class="row"><div><h3>${p.name}</h3><p class="small">${p.cat} · ${p.symptoms}</p></div><button class="secondary" onclick="toggleDetail(${i})">Open</button></div>
+          <span class="tag">${p.difficulty}</span><span class="tag">${p.time}</span><span class="tag">${p.weight} lb</span>
+          <div class="detail" id="detail-${i}">
+            <div class="mini-grid">
+              <div class="mini"><span>Tools</span><b>${p.tools}</b></div>
+              <div class="mini"><span>Upgrade</span><b>${p.upgrade}</b></div>
+            </div>
+            <p class="small"><b>Notes:</b> ${p.notes}</p>
+          </div>
+        </div>`).join('') || '<div class="card">No parts found.</div>';
+    }
+
+    function toggleDetail(i){ document.getElementById('detail-' + i).classList.toggle('open'); }
+
+    function renderPlanner(){
+      topMods.innerHTML = upgrades.slice(0,3).map(u => `<div class="tool-card" style="padding:12px;margin:8px 0"><b>${u.name}</b><p class="small">${u.why}</p><span class="tag">Score ${u.score}/10</span><span class="tag">${u.cost}</span></div>`).join('');
+      plannerList.innerHTML = '<h2>Upgrade Checklist</h2>' + upgrades.map((u, i) => `
+        <label class="checkline"><input type="checkbox" ${planned.includes(i)?'checked':''} onchange="togglePlan(${i})"><div><b>${u.name}</b><p class="small">${u.why} · ${u.cost}</p></div></label>`).join('');
+      plannedCount.textContent = planned.length;
+      planText.textContent = planned.length;
+      planBar.style.width = Math.round((planned.length / upgrades.length) * 100) + '%';
+    }
+
+    function togglePlan(i){
+      const idx = planned.indexOf(i);
+      idx >= 0 ? planned.splice(idx,1) : planned.push(i);
+      localStorage.setItem('plannedMods', JSON.stringify(planned));
+      renderPlanner();
+    }
+
+    function renderWeight(){
+      weightList.innerHTML = '<h2>Tap Removed Parts</h2>' + weightItems.map((w, i) => `
+        <label class="checkline"><input type="checkbox" ${removed.includes(i)?'checked':''} onchange="toggleWeight(${i})"><div><b>${w.name}</b><p class="small">${w.lb} lb estimated</p></div></label>`).join('');
+      const total = removed.reduce((sum, i) => sum + weightItems[i].lb, 0);
+      removedWeight.textContent = total + ' lb';
+      newWeight.textContent = (baselineWeight - total).toLocaleString() + ' lb';
+      ptw.textContent = ((baselineWeight - total) / estHp).toFixed(1);
+    }
+
+    function toggleWeight(i){
+      const idx = removed.indexOf(i);
+      idx >= 0 ? removed.splice(idx,1) : removed.push(i);
+      localStorage.setItem('removedWeight', JSON.stringify(removed));
+      renderWeight();
+    }
+
+    function addLog(){
+      if(!logTitle.value.trim()) return;
+      logs.unshift({title: logTitle.value, miles: logMiles.value, notes: logNotes.value, date: new Date().toLocaleDateString()});
+      localStorage.setItem('garageLogs', JSON.stringify(logs));
+      logTitle.value = ''; logMiles.value = ''; logNotes.value = '';
+      renderLogs();
+    }
+
+    function renderLogs(){
+      logList.innerHTML = '<h2>Saved Logs</h2>' + (logs.length ? logs.map(l => `<div class="tool-card" style="padding:12px;margin:8px 0"><b>${l.title}</b><p class="small">${l.date} · ${l.miles || 'Mileage not entered'}</p><p>${l.notes || ''}</p></div>`).join('') : '<p class="small">No logs saved yet.</p>');
+    }
+
+    search.addEventListener('input', renderParts);
+    renderCats(); renderParts(); renderPlanner(); renderWeight(); renderLogs();
+  </script>
+</body>
+</html>
