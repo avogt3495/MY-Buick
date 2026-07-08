@@ -2,18 +2,23 @@ const layers = [
   {
     label: 'Installed',
     src: 'images/airbox/00_installed.jpg',
+    align: { x: 0, y: 0, scale: 1 },
     title: 'Step 1: Remove lid fasteners',
     text: 'Tap each blue T25 screw marker, then tap the red rear clip marker. Markers are locked to the image by percentage coordinates.'
   },
   {
     label: 'Filter visible',
     src: 'images/airbox/01_filter_visible.jpg',
+    // Registration pass: nudged to line up the filter frame with the installed airbox.
+    align: { x: -6.6, y: -3.4, scale: 1.01 },
     title: 'Step 2: Remove air filter',
     text: 'The lid is off, so the screw and clip markers are hidden. Tap Next Layer to move to the empty lower housing.'
   },
   {
     label: 'Filter removed',
     src: 'images/airbox/02_filter_removed.jpg',
+    // Registration pass: nudged to line up the lower housing with the filter layer.
+    align: { x: -3.0, y: -1.4, scale: 1 },
     title: 'Step 3: Inspect lower airbox',
     text: 'Clean leaves or debris from the lower housing. Check the intake tube, lower box, and drain area before reinstalling.'
   }
@@ -61,11 +66,18 @@ function renderMarkers() {
       if (currentLayer !== 0 || animating) return;
       if (done.has(f.id)) done.delete(f.id);
       else done.add(f.id);
-      updateUI();
+      applyLayerRegistration();
+updateUI();
     });
 
     markerLayer.appendChild(btn);
   });
+}
+
+
+function applyLayerRegistration() {
+  const a = layers[currentLayer].align || { x: 0, y: 0, scale: 1 };
+  img.style.transform = `translate(${a.x}%, ${a.y}%) scale(${a.scale})`;
 }
 
 function preload(src) {
@@ -99,6 +111,7 @@ async function setLayer(index) {
   currentLayer = next;
   img.src = layers[currentLayer].src;
   img.alt = layers[currentLayer].label;
+  applyLayerRegistration();
 
   img.classList.remove('fade-out');
   img.classList.add('fade-in');
@@ -157,6 +170,7 @@ resetBtn.addEventListener('click', () => {
   animating = false;
   img.classList.remove('fade-out', 'fade-in');
   img.src = layers[0].src;
+  applyLayerRegistration();
   markerLayer.classList.remove('hidden', 'fade-away');
   updateUI();
 });
