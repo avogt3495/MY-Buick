@@ -3,77 +3,50 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>MY BUICK v2.2</title>
+  <title>MY BUICK v2.3 - Airbox Only</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <main class="app">
+  <div class="app">
     <header class="topbar">
       <div>
-        <h1>MY BUICK</h1>
-        <p>2010 LaCrosse CXL • 3.0L LF1 • FWD</p>
+        <div class="eyebrow">MY BUICK v2.3</div>
+        <h1>Airbox Gold Standard</h1>
       </div>
-      <span class="version">v2.2 Airbox</span>
+      <button id="resetBtn" class="ghost-btn">Reset</button>
     </header>
 
-    <section class="modebar" aria-label="App modes">
-      <button id="exploreBtn" class="active">Explore</button>
-      <button id="repairBtn">Repair</button>
-      <button id="layerBtn">Layer View</button>
-      <button id="resetBtn">Reset</button>
-    </section>
+    <main class="stage-wrap">
+      <section id="stage" class="stage" aria-label="Airbox repair photo viewer">
+        <img id="layerImg" class="layer-img" src="images/airbox/00_installed.jpg" alt="Airbox installed" draggable="false" />
+        <div id="fadeShield" class="fade-shield"></div>
+        <div id="markerLayer" class="marker-layer" aria-label="Airbox fastener markers"></div>
+      </section>
+    </main>
 
-    <section id="stageShell" class="stageShell">
-      <div id="stage" class="stage" aria-label="Interactive airbox image">
-        <div id="world" class="world">
-          <img id="layer0" class="layerImg active" src="images/airbox/00_installed.jpg" alt="Airbox installed" />
-          <img id="layer1" class="layerImg" src="images/airbox/01_filter_visible.jpg" alt="Airbox lid removed with filter visible" />
-          <img id="layer2" class="layerImg" src="images/airbox/02_filter_removed.jpg" alt="Air filter removed showing lower airbox" />
-          <svg id="overlay" class="overlay" viewBox="0 0 100 133" preserveAspectRatio="none">
-            
-          </svg>
-          <div id="dots" class="dots"></div>
-        </div>
-      </div>
-      <div id="stageBadge" class="stageBadge">Explore Mode • Drag, pinch, or tap Repair</div>
-    </section>
-
-    <section id="repairHud" class="repairHud hidden" aria-live="polite">
-      <div class="hudText">
-        <strong id="stepTitle">Step 1: Remove T25 screws</strong>
-        <span id="stepSub">Tap each blue dot after removing that screw.</span>
-      </div>
-      <div class="fastenerMeter"><span id="dotMini"></span><b><span id="removedCount">0</span>/<span id="totalCount">7</span></b></div>
-      <button id="nextStep" disabled>Next</button>
-    </section>
-
-    <section id="card" class="card compact">
-      <button id="cardToggle" class="grabber" aria-label="Toggle details"></button>
-      <div class="cardHeader">
+    <section class="repair-panel">
+      <div class="panel-head">
         <div>
-          <h2>Air Filter Housing</h2>
-          <p>Passenger side intake airbox</p>
+          <div class="eyebrow">AIR FILTER HOUSING</div>
+          <h2 id="stepTitle">Step 1: Remove lid fasteners</h2>
         </div>
-        <span class="verified">Alex Verified ✓</span>
+        <div id="layerBadge" class="layer-badge">Installed</div>
       </div>
-      <div class="stats">
-        <div><strong>1/5</strong><span>Difficulty</span></div>
-        <div><strong>5–10</strong><span>Minutes</span></div>
-        <div><strong>T25</strong><span>Torx</span></div>
+
+      <div class="progress-row">
+        <div class="progress-text"><span id="completeCount">0</span>/7 completed</div>
+        <div class="progress-bar"><div id="progressFill"></div></div>
       </div>
-      <nav class="tabs">
-        <button class="tab active" data-tab="overview">Overview</button>
-        <button class="tab" data-tab="tips">Garage Tips</button>
-        <button class="tab" data-tab="inspect">Inspect</button>
-        <button class="tab" data-tab="layers">Layers</button>
-      </nav>
-      <div id="tabContent" class="tabContent"></div>
+
+      <p id="stepText" class="step-text">Tap each blue T25 screw marker, then tap the red rear clip marker. Markers disappear once the lid is off.</p>
+
       <div class="actions">
-        <button id="guideBtn" class="primary">Guide Me</button>
-        <button id="fastenersBtn">Show Fasteners</button>
+        <button id="prevBtn" class="secondary">Back</button>
+        <button id="nextBtn" class="primary">Next Layer</button>
       </div>
     </section>
-  </main>
+  </div>
+
   <script src="app.js"></script>
 </body>
 </html>
