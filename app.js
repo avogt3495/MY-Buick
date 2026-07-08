@@ -9,7 +9,7 @@ const layers = [
     label: 'Filter visible',
     src: 'images/airbox/01_filter_visible.jpg',
     title: 'Step 2: Remove air filter',
-    text: 'The lid hardware is hidden now because the lid is off. Tap Next Layer to simulate the filter lifting out and fading away.'
+    text: 'The lid hardware is hidden now because the lid is off. Tap Next Layer and the filter will lift out and fade away.'
   },
   {
     label: 'Filter removed',
@@ -31,12 +31,17 @@ const defaultFasteners = [
   { id: 'clip', type: 'clip', label: 'C', x: 74.00, y: 37.11 }
 ];
 
-// Rough airbox lid outline, also percentage based.
-// This can be tightened later without changing the marker system.
+// Percentage-based airbox lid outline. This is intentionally subtle.
+// It follows the lid area better than the earlier big outline, but remains easy to refine.
 const airboxOutlinePoints = [
-  [16.5, 25.5], [31.5, 21.8], [53.5, 24.2], [72.8, 32.0],
-  [83.2, 48.0], [80.4, 78.8], [70.2, 92.0], [46.5, 93.4],
-  [21.8, 91.5], [12.2, 76.5], [11.2, 45.0]
+  [12.2, 36.4], [24.3, 31.2], [43.6, 30.4], [58.5, 33.0],
+  [70.7, 40.7], [76.7, 55.2], [76.2, 73.0], [72.0, 86.8],
+  [61.0, 92.8], [37.0, 92.4], [16.2, 90.6], [9.8, 82.0],
+  [8.6, 63.8], [9.5, 47.2]
+];
+
+const filterOutlinePoints = [
+  [15.5, 18.4], [83.0, 17.4], [86.4, 83.2], [13.3, 84.7]
 ];
 
 const STORAGE_KEY = 'myBuickAirboxFastenersV25';
@@ -49,6 +54,7 @@ const done = new Set();
 const img = document.getElementById('layerImg');
 const markerLayer = document.getElementById('markerLayer');
 const outlineLayer = document.getElementById('outlineLayer');
+const partAnimationLayer = document.getElementById('partAnimationLayer');
 const airboxOutline = document.getElementById('airboxOutline');
 const completeCount = document.getElementById('completeCount');
 const progressFill = document.getElementById('progressFill');
@@ -159,16 +165,17 @@ async function setLayer(index) {
   const from = currentLayer;
 
   if (goingForward && from === 0) {
+    // Real repair feel: hide hardware, animate a clipped copy of the lid upward,
+    // then crossfade into the photo where the filter is visible.
     markerLayer.classList.add('fade-away');
     outlineLayer.classList.add('fade-away');
-    img.classList.add('lid-flip');
-    await wait(560);
+    await animatePartPiece(layers[0].src, airboxOutlinePoints, 'lid-removing', 1125);
   } else if (goingForward && from === 1) {
-    img.classList.add('filter-lift');
-    await wait(520);
+    // Same idea for the filter: lift the filter out, then reveal the empty lower box.
+    await animatePartPiece(layers[1].src, filterOutlinePoints, 'filter-removing', 940);
   } else {
     img.classList.add('soft-fade');
-    await wait(240);
+    await wait(220);
   }
 
   await preload(layers[next].src);
@@ -178,7 +185,7 @@ async function setLayer(index) {
 
   img.classList.remove('lid-flip', 'filter-lift', 'soft-fade');
   img.classList.add('fade-in');
-  await wait(280);
+  await wait(260);
   img.classList.remove('fade-in');
 
   const onInstalled = currentLayer === 0;
@@ -199,6 +206,29 @@ async function setLayer(index) {
   animating = false;
   calibrateBtn.disabled = currentLayer !== 0;
   updateUI();
+}
+
+function animatePartPiece(src, points, className, duration) {
+  return new Promise((resolve) => {
+    partAnimationLayer.innerHTML = '';
+    const piece = document.createElement('div');
+    piece.className = `part-piece ${className}`;
+    piece.style.backgroundImage = `url("${src}")`;
+    piece.style.setProperty('--clip', points.map(([x, y]) => `${x}% ${y}%`).join(','));
+    partAnimationLayer.appendChild(piece);
+    // Force layout so the animation starts reliably on iOS/Safari.
+    piece.getBoundingClientRect();
+    piece.addEventListener('animationend', () => {
+      piece.remove();
+      resolve();
+    }, { once: true });
+    setTimeout(() => {
+      if (piece.isConnected) {
+        piece.remove();
+        resolve();
+      }
+    }, duration + 120);
+  });
 }
 
 function wait(ms) {
@@ -244,6 +274,7 @@ resetBtn.addEventListener('click', () => {
   currentLayer = 0;
   animating = false;
   calibrating = false;
+  partAnimationLayer.innerHTML = '';
   img.classList.remove('lid-flip', 'filter-lift', 'soft-fade', 'fade-in');
   img.src = layers[0].src;
   markerLayer.classList.remove('hidden', 'fade-away');
