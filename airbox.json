@@ -1,0 +1,12 @@
+{
+  "id": "airbox",
+  "name": "Air Filter Housing",
+  "vehicle": "2010 Buick LaCrosse CXL FWD 3.0L LF1",
+  "verified": "Alex Verified",
+  "tools": ["T25 Torx", "Shop rag", "Vacuum optional"],
+  "layers": [
+    "images/airbox/00_installed.jpeg",
+    "images/airbox/01_filter_visible.jpeg",
+    "images/airbox/02_filter_removed.jpeg"
+  ]
+}
