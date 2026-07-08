@@ -1,293 +1,158 @@
-const layers = [
-  {
-    label: 'Installed',
-    src: 'images/airbox/00_installed.jpg',
-    title: 'Step 1: Remove lid fasteners',
-    text: 'Tap each blue T25 screw marker, then tap the red rear clip marker. When all 7 are complete, the lid will flip up and flow into the filter layer.'
-  },
-  {
-    label: 'Filter visible',
-    src: 'images/airbox/01_filter_visible.jpg',
-    title: 'Step 2: Remove air filter',
-    text: 'The lid hardware is hidden now because the lid is off. Tap Next Layer and the filter will lift out and fade away.'
-  },
-  {
-    label: 'Filter removed',
-    src: 'images/airbox/02_filter_removed.jpg',
-    title: 'Step 3: Inspect lower airbox',
-    text: 'Clean leaves or debris from the lower housing. Check the intake tube, lower box, and drain area before reinstalling.'
-  }
+const layerImages = [
+  'images/airbox/00_installed.jpg',
+  'images/airbox/01_filter_visible.jpg',
+  'images/airbox/02_filter_removed.jpg'
 ];
 
-// Marker positions are image percentages, not raw pixels.
-// Use Adjust mode to drag them dead-center; positions save to this device.
-const defaultFasteners = [
-  { id: 's1', type: 'screw', label: '1', x: 27.47, y: 32.50 },
-  { id: 's2', type: 'screw', label: '2', x: 72.32, y: 40.34 },
-  { id: 's3', type: 'screw', label: '3', x: 76.46, y: 69.75 },
-  { id: 's4', type: 'screw', label: '4', x: 73.90, y: 88.75 },
-  { id: 's5', type: 'screw', label: '5', x: 54.03, y: 89.54 },
-  { id: 's6', type: 'screw', label: '6', x: 15.59, y: 90.79 },
-  { id: 'clip', type: 'clip', label: 'C', x: 74.00, y: 37.11 }
+// Locked from the user's marked airbox photo. Percentage-based so markers stay on the same spot as the displayed image scales.
+const fasteners = [
+  { id:'s1', type:'screw', label:'1', x:20.8, y:36.8 },
+  { id:'s2', type:'screw', label:'2', x:39.8, y:27.6 },
+  { id:'s3', type:'screw', label:'3', x:59.0, y:30.0 },
+  { id:'s4', type:'screw', label:'4', x:74.7, y:42.7 },
+  { id:'s5', type:'screw', label:'5', x:72.6, y:63.8 },
+  { id:'s6', type:'screw', label:'6', x:34.5, y:69.5 },
+  { id:'clip', type:'clip', label:'C', x:84.0, y:72.0 }
 ];
 
-// Percentage-based airbox lid outline. This is intentionally subtle.
-// It follows the lid area better than the earlier big outline, but remains easy to refine.
-const airboxOutlinePoints = [
-  [12.2, 36.4], [24.3, 31.2], [43.6, 30.4], [58.5, 33.0],
-  [70.7, 40.7], [76.7, 55.2], [76.2, 73.0], [72.0, 86.8],
-  [61.0, 92.8], [37.0, 92.4], [16.2, 90.6], [9.8, 82.0],
-  [8.6, 63.8], [9.5, 47.2]
-];
+const state = {
+  layer: 0,
+  completed: new Set(),
+  animating: false
+};
 
-const filterOutlinePoints = [
-  [15.5, 18.4], [83.0, 17.4], [86.4, 83.2], [13.3, 84.7]
-];
-
-const STORAGE_KEY = 'myBuickAirboxFastenersV25';
-let fasteners = loadFasteners();
-let currentLayer = 0;
-let animating = false;
-let calibrating = false;
-const done = new Set();
-
-const img = document.getElementById('layerImg');
+const baseImage = document.getElementById('baseImage');
 const markerLayer = document.getElementById('markerLayer');
-const outlineLayer = document.getElementById('outlineLayer');
-const partAnimationLayer = document.getElementById('partAnimationLayer');
-const airboxOutline = document.getElementById('airboxOutline');
-const completeCount = document.getElementById('completeCount');
 const progressFill = document.getElementById('progressFill');
-const stepTitle = document.getElementById('stepTitle');
-const stepText = document.getElementById('stepText');
-const layerBadge = document.getElementById('layerBadge');
+const counter = document.getElementById('counter');
 const nextBtn = document.getElementById('nextBtn');
 const prevBtn = document.getElementById('prevBtn');
 const resetBtn = document.getElementById('resetBtn');
-const calibrateBtn = document.getElementById('calibrateBtn');
-const adjustHint = document.getElementById('adjustHint');
+const stepTitle = document.getElementById('stepTitle');
+const stepText = document.getElementById('stepText');
+const outlineSvg = document.getElementById('outlineSvg');
+const lidMover = document.getElementById('lidMover');
+const filterMover = document.getElementById('filterMover');
 
-function loadFasteners() {
-  try {
-    const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    if (Array.isArray(stored) && stored.length === defaultFasteners.length) return stored;
-  } catch {}
-  return defaultFasteners.map(f => ({ ...f }));
-}
-
-function saveFasteners() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(fasteners));
-}
-
-function setOutline() {
-  airboxOutline.setAttribute('points', airboxOutlinePoints.map(([x,y]) => `${x},${y}`).join(' '));
-}
-
-function renderMarkers() {
+function renderMarkers(){
   markerLayer.innerHTML = '';
-  fasteners.forEach((f) => {
+  fasteners.forEach(item => {
     const btn = document.createElement('button');
-    btn.className = `marker ${f.type === 'clip' ? 'clip' : ''} ${done.has(f.id) ? 'done' : ''}`;
-    btn.style.left = `${f.x}%`;
-    btn.style.top = `${f.y}%`;
-    btn.textContent = done.has(f.id) ? '✓' : f.label;
-    btn.setAttribute('aria-label', `${f.type === 'clip' ? 'Rear clip' : 'T25 screw'} ${f.label}`);
-
-    btn.addEventListener('pointerdown', (e) => {
-      if (currentLayer !== 0 || animating) return;
-      e.preventDefault();
-      e.stopPropagation();
-      if (calibrating) startDrag(e, f, btn);
+    btn.className = `marker ${item.type === 'clip' ? 'clip' : ''} ${state.completed.has(item.id) ? 'done' : ''}`;
+    btn.style.setProperty('--x', item.x);
+    btn.style.setProperty('--y', item.y);
+    btn.textContent = state.completed.has(item.id) ? '✓' : item.label;
+    btn.setAttribute('aria-label', item.type === 'clip' ? 'rear retaining clip' : `T25 screw ${item.label}`);
+    btn.addEventListener('click', () => {
+      if(state.layer !== 0 || state.animating) return;
+      if(state.completed.has(item.id)) state.completed.delete(item.id);
+      else state.completed.add(item.id);
+      render();
     });
-
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (currentLayer !== 0 || animating || calibrating) return;
-      if (done.has(f.id)) done.delete(f.id);
-      else done.add(f.id);
-      updateUI();
-    });
-
     markerLayer.appendChild(btn);
   });
 }
 
-function startDrag(e, fastener, btn) {
-  btn.setPointerCapture(e.pointerId);
-  btn.classList.add('dragging');
+function render(){
+  const completeCount = state.completed.size;
+  const total = fasteners.length;
+  const pct = Math.round((completeCount / total) * 100);
+  progressFill.style.width = `${pct}%`;
 
-  const move = (ev) => {
-    const rect = markerLayer.getBoundingClientRect();
-    const x = clamp(((ev.clientX - rect.left) / rect.width) * 100, 0, 100);
-    const y = clamp(((ev.clientY - rect.top) / rect.height) * 100, 0, 100);
-    fastener.x = Number(x.toFixed(2));
-    fastener.y = Number(y.toFixed(2));
-    btn.style.left = `${fastener.x}%`;
-    btn.style.top = `${fastener.y}%`;
-  };
-
-  const up = () => {
-    btn.classList.remove('dragging');
-    saveFasteners();
-    btn.removeEventListener('pointermove', move);
-    btn.removeEventListener('pointerup', up);
-    btn.removeEventListener('pointercancel', up);
-  };
-
-  btn.addEventListener('pointermove', move);
-  btn.addEventListener('pointerup', up);
-  btn.addEventListener('pointercancel', up);
-}
-
-function clamp(value, min, max) {
-  return Math.max(min, Math.min(max, value));
-}
-
-function preload(src) {
-  return new Promise((resolve) => {
-    const preloadImg = new Image();
-    preloadImg.onload = resolve;
-    preloadImg.onerror = resolve;
-    preloadImg.src = src;
-  });
-}
-
-async function setLayer(index) {
-  const next = Math.max(0, Math.min(layers.length - 1, index));
-  if (next === currentLayer || animating) return;
-
-  animating = true;
-  nextBtn.disabled = true;
-  prevBtn.disabled = true;
-  calibrateBtn.disabled = true;
-
-  const goingForward = next > currentLayer;
-  const from = currentLayer;
-
-  if (goingForward && from === 0) {
-    // Real repair feel: hide hardware, animate a clipped copy of the lid upward,
-    // then crossfade into the photo where the filter is visible.
-    markerLayer.classList.add('fade-away');
-    outlineLayer.classList.add('fade-away');
-    await animatePartPiece(layers[0].src, airboxOutlinePoints, 'lid-removing', 1125);
-  } else if (goingForward && from === 1) {
-    // Same idea for the filter: lift the filter out, then reveal the empty lower box.
-    await animatePartPiece(layers[1].src, filterOutlinePoints, 'filter-removing', 940);
+  if(state.layer === 0){
+    markerLayer.classList.remove('hide');
+    outlineSvg.classList.remove('hide');
+    baseImage.src = layerImages[0];
+    counter.textContent = `${completeCount} / ${total}`;
+    stepTitle.textContent = 'Remove airbox lid fasteners';
+    stepText.textContent = 'Tap the 6 T25 screws and the rear clip. Once all are complete, the lid will lift off and reveal the filter.';
+    nextBtn.disabled = completeCount !== total || state.animating;
+    nextBtn.textContent = 'Lift lid';
+    prevBtn.disabled = true;
+  } else if(state.layer === 1){
+    markerLayer.classList.add('hide');
+    outlineSvg.classList.add('hide');
+    baseImage.src = layerImages[1];
+    counter.textContent = 'Filter';
+    stepTitle.textContent = 'Remove air filter';
+    stepText.textContent = 'The lid is off. Tap next to lift the filter out of the lower airbox housing.';
+    nextBtn.disabled = state.animating;
+    nextBtn.textContent = 'Remove filter';
+    prevBtn.disabled = false;
   } else {
-    img.classList.add('soft-fade');
-    await wait(220);
+    markerLayer.classList.add('hide');
+    outlineSvg.classList.add('hide');
+    baseImage.src = layerImages[2];
+    counter.textContent = 'Done';
+    stepTitle.textContent = 'Lower housing exposed';
+    stepText.textContent = 'Filter is removed. Inspect debris, seal area, lower housing, and intake tube connection.';
+    nextBtn.disabled = true;
+    nextBtn.textContent = 'Complete';
+    prevBtn.disabled = false;
   }
-
-  await preload(layers[next].src);
-  currentLayer = next;
-  img.src = layers[currentLayer].src;
-  img.alt = layers[currentLayer].label;
-
-  img.classList.remove('lid-flip', 'filter-lift', 'soft-fade');
-  img.classList.add('fade-in');
-  await wait(260);
-  img.classList.remove('fade-in');
-
-  const onInstalled = currentLayer === 0;
-  markerLayer.classList.toggle('hidden', !onInstalled);
-  outlineLayer.classList.toggle('hidden', !onInstalled);
-
-  if (onInstalled) {
-    markerLayer.classList.remove('fade-away');
-    outlineLayer.classList.remove('fade-away');
-    markerLayer.classList.add('fade-in-markers');
-    outlineLayer.classList.add('fade-in-outline');
-    setTimeout(() => {
-      markerLayer.classList.remove('fade-in-markers');
-      outlineLayer.classList.remove('fade-in-outline');
-    }, 300);
-  }
-
-  animating = false;
-  calibrateBtn.disabled = currentLayer !== 0;
-  updateUI();
+  renderMarkers();
 }
 
-function animatePartPiece(src, points, className, duration) {
-  return new Promise((resolve) => {
-    partAnimationLayer.innerHTML = '';
-    const piece = document.createElement('div');
-    piece.className = `part-piece ${className}`;
-    piece.style.backgroundImage = `url("${src}")`;
-    piece.style.setProperty('--clip', points.map(([x, y]) => `${x}% ${y}%`).join(','));
-    partAnimationLayer.appendChild(piece);
-    // Force layout so the animation starts reliably on iOS/Safari.
-    piece.getBoundingClientRect();
-    piece.addEventListener('animationend', () => {
-      piece.remove();
-      resolve();
-    }, { once: true });
-    setTimeout(() => {
-      if (piece.isConnected) {
-        piece.remove();
-        resolve();
-      }
-    }, duration + 120);
-  });
+function preload(){
+  layerImages.forEach(src => { const img = new Image(); img.src = src; });
 }
 
-function wait(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+function animateLidOff(){
+  state.animating = true;
+  nextBtn.disabled = true;
+  markerLayer.classList.add('hide');
+  outlineSvg.classList.add('hide');
+  baseImage.src = layerImages[1];
+  baseImage.classList.add('dim');
+  lidMover.classList.remove('animate');
+  void lidMover.offsetWidth;
+  lidMover.classList.add('animate');
+  setTimeout(() => {
+    lidMover.classList.remove('animate');
+    baseImage.classList.remove('dim');
+    state.layer = 1;
+    state.animating = false;
+    render();
+  }, 920);
 }
 
-function updateUI(rerender = true) {
-  const count = done.size;
-  completeCount.textContent = count;
-  progressFill.style.width = `${(count / fasteners.length) * 100}%`;
-
-  const layer = layers[currentLayer];
-  stepTitle.textContent = layer.title;
-  stepText.textContent = calibrating ? 'Drag the markers until each one is centered on the real screw or clip. Tap Adjust again when done.' : layer.text;
-  layerBadge.textContent = calibrating ? 'Adjusting' : layer.label;
-
-  prevBtn.disabled = animating || currentLayer === 0;
-  nextBtn.disabled = animating || calibrating || (currentLayer === 0 && count < fasteners.length);
-  nextBtn.textContent = currentLayer === 0 ? 'Lid Off' : currentLayer === 1 ? 'Filter Removed' : 'Complete';
-  calibrateBtn.textContent = calibrating ? 'Done' : 'Adjust';
-  calibrateBtn.classList.toggle('active', calibrating);
-  adjustHint.classList.toggle('show', calibrating);
-
-  const onInstalled = currentLayer === 0;
-  markerLayer.classList.toggle('hidden', !onInstalled);
-  outlineLayer.classList.toggle('hidden', !onInstalled);
-  calibrateBtn.disabled = animating || !onInstalled;
-
-  if (rerender) renderMarkers();
+function animateFilterOut(){
+  state.animating = true;
+  nextBtn.disabled = true;
+  baseImage.src = layerImages[2];
+  baseImage.classList.add('dim');
+  filterMover.classList.remove('animate');
+  void filterMover.offsetWidth;
+  filterMover.classList.add('animate');
+  setTimeout(() => {
+    filterMover.classList.remove('animate');
+    baseImage.classList.remove('dim');
+    state.layer = 2;
+    state.animating = false;
+    render();
+  }, 880);
 }
 
 nextBtn.addEventListener('click', () => {
-  if (currentLayer === 0 && done.size < fasteners.length) return;
-  if (currentLayer < layers.length - 1) setLayer(currentLayer + 1);
+  if(state.animating) return;
+  if(state.layer === 0 && state.completed.size === fasteners.length) animateLidOff();
+  else if(state.layer === 1) animateFilterOut();
 });
 
 prevBtn.addEventListener('click', () => {
-  if (currentLayer > 0) setLayer(currentLayer - 1);
+  if(state.animating) return;
+  if(state.layer > 0){
+    state.layer -= 1;
+    render();
+  }
 });
 
 resetBtn.addEventListener('click', () => {
-  done.clear();
-  currentLayer = 0;
-  animating = false;
-  calibrating = false;
-  partAnimationLayer.innerHTML = '';
-  img.classList.remove('lid-flip', 'filter-lift', 'soft-fade', 'fade-in');
-  img.src = layers[0].src;
-  markerLayer.classList.remove('hidden', 'fade-away');
-  outlineLayer.classList.remove('hidden', 'fade-away');
-  updateUI();
+  state.layer = 0;
+  state.completed.clear();
+  state.animating = false;
+  render();
 });
 
-calibrateBtn.addEventListener('click', () => {
-  if (currentLayer !== 0 || animating) return;
-  calibrating = !calibrating;
-  if (!calibrating) saveFasteners();
-  updateUI();
-});
-
-setOutline();
-updateUI();
+preload();
+render();
