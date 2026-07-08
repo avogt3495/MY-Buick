@@ -1,54 +1,10 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>MY BUICK v2.6 Registration - Airbox Stabilized</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <!-- Verified release: MY BUICK v2.6 Registration Pass - Airbox Stabilized -->
-  <div class="app">
-    <header class="topbar">
-      <div>
-        <div class="eyebrow">MY BUICK v2.6R</div>
-        <h1>Airbox Gold Standard</h1>
-      </div>
-      <div class="top-actions">
-        <button id="resetBtn" class="ghost-btn">Reset</button>
-      </div>
-    </header>
-
-    <main class="stage-wrap">
-      <section id="stage" class="stage" aria-label="Airbox repair photo viewer">
-        <img id="layerImg" class="layer-img" src="images/airbox/00_installed.jpg" alt="Airbox installed" draggable="false" />
-        <div id="markerLayer" class="marker-layer" aria-label="Airbox fastener markers"></div>
-      </section>
-    </main>
-
-    <section class="repair-panel">
-      <div class="panel-head">
-        <div>
-          <div class="eyebrow">AIR FILTER HOUSING</div>
-          <h2 id="stepTitle">Step 1: Remove lid fasteners</h2>
-        </div>
-        <div id="layerBadge" class="layer-badge">Installed</div>
-      </div>
-
-      <div class="progress-row">
-        <div class="progress-text"><span id="completeCount">0</span>/7 completed</div>
-        <div class="progress-bar"><div id="progressFill"></div></div>
-      </div>
-
-      <p id="stepText" class="step-text">Tap each blue T25 screw marker, then tap the red rear clip marker.</p>
-
-      <div class="actions">
-        <button id="prevBtn" class="secondary">Back</button>
-        <button id="nextBtn" class="primary">Next Layer</button>
-      </div>
-    </section>
-  </div>
-
-  <script src="app.js"></script>
-</body>
-</html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>MY BUICK v3.1</title><link rel="stylesheet" href="style.css"></head><body>
+<div class="app"><header class="top"><button id="back" class="icon hidden">‹</button><div><small id="crumb">MY BUICK</small><h1 id="title">2010 Buick LaCrosse</h1></div><button id="menu" class="icon">☰</button></header>
+<section id="home" class="screen active"><div class="hero"><div class="badge">V1 AIRBOX BUILD</div><h2>2010 Buick LaCrosse CXL</h2><p>3.0L LF1 • FWD • Alex Verified</p><div class="carBox">MY BUICK</div><button class="primary" data-go="engine">Enter Vehicle</button></div><div class="cards"><div class="card"><span>Active Module</span><b>Airbox</b></div><div class="card"><span>Next Step</span><b>Framework</b></div></div></section>
+<section id="engine" class="screen"><div class="sectionHead"><div><h2>Engine Bay</h2><p>Only Airbox is active for V1.</p></div><span class="badge">Airbox Only</span></div><div class="photoWrap"><img src="images/engine/engine_bay_master.jpg" alt="Engine bay"><button class="airboxBtn" data-go="airbox">Airbox</button></div></section>
+<section id="airbox" class="screen"><div class="module"><span class="badge green">Alex Verified</span><h2>Airbox Module</h2><p>Upper cover, air filter, lower housing.</p></div><button class="bigBtn" data-go="guide">🔧 Guide Me <span>Interactive airbox repair</span></button><button class="bigBtn" data-go="learn">📚 Learn <span>Part info and facts</span></button><button class="bigBtn" data-go="maintenance">📝 Maintenance <span>Log airbox service</span></button></section>
+<section id="guide" class="screen"><div class="sectionHead"><div><h2 id="stepTitle">Remove Fasteners</h2><p id="stepText">Remove six T25 screws and release rear clip.</p></div><span id="count" class="badge">0/7</span></div><div class="repair"><img id="layer" src="images/airbox/00_installed.jpg" alt="Airbox"><div id="markers"></div></div><div class="bottomBar"><button class="ghost" id="reset">Reset</button><button class="primary" id="next">Next Step</button></div></section>
+<section id="learn" class="screen"><div class="sectionHead"><div><h2>Learn</h2><p>Airbox knowledge library.</p></div><span class="badge">3 parts</span></div><button class="part" data-part="cover"><b>Airbox Upper Cover</b><span>6 T25 screws • rear clip</span></button><button class="part" data-part="filter"><b>Air Filter Element</b><span>OEM 55560894 • ACDelco A3128C</span></button><button class="part" data-part="lower"><b>Lower Airbox Housing</b><span>Holds filter • inspect debris</span></button></section>
+<section id="maintenance" class="screen"><div class="sectionHead"><div><h2>Maintenance</h2><p>Airbox service records.</p></div><button id="addLog" class="smallBtn">+ Add</button></div><div id="logs"></div><form id="logForm" class="panel hidden"><input id="logService" value="Air Filter Inspection"><input id="logMileage" placeholder="Mileage"><textarea id="logNotes" placeholder="Notes"></textarea><button class="primary">Save</button></form></section>
+<aside id="drawer"><div class="drawerTop"><b>MY BUICK</b><button id="close" class="icon">×</button></div><button data-go="home">🏠 Home</button><button data-go="engine">🚗 Engine Bay</button><button data-go="airbox">🌬 Airbox</button><button data-go="guide">🔧 Guide Me</button><button data-go="learn">📚 Learn</button><button data-go="maintenance">📝 Maintenance</button></aside><div id="dim"></div><aside id="sheet"><button id="sheetClose" class="icon">×</button><div id="sheetData"></div></aside></div><script src="app.js"></script></body></html>
