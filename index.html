@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>MY BUICK v2</title>
+  <title>MY BUICK v2.1</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -13,43 +13,42 @@
         <h1>MY BUICK</h1>
         <p>2010 LaCrosse CXL • 3.0L LF1 • FWD</p>
       </div>
-      <span class="version">v2 Airbox</span>
+      <span class="version">v2.1 Airbox</span>
     </header>
 
-    <section class="modebar">
+    <section class="modebar" aria-label="App modes">
       <button id="exploreBtn" class="active">Explore</button>
       <button id="repairBtn">Repair</button>
       <button id="layerBtn">Layer View</button>
       <button id="resetBtn">Reset</button>
     </section>
 
-    <section class="stageShell">
-      <div id="stage" class="stage">
+    <section id="stageShell" class="stageShell">
+      <div id="stage" class="stage" aria-label="Interactive airbox image">
         <div id="world" class="world">
           <img id="layer0" class="layerImg active" src="images/airbox/00_installed.jpg" alt="Airbox installed" />
-          <img id="layer1" class="layerImg" src="images/airbox/01_filter_visible.jpg" alt="Air filter visible" />
-          <img id="layer2" class="layerImg" src="images/airbox/02_filter_removed.jpg" alt="Air filter removed" />
+          <img id="layer1" class="layerImg" src="images/airbox/01_filter_visible.jpg" alt="Airbox lid removed with filter visible" />
+          <img id="layer2" class="layerImg" src="images/airbox/02_filter_removed.jpg" alt="Air filter removed showing lower airbox" />
           <svg id="overlay" class="overlay" viewBox="0 0 100 133" preserveAspectRatio="none">
-            <path id="airboxOutline" class="partOutline" d="M8,40 L30,36 L53,42 L78,45 L87,59 L89,81 L80,97 L47,102 L18,96 L5,78 L4,54 Z" />
+            <path id="airboxOutline" class="partOutline" d="M7,42 L25,37 L45,39 L66,47 L83,50 L91,65 L89,88 L78,103 L48,108 L20,102 L6,86 L4,58 Z" />
           </svg>
           <div id="dots" class="dots"></div>
         </div>
       </div>
-      <div id="hint" class="hint">Drag to move • Pinch to zoom • Tap Repair for blue dots</div>
+      <div id="stageBadge" class="stageBadge">Explore Mode • Drag, pinch, or tap Repair</div>
     </section>
 
-    <section id="repairHud" class="repairHud hidden">
-      <div>
+    <section id="repairHud" class="repairHud hidden" aria-live="polite">
+      <div class="hudText">
         <strong id="stepTitle">Step 1: Remove T25 screws</strong>
         <span id="stepSub">Tap each blue dot after removing that screw.</span>
       </div>
-      <div class="counter"><span id="removedCount">0</span>/<span id="totalCount">7</span></div>
+      <div class="fastenerMeter"><span id="dotMini"></span><b><span id="removedCount">0</span>/<span id="totalCount">7</span></b></div>
       <button id="nextStep" disabled>Next</button>
     </section>
 
-    <section id="card" class="card">
-      <div class="grabber"></div>
-
+    <section id="card" class="card compact">
+      <button id="cardToggle" class="grabber" aria-label="Toggle details"></button>
       <div class="cardHeader">
         <div>
           <h2>Air Filter Housing</h2>
