@@ -3,23 +3,29 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>MY BUICK v2.3 - Airbox Only</title>
+  <title>MY BUICK v2.5 - Airbox Tracking</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Verified release: MY BUICK v2.5 Airbox Tracking -->
   <div class="app">
     <header class="topbar">
       <div>
-        <div class="eyebrow">MY BUICK v2.3</div>
+        <div class="eyebrow">MY BUICK v2.5</div>
         <h1>Airbox Gold Standard</h1>
       </div>
-      <button id="resetBtn" class="ghost-btn">Reset</button>
+      <div class="top-actions">
+        <button id="calibrateBtn" class="ghost-btn">Adjust</button>
+        <button id="resetBtn" class="ghost-btn">Reset</button>
+      </div>
     </header>
 
     <main class="stage-wrap">
       <section id="stage" class="stage" aria-label="Airbox repair photo viewer">
         <img id="layerImg" class="layer-img" src="images/airbox/00_installed.jpg" alt="Airbox installed" draggable="false" />
-        <div id="fadeShield" class="fade-shield"></div>
+        <svg id="outlineLayer" class="outline-layer" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <polygon id="airboxOutline" class="airbox-outline" points="" />
+        </svg>
         <div id="markerLayer" class="marker-layer" aria-label="Airbox fastener markers"></div>
       </section>
     </main>
@@ -38,7 +44,8 @@
         <div class="progress-bar"><div id="progressFill"></div></div>
       </div>
 
-      <p id="stepText" class="step-text">Tap each blue T25 screw marker, then tap the red rear clip marker. Markers disappear once the lid is off.</p>
+      <p id="stepText" class="step-text">Tap each blue T25 screw marker, then tap the red rear clip marker.</p>
+      <p id="adjustHint" class="adjust-hint">Adjust mode: drag each marker until it sits dead center. Positions save automatically as image percentages.</p>
 
       <div class="actions">
         <button id="prevBtn" class="secondary">Back</button>
