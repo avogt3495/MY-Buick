@@ -1,52 +1,54 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>MY BUICK v2.7 | Airbox Gold</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>MY BUICK v2.6 - Airbox Stabilized</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <main class="app">
+  <!-- Verified release: MY BUICK v2.6 Airbox Stabilized -->
+  <div class="app">
     <header class="topbar">
       <div>
-        <p class="eyebrow">MY BUICK v2.7</p>
+        <div class="eyebrow">MY BUICK v2.6</div>
         <h1>Airbox Gold Standard</h1>
       </div>
-      <button id="resetBtn" class="small-btn">Reset</button>
+      <div class="top-actions">
+        <button id="resetBtn" class="ghost-btn">Reset</button>
+      </div>
     </header>
 
-    <section class="stage-wrap">
-      <div id="stage" class="stage" aria-label="Interactive airbox repair view">
-        <img id="baseImage" class="base-image" src="images/airbox/00_installed.jpg" alt="Airbox installed" draggable="false" />
+    <main class="stage-wrap">
+      <section id="stage" class="stage" aria-label="Airbox repair photo viewer">
+        <img id="layerImg" class="layer-img" src="images/airbox/00_installed.jpg" alt="Airbox installed" draggable="false" />
+        <div id="markerLayer" class="marker-layer" aria-label="Airbox fastener markers"></div>
+      </section>
+    </main>
 
-        <svg id="outlineSvg" class="outline-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-          <path id="airboxOutline" class="airbox-outline" d="M 14 30 L 33 22 L 57 22 L 77 30 L 86 48 L 81 70 L 61 82 L 34 80 L 16 67 L 9 46 Z" />
-        </svg>
-
-        <div id="lidMover" class="part-mover lid-mover" aria-hidden="true"></div>
-        <div id="filterMover" class="part-mover filter-mover" aria-hidden="true"></div>
-
-        <div id="markerLayer" class="marker-layer" aria-label="Fastener markers"></div>
-      </div>
-    </section>
-
-    <section class="control-card">
-      <div class="step-row">
+    <section class="repair-panel">
+      <div class="panel-head">
         <div>
-          <p class="eyebrow">Current step</p>
-          <h2 id="stepTitle">Remove airbox lid fasteners</h2>
+          <div class="eyebrow">AIR FILTER HOUSING</div>
+          <h2 id="stepTitle">Step 1: Remove lid fasteners</h2>
         </div>
-        <div id="counter" class="counter">0 / 7</div>
+        <div id="layerBadge" class="layer-badge">Installed</div>
       </div>
-      <p id="stepText" class="step-text">Tap the 6 T25 screws and the rear clip. The markers stay locked to the photo using percentage tracking.</p>
-      <div class="progress-track"><div id="progressFill" class="progress-fill"></div></div>
-      <div class="button-row">
-        <button id="prevBtn" class="ghost-btn">Back</button>
-        <button id="nextBtn" class="primary-btn" disabled>Next step</button>
+
+      <div class="progress-row">
+        <div class="progress-text"><span id="completeCount">0</span>/7 completed</div>
+        <div class="progress-bar"><div id="progressFill"></div></div>
+      </div>
+
+      <p id="stepText" class="step-text">Tap each blue T25 screw marker, then tap the red rear clip marker.</p>
+
+      <div class="actions">
+        <button id="prevBtn" class="secondary">Back</button>
+        <button id="nextBtn" class="primary">Next Layer</button>
       </div>
     </section>
-  </main>
+  </div>
+
   <script src="app.js"></script>
 </body>
 </html>
