@@ -1,71 +1,192 @@
-<<<<<<< Updated upstream
-const screens=["home","engine","airbox","guide","learn","maintenance"];const names={home:["MY BUICK","2010 Buick LaCrosse"],engine:["VEHICLE","Engine Bay"],airbox:["ENGINE BAY","Airbox"],guide:["AIRBOX","Guide Me"],learn:["AIRBOX","Learn"],maintenance:["AIRBOX","Maintenance"]};let current="home",layer=0,done=new Set();const imgs=["images/airbox/00_installed.jpg","images/airbox/01_filter_visible.jpg","images/airbox/02_filter_removed.jpg"];const markers=[["s1","1",26.7,36.6,""],["s2","2",39.2,25.9,""],["s3","3",55.1,19.7,""],["s4","4",70.4,28.2,""],["s5","5",73.3,49.2,""],["s6","6",33.2,57.4,""],["clip","C",82.6,40.7,"clip"]];const parts={cover:["Airbox Upper Cover","OEM #: TBD","Weight: TBD","Material: molded plastic TBD","Tools: T25 Torx","Description: seals the filter and forces air through the filter before the MAF."],filter:["Air Filter Element","OEM #: 55560894","ACDelco: A3128C","Weight: TBD","Tools: T25 to access","Description: filters incoming air before it reaches the engine."],lower:["Lower Airbox Housing","OEM #: TBD","Weight: TBD","Material: molded plastic TBD","Tools: TBD","Description: supports the filter and collects debris in the lower airbox."],screw:["Airbox Lid Screw","Quantity: 6","Head: T25 Torx","Length/thread/torque: TBD","Alex verified: quantity and head"],clip:["Rear Retaining Clip","Quantity: 1","Location: back-right corner","Torque: N/A","Alex verified: location"]};function go(s){current=s;screens.forEach(x=>document.getElementById(x).classList.toggle("active",x===s));crumb.textContent=names[s][0];title.textContent=names[s][1];back.classList.toggle("hidden",s==="home");closeDrawer()}document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(b.dataset.go));back.onclick=()=>go({engine:"home",airbox:"engine",guide:"airbox",learn:"airbox",maintenance:"airbox"}[current]||"home");menu.onclick=()=>{drawer.classList.add("open");dim.classList.add("show")};close.onclick=closeDrawer;dim.onclick=()=>{closeDrawer();closeSheet()};function closeDrawer(){drawer.classList.remove("open");if(!sheet.classList.contains("open"))dim.classList.remove("show")}function renderMarkers(){markersDiv.innerHTML="";if(layer!==0)return;markers.forEach(m=>{let b=document.createElement("button");b.className="marker "+m[4]+(done.has(m[0])?" done":"");b.style.left=m[2]+"%";b.style.top=m[3]+"%";b.textContent=done.has(m[0])?"✓":m[1];b.onclick=()=>{done.add(m[0]);renderMarkers();count.textContent=done.size+"/7";openSheet(m[0]==="clip"?"clip":"screw")};markersDiv.appendChild(b)})}const markersDiv=document.getElementById("markers");next.onclick=()=>{if(layer===0&&done.size<7){stepText.textContent=`Finish fasteners first. ${7-done.size} remaining.`;return}if(layer<2){layer++;document.getElementById("layer").src=imgs[layer];renderMarkers();stepTitle.textContent=layer===1?"Inspect Filter":"Lower Housing";stepText.textContent=layer===1?"The lid is off. Inspect/remove the filter.":"Filter removed. Inspect lower housing."}};reset.onclick=()=>{layer=0;done.clear();document.getElementById("layer").src=imgs[0];count.textContent="0/7";stepTitle.textContent="Remove Fasteners";stepText.textContent="Remove six T25 screws and release rear clip.";renderMarkers()};document.querySelectorAll("[data-part]").forEach(b=>b.onclick=()=>openSheet(b.dataset.part));function openSheet(id){let d=parts[id]||parts.cover;sheetData.innerHTML=`<h2>${d[0]}</h2>`+d.slice(1).map(x=>`<div class=info><span>${x.split(':')[0]}</span><b>${x.includes(':')?x.substring(x.indexOf(':')+1).trim():x}</b></div>`).join("");sheet.classList.add("open");dim.classList.add("show")}function closeSheet(){sheet.classList.remove("open");if(!drawer.classList.contains("open"))dim.classList.remove("show")}sheetClose.onclick=closeSheet;function logsGet(){return JSON.parse(localStorage.getItem("myb_logs")||"[]")}function logsSet(a){localStorage.setItem("myb_logs",JSON.stringify(a))}function renderLogs(){let a=logsGet();logs.innerHTML=(a.length?a:[{s:"Airbox module started",m:"TBD",n:"V1 framework"}]).map(l=>`<div class=card><b>${l.s||l.service}</b><span>${l.m||l.mileage} mi</span><p>${l.n||l.notes||""}</p></div>`).join("")}addLog.onclick=()=>logForm.classList.toggle("hidden");logForm.onsubmit=e=>{e.preventDefault();let a=logsGet();a.unshift({s:logService.value,m:logMileage.value||"TBD",n:logNotes.value});logsSet(a);renderLogs();logForm.classList.add("hidden")};renderMarkers();renderLogs();
-=======
-const screens=["home","engine","airbox","guide","learn","maintenance"];
-const names={home:["MY BUICK","2010 Buick LaCrosse CXL"],engine:["VEHICLE","Engine Bay"],airbox:["ENGINE BAY","Airbox"],guide:["AIRBOX","Guide Me"],learn:["AIRBOX","Learn"],maintenance:["AIRBOX","Maintenance"]};
-let current="home",layer=0,done=new Set();
-const imgs=["images/airbox/00_installed.jpg","images/airbox/01_filter_visible.jpg","images/airbox/02_filter_removed.jpg"];
-const markerData=[
-["s1","1",26.7,36.6,""],["s2","2",39.2,25.9,""],["s3","3",55.1,19.7,""],
-["s4","4",70.4,28.2,""],["s5","5",73.3,49.2,""],["s6","6",33.2,57.4,""],["clip","C",82.6,40.7,"clip"]
+const screens = ["home","engine","airbox","guide","learn","maintenance"];
+const names = {
+  home:["MY BUICK","2010 Buick LaCrosse CXL"],
+  engine:["VEHICLE","Engine Bay"],
+  airbox:["ENGINE BAY","Airbox"],
+  guide:["AIRBOX","Guide Me"],
+  learn:["AIRBOX","Learn"],
+  maintenance:["AIRBOX","Maintenance"]
+};
+
+let current = "home";
+let layer = 0;
+let done = new Set();
+
+const layerImages = [
+  "images/airbox/00_installed.jpg",
+  "images/airbox/01_filter_visible.jpg",
+  "images/airbox/02_filter_removed.jpg"
 ];
-const parts={
-cover:["Airbox Upper Cover","OEM #: TBD","Weight: TBD","Material: Molded plastic TBD","Tools: T25 Torx","Description: Seals the filter and forces intake air through the filter before the MAF."],
-filter:["Air Filter Element","OEM #: 55560894","ACDelco: A3128C","Weight: TBD","Tools: T25 Torx to access","Description: Filters incoming air before it reaches the engine."],
-lower:["Lower Airbox Housing","OEM #: TBD","Weight: TBD","Material: Molded plastic TBD","Tools: TBD","Description: Supports the filter and collects debris in the lower airbox."]
+
+const markers = [
+  ["s1","1",26.7,36.6,""],
+  ["s2","2",39.2,25.9,""],
+  ["s3","3",55.1,19.7,""],
+  ["s4","4",70.4,28.2,""],
+  ["s5","5",73.3,49.2,""],
+  ["s6","6",33.2,57.4,""],
+  ["clip","C",82.6,40.7,"clip"]
+];
+
+const parts = {
+  cover:["Airbox Upper Cover","OEM #: TBD","Weight: TBD","Material: Molded plastic, exact material TBD","Tools: T25 Torx","Description: Seals the air filter and forces intake air through the filter before the MAF sensor."],
+  filter:["Air Filter Element","OEM #: 55560894","ACDelco: A3128C","Weight: TBD","Tools: T25 Torx to access","Description: Filters incoming air before it reaches the engine."],
+  lower:["Lower Airbox Housing","OEM #: TBD","Weight: TBD","Material: Molded plastic, exact material TBD","Tools: TBD","Description: Supports the filter and collects debris in the lower airbox."]
 };
+
 function setGreeting(){
- const h=new Date().getHours();
- greeting.textContent=(h<12?"Good Morning":h<18?"Good Afternoon":"Good Evening")+", Alex.";
+  const h = new Date().getHours();
+  const word = h < 12 ? "Good Morning" : h < 18 ? "Good Afternoon" : "Good Evening";
+  document.getElementById("greeting").textContent = word + ", Alex.";
 }
-function go(s){
- current=s;
- screens.forEach(x=>document.getElementById(x).classList.toggle("active",x===s));
- crumb.textContent=names[s][0]; title.textContent=names[s][1];
- back.classList.toggle("hidden",s==="home");
- closeDrawer();
+
+function showScreen(id){
+  current = id;
+  screens.forEach(s => document.getElementById(s).classList.toggle("active", s === id));
+  document.getElementById("crumb").textContent = names[id][0];
+  document.getElementById("title").textContent = names[id][1];
+  document.getElementById("backBtn").classList.toggle("hidden", id === "home");
+  closeDrawer();
 }
-document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(b.dataset.go));
-back.onclick=()=>go({engine:"home",airbox:"engine",guide:"airbox",learn:"airbox",maintenance:"airbox"}[current]||"home");
-menu.onclick=()=>{drawer.classList.add("open");dim.classList.add("show")};
-close.onclick=closeDrawer; dim.onclick=()=>{closeDrawer();closeSheet()};
-function closeDrawer(){drawer.classList.remove("open");if(!sheet.classList.contains("open"))dim.classList.remove("show")}
+
+document.querySelectorAll("[data-go]").forEach(btn => {
+  btn.addEventListener("click", () => showScreen(btn.dataset.go));
+});
+
+document.getElementById("backBtn").addEventListener("click", () => {
+  const backMap = {engine:"home", airbox:"engine", guide:"airbox", learn:"airbox", maintenance:"airbox"};
+  showScreen(backMap[current] || "home");
+});
+
+const drawer = document.getElementById("drawer");
+const dim = document.getElementById("dim");
+const sheet = document.getElementById("sheet");
+
+document.getElementById("menuBtn").addEventListener("click", () => {
+  drawer.classList.add("open");
+  dim.classList.add("show");
+});
+document.getElementById("closeDrawer").addEventListener("click", closeDrawer);
+dim.addEventListener("click", () => {
+  closeDrawer();
+  closeSheet();
+});
+
+function closeDrawer(){
+  drawer.classList.remove("open");
+  if(!sheet.classList.contains("open")) dim.classList.remove("show");
+}
+
 function renderMarkers(){
- markers.innerHTML="";
- if(layer!==0)return;
- markerData.forEach(m=>{
-  const b=document.createElement("button");
-  b.className="marker "+m[4]+(done.has(m[0])?" done":"");
-  b.style.left=m[2]+"%"; b.style.top=m[3]+"%";
-  b.textContent=done.has(m[0])?"✓":m[1];
-  b.onclick=()=>{done.add(m[0]);renderMarkers();count.textContent=done.size+"/7"; if(done.size===7) stepText.textContent="All fasteners complete. Tap Next Step."};
-  markers.appendChild(b);
- });
+  const layerEl = document.getElementById("markerLayer");
+  layerEl.innerHTML = "";
+  if(layer !== 0) return;
+
+  markers.forEach(m => {
+    const b = document.createElement("button");
+    b.className = "marker " + m[4] + (done.has(m[0]) ? " done" : "");
+    b.style.left = m[2] + "%";
+    b.style.top = m[3] + "%";
+    b.textContent = done.has(m[0]) ? "✓" : m[1];
+    b.addEventListener("click", () => {
+      done.add(m[0]);
+      renderMarkers();
+      updateCount();
+      if(done.size === 7){
+        document.getElementById("stepText").textContent = "All fasteners complete. Tap Next Step.";
+      }
+    });
+    layerEl.appendChild(b);
+  });
 }
-next.onclick=()=>{
- if(layer===0&&done.size<7){stepText.textContent=`Finish fasteners first. ${7-done.size} remaining.`;return}
- if(layer<2){
-  layer++; document.getElementById("layer").src=imgs[layer]; renderMarkers();
-  stepTitle.textContent=layer===1?"Inspect Filter":"Lower Housing";
-  stepText.textContent=layer===1?"The lid is off. Inspect or remove the filter.":"Filter removed. Inspect the lower housing.";
- }
-};
-reset.onclick=()=>{layer=0;done.clear();document.getElementById("layer").src=imgs[0];count.textContent="0/7";stepTitle.textContent="Remove Fasteners";stepText.textContent="Tap each blue T25 screw marker, then tap the red rear clip marker.";renderMarkers()};
-document.querySelectorAll("[data-part]").forEach(b=>b.onclick=()=>openSheet(b.dataset.part));
+
+function updateCount(){
+  document.getElementById("count").textContent = done.size + "/7";
+}
+
+document.getElementById("nextBtn").addEventListener("click", () => {
+  if(layer === 0 && done.size < 7){
+    document.getElementById("stepText").textContent = "Finish fasteners first. " + (7 - done.size) + " remaining.";
+    return;
+  }
+  if(layer < 2){
+    layer += 1;
+    document.getElementById("layerImg").src = layerImages[layer];
+    renderMarkers();
+    document.getElementById("stepTitle").textContent = layer === 1 ? "Inspect Filter" : "Lower Housing";
+    document.getElementById("stepText").textContent = layer === 1
+      ? "The lid is off. Inspect or remove the air filter."
+      : "Filter removed. Inspect the lower housing for debris.";
+  }
+});
+
+document.getElementById("resetBtn").addEventListener("click", () => {
+  layer = 0;
+  done.clear();
+  document.getElementById("layerImg").src = layerImages[0];
+  document.getElementById("stepTitle").textContent = "Remove Fasteners";
+  document.getElementById("stepText").textContent = "Tap each blue T25 screw marker, then tap the red rear clip marker.";
+  updateCount();
+  renderMarkers();
+});
+
+document.querySelectorAll("[data-part]").forEach(btn => {
+  btn.addEventListener("click", () => openSheet(btn.dataset.part));
+});
+
 function openSheet(id){
- const d=parts[id]||parts.cover;
- sheetData.innerHTML=`<h2>${d[0]}</h2>`+d.slice(1).map(x=>`<div class="info"><span>${x.split(":")[0]}</span><b>${x.includes(":")?x.substring(x.indexOf(":")+1).trim():x}</b></div>`).join("");
- sheet.classList.add("open"); dim.classList.add("show");
+  const data = parts[id] || parts.cover;
+  document.getElementById("sheetData").innerHTML =
+    "<h2>" + data[0] + "</h2>" +
+    data.slice(1).map(line => {
+      const i = line.indexOf(":");
+      const k = i >= 0 ? line.slice(0,i) : "Info";
+      const v = i >= 0 ? line.slice(i+1).trim() : line;
+      return '<div class="info"><span>' + k + '</span><b>' + v + '</b></div>';
+    }).join("");
+  sheet.classList.add("open");
+  dim.classList.add("show");
 }
-function closeSheet(){sheet.classList.remove("open");if(!drawer.classList.contains("open"))dim.classList.remove("show")}
-sheetClose.onclick=closeSheet;
-function logsGet(){return JSON.parse(localStorage.getItem("myb_logs")||"[]")}
-function logsSet(a){localStorage.setItem("myb_logs",JSON.stringify(a))}
+
+function closeSheet(){
+  sheet.classList.remove("open");
+  if(!drawer.classList.contains("open")) dim.classList.remove("show");
+}
+document.getElementById("closeSheet").addEventListener("click", closeSheet);
+
+function getLogs(){
+  return JSON.parse(localStorage.getItem("mybuick_airbox_logs") || "[]");
+}
+function saveLogs(logs){
+  localStorage.setItem("mybuick_airbox_logs", JSON.stringify(logs));
+}
 function renderLogs(){
- const a=logsGet();
- logs.innerHTML=(a.length?a:[{s:"Air Filter Inspection",m:"121,842",n:"Ready to log real service."}]).map(l=>`<div class="panel"><b>${l.s}</b><p>${l.m} mi</p><p>${l.n||""}</p></div>`).join("");
+  const logs = getLogs();
+  const display = logs.length ? logs : [{service:"Air Filter Inspection", mileage:"121842", notes:"Ready to log real service."}];
+  document.getElementById("logList").innerHTML = display.map(l =>
+    '<div class="panel"><strong>' + l.service + '</strong><p>' + l.mileage + ' mi</p><p>' + (l.notes || "") + '</p></div>'
+  ).join("");
 }
-addLog.onclick=()=>logForm.classList.toggle("hidden");
-logForm.onsubmit=e=>{e.preventDefault();let a=logsGet();a.unshift({s:logService.value,m:logMileage.value||"TBD",n:logNotes.value});logsSet(a);renderLogs();logForm.classList.add("hidden")};
-setGreeting(); renderMarkers(); renderLogs(); go("home");
->>>>>>> Stashed changes
+
+document.getElementById("addLog").addEventListener("click", () => {
+  document.getElementById("logForm").classList.toggle("hidden");
+});
+
+document.getElementById("logForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const logs = getLogs();
+  logs.unshift({
+    service: document.getElementById("logService").value,
+    mileage: document.getElementById("logMileage").value || "TBD",
+    notes: document.getElementById("logNotes").value
+  });
+  saveLogs(logs);
+  renderLogs();
+  document.getElementById("logForm").classList.add("hidden");
+});
+
+setGreeting();
+renderMarkers();
+updateCount();
+renderLogs();
+showScreen("home");
