@@ -30,7 +30,276 @@ const airboxGuideMap={
     clip:{label:"C",type:"clip",x:.740,y:.371}
   }
 };
-const parts={cover:["Airbox Upper Cover","OEM #: TBD","Weight: TBD","Material: Molded plastic, exact material TBD","Tools: T25 Torx","Torque: TBD if published","Description: Seals the air filter and forces intake air through the filter before the MAF sensor.","Facts: Uses six T25 screws and one rear retaining clip."],filter:["Air Filter Element","OEM #: 55560894","ACDelco: A3128C","Weight: TBD","Material: Filter media with rubber sealing edge","Tools: T25 Torx to access","Torque: Not applicable","Description: Filters incoming air before it reaches the engine."],lower:["Lower Airbox Housing","OEM #: TBD","Weight: TBD","Material: Molded plastic, exact material TBD","Tools: TBD","Torque: TBD if removed","Description: Supports the filter and collects debris in the lower airbox."]};
+const parts={
+  "overview": {
+    "title": "What the Airbox Does",
+    "status": "Alex Verified + GM Manual Supported",
+    "summary": "The airbox holds the engine air filter and directs incoming air toward the intake path. The filter keeps dirt and debris out of the engine.",
+    "sections": [
+      {
+        "label": "Main job",
+        "value": "Filter incoming air before it reaches the engine."
+      },
+      {
+        "label": "Why it matters",
+        "value": "Clean airflow helps protect the engine and helps the intake/MAF system read air correctly."
+      },
+      {
+        "label": "On this Buick",
+        "value": "Located on the driver-side/front-left area of the engine bay."
+      },
+      {
+        "label": "App status",
+        "value": "Outline, screws, and rear clip are Alex Verified in the app."
+      }
+    ],
+    "bullets": [
+      "Air enters through the intake snorkel/airbox area.",
+      "The filter traps dirt before air continues through the intake duct.",
+      "The upper cover must seal evenly against the filter and lower housing.",
+      "The car should not be driven with the air cleaner/filter removed."
+    ],
+    "source": "Owner Manual + Alex Verified photo mapping"
+  },
+  "service": {
+    "title": "Inspection & Replacement",
+    "status": "GM Manual Verified",
+    "summary": "The 2010 Buick LaCrosse owner manual says to inspect the engine air cleaner/filter at Maintenance II intervals, replace it at the first oil change after each 50,000-mile interval, and inspect it at every oil change in dusty or dirty conditions.",
+    "sections": [
+      {
+        "label": "Normal replacement",
+        "value": "First oil change after each 50,000 mile interval."
+      },
+      {
+        "label": "Dusty/dirty use",
+        "value": "Inspect at each engine oil change."
+      },
+      {
+        "label": "Inspection method",
+        "value": "Remove the filter and lightly shake out loose dust. If it remains caked with dirt, replace it."
+      },
+      {
+        "label": "Basic procedure",
+        "value": "Remove housing screws, lift cover, pull filter, inspect/replace, lower cover, reinstall screws."
+      },
+      {
+        "label": "Safety note",
+        "value": "Do not run/drive the vehicle with the air cleaner/filter off."
+      }
+    ],
+    "bullets": [
+      "Use the Guide Me screen for the screw and clip order.",
+      "Check that the filter seal sits flat before closing the lid.",
+      "Make sure the lid is fully seated before tightening screws.",
+      "Do not overtighten plastic airbox screws."
+    ],
+    "source": "2010 Buick LaCrosse Owner Manual"
+  },
+  "assembly": {
+    "title": "Air Cleaner Assembly",
+    "status": "OEM Dealer Verified, Needs VIN Check",
+    "summary": "The air cleaner assembly is the full airbox unit. Part number 13279567 appears for 2010-2011 Buick LaCrosse air cleaner assembly listings and is described for 3.0L/3.6L applications by OEM parts sellers.",
+    "sections": [
+      {
+        "label": "Likely GM part number",
+        "value": "13279567"
+      },
+      {
+        "label": "Part type",
+        "value": "Air Cleaner Assembly"
+      },
+      {
+        "label": "Vehicle fitment",
+        "value": "2010-2011 Buick LaCrosse listings show this assembly. Final VIN verification still needed."
+      },
+      {
+        "label": "Weight",
+        "value": "TBD, needs scale or trusted spec."
+      },
+      {
+        "label": "Material",
+        "value": "Molded plastic housing, exact plastic type TBD."
+      }
+    ],
+    "bullets": [
+      "Includes the housing structure that supports the air filter.",
+      "May include or interface with rubber isolators/duct pieces depending on listing.",
+      "Used assemblies may be easier to find than new ones.",
+      "Confirm by VIN before buying a replacement."
+    ],
+    "source": "OEM parts seller listings + needs final VIN check"
+  },
+  "filter": {
+    "title": "Air Filter Element",
+    "status": "GM Verified",
+    "summary": "GM lists air filter part number 55560894 for Buick LaCrosse applications. ACDelco A3128C is listed as the matching ACDelco panel air filter by major parts catalogs.",
+    "sections": [
+      {
+        "label": "GM part number",
+        "value": "55560894"
+      },
+      {
+        "label": "ACDelco part number",
+        "value": "A3128C"
+      },
+      {
+        "label": "Style",
+        "value": "Panel air filter"
+      },
+      {
+        "label": "Approx listed size",
+        "value": "11-1/2 in L x 10-3/16 in W x 1-13/16 in H from parts catalog listing."
+      },
+      {
+        "label": "Weight",
+        "value": "TBD, needs scale or verified spec."
+      }
+    ],
+    "bullets": [
+      "Replace if heavily dirty, damaged, wet, oil-soaked, or poorly sealed.",
+      "The rubber edge must sit flat in the lower housing.",
+      "A bad seal can let dirt bypass the filter.",
+      "Best app status: GM Verified part number, Alex Verified installed condition after you inspect it."
+    ],
+    "source": "GM Parts + parts catalog listing"
+  },
+  "cover": {
+    "title": "Upper Cover & Seal Surface",
+    "status": "Alex Verified, Part Number TBD",
+    "summary": "The upper cover clamps the filter into the lower housing and creates the sealing surface. On your app guide, it is retained by six screw markers and one rear clip marker.",
+    "sections": [
+      {
+        "label": "Part number",
+        "value": "TBD"
+      },
+      {
+        "label": "Fasteners",
+        "value": "Six lid screws shown in app."
+      },
+      {
+        "label": "Rear retention",
+        "value": "One rear clip shown in app."
+      },
+      {
+        "label": "Tool",
+        "value": "T25 Torx, Alex Verified from your guide setup."
+      },
+      {
+        "label": "Torque",
+        "value": "TBD, do not guess. Snug evenly into plastic."
+      }
+    ],
+    "bullets": [
+      "Look for cracked corners or stripped screw bosses.",
+      "Make sure the lid sits flat before tightening.",
+      "Tighten evenly so the filter seal is not pinched.",
+      "Do not let the lid hang hard on wiring or ducts while open."
+    ],
+    "source": "Alex Verified + manual procedure"
+  },
+  "lower": {
+    "title": "Lower Airbox Housing",
+    "status": "Needs Verification",
+    "summary": "The lower housing supports the filter and catches debris that enters before the filter. Exact separate part number and material are not confirmed yet.",
+    "sections": [
+      {
+        "label": "Part number",
+        "value": "TBD"
+      },
+      {
+        "label": "Material",
+        "value": "Molded plastic, exact type TBD."
+      },
+      {
+        "label": "Weight",
+        "value": "TBD"
+      },
+      {
+        "label": "Service",
+        "value": "Inspect for loose debris whenever the filter is out."
+      },
+      {
+        "label": "Common issue",
+        "value": "Cracks, broken tabs, debris buildup, poor seal surface."
+      }
+    ],
+    "bullets": [
+      "Vacuum loose leaves/dirt out of the lower box if present.",
+      "Do not drop debris into the intake duct path.",
+      "Check that drain/low points are not packed with debris.",
+      "Confirm lower housing mounts if removing the full assembly later."
+    ],
+    "source": "Needs verification"
+  },
+  "fasteners": {
+    "title": "Screws & Rear Clip",
+    "status": "Alex Verified, Torque TBD",
+    "summary": "The app currently maps six screw highlights and one rear clip highlight. The marker locations and visual style are Alex Verified.",
+    "sections": [
+      {
+        "label": "Screw count",
+        "value": "6"
+      },
+      {
+        "label": "Clip count",
+        "value": "1 rear clip"
+      },
+      {
+        "label": "Tool",
+        "value": "T25 Torx"
+      },
+      {
+        "label": "Torque",
+        "value": "TBD, no verified published spec yet."
+      },
+      {
+        "label": "App status",
+        "value": "Markers visually approved in v5.3."
+      }
+    ],
+    "bullets": [
+      "Keep downward pressure on the bit to avoid rounding the screw head.",
+      "Start screws by hand if possible so the plastic threads do not cross-thread.",
+      "Snug only, because the airbox is plastic.",
+      "If one screw spins forever, the plastic boss may be stripped."
+    ],
+    "source": "Alex Verified"
+  },
+  "diagnostics": {
+    "title": "Failure Modes",
+    "status": "Needs Verification + General Diagnostic Logic",
+    "summary": "This page links symptoms to things to inspect. It is not a full diagnosis yet, but it gives the app useful context for the airbox.",
+    "sections": [
+      {
+        "label": "Dirty filter",
+        "value": "Can restrict airflow and reduce performance/efficiency."
+      },
+      {
+        "label": "Poor filter seal",
+        "value": "Can allow unfiltered air/dirt to bypass the filter."
+      },
+      {
+        "label": "Loose cover",
+        "value": "Can cause poor sealing, intake noise, or debris bypass."
+      },
+      {
+        "label": "Cracked intake duct",
+        "value": "Can create air metering issues depending on crack location."
+      },
+      {
+        "label": "MAF area",
+        "value": "Part number and code logic need their own verified MAF page later."
+      }
+    ],
+    "bullets": [
+      "Check the filter first before chasing weird intake behavior.",
+      "Look for cracks in the accordion intake duct.",
+      "Check that clamps and electrical connectors near the MAF/intake tube are seated.",
+      "Future OBD2 module can link MAF/fuel-trim codes here later."
+    ],
+    "source": "General diagnostic logic, needs deeper verification"
+  }
+};
 
 function setGreeting(){const h=new Date().getHours();const word=h<12?"Good Morning":h<18?"Good Afternoon":"Good Evening";document.getElementById("greeting").textContent=word+", Alex."}
 
@@ -115,7 +384,23 @@ function updateProgress(){const total=7;const completed=done.size;document.getEl
 document.getElementById("nextBtn").addEventListener("click",()=>{if(layer===0&&done.size<7){document.getElementById("stepText").textContent="Finish fasteners first. "+(7-done.size)+" remaining.";return}if(layer<2){layer+=1;document.getElementById("layerImg").src=layerImages[layer];renderMarkers();document.getElementById("stepTitle").textContent=layer===1?"Inspect Filter":"Lower Housing";document.getElementById("stepText").textContent=layer===1?"The lid is off. Inspect or remove the air filter.":"Filter removed. Inspect the lower housing for debris.";updateProgress()}});
 document.getElementById("resetBtn").addEventListener("click",()=>{layer=0;done.clear();document.getElementById("layerImg").src=layerImages[0];document.getElementById("stepTitle").textContent="Remove Fasteners";document.getElementById("stepText").textContent="Tap each blue T25 screw marker, then tap the red rear clip marker.";renderMarkers();updateProgress()});
 document.querySelectorAll("[data-part]").forEach(btn=>btn.addEventListener("click",()=>openSheet(btn.dataset.part)));
-function openSheet(id){const data=parts[id]||parts.cover;document.getElementById("sheetData").innerHTML="<h2>"+data[0]+"</h2>"+data.slice(1).map(line=>{const i=line.indexOf(":");const k=i>=0?line.slice(0,i):"Info";const v=i>=0?line.slice(i+1).trim():line;return '<div class="info"><span>'+k+'</span><b>'+v+'</b></div>'}).join("");sheet.classList.add("open");dim.classList.add("show")}
+function openSheet(id){
+  const data=parts[id]||parts.overview;
+  const sectionHtml=(data.sections||[]).map(item=>{
+    return '<div class="info"><span>'+item.label+'</span><b>'+item.value+'</b></div>';
+  }).join("");
+  const bulletHtml=(data.bullets||[]).map(b=>'<li>'+b+'</li>').join("");
+  document.getElementById("sheetData").innerHTML=
+    '<div class="sheetHero">'+
+      '<span class="badge">'+data.status+'</span>'+
+      '<h2>'+data.title+'</h2>'+
+      '<p>'+data.summary+'</p>'+
+    '</div>'+
+    sectionHtml+
+    (bulletHtml?'<div class="info bulletInfo"><span>Notes</span><ul>'+bulletHtml+'</ul></div>':'')+
+    '<div class="info sourceInfo"><span>Source Status</span><b>'+data.source+'</b></div>';
+  sheet.classList.add("open");dim.classList.add("show")
+}
 function closeSheet(){sheet.classList.remove("open");if(!drawer.classList.contains("open"))dim.classList.remove("show")}
 document.getElementById("closeSheet").addEventListener("click",closeSheet);
 function getLogs(){return JSON.parse(localStorage.getItem("mybuick_airbox_logs")||"[]")}

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>MY BUICK v4.7 Locked Outline Anchor Fix</title>
-  <link rel="stylesheet" href="style.css?v=5.3">
+  <link rel="stylesheet" href="style.css?v=5.4">
 </head>
 <body>
 <div class="app">
@@ -119,11 +119,32 @@
     <section id="learn" class="screen">
       <div class="sectionHead">
         <div><h2>Learn</h2><p>Airbox knowledge library.</p></div>
-        <span class="badge">3 Parts</span>
+        <span class="badge">Info Pass</span>
       </div>
-      <button class="learnCard" data-part="cover"><div><span class="learnTag">Cover</span><b>Airbox Upper Cover</b><p>6 T25 screws, rear clip, seals the filter.</p></div><strong>›</strong></button>
-      <button class="learnCard" data-part="filter"><div><span class="learnTag">Filter</span><b>Air Filter Element</b><p>OEM 55560894, ACDelco A3128C.</p></div><strong>›</strong></button>
-      <button class="learnCard" data-part="lower"><div><span class="learnTag">Housing</span><b>Lower Airbox Housing</b><p>Holds filter, collects debris, supports intake path.</p></div><strong>›</strong></button>
+
+      <div class="learnIntro">
+        <img src="images/airbox/00_installed.jpg" alt="Airbox assembly">
+        <div>
+          <span class="badge green">Airbox V1</span>
+          <h3>Airbox Assembly</h3>
+          <p>The airbox cleans incoming air before it reaches the intake path. This page separates verified info from things we still need to confirm.</p>
+        </div>
+      </div>
+
+      <div class="statusLegend">
+        <span><b class="dot gm"></b> GM Verified</span>
+        <span><b class="dot alex"></b> Alex Verified</span>
+        <span><b class="dot tbd"></b> Needs Verification</span>
+      </div>
+
+      <button class="learnCard" data-part="overview"><div><span class="learnTag">Overview</span><b>What the Airbox Does</b><p>Purpose, airflow path, why it matters.</p></div><strong>›</strong></button>
+      <button class="learnCard" data-part="service"><div><span class="learnTag">Service</span><b>Inspection & Replacement</b><p>Owner manual interval and safe service notes.</p></div><strong>›</strong></button>
+      <button class="learnCard" data-part="assembly"><div><span class="learnTag">Assembly</span><b>Air Cleaner Assembly</b><p>GM 13279567, fitment needs final VIN check.</p></div><strong>›</strong></button>
+      <button class="learnCard" data-part="filter"><div><span class="learnTag">Filter</span><b>Air Filter Element</b><p>GM 55560894, ACDelco A3128C.</p></div><strong>›</strong></button>
+      <button class="learnCard" data-part="cover"><div><span class="learnTag">Cover</span><b>Upper Cover & Seal</b><p>Six screws, rear clip, lid seal surface.</p></div><strong>›</strong></button>
+      <button class="learnCard" data-part="lower"><div><span class="learnTag">Housing</span><b>Lower Airbox Housing</b><p>Filter support, debris pocket, lower seal surface.</p></div><strong>›</strong></button>
+      <button class="learnCard" data-part="fasteners"><div><span class="learnTag">Hardware</span><b>Screws & Rear Clip</b><p>Fastener map, tool, and torque status.</p></div><strong>›</strong></button>
+      <button class="learnCard" data-part="diagnostics"><div><span class="learnTag">Diagnose</span><b>Failure Modes</b><p>Dirty filter, poor seal, cracked duct, loose lid.</p></div><strong>›</strong></button>
     </section>
 
     <section id="maintenance" class="screen">
@@ -154,6 +175,6 @@
   <div id="dim" class="dim"></div>
   <aside id="sheet" class="sheet"><button id="closeSheet" class="icon sheetClose">×</button><div id="sheetData"></div></aside>
 </div>
-<script src="app.js?v=5.3"></script>
+<script src="app.js?v=5.4"></script>
 </body>
 </html>
