@@ -579,3 +579,209 @@
   .quickFactGrid{grid-template-columns:1fr 1fr}
   .compactOption .optionGrid{grid-template-columns:1fr 1fr}
 }
+
+/* v5.9 Airbox Life Story Maintenance */
+.lifeHero{
+  display:flex;
+  gap:14px;
+  align-items:center;
+  background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.04));
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:22px;
+  padding:12px;
+  margin-bottom:12px;
+}
+.lifeHero img{
+  width:112px;
+  height:92px;
+  object-fit:cover;
+  object-position:center 43%;
+  border-radius:16px;
+  flex:0 0 auto;
+}
+.lifeHero h3{
+  margin:8px 0 4px;
+  font-size:22px;
+}
+.lifeHero p{
+  margin:0;
+  color:#aeb8c7;
+  line-height:1.35;
+  font-size:14px;
+}
+.lifeStats{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:9px;
+  margin:12px 0;
+}
+.lifeStats div{
+  background:rgba(255,255,255,.065);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;
+  padding:13px;
+}
+.lifeStats span,.setupGrid span,.eventMeta span,.miniLabel{
+  display:block;
+  color:#91a0b4;
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+  margin-bottom:4px;
+}
+.lifeStats strong,.setupGrid b,.eventMeta b{
+  display:block;
+  color:#eef4ff;
+  line-height:1.3;
+}
+.lifeCard,.lifeForm,.emptyStory{
+  background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.035));
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:22px;
+  padding:15px;
+  margin:12px 0;
+}
+.lifeCardHead{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+}
+.lifeCardHead h3,.lifeForm h3,.timelineHeader h3{
+  margin:4px 0 0;
+}
+.tinyBtn{
+  border:1px solid rgba(100,170,255,.25);
+  background:rgba(60,130,255,.16);
+  color:#fff;
+  border-radius:13px;
+  padding:8px 12px;
+  font-weight:900;
+}
+.setupGrid,.eventMeta{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+.setupGrid div,.eventMeta div{
+  background:rgba(0,0,0,.16);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:14px;
+  padding:10px;
+}
+.lifeForm{
+  background:linear-gradient(180deg,rgba(55,120,255,.11),rgba(255,255,255,.035));
+}
+.lifeForm select{
+  width:100%;
+  margin-top:6px;
+  padding:12px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.12);
+  background:#0d121b;
+  color:#fff;
+}
+.formRow{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:12px;
+}
+.lifeActions{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  margin:14px 0;
+}
+.lifeActions .smallBtn{
+  flex:1;
+  margin:0;
+}
+.smallGhost{
+  padding:10px 14px;
+}
+.timelineHeader{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin:18px 0 10px;
+}
+.lifeTimeline{
+  position:relative;
+  padding-left:14px;
+}
+.lifeTimeline::before{
+  content:"";
+  position:absolute;
+  left:4px;
+  top:8px;
+  bottom:8px;
+  width:2px;
+  background:linear-gradient(180deg,rgba(99,164,255,.75),rgba(99,164,255,.05));
+}
+.lifeEvent{
+  position:relative;
+  margin:12px 0 12px 10px;
+}
+.eventDot{
+  position:absolute;
+  left:-25px;
+  top:17px;
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  background:#63a4ff;
+  box-shadow:0 0 10px rgba(99,164,255,.85);
+}
+.eventBody{
+  background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.035));
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:20px;
+  padding:14px;
+}
+.eventTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.eventTop span{
+  color:#9dccff;
+  font-weight:950;
+  font-size:13px;
+}
+.eventTop button{
+  width:28px;
+  height:28px;
+  border-radius:10px;
+  border:0;
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  font-size:20px;
+}
+.eventBody h3{
+  margin:6px 0 10px;
+  font-size:17px;
+}
+.eventBody p{
+  color:#c3ccda;
+  line-height:1.4;
+  margin:12px 0 0;
+}
+.emptyStory{
+  color:#c3ccda;
+}
+.emptyStory strong{
+  color:#fff;
+  display:block;
+  margin-bottom:6px;
+}
+.emptyStory p{
+  margin:0;
+  line-height:1.4;
+}
+@media(min-width:430px){
+  .lifeStats{grid-template-columns:1fr 1fr 1fr}
+}

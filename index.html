@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>MY BUICK v4.7 Locked Outline Anchor Fix</title>
-  <link rel="stylesheet" href="style.css?v=5.8">
+  <link rel="stylesheet" href="style.css?v=5.9">
 </head>
 <body>
 <div class="app">
@@ -147,16 +147,113 @@
 
     <section id="maintenance" class="screen">
       <div class="sectionHead">
-        <div><h2>Maintenance</h2><p>Airbox service history.</p></div>
-        <button id="addLog" class="smallBtn">+ Add</button>
+        <div>
+          <h2>Maintenance</h2>
+          <p>The airbox’s life story.</p>
+        </div>
+        <span class="badge">Life Log</span>
       </div>
-      <div id="logList" class="timeline"></div>
-      <form id="logForm" class="panel hidden">
-        <label>Service<input id="logService" value="Air Filter Inspection"></label>
-        <label>Mileage<input id="logMileage" placeholder="121842"></label>
-        <label>Notes<textarea id="logNotes" placeholder="Filter condition, brand, debris found..."></textarea></label>
-        <button class="primary" type="submit">Save Entry</button>
+
+      <div class="lifeHero">
+        <img src="images/airbox/00_installed.jpg" alt="Airbox">
+        <div>
+          <span class="badge green">Airbox V1</span>
+          <h3>Airbox Life Story</h3>
+          <p>Every inspection, replacement, part, cost, and note lives here.</p>
+        </div>
+      </div>
+
+      <div class="lifeStats">
+        <div><span>Current Filter</span><strong id="currentFilter">Unknown</strong></div>
+        <div><span>Last Service</span><strong id="lastService">No log yet</strong></div>
+        <div><span>Next Due</span><strong id="nextDue">Set mileage</strong></div>
+      </div>
+
+      <div class="lifeCard currentSetup">
+        <div class="lifeCardHead">
+          <div>
+            <span class="miniLabel">Current Setup</span>
+            <h3 id="setupTitle">Airbox Setup</h3>
+          </div>
+          <button id="editSetupBtn" class="tinyBtn">Edit</button>
+        </div>
+        <div class="setupGrid">
+          <div><span>Filter</span><b id="setupFilter">Unknown</b></div>
+          <div><span>Part #</span><b id="setupPart">TBD</b></div>
+          <div><span>Installed</span><b id="setupInstalled">Not logged</b></div>
+          <div><span>Condition</span><b id="setupCondition">Unknown</b></div>
+        </div>
+      </div>
+
+      <form id="setupForm" class="lifeForm hidden">
+        <h3>Update Current Setup</h3>
+        <label>Filter Brand / Type<input id="setupFilterInput" placeholder="ACDelco, K&N, etc."></label>
+        <label>Part Number<input id="setupPartInput" placeholder="A3128C / 55560894"></label>
+        <label>Installed Mileage<input id="setupMileageInput" inputmode="numeric" placeholder="121842"></label>
+        <label>Condition
+          <select id="setupConditionInput">
+            <option>Unknown</option>
+            <option>Clean</option>
+            <option>Good</option>
+            <option>Dirty</option>
+            <option>Needs Replacement</option>
+            <option>Replaced</option>
+          </select>
+        </label>
+        <div class="formRow">
+          <button class="ghost" type="button" id="cancelSetupBtn">Cancel</button>
+          <button class="primary" type="submit">Save Setup</button>
+        </div>
       </form>
+
+      <div class="lifeActions">
+        <button class="smallBtn" id="addLog">+ Add Life Event</button>
+        <button class="ghost smallGhost" id="seedExample">Example</button>
+      </div>
+
+      <form id="logForm" class="lifeForm hidden">
+        <h3>Add Life Event</h3>
+        <label>Event Type
+          <select id="logType">
+            <option>Inspection</option>
+            <option>Filter Replacement</option>
+            <option>Cleaned Debris</option>
+            <option>Part Replaced</option>
+            <option>Diagnosis</option>
+            <option>Upgrade</option>
+            <option>Note</option>
+          </select>
+        </label>
+        <label>Date<input id="logDate" type="date"></label>
+        <label>Mileage<input id="logMileage" inputmode="numeric" placeholder="121842"></label>
+        <label>Part / Brand<input id="logPart" placeholder="ACDelco A3128C, K&N 33-2442, etc."></label>
+        <label>Condition
+          <select id="logCondition">
+            <option>Not Checked</option>
+            <option>Clean</option>
+            <option>Good</option>
+            <option>Dirty</option>
+            <option>Damaged</option>
+            <option>Replaced</option>
+          </select>
+        </label>
+        <label>Cost<input id="logCost" inputmode="decimal" placeholder="$29.99"></label>
+        <label>Notes<textarea id="logNotes" placeholder="What did you see, replace, clean, or learn?"></textarea></label>
+        <div class="formRow">
+          <button class="ghost" type="button" id="cancelLogBtn">Cancel</button>
+          <button class="primary" type="submit">Save Event</button>
+        </div>
+      </form>
+
+      <div class="timelineHeader">
+        <div>
+          <span class="miniLabel">Timeline</span>
+          <h3>Airbox History</h3>
+        </div>
+        <span id="eventCount" class="badge">0 events</span>
+      </div>
+
+      <div id="logList" class="lifeTimeline"></div>
     </section>
   </main>
 
@@ -173,6 +270,6 @@
   <div id="dim" class="dim"></div>
   <aside id="sheet" class="sheet"><button id="closeSheet" class="icon sheetClose">×</button><div id="sheetData"></div></aside>
 </div>
-<script src="app.js?v=5.8"></script>
+<script src="app.js?v=5.9"></script>
 </body>
 </html>

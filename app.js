@@ -1092,10 +1092,181 @@ function openSheet(id){
 }
 function closeSheet(){sheet.classList.remove("open");if(!drawer.classList.contains("open"))dim.classList.remove("show")}
 document.getElementById("closeSheet").addEventListener("click",closeSheet);
-function getLogs(){return JSON.parse(localStorage.getItem("mybuick_airbox_logs")||"[]")}
-function saveLogs(logs){localStorage.setItem("mybuick_airbox_logs",JSON.stringify(logs))}
-function renderLogs(){const logs=getLogs();const display=logs.length?logs:[{service:"Air Filter Inspection",mileage:"121842",notes:"Ready to log real service."}];document.getElementById("logList").innerHTML=display.map(l=>'<div class="panel"><strong>'+l.service+'</strong><p>'+l.mileage+' mi</p><p>'+(l.notes||"")+"</p></div>").join("")}
-document.getElementById("addLog").addEventListener("click",()=>{document.getElementById("logForm").classList.toggle("hidden")});
-document.getElementById("logForm").addEventListener("submit",e=>{e.preventDefault();const logs=getLogs();logs.unshift({service:document.getElementById("logService").value,mileage:document.getElementById("logMileage").value||"TBD",notes:document.getElementById("logNotes").value});saveLogs(logs);renderLogs();document.getElementById("logForm").classList.add("hidden")});
+function getLogs(){return JSON.parse(localStorage.getItem("mybuick_airbox_life_logs")||"[]")}
+function saveLogs(logs){localStorage.setItem("mybuick_airbox_life_logs",JSON.stringify(logs))}
+function getSetup(){return JSON.parse(localStorage.getItem("mybuick_airbox_current_setup")||"{}")}
+function saveSetup(setup){localStorage.setItem("mybuick_airbox_current_setup",JSON.stringify(setup))}
+
+function cleanMiles(value){
+  const n=String(value||"").replace(/[^0-9]/g,"");
+  return n?Number(n):null;
+}
+
+function formatMiles(n){
+  if(!n && n!==0)return "TBD";
+  return Number(n).toLocaleString()+" mi";
+}
+
+function todayISO(){
+  return new Date().toISOString().slice(0,10);
+}
+
+function renderSetup(){
+  const setup=getSetup();
+  const logs=getLogs();
+  const latest=logs[0];
+
+  const filter=setup.filter||"Unknown";
+  const part=setup.part||"TBD";
+  const installed=setup.mileage?formatMiles(setup.mileage):"Not logged";
+  const condition=setup.condition||"Unknown";
+
+  document.getElementById("currentFilter").textContent=filter;
+  document.getElementById("setupTitle").textContent=filter==="Unknown"?"Airbox Setup":filter;
+  document.getElementById("setupFilter").textContent=filter;
+  document.getElementById("setupPart").textContent=part;
+  document.getElementById("setupInstalled").textContent=installed;
+  document.getElementById("setupCondition").textContent=condition;
+
+  if(latest){
+    document.getElementById("lastService").textContent=(latest.type||"Event")+" @ "+formatMiles(latest.mileage);
+  }else{
+    document.getElementById("lastService").textContent="No log yet";
+  }
+
+  const baseMiles=setup.mileage || (latest&&latest.mileage) || null;
+  if(baseMiles){
+    document.getElementById("nextDue").textContent=formatMiles(baseMiles+50000);
+  }else{
+    document.getElementById("nextDue").textContent="Set mileage";
+  }
+}
+
+function renderLogs(){
+  const logs=getLogs();
+  document.getElementById("eventCount").textContent=logs.length+" event"+(logs.length===1?"":"s");
+
+  if(!logs.length){
+    document.getElementById("logList").innerHTML=
+      '<div class="emptyStory">'+
+        '<strong>No life events yet</strong>'+
+        '<p>Add the first inspection, replacement, cleaning, upgrade, or note. This is where the airbox starts building its story.</p>'+
+      '</div>';
+    renderSetup();
+    return;
+  }
+
+  document.getElementById("logList").innerHTML=logs.map((l,idx)=>{
+    const type=l.type||"Note";
+    const date=l.date||"No date";
+    const miles=formatMiles(l.mileage);
+    const part=l.part||"No part listed";
+    const condition=l.condition||"Not Checked";
+    const cost=l.cost||"No cost";
+    const notes=l.notes||"";
+    return '<article class="lifeEvent">'+
+      '<div class="eventDot"></div>'+
+      '<div class="eventBody">'+
+        '<div class="eventTop"><span>'+type+'</span><button class="deleteEvent" data-delete="'+idx+'">×</button></div>'+
+        '<h3>'+date+' • '+miles+'</h3>'+
+        '<div class="eventMeta">'+
+          '<div><span>Part</span><b>'+part+'</b></div>'+
+          '<div><span>Condition</span><b>'+condition+'</b></div>'+
+          '<div><span>Cost</span><b>'+cost+'</b></div>'+
+        '</div>'+
+        (notes?'<p>'+notes+'</p>':'')+
+      '</div>'+
+    '</article>';
+  }).join("");
+
+  document.querySelectorAll("[data-delete]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const logs=getLogs();
+      logs.splice(Number(btn.dataset.delete),1);
+      saveLogs(logs);
+      renderLogs();
+    });
+  });
+
+  renderSetup();
+}
+
+function openSetupForm(){
+  const setup=getSetup();
+  document.getElementById("setupFilterInput").value=setup.filter||"";
+  document.getElementById("setupPartInput").value=setup.part||"";
+  document.getElementById("setupMileageInput").value=setup.mileage||"";
+  document.getElementById("setupConditionInput").value=setup.condition||"Unknown";
+  document.getElementById("setupForm").classList.remove("hidden");
+}
+
+document.getElementById("editSetupBtn").addEventListener("click",openSetupForm);
+document.getElementById("cancelSetupBtn").addEventListener("click",()=>document.getElementById("setupForm").classList.add("hidden"));
+
+document.getElementById("setupForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const setup={
+    filter:document.getElementById("setupFilterInput").value||"Unknown",
+    part:document.getElementById("setupPartInput").value||"TBD",
+    mileage:cleanMiles(document.getElementById("setupMileageInput").value),
+    condition:document.getElementById("setupConditionInput").value||"Unknown"
+  };
+  saveSetup(setup);
+  document.getElementById("setupForm").classList.add("hidden");
+  renderSetup();
+});
+
+document.getElementById("addLog").addEventListener("click",()=>{
+  document.getElementById("logDate").value=todayISO();
+  document.getElementById("logForm").classList.remove("hidden");
+});
+
+document.getElementById("cancelLogBtn").addEventListener("click",()=>document.getElementById("logForm").classList.add("hidden"));
+
+document.getElementById("logForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const logs=getLogs();
+  const event={
+    type:document.getElementById("logType").value,
+    date:document.getElementById("logDate").value||todayISO(),
+    mileage:cleanMiles(document.getElementById("logMileage").value),
+    part:document.getElementById("logPart").value||"",
+    condition:document.getElementById("logCondition").value,
+    cost:document.getElementById("logCost").value||"",
+    notes:document.getElementById("logNotes").value||""
+  };
+  logs.unshift(event);
+  saveLogs(logs);
+
+  if(event.type==="Filter Replacement" || event.condition==="Replaced"){
+    saveSetup({
+      filter:event.part||"Unknown replacement filter",
+      part:event.part||"TBD",
+      mileage:event.mileage,
+      condition:"Replaced"
+    });
+  }
+
+  e.target.reset();
+  document.getElementById("logForm").classList.add("hidden");
+  renderLogs();
+});
+
+document.getElementById("seedExample").addEventListener("click",()=>{
+  const logs=getLogs();
+  if(!logs.length){
+    const example={
+      type:"Inspection",
+      date:todayISO(),
+      mileage:121842,
+      part:"Current air filter",
+      condition:"Good",
+      cost:"$0",
+      notes:"Example entry. Replace this with your real first inspection."
+    };
+    saveLogs([example]);
+  }
+  renderLogs();
+});
 
 setGreeting();renderComponentMaps();renderMarkers();updateProgress();renderLogs();showScreen("home");window.addEventListener("load",()=>setTimeout(()=>{renderMarkers();updateProgress();},50));
