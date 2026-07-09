@@ -1,5 +1,5 @@
-const screens=["home","engine","airbox","guide","learn","maintenance"];
-const names={home:["MY BUICK","2010 Buick LaCrosse CXL"],engine:["VEHICLE","Engine Bay"],airbox:["ENGINE BAY","Airbox"],guide:["AIRBOX","Guide Me"],learn:["AIRBOX","Learn"],maintenance:["AIRBOX","Maintenance"]};
+const screens=["home","engine","airbox","guide","learn","maintenance","coolant","coolantguide","coolantlearn","coolantmaintenance"];
+const names={home:["MY BUICK","2010 Buick LaCrosse CXL"],engine:["VEHICLE","Engine Bay"],airbox:["ENGINE BAY","Airbox"],guide:["AIRBOX","Guide Me"],learn:["AIRBOX","Learn"],maintenance:["AIRBOX","Maintenance"],coolant:["ENGINE BAY","Coolant Reservoir"],coolantguide:["COOLANT","Guide Me"],coolantlearn:["COOLANT","Learn"],coolantmaintenance:["COOLANT","Maintenance"]};
 let current="home";let layer=0;let done=new Set();
 
 const componentMaps=[
@@ -12,6 +12,16 @@ const componentMaps=[
     label:{x:48,y:50},
     viewBox:"0 0 100 100",
     path:"M 2.1 92.6 L 2.9 85.6 L 2.9 77.4 L 3.7 73 L 8.2 62.2 L 10.3 59.3 L 11.9 53.7 L 12.3 49.3 L 18.9 34.4 L 21 27.4 L 23.9 23.3 L 31.3 23.3 L 40.7 21.9 L 43.2 20.7 L 45.7 18.1 L 47.3 18.1 L 53.1 16.3 L 53.9 15.6 L 54.3 6.7 L 57.2 3.3 L 60.9 2.2 L 66.7 2.6 L 74.5 7.8 L 79.8 7 L 85.6 9.3 L 97.1 19.6 L 97.1 23 L 95.5 30.4 L 95.1 43 L 93.8 47 L 93 55.6 L 88.5 67 L 87.2 71.5 L 87.2 74.4 L 84 82.2 L 82.7 89.6 L 80.7 94.4 L 78.6 97.4 L 53.5 97.4 L 48.6 96.7 L 11.5 96.7 L 10.7 95.9 L 5.3 94.4 L 2.9 95.2 Z"
+  },
+  {
+    id:"coolant",
+    name:"Coolant",
+    status:"starter",
+    target:"coolant",
+    frame:{x:63.6,y:38.4,w:11.4,h:9.8},
+    label:{x:52,y:54},
+    viewBox:"0 0 100 100",
+    path:"M 20 78 C 10 65, 9 42, 17 27 C 25 12, 48 7, 69 13 C 91 20, 97 42, 89 65 C 82 85, 59 95, 37 91 C 30 90, 24 85, 20 78 Z"
   }
 ];
 
@@ -923,6 +933,182 @@ const parts={
       "engineer"
     ],
     "source": "Simplified from diagnostics, inspection, and Engineer’s Corner"
+  },
+  "coolantQuick": {
+    "title": "Coolant Quick Sheet",
+    "status": "Starter Data",
+    "summary": "The coolant reservoir is part of the cooling system. It lets you check coolant level and gives expanding hot coolant somewhere to go.",
+    "quickFacts": [
+      {
+        "label": "Location",
+        "value": "Passenger-side / vehicle-right rear area of engine bay. Starter map only."
+      },
+      {
+        "label": "Coolant type",
+        "value": "DEX-COOL coolant system. Use owner-manual-correct coolant."
+      },
+      {
+        "label": "Mix",
+        "value": "50/50 clean drinkable water and DEX-COOL, or approved 50/50 premix."
+      },
+      {
+        "label": "Safety",
+        "value": "Only open/check cap when the system is cold."
+      },
+      {
+        "label": "Gold status",
+        "value": "Not Gold yet. Needs true outline and reservoir close-up photos."
+      }
+    ],
+    "bullets": [
+      "Low coolant can mean a leak, previous service issue, trapped air, or coolant loss.",
+      "Coolant should be clean and the correct type. Sludge, oiliness, or heavy contamination needs deeper diagnosis.",
+      "The reservoir, cap, hoses, and clamps all get their own life story entries later.",
+      "Never trust this starter map as final precision. It is only to get the coolant module into the app."
+    ],
+    "detailPages": [
+      "coolantService",
+      "coolantParts",
+      "coolantSymptoms",
+      "coolantReplacement"
+    ],
+    "source": "Owner manual supported + Alex verification needed"
+  },
+  "coolantService": {
+    "title": "Level Check & Inspection",
+    "status": "Safety First",
+    "summary": "Coolant checks are simple, but the cap/pressure part matters. Treat this as cold-engine work.",
+    "quickFacts": [
+      {
+        "label": "Before touching cap",
+        "value": "Engine fully cold."
+      },
+      {
+        "label": "Level",
+        "value": "Check against reservoir cold marks if visible."
+      },
+      {
+        "label": "Color",
+        "value": "DEX-COOL is typically orange. Wrong color or sludge needs attention."
+      },
+      {
+        "label": "Leaks",
+        "value": "Look for wet spots, dried crust, stains, sweet smell, or low level returning."
+      }
+    ],
+    "bullets": [
+      "Look around tank seams and the cap neck.",
+      "Check hose ends and clamps near the reservoir.",
+      "Check for dried coolant trails around the cap or overflow area.",
+      "Log level checks, top-offs, and coolant condition in Maintenance."
+    ],
+    "source": "Owner manual style coolant safety + physical inspection workflow"
+  },
+  "coolantParts": {
+    "title": "Parts & Specs",
+    "status": "TBD Heavy",
+    "summary": "Coolant has more part-data work than the airbox because tank, cap, hoses, and coolant specs all need verification.",
+    "quickFacts": [
+      {
+        "label": "Coolant",
+        "value": "DEX-COOL compatible coolant, 50/50 mix."
+      },
+      {
+        "label": "ACDelco premix",
+        "value": "GM 12378390 / ACDelco 10-5027 appears as Dex-Cool 50/50 premix."
+      },
+      {
+        "label": "Reservoir",
+        "value": "Part number TBD, VIN check needed."
+      },
+      {
+        "label": "Pressure cap",
+        "value": "Part number and pressure rating TBD."
+      },
+      {
+        "label": "Hoses",
+        "value": "Hose part numbers TBD."
+      },
+      {
+        "label": "Weights",
+        "value": "TBD until parts are weighed."
+      }
+    ],
+    "bullets": [
+      "Do not add random universal coolant until compatibility is confirmed.",
+      "Never mix unknown coolant types just because the color looks close.",
+      "Cap pressure rating matters. Do not guess it.",
+      "Tank and cap part numbers should be confirmed by VIN before adding to Gold data."
+    ],
+    "source": "GM/ACDelco coolant listing + VIN confirmation needed"
+  },
+  "coolantSymptoms": {
+    "title": "Symptoms & Failure Modes",
+    "status": "Starter Diagnostic Logic",
+    "summary": "This page tells you what coolant-related symptoms should make you inspect the reservoir area first.",
+    "quickFacts": [
+      {
+        "label": "Low level",
+        "value": "Possible leak, air pocket, recent service, or coolant loss."
+      },
+      {
+        "label": "Dried crust",
+        "value": "Possible slow seep or cap/tank/hoses leaking."
+      },
+      {
+        "label": "Dirty/sludgy coolant",
+        "value": "Needs deeper inspection, not just a top-off."
+      },
+      {
+        "label": "Overheating",
+        "value": "Do not keep driving hot. Needs diagnosis."
+      },
+      {
+        "label": "Sweet smell",
+        "value": "Possible coolant leak."
+      }
+    ],
+    "bullets": [
+      "Check level cold.",
+      "Inspect reservoir seams, cap, hoses, and clamps.",
+      "Look under the car after parking for drips.",
+      "If coolant keeps dropping, log it and diagnose before topping off forever."
+    ],
+    "source": "General cooling-system diagnostic logic"
+  },
+  "coolantReplacement": {
+    "title": "Replacement / Upgrade Notes",
+    "status": "Starter Replacement Data",
+    "summary": "This is not a performance mod area. Coolant system replacement info is about reliability, temperature control, leaks, and correct fluid.",
+    "quickFacts": [
+      {
+        "label": "HP gain",
+        "value": "0 hp. Coolant parts restore reliability, not power."
+      },
+      {
+        "label": "Weight difference",
+        "value": "TBD. Usually not a performance-focused difference."
+      },
+      {
+        "label": "Coolant price",
+        "value": "TBD snapshot. Add real price when you buy."
+      },
+      {
+        "label": "Reservoir price",
+        "value": "TBD, needs verified part number."
+      },
+      {
+        "label": "Cap price",
+        "value": "TBD, needs verified pressure rating and part number."
+      }
+    ],
+    "bullets": [
+      "Replace coolant if it is contaminated, wrong, old, or after certain cooling-system repairs.",
+      "Replace reservoir if cracked, leaking, stained at seams, or cap neck is damaged.",
+      "Replace cap only with the correct pressure rating.",
+      "Track every top-off so the app can tell if coolant loss is becoming a pattern."
+    ],
+    "source": "Starter data, needs parts verification"
   }
 };
 
@@ -964,7 +1150,7 @@ function showScreen(id){
   }
 }
 document.querySelectorAll("[data-go]").forEach(btn=>btn.addEventListener("click",()=>showScreen(btn.dataset.go)));
-document.getElementById("backBtn").addEventListener("click",()=>{const backMap={engine:"home",airbox:"engine",guide:"airbox",learn:"airbox",maintenance:"airbox"};showScreen(backMap[current]||"home")});
+document.getElementById("backBtn").addEventListener("click",()=>{const backMap={engine:"home",airbox:"engine",guide:"airbox",learn:"airbox",maintenance:"airbox",coolant:"engine",coolantguide:"coolant",coolantlearn:"coolant",coolantmaintenance:"coolant"};showScreen(backMap[current]||"home")});
 
 const drawer=document.getElementById("drawer");const dim=document.getElementById("dim");const sheet=document.getElementById("sheet");
 document.getElementById("menuBtn").addEventListener("click",()=>{drawer.classList.add("open");dim.classList.add("show")});
@@ -1269,4 +1455,172 @@ document.getElementById("seedExample").addEventListener("click",()=>{
   renderLogs();
 });
 
-setGreeting();renderComponentMaps();renderMarkers();updateProgress();renderLogs();showScreen("home");window.addEventListener("load",()=>setTimeout(()=>{renderMarkers();updateProgress();},50));
+
+// Coolant starter guide checklist
+let coolantChecks=new Set();
+function renderCoolantChecklist(){
+  document.querySelectorAll("[data-cool-check]").forEach(btn=>{
+    const id=btn.dataset.coolCheck;
+    btn.classList.toggle("done",coolantChecks.has(id));
+    const dot=btn.querySelector("span");
+    if(dot)dot.textContent=coolantChecks.has(id)?"✓":"";
+  });
+}
+document.querySelectorAll("[data-cool-check]").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const id=btn.dataset.coolCheck;
+    if(coolantChecks.has(id))coolantChecks.delete(id);
+    else coolantChecks.add(id);
+    renderCoolantChecklist();
+  });
+});
+document.getElementById("coolantResetBtn")?.addEventListener("click",()=>{
+  coolantChecks.clear();
+  renderCoolantChecklist();
+});
+
+// Coolant maintenance life story
+function getCoolantLogs(){return JSON.parse(localStorage.getItem("mybuick_coolant_life_logs")||"[]")}
+function saveCoolantLogs(logs){localStorage.setItem("mybuick_coolant_life_logs",JSON.stringify(logs))}
+function getCoolantSetup(){return JSON.parse(localStorage.getItem("mybuick_coolant_current_setup")||"{}")}
+function saveCoolantSetup(setup){localStorage.setItem("mybuick_coolant_current_setup",JSON.stringify(setup))}
+
+function renderCoolantSetup(){
+  const setup=getCoolantSetup();
+  const logs=getCoolantLogs();
+  const latest=logs[0];
+
+  const fluid=setup.fluid||"Unknown";
+  const mix=setup.mix||"TBD";
+  const mileage=setup.mileage?formatMiles(setup.mileage):"Not logged";
+  const condition=setup.condition||"Unknown";
+
+  document.getElementById("coolantCurrentFluid").textContent=fluid;
+  document.getElementById("coolantSetupTitle").textContent=fluid==="Unknown"?"Cooling Setup":fluid;
+  document.getElementById("coolantSetupFluid").textContent=fluid;
+  document.getElementById("coolantSetupMix").textContent=mix;
+  document.getElementById("coolantSetupMileage").textContent=mileage;
+  document.getElementById("coolantSetupCondition").textContent=condition;
+  document.getElementById("coolantStatus").textContent=condition;
+
+  if(latest){
+    document.getElementById("coolantLastService").textContent=(latest.type||"Event")+" @ "+formatMiles(latest.mileage);
+  }else{
+    document.getElementById("coolantLastService").textContent="No log yet";
+  }
+}
+
+function renderCoolantLogs(){
+  const logs=getCoolantLogs();
+  document.getElementById("coolantEventCount").textContent=logs.length+" event"+(logs.length===1?"":"s");
+
+  if(!logs.length){
+    document.getElementById("coolantLogList").innerHTML=
+      '<div class="emptyStory"><strong>No coolant events yet</strong><p>Add the first level check, top-off, flush, leak inspection, or note.</p></div>';
+    renderCoolantSetup();
+    return;
+  }
+
+  document.getElementById("coolantLogList").innerHTML=logs.map((l,idx)=>{
+    const type=l.type||"Note";
+    const date=l.date||"No date";
+    const miles=formatMiles(l.mileage);
+    const part=l.part||"No fluid/part listed";
+    const condition=l.condition||"Not Checked";
+    const cost=l.cost||"No cost";
+    const notes=l.notes||"";
+    return '<article class="lifeEvent">'+
+      '<div class="eventDot coolantDot"></div>'+
+      '<div class="eventBody">'+
+        '<div class="eventTop"><span>'+type+'</span><button class="deleteCoolantEvent" data-cool-delete="'+idx+'">×</button></div>'+
+        '<h3>'+date+' • '+miles+'</h3>'+
+        '<div class="eventMeta">'+
+          '<div><span>Fluid / Part</span><b>'+part+'</b></div>'+
+          '<div><span>Condition</span><b>'+condition+'</b></div>'+
+          '<div><span>Cost</span><b>'+cost+'</b></div>'+
+        '</div>'+
+        (notes?'<p>'+notes+'</p>':'')+
+      '</div>'+
+    '</article>';
+  }).join("");
+
+  document.querySelectorAll("[data-cool-delete]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const logs=getCoolantLogs();
+      logs.splice(Number(btn.dataset.coolDelete),1);
+      saveCoolantLogs(logs);
+      renderCoolantLogs();
+    });
+  });
+
+  renderCoolantSetup();
+}
+
+document.getElementById("coolantEditSetupBtn")?.addEventListener("click",()=>{
+  const setup=getCoolantSetup();
+  document.getElementById("coolantFluidInput").value=setup.fluid||"";
+  document.getElementById("coolantMixInput").value=setup.mix||"";
+  document.getElementById("coolantSetupMileageInput").value=setup.mileage||"";
+  document.getElementById("coolantSetupConditionInput").value=setup.condition||"Unknown";
+  document.getElementById("coolantSetupForm").classList.remove("hidden");
+});
+document.getElementById("coolantCancelSetupBtn")?.addEventListener("click",()=>document.getElementById("coolantSetupForm").classList.add("hidden"));
+document.getElementById("coolantSetupForm")?.addEventListener("submit",e=>{
+  e.preventDefault();
+  saveCoolantSetup({
+    fluid:document.getElementById("coolantFluidInput").value||"Unknown",
+    mix:document.getElementById("coolantMixInput").value||"TBD",
+    mileage:cleanMiles(document.getElementById("coolantSetupMileageInput").value),
+    condition:document.getElementById("coolantSetupConditionInput").value||"Unknown"
+  });
+  document.getElementById("coolantSetupForm").classList.add("hidden");
+  renderCoolantSetup();
+});
+document.getElementById("coolantAddLog")?.addEventListener("click",()=>{
+  document.getElementById("coolantLogDate").value=todayISO();
+  document.getElementById("coolantLogForm").classList.remove("hidden");
+});
+document.getElementById("coolantCancelLogBtn")?.addEventListener("click",()=>document.getElementById("coolantLogForm").classList.add("hidden"));
+document.getElementById("coolantLogForm")?.addEventListener("submit",e=>{
+  e.preventDefault();
+  const event={
+    type:document.getElementById("coolantLogType").value,
+    date:document.getElementById("coolantLogDate").value||todayISO(),
+    mileage:cleanMiles(document.getElementById("coolantLogMileage").value),
+    part:document.getElementById("coolantLogPart").value||"",
+    condition:document.getElementById("coolantLogCondition").value,
+    cost:document.getElementById("coolantLogCost").value||"",
+    notes:document.getElementById("coolantLogNotes").value||""
+  };
+  const logs=getCoolantLogs();
+  logs.unshift(event);
+  saveCoolantLogs(logs);
+  if(["Top-Off","Coolant Flush"].includes(event.type) || event.condition==="Serviced"){
+    saveCoolantSetup({
+      fluid:event.part||"DEX-COOL / coolant",
+      mix:"TBD",
+      mileage:event.mileage,
+      condition:event.condition||"Serviced"
+    });
+  }
+  e.target.reset();
+  document.getElementById("coolantLogForm").classList.add("hidden");
+  renderCoolantLogs();
+});
+document.getElementById("coolantSeedExample")?.addEventListener("click",()=>{
+  const logs=getCoolantLogs();
+  if(!logs.length){
+    saveCoolantLogs([{
+      type:"Level Check",
+      date:todayISO(),
+      mileage:121842,
+      part:"Current coolant",
+      condition:"Good",
+      cost:"$0",
+      notes:"Example coolant entry. Replace with your real first check."
+    }]);
+  }
+  renderCoolantLogs();
+});
+
+setGreeting();renderComponentMaps();renderMarkers();updateProgress();renderLogs();renderCoolantChecklist();renderCoolantLogs();showScreen("home");window.addEventListener("load",()=>setTimeout(()=>{renderMarkers();updateProgress();},50));

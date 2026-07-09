@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>MY BUICK v4.7 Locked Outline Anchor Fix</title>
-  <link rel="stylesheet" href="style.css?v=5.9">
+  <title>MY BUICK v6.0 Coolant Module Starter</title>
+  <link rel="stylesheet" href="style.css?v=6.0">
 </head>
 <body>
 <div class="app">
@@ -44,7 +44,7 @@
       <div class="sectionHead">
         <div>
           <h2>Engine Bay</h2>
-          <p>The car is the interface. Tap the mapped airbox.</p>
+          <p>The car is the interface. Tap a mapped component.</p>
         </div>
         <span class="badge">Component Map</span>
       </div>
@@ -56,7 +56,7 @@
 
       <div class="panel">
         <strong>Component Map System</strong>
-        <p>The v4.3 true-trace outline is locked as the master map. Anchors now resolve through the map system without replacing the outline.</p>
+        <p>Airbox is locked. Coolant is now added as Component #2 starter map.</p>
       </div>
     </section>
 
@@ -255,6 +255,203 @@
 
       <div id="logList" class="lifeTimeline"></div>
     </section>
+    
+    <section id="coolant" class="screen">
+      <div class="assemblyCard coolantCard">
+        <img src="images/engine/engine_bay_master.jpg" alt="Coolant reservoir area">
+        <div class="assemblyCopy">
+          <span class="badge starterBadge">Starter Map</span>
+          <h2>Coolant Reservoir</h2>
+          <p>Expansion tank / surge tank area, cap, level check, coolant condition, leaks, and cooling-system life story.</p>
+        </div>
+      </div>
+
+      <div class="assemblyQuickFacts">
+        <div><span>Fluid</span><strong>DEX-COOL</strong></div>
+        <div><span>Rule</span><strong>Cold Only</strong></div>
+        <div><span>Map</span><strong>Starter</strong></div>
+      </div>
+
+      <button class="bigBtn" data-go="coolantguide"><b>🔧 Guide Me</b><span>Check level, cap, tank, hoses, and leaks</span></button>
+      <button class="bigBtn" data-go="coolantlearn"><b>📚 Learn</b><span>Coolant, reservoir, cap, symptoms, and replacement notes</span></button>
+      <button class="bigBtn" data-go="coolantmaintenance"><b>📝 Maintenance</b><span>Build the coolant system’s life story</span></button>
+    </section>
+
+    <section id="coolantguide" class="screen">
+      <div class="sectionHead">
+        <div>
+          <h2>Coolant Check</h2>
+          <p>Cold-engine inspection flow.</p>
+        </div>
+        <span class="badge starterBadge">Starter Guide</span>
+      </div>
+
+      <div class="coolantWarning">
+        <strong>Cold engine only</strong>
+        <p>Do not remove the coolant cap when the system is hot or pressurized.</p>
+      </div>
+
+      <div class="repair coolantGuidePhoto">
+        <img src="images/engine/engine_bay_master.jpg" alt="Coolant reservoir in engine bay">
+      </div>
+
+      <div class="checklist" id="coolantChecklist">
+        <button data-cool-check="1"><span></span><b>Engine is cold</b><small>Wait until the system is cool before touching the cap.</small></button>
+        <button data-cool-check="2"><span></span><b>Find reservoir level</b><small>Check level against the cold marks on the reservoir.</small></button>
+        <button data-cool-check="3"><span></span><b>Inspect coolant color</b><small>Look for correct orange coolant, contamination, sludge, or low level.</small></button>
+        <button data-cool-check="4"><span></span><b>Inspect cap and tank</b><small>Check cap area, tank seams, cracks, stains, or dried coolant trails.</small></button>
+        <button data-cool-check="5"><span></span><b>Inspect nearby hoses</b><small>Look for swelling, cracks, loose clamps, or wet spots.</small></button>
+      </div>
+
+      <div class="bottomBar">
+        <button id="coolantResetBtn" class="ghost">Reset</button>
+        <button data-go="coolantmaintenance" class="primary">Log It</button>
+      </div>
+    </section>
+
+    <section id="coolantlearn" class="screen">
+      <div class="sectionHead">
+        <div><h2>Learn</h2><p>Coolant system basics, simple first.</p></div>
+        <span class="badge">Coolant</span>
+      </div>
+
+      <div class="learnIntro simpleLearnIntro">
+        <img src="images/engine/engine_bay_master.jpg" alt="Coolant reservoir area">
+        <div>
+          <span class="badge starterBadge">Component #2</span>
+          <h3>Coolant Reservoir</h3>
+          <p>First pass info for level checks, coolant type, symptoms, parts, and replacement notes.</p>
+        </div>
+      </div>
+
+      <div class="simpleInfoGrid">
+        <div><span>Fluid</span><strong>DEX-COOL</strong></div>
+        <div><span>Mix</span><strong>50/50</strong></div>
+        <div><span>Safety</span><strong>Cold only</strong></div>
+      </div>
+
+      <button class="learnCard simpleCard mainCard" data-part="coolantQuick"><div><span class="learnTag">Start</span><b>Coolant Quick Sheet</b><p>The important coolant info.</p></div><strong>›</strong></button>
+      <button class="learnCard simpleCard" data-part="coolantService"><div><span class="learnTag">Service</span><b>Level Check & Inspection</b><p>When and how to inspect safely.</p></div><strong>›</strong></button>
+      <button class="learnCard simpleCard" data-part="coolantParts"><div><span class="learnTag">Parts</span><b>Parts & Specs</b><p>Reservoir, cap, coolant, hoses, and TBD items.</p></div><strong>›</strong></button>
+      <button class="learnCard simpleCard" data-part="coolantSymptoms"><div><span class="learnTag">Diagnose</span><b>Symptoms & Failure Modes</b><p>Low level, leaks, overheating, cap/tank issues.</p></div><strong>›</strong></button>
+      <button class="learnCard simpleCard" data-part="coolantReplacement"><div><span class="learnTag">Replace</span><b>Replacement / Upgrade Notes</b><p>Price, weight, value, risk, and what still needs verification.</p></div><strong>›</strong></button>
+    </section>
+
+    <section id="coolantmaintenance" class="screen">
+      <div class="sectionHead">
+        <div>
+          <h2>Maintenance</h2>
+          <p>The coolant system’s life story.</p>
+        </div>
+        <span class="badge">Life Log</span>
+      </div>
+
+      <div class="lifeHero coolantLifeHero">
+        <img src="images/engine/engine_bay_master.jpg" alt="Coolant reservoir">
+        <div>
+          <span class="badge starterBadge">Coolant V0.1</span>
+          <h3>Coolant Life Story</h3>
+          <p>Level checks, top-offs, flushes, leaks, cap condition, and coolant notes live here.</p>
+        </div>
+      </div>
+
+      <div class="lifeStats">
+        <div><span>Current Coolant</span><strong id="coolantCurrentFluid">Unknown</strong></div>
+        <div><span>Last Event</span><strong id="coolantLastService">No log yet</strong></div>
+        <div><span>Status</span><strong id="coolantStatus">Unknown</strong></div>
+      </div>
+
+      <div class="lifeCard currentSetup">
+        <div class="lifeCardHead">
+          <div>
+            <span class="miniLabel">Current Setup</span>
+            <h3 id="coolantSetupTitle">Cooling Setup</h3>
+          </div>
+          <button id="coolantEditSetupBtn" class="tinyBtn">Edit</button>
+        </div>
+        <div class="setupGrid">
+          <div><span>Coolant</span><b id="coolantSetupFluid">Unknown</b></div>
+          <div><span>Mix</span><b id="coolantSetupMix">TBD</b></div>
+          <div><span>Last Mileage</span><b id="coolantSetupMileage">Not logged</b></div>
+          <div><span>Condition</span><b id="coolantSetupCondition">Unknown</b></div>
+        </div>
+      </div>
+
+      <form id="coolantSetupForm" class="lifeForm hidden">
+        <h3>Update Current Setup</h3>
+        <label>Coolant Type<input id="coolantFluidInput" placeholder="DEX-COOL 50/50, ACDelco, Prestone, etc."></label>
+        <label>Mix / Concentration<input id="coolantMixInput" placeholder="50/50 premix, unknown, etc."></label>
+        <label>Current Mileage<input id="coolantSetupMileageInput" inputmode="numeric" placeholder="121842"></label>
+        <label>Condition
+          <select id="coolantSetupConditionInput">
+            <option>Unknown</option>
+            <option>Good</option>
+            <option>Low</option>
+            <option>Dirty</option>
+            <option>Leaking</option>
+            <option>Needs Service</option>
+            <option>Serviced</option>
+          </select>
+        </label>
+        <div class="formRow">
+          <button class="ghost" type="button" id="coolantCancelSetupBtn">Cancel</button>
+          <button class="primary" type="submit">Save Setup</button>
+        </div>
+      </form>
+
+      <div class="lifeActions">
+        <button class="smallBtn" id="coolantAddLog">+ Add Life Event</button>
+        <button class="ghost smallGhost" id="coolantSeedExample">Example</button>
+      </div>
+
+      <form id="coolantLogForm" class="lifeForm hidden">
+        <h3>Add Coolant Event</h3>
+        <label>Event Type
+          <select id="coolantLogType">
+            <option>Level Check</option>
+            <option>Top-Off</option>
+            <option>Coolant Flush</option>
+            <option>Leak Inspection</option>
+            <option>Cap Replaced</option>
+            <option>Reservoir Replaced</option>
+            <option>Hose / Clamp Note</option>
+            <option>Overheat Note</option>
+            <option>Note</option>
+          </select>
+        </label>
+        <label>Date<input id="coolantLogDate" type="date"></label>
+        <label>Mileage<input id="coolantLogMileage" inputmode="numeric" placeholder="121842"></label>
+        <label>Fluid / Part<input id="coolantLogPart" placeholder="DEX-COOL 50/50, cap, reservoir, hose, etc."></label>
+        <label>Condition
+          <select id="coolantLogCondition">
+            <option>Not Checked</option>
+            <option>Good</option>
+            <option>Low</option>
+            <option>Dirty</option>
+            <option>Contaminated</option>
+            <option>Leaking</option>
+            <option>Serviced</option>
+          </select>
+        </label>
+        <label>Cost<input id="coolantLogCost" inputmode="decimal" placeholder="$18.99"></label>
+        <label>Notes<textarea id="coolantLogNotes" placeholder="Level, color, smell, leaks, cap condition, hose condition..."></textarea></label>
+        <div class="formRow">
+          <button class="ghost" type="button" id="coolantCancelLogBtn">Cancel</button>
+          <button class="primary" type="submit">Save Event</button>
+        </div>
+      </form>
+
+      <div class="timelineHeader">
+        <div>
+          <span class="miniLabel">Timeline</span>
+          <h3>Coolant History</h3>
+        </div>
+        <span id="coolantEventCount" class="badge">0 events</span>
+      </div>
+
+      <div id="coolantLogList" class="lifeTimeline"></div>
+    </section>
+
   </main>
 
   <aside id="drawer" class="drawer">
@@ -262,6 +459,7 @@
     <button data-go="home">🏠 Home</button>
     <button data-go="engine">🚗 Engine Bay</button>
     <button data-go="airbox">🌬 Airbox</button>
+    <button data-go="coolant">🧊 Coolant</button>
     <button data-go="guide">🔧 Guide Me</button>
     <button data-go="learn">📚 Learn</button>
     <button data-go="maintenance">📝 Maintenance</button>
@@ -270,6 +468,6 @@
   <div id="dim" class="dim"></div>
   <aside id="sheet" class="sheet"><button id="closeSheet" class="icon sheetClose">×</button><div id="sheetData"></div></aside>
 </div>
-<script src="app.js?v=5.9"></script>
+<script src="app.js?v=6.0"></script>
 </body>
 </html>
