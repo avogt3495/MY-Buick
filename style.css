@@ -196,3 +196,26 @@
 .marker:active::before{
   transform:translate(-50%,-50%) scale(.88);
 }
+
+/* v5.2 marker size refinement only */
+.marker::before{
+  width:13px;
+  height:13px;
+  border-width:1.3px;
+}
+
+.marker::after{
+  width:3px;
+  height:3px;
+}
+
+.marker.clip::before{
+  width:10px;
+  height:10px;
+  border-width:1.2px;
+}
+
+.marker.clip::after{
+  width:2.5px;
+  height:2.5px;
+}
