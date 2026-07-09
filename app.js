@@ -29,9 +29,35 @@ const markers = [
 ];
 
 const parts = {
-  cover:["Airbox Upper Cover","OEM #: TBD","Weight: TBD","Material: Molded plastic, exact material TBD","Tools: T25 Torx","Description: Seals the air filter and forces intake air through the filter before the MAF sensor."],
-  filter:["Air Filter Element","OEM #: 55560894","ACDelco: A3128C","Weight: TBD","Tools: T25 Torx to access","Description: Filters incoming air before it reaches the engine."],
-  lower:["Lower Airbox Housing","OEM #: TBD","Weight: TBD","Material: Molded plastic, exact material TBD","Tools: TBD","Description: Supports the filter and collects debris in the lower airbox."]
+  cover:[
+    "Airbox Upper Cover",
+    "OEM #: TBD",
+    "Weight: TBD",
+    "Material: Molded plastic, exact material TBD",
+    "Tools: T25 Torx",
+    "Torque: TBD if published",
+    "Description: Seals the air filter and forces intake air through the filter before the MAF sensor.",
+    "Facts: Uses six T25 screws and one rear retaining clip."
+  ],
+  filter:[
+    "Air Filter Element",
+    "OEM #: 55560894",
+    "ACDelco: A3128C",
+    "Weight: TBD",
+    "Material: Filter media with rubber sealing edge",
+    "Tools: T25 Torx to access",
+    "Torque: Not applicable",
+    "Description: Filters incoming air before it reaches the engine."
+  ],
+  lower:[
+    "Lower Airbox Housing",
+    "OEM #: TBD",
+    "Weight: TBD",
+    "Material: Molded plastic, exact material TBD",
+    "Tools: TBD",
+    "Torque: TBD if removed",
+    "Description: Supports the filter and collects debris in the lower airbox."
+  ]
 };
 
 function setGreeting(){
@@ -91,7 +117,7 @@ function renderMarkers(){
     b.addEventListener("click", () => {
       done.add(m[0]);
       renderMarkers();
-      updateCount();
+      updateProgress();
       if(done.size === 7){
         document.getElementById("stepText").textContent = "All fasteners complete. Tap Next Step.";
       }
@@ -100,8 +126,20 @@ function renderMarkers(){
   });
 }
 
-function updateCount(){
-  document.getElementById("count").textContent = done.size + "/7";
+function updateProgress(){
+  const total = 7;
+  const completed = done.size;
+  document.getElementById("count").textContent = completed + "/" + total;
+  document.getElementById("progressLabel").textContent = completed + " of " + total + " complete";
+  document.getElementById("progressFill").style.width = Math.round((completed / total) * 100) + "%";
+
+  if(layer === 0){
+    document.getElementById("nextAction").textContent = completed === total ? "Next: lift cover" : "Next: remove lid fasteners";
+  } else if(layer === 1){
+    document.getElementById("nextAction").textContent = "Next: remove filter";
+  } else {
+    document.getElementById("nextAction").textContent = "Next: inspect housing";
+  }
 }
 
 document.getElementById("nextBtn").addEventListener("click", () => {
@@ -117,6 +155,7 @@ document.getElementById("nextBtn").addEventListener("click", () => {
     document.getElementById("stepText").textContent = layer === 1
       ? "The lid is off. Inspect or remove the air filter."
       : "Filter removed. Inspect the lower housing for debris.";
+    updateProgress();
   }
 });
 
@@ -126,8 +165,8 @@ document.getElementById("resetBtn").addEventListener("click", () => {
   document.getElementById("layerImg").src = layerImages[0];
   document.getElementById("stepTitle").textContent = "Remove Fasteners";
   document.getElementById("stepText").textContent = "Tap each blue T25 screw marker, then tap the red rear clip marker.";
-  updateCount();
   renderMarkers();
+  updateProgress();
 });
 
 document.querySelectorAll("[data-part]").forEach(btn => {
@@ -187,6 +226,6 @@ document.getElementById("logForm").addEventListener("submit", e => {
 
 setGreeting();
 renderMarkers();
-updateCount();
+updateProgress();
 renderLogs();
 showScreen("home");
