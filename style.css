@@ -873,3 +873,77 @@
   stroke:rgba(105,178,255,.78);
   filter:drop-shadow(0 0 8px rgba(65,145,255,.85));
 }
+
+/* v6.2 coolant deep info readability */
+#coolantlearn .simpleInfoGrid strong{
+  font-size:11px;
+}
+#coolantlearn .learnCard p{
+  line-height:1.35;
+}
+.optionCard{
+  background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.035));
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:18px;
+  padding:14px;
+  margin:12px 0;
+}
+.optionTop{
+  display:flex;
+  gap:10px;
+  justify-content:space-between;
+  align-items:flex-start;
+}
+.optionTop h3{
+  margin:0;
+  font-size:18px;
+}
+.optionTop span{
+  flex:0 0 auto;
+  color:#9dccff;
+  font-weight:900;
+  font-size:13px;
+  background:rgba(67,138,255,.13);
+  border:1px solid rgba(100,170,255,.20);
+  border-radius:999px;
+  padding:5px 8px;
+}
+.optionPart{
+  margin:8px 0 12px;
+  color:#b8c4d4;
+  font-size:13px;
+}
+.optionGrid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:8px;
+}
+.optionGrid div{
+  background:rgba(0,0,0,.16);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:13px;
+  padding:10px;
+}
+.optionGrid span{
+  display:block;
+  color:#91a0b4;
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+  margin-bottom:4px;
+}
+.optionGrid b{
+  display:block;
+  color:#eef4ff;
+  font-size:13px;
+  line-height:1.35;
+}
+.optionCard p{
+  color:#c3ccda;
+  line-height:1.4;
+  margin:12px 0 0;
+  font-size:13px;
+}
+@media(min-width:430px){
+  .optionGrid{grid-template-columns:1fr 1fr}
+}

@@ -936,179 +936,505 @@ const parts={
   },
   "coolantQuick": {
     "title": "Coolant Quick Sheet",
-    "status": "Starter Data",
-    "summary": "The coolant reservoir is part of the cooling system. It lets you check coolant level and gives expanding hot coolant somewhere to go.",
+    "status": "GM Verified + Alex Verified Map",
+    "summary": "The coolant reservoir lets you inspect coolant level, condition, and pressure-system clues without opening the whole cooling system.",
     "quickFacts": [
       {
         "label": "Location",
-        "value": "Passenger-side / vehicle-right rear area of engine bay. Starter map only."
+        "value": "Passenger-side / vehicle-right rear area of engine bay. Alex Verified from your traced photo."
       },
       {
         "label": "Coolant type",
-        "value": "DEX-COOL coolant system. Use owner-manual-correct coolant."
+        "value": "DEX-COOL, silicate-free. GM Verified."
       },
       {
-        "label": "Mix",
+        "label": "Mixture",
         "value": "50/50 clean drinkable water and DEX-COOL, or approved 50/50 premix."
       },
       {
-        "label": "Safety",
-        "value": "Only open/check cap when the system is cold."
+        "label": "System capacity",
+        "value": "3.0L V6 cooling system: 9.4 L / 9.9 qt. This is total system capacity, not reservoir-only amount."
+      },
+      {
+        "label": "Service life",
+        "value": "DEX-COOL is listed for 5 years / 150,000 miles, whichever comes first."
+      },
+      {
+        "label": "Safety rule",
+        "value": "Check cold. Do not open a hot/pressurized cap."
+      },
+      {
+        "label": "Power gain",
+        "value": "0 hp. Coolant service protects reliability and temperature control, not power."
+      }
+    ],
+    "sections": [
+      {
+        "label": "What it does",
+        "value": "The reservoir gives expanding hot coolant somewhere to go and gives you a visible place to check level and condition."
+      },
+      {
+        "label": "Why it matters",
+        "value": "Low, contaminated, or incorrectly mixed coolant can lead to overheating, corrosion, heater-core/radiator issues, or poor temperature control."
       },
       {
         "label": "Gold status",
-        "value": "Not Gold yet. Needs true outline and reservoir close-up photos."
+        "value": "Outline is locked from your traced reference. Part data is still in coolant V1 information pass, not fully Gold."
+      },
+      {
+        "label": "Owner manual supported",
+        "value": "Manual supports DEX-COOL, 50/50 mixture, level-surface checking, and 9.4 L / 9.9 qt 3.0L V6 cooling-system capacity."
       }
     ],
     "bullets": [
-      "Low coolant can mean a leak, previous service issue, trapped air, or coolant loss.",
-      "Coolant should be clean and the correct type. Sludge, oiliness, or heavy contamination needs deeper diagnosis.",
-      "The reservoir, cap, hoses, and clamps all get their own life story entries later.",
-      "This coolant outline is grounded on your traced reference photo. Future passes can tighten the path further if needed."
+      "The reservoir is a clue panel: level, color, crust, wetness, smell, and cap area tell a story.",
+      "A single low reading could be from service history. Repeated low readings are a pattern and should be logged.",
+      "Do not mix random coolant types just because the color looks close.",
+      "If the coolant is boiling in the tank, do nothing until it cools.",
+      "If the car overheats, do not keep driving it hot just to see what happens."
     ],
     "detailPages": [
       "coolantService",
       "coolantParts",
       "coolantSymptoms",
-      "coolantReplacement"
+      "coolantReplacement",
+      "coolantEngineer",
+      "coolantDataStatus"
     ],
-    "source": "Owner manual supported + Alex verification needed"
+    "source": "2010 Buick LaCrosse Owner Manual + GM/ACDelco coolant listing + Alex Verified outline"
   },
   "coolantService": {
     "title": "Level Check & Inspection",
-    "status": "Safety First",
-    "summary": "Coolant checks are simple, but the cap/pressure part matters. Treat this as cold-engine work.",
+    "status": "GM Manual Verified + Work-Flow Notes",
+    "summary": "The safe coolant check is a cold-engine visual inspection: level, color, cap area, tank seams, hoses, clamps, and leak traces.",
     "quickFacts": [
       {
-        "label": "Before touching cap",
-        "value": "Engine fully cold."
+        "label": "Vehicle position",
+        "value": "Level surface."
       },
       {
-        "label": "Level",
-        "value": "Check against reservoir cold marks if visible."
+        "label": "When to check",
+        "value": "Cold engine / cool system."
       },
       {
-        "label": "Color",
-        "value": "DEX-COOL is typically orange. Wrong color or sludge needs attention."
+        "label": "Normal level check",
+        "value": "Coolant should be visible in the recovery tank and at/above the correct mark when cold."
       },
       {
-        "label": "Leaks",
-        "value": "Look for wet spots, dried crust, stains, sweet smell, or low level returning."
+        "label": "If low",
+        "value": "Add only correct 50/50 DEX-COOL mixture when the system is cool."
+      },
+      {
+        "label": "If boiling",
+        "value": "Do nothing else until it cools down."
+      },
+      {
+        "label": "Service life",
+        "value": "5 years / 150,000 miles for DEX-COOL, but your car’s real service history matters."
+      }
+    ],
+    "sections": [
+      {
+        "label": "Step 1",
+        "value": "Confirm the engine is cold and the vehicle is on a level surface."
+      },
+      {
+        "label": "Step 2",
+        "value": "Look through the reservoir to see if coolant is visible and near the correct cold-level mark."
+      },
+      {
+        "label": "Step 3",
+        "value": "Inspect the color and clarity. Healthy coolant should look clean, not muddy, oily, chunky, or full of debris."
+      },
+      {
+        "label": "Step 4",
+        "value": "Look around the cap neck, tank seams, bottom corners, nearby hoses, and clamps for wetness, dried crust, or staining."
+      },
+      {
+        "label": "Step 5",
+        "value": "Log it in Maintenance: date, mileage, level, color, condition, cost, and notes."
+      },
+      {
+        "label": "Top-off note",
+        "value": "A small top-off should still be logged. Repeated top-offs are evidence of a problem."
       }
     ],
     "bullets": [
-      "Look around tank seams and the cap neck.",
-      "Check hose ends and clamps near the reservoir.",
-      "Check for dried coolant trails around the cap or overflow area.",
-      "Log level checks, top-offs, and coolant condition in Maintenance."
+      "Do not open a hot cap.",
+      "Do not spill coolant on hot engine parts.",
+      "Do not add plain water as the normal fix.",
+      "Do not use an unknown coolant just because it is orange.",
+      "If history is unknown, the Life Story tab is where we start tracking from now."
     ],
-    "source": "Owner manual style coolant safety + physical inspection workflow"
+    "detailPages": [
+      "coolantSymptoms",
+      "coolantEngineer",
+      "coolantDataStatus"
+    ],
+    "source": "2010 Buick LaCrosse Owner Manual"
   },
   "coolantParts": {
     "title": "Parts & Specs",
-    "status": "TBD Heavy",
-    "summary": "Coolant has more part-data work than the airbox because tank, cap, hoses, and coolant specs all need verification.",
+    "status": "Mixed: GM Verified + Catalog Snapshot + TBD",
+    "summary": "The fluid specs are stronger than the reservoir hardware specs right now. Reservoir and cap still need VIN confirmation before Gold.",
     "quickFacts": [
       {
-        "label": "Coolant",
-        "value": "DEX-COOL compatible coolant, 50/50 mix."
+        "label": "Coolant type",
+        "value": "DEX-COOL silicate-free engine coolant."
       },
       {
-        "label": "ACDelco premix",
-        "value": "GM 12378390 / ACDelco 10-5027 appears as Dex-Cool 50/50 premix."
+        "label": "Premix option",
+        "value": "ACDelco 10-5027 / GM 12378390, Dex-Cool 50/50 premix, 1 gal."
       },
       {
-        "label": "Reservoir",
-        "value": "Part number TBD, VIN check needed."
+        "label": "Color",
+        "value": "Orange, per GM/ACDelco listing."
       },
       {
-        "label": "Pressure cap",
-        "value": "Part number and pressure rating TBD."
+        "label": "Freeze protection",
+        "value": "-34°F / -37°C for 50/50 premix."
       },
       {
-        "label": "Hoses",
-        "value": "Hose part numbers TBD."
+        "label": "Reservoir option",
+        "value": "ACDelco 22950436 appears as a coolant recovery tank listing for 2010 LaCrosse. VIN-check before Gold."
+      },
+      {
+        "label": "Aftermarket tank option",
+        "value": "Dorman 603-385 appears as an OE replacement coolant recovery tank listing. VIN-check before Gold."
+      },
+      {
+        "label": "Cap",
+        "value": "Part number and pressure rating TBD. Do not guess pressure rating."
       },
       {
         "label": "Weights",
-        "value": "TBD until parts are weighed."
+        "value": "TBD until reservoir/cap/fluid amounts are weighed or catalog specs are found."
+      }
+    ],
+    "sections": [
+      {
+        "label": "System capacity",
+        "value": "3.0L V6 engine cooling system: 9.4 L / 9.9 qt total approximate capacity."
+      },
+      {
+        "label": "Fluid compatibility",
+        "value": "Manual warns to always use DEX-COOL. Wrong coolant can require earlier changes and may cause corrosion problems."
+      },
+      {
+        "label": "Premix vs concentrate",
+        "value": "Premix is ready to pour. Concentrate must be mixed correctly with the recommended water type before use."
+      },
+      {
+        "label": "Reservoir material",
+        "value": "Plastic, translucent/black style. Exact material TBD."
+      },
+      {
+        "label": "Tank failure points",
+        "value": "Seams, hose nipples, cap neck, mounting tabs, and stained/cracked plastic areas."
+      },
+      {
+        "label": "Cap role",
+        "value": "The cap controls system pressure. Wrong cap/pressure rating can create cooling-system problems."
       }
     ],
     "bullets": [
-      "Do not add random universal coolant until compatibility is confirmed.",
-      "Never mix unknown coolant types just because the color looks close.",
-      "Cap pressure rating matters. Do not guess it.",
-      "Tank and cap part numbers should be confirmed by VIN before adding to Gold data."
+      "Use VIN fitment before buying reservoir, cap, or hose parts.",
+      "Cap pressure rating matters. Do not replace it with a random cap.",
+      "If the reservoir is stained but not leaking, it may still function, but visibility can be worse.",
+      "If the plastic is brittle, cracked, wet, or crusty around seams, it is replacement territory.",
+      "A coolant cap can be cheap but still important."
     ],
-    "source": "GM/ACDelco coolant listing + VIN confirmation needed"
+    "detailPages": [
+      "coolantReplacement",
+      "coolantDataStatus"
+    ],
+    "source": "Owner manual + GM/ACDelco coolant listing + AutoZone/Advance catalog snapshots"
   },
   "coolantSymptoms": {
     "title": "Symptoms & Failure Modes",
-    "status": "Starter Diagnostic Logic",
-    "summary": "This page tells you what coolant-related symptoms should make you inspect the reservoir area first.",
+    "status": "Diagnostic Logic + Safety Notes",
+    "summary": "Coolant problems can get expensive fast. The app should help you notice patterns before they become overheating problems.",
     "quickFacts": [
       {
-        "label": "Low level",
-        "value": "Possible leak, air pocket, recent service, or coolant loss."
+        "label": "Low once",
+        "value": "Log it, top off correctly if needed, then watch for repeat loss."
       },
       {
-        "label": "Dried crust",
-        "value": "Possible slow seep or cap/tank/hoses leaking."
+        "label": "Low repeatedly",
+        "value": "Possible leak or cooling-system issue. Do not ignore."
       },
       {
-        "label": "Dirty/sludgy coolant",
-        "value": "Needs deeper inspection, not just a top-off."
-      },
-      {
-        "label": "Overheating",
-        "value": "Do not keep driving hot. Needs diagnosis."
+        "label": "White/orange crust",
+        "value": "Possible dried coolant trail near cap, seams, hose ends, or fittings."
       },
       {
         "label": "Sweet smell",
         "value": "Possible coolant leak."
+      },
+      {
+        "label": "Steam / overheating",
+        "value": "Stop and let it cool. Do not open hot."
+      },
+      {
+        "label": "Dirty/sludgy coolant",
+        "value": "Needs inspection. Do not just top off and forget it."
+      }
+    ],
+    "sections": [
+      {
+        "label": "Low coolant",
+        "value": "Could be a leak, air pocket, previous service issue, coolant loss, cap problem, hose leak, radiator issue, water pump leak, or reservoir crack."
+      },
+      {
+        "label": "Overheating",
+        "value": "Could involve low coolant, stuck thermostat, cooling fans, radiator flow, water pump, cap pressure, air in system, or blocked flow."
+      },
+      {
+        "label": "No cabin heat",
+        "value": "Can happen with low coolant, air pockets, heater core flow issues, or temperature-control problems."
+      },
+      {
+        "label": "Dried residue",
+        "value": "A crusty trail is valuable evidence. Photograph it and log it before cleaning it off."
+      },
+      {
+        "label": "Oil-looking coolant",
+        "value": "Stop guessing and diagnose carefully. Contaminated coolant is not a normal top-off issue."
+      },
+      {
+        "label": "Bubbles/boiling",
+        "value": "If coolant is boiling in the reservoir, wait for the system to cool before doing anything else."
       }
     ],
     "bullets": [
-      "Check level cold.",
-      "Inspect reservoir seams, cap, hoses, and clamps.",
-      "Look under the car after parking for drips.",
-      "If coolant keeps dropping, log it and diagnose before topping off forever."
+      "Best first check: cold level, color, cap area, tank seams, hose ends, under-car drips.",
+      "Repeated low coolant matters more than one random low reading.",
+      "A top-off is not a repair if the level keeps dropping.",
+      "Take pictures of leaks before wiping them off.",
+      "Future OBD2 module can connect coolant temperature patterns to this page later."
     ],
-    "source": "General cooling-system diagnostic logic"
+    "detailPages": [
+      "coolantService",
+      "coolantEngineer",
+      "coolantDataStatus"
+    ],
+    "source": "Owner manual warnings + general cooling-system diagnostic logic"
   },
   "coolantReplacement": {
     "title": "Replacement / Upgrade Notes",
-    "status": "Starter Replacement Data",
-    "summary": "This is not a performance mod area. Coolant system replacement info is about reliability, temperature control, leaks, and correct fluid.",
+    "status": "Price Snapshot + Reliability Reality Check",
+    "summary": "Coolant system work is not a horsepower upgrade. It is about temperature control, leak prevention, corrosion protection, and reliability.",
     "quickFacts": [
       {
         "label": "HP gain",
-        "value": "0 hp. Coolant parts restore reliability, not power."
+        "value": "0 hp. This restores reliability, not power."
       },
       {
-        "label": "Weight difference",
-        "value": "TBD. Usually not a performance-focused difference."
+        "label": "System capacity",
+        "value": "3.0L V6 total cooling system: 9.4 L / 9.9 qt."
       },
       {
         "label": "Coolant price",
-        "value": "TBD snapshot. Add real price when you buy."
+        "value": "ACDelco 10-5027 MSRP snapshot: $20.62 / 1 gal."
       },
       {
         "label": "Reservoir price",
-        "value": "TBD, needs verified part number."
+        "value": "Catalog snapshots: ACDelco 22950436 around $121.99, Dorman 603-385 around $61.49-$61.99."
       },
       {
-        "label": "Cap price",
-        "value": "TBD, needs verified pressure rating and part number."
+        "label": "Weight difference",
+        "value": "TBD. Not a performance-focused difference."
+      },
+      {
+        "label": "Best value",
+        "value": "Correct fluid and leak-free parts matter more than brand flexing."
+      }
+    ],
+    "options": [
+      {
+        "name": "ACDelco Dex-Cool 50/50 Premix",
+        "part": "GM 12378390 / ACDelco 10-5027",
+        "price": "$20.62 MSRP snapshot / 1 gal",
+        "hp": "0 hp. Restores correct coolant protection.",
+        "weight": "1 gallon of premix is about 8-9 lb depending on container/fluid. App weight difference TBD.",
+        "value": "Best correct-fluid baseline",
+        "risk": "Low if it matches owner-manual requirements and is used correctly.",
+        "notes": "Ready to use. Do not dilute premix again."
+      },
+      {
+        "name": "Concentrate DEX-COOL",
+        "part": "Specific part TBD",
+        "price": "TBD",
+        "hp": "0 hp.",
+        "weight": "TBD",
+        "value": "Useful for full service if mixed correctly",
+        "risk": "Wrong mix ratio can reduce protection.",
+        "notes": "Must be mixed correctly. Premix is simpler for top-offs."
+      },
+      {
+        "name": "ACDelco coolant recovery tank",
+        "part": "22950436 catalog listing",
+        "price": "$121.99 snapshot",
+        "hp": "0 hp. Repairs leaking/cracked reservoir only.",
+        "weight": "TBD",
+        "value": "OE-style replacement option",
+        "risk": "Must confirm exact fitment/VIN.",
+        "notes": "Use if reservoir is cracked, leaking, brittle, or cap neck/seams are damaged."
+      },
+      {
+        "name": "Dorman coolant recovery tank",
+        "part": "603-385 catalog listing",
+        "price": "$61.49-$61.99 snapshot",
+        "hp": "0 hp.",
+        "weight": "TBD",
+        "value": "Cheaper aftermarket replacement",
+        "risk": "Fit/seal quality should be checked carefully.",
+        "notes": "Inspect hose nipples, cap fit, mounting points, and seam quality."
+      },
+      {
+        "name": "Pressure cap",
+        "part": "TBD",
+        "price": "TBD",
+        "hp": "0 hp.",
+        "weight": "Not meaningful",
+        "value": "Small part, big pressure-control job",
+        "risk": "Wrong pressure rating is bad news. Do not guess.",
+        "notes": "Needs exact part number and rating before Gold."
+      }
+    ],
+    "sections": [
+      {
+        "label": "When to replace coolant",
+        "value": "Old age, unknown history, contamination, wrong coolant, cooling-system repairs, or service interval reached."
+      },
+      {
+        "label": "When to replace reservoir",
+        "value": "Cracks, leaks, brittle plastic, stained seams, damaged cap neck, broken mounts, or poor visibility."
+      },
+      {
+        "label": "When to replace cap",
+        "value": "Bad seal, weak pressure control, damaged threads, cracked cap, or test failure. Exact rating must be verified."
+      },
+      {
+        "label": "Performance note",
+        "value": "Cooling system parts do not add horsepower. They help keep the engine operating safely and consistently."
       }
     ],
     "bullets": [
-      "Replace coolant if it is contaminated, wrong, old, or after certain cooling-system repairs.",
-      "Replace reservoir if cracked, leaking, stained at seams, or cap neck is damaged.",
-      "Replace cap only with the correct pressure rating.",
-      "Track every top-off so the app can tell if coolant loss is becoming a pattern."
+      "Best maintenance move: correct coolant, correct level, no leaks, clean condition.",
+      "Best data move: log every top-off, because repeated top-offs prove a pattern.",
+      "Best buying move: VIN-check tank and cap before buying.",
+      "Best future feature: link coolant temperature from OBD2 to this page later."
     ],
-    "source": "Starter data, needs parts verification"
+    "detailPages": [
+      "coolantParts",
+      "coolantService",
+      "coolantDataStatus"
+    ],
+    "source": "GM/ACDelco coolant listing + AutoZone/Advance catalog snapshots + owner manual"
+  },
+  "coolantEngineer": {
+    "title": "Engineer’s Corner",
+    "status": "Educational",
+    "summary": "Cooling systems are not just about liquid. They are about heat transfer, pressure, boiling point, corrosion control, and flow.",
+    "quickFacts": [
+      {
+        "label": "Pressure",
+        "value": "A pressurized system raises the boiling point so coolant can carry heat without boiling too early."
+      },
+      {
+        "label": "50/50 mix",
+        "value": "Balances freeze protection, boil protection, corrosion protection, and heat transfer."
+      },
+      {
+        "label": "Water alone",
+        "value": "Transfers heat well but lacks corrosion/freeze/boil protection and can be dangerous in this system."
+      },
+      {
+        "label": "Coolant alone",
+        "value": "Too much concentrate can reduce heat-transfer performance and protection balance."
+      },
+      {
+        "label": "Air pockets",
+        "value": "Air does not move heat like coolant does and can create hot spots or weird level behavior."
+      }
+    ],
+    "sections": [
+      {
+        "label": "Reservoir role",
+        "value": "The reservoir lets coolant expand and contract as temperature changes while keeping air out of the system when working correctly."
+      },
+      {
+        "label": "Cap role",
+        "value": "The cap is a pressure-control part. It is not just a lid."
+      },
+      {
+        "label": "DEX-COOL role",
+        "value": "DEX-COOL provides corrosion protection and temperature protection when mixed correctly."
+      },
+      {
+        "label": "Why level matters",
+        "value": "Low coolant can reduce heat transfer and let air enter parts of the system."
+      },
+      {
+        "label": "Why contamination matters",
+        "value": "Rust, oil, sludge, or wrong coolant chemistry can reduce cooling performance and damage parts."
+      }
+    ],
+    "bullets": [
+      "Coolant is a maintenance fluid and a diagnostic clue.",
+      "The reservoir is one of the easiest places to spot a developing cooling problem.",
+      "Pressure cap condition can affect boiling/overflow behavior.",
+      "The app should eventually track temperature, level history, and top-off frequency together."
+    ],
+    "source": "Engineering explanation based on owner manual and coolant system function"
+  },
+  "coolantDataStatus": {
+    "title": "Coolant Data Status",
+    "status": "V1 Audit",
+    "summary": "This keeps the coolant module honest so it can grow without fake certainty.",
+    "quickFacts": [
+      {
+        "label": "Alex Verified",
+        "value": "Coolant reservoir outline/tap target from your traced photo."
+      },
+      {
+        "label": "GM Verified",
+        "value": "DEX-COOL use, 50/50 mix, 5 yr/150k service life, 3.0L V6 capacity 9.4 L / 9.9 qt."
+      },
+      {
+        "label": "Catalog Snapshot",
+        "value": "ACDelco 10-5027 / GM 12378390 coolant; ACDelco 22950436 tank; Dorman 603-385 tank."
+      },
+      {
+        "label": "Still TBD",
+        "value": "Exact reservoir OE fitment by VIN, cap part number, cap pressure rating, hose numbers, weights, exact labor steps."
+      }
+    ],
+    "sections": [
+      {
+        "label": "What is locked",
+        "value": "Engine-bay coolant outline, module entry point, Learn structure, Guide starter checklist, Maintenance life story."
+      },
+      {
+        "label": "What needs a real-world pass",
+        "value": "Close-up coolant photos, cap close-up, visible level marks, hose routing photos, reservoir underside/side seam photos."
+      },
+      {
+        "label": "What needs source verification",
+        "value": "Pressure cap number/rating, exact reservoir OE replacement by VIN, hose part numbers, coolant flush service steps."
+      },
+      {
+        "label": "What not to fake",
+        "value": "Do not invent cap pressure, reservoir weight, hose part numbers, or torque specs."
+      }
+    ],
+    "bullets": [
+      "Coolant is now a real module, but not Gold Standard yet.",
+      "The next Gold step is better close-up photos and final part-number verification.",
+      "Airbox remains the template for how coolant will eventually become Gold."
+    ],
+    "source": "Current app status + owner manual + catalog snapshots"
   }
 };
 
