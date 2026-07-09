@@ -58,7 +58,17 @@ function renderComponentMaps(){
   });
 }
 
-function showScreen(id){current=id;screens.forEach(s=>document.getElementById(s).classList.toggle("active",s===id));document.getElementById("crumb").textContent=names[id][0];document.getElementById("title").textContent=names[id][1];document.getElementById("backBtn").classList.toggle("hidden",id==="home");closeDrawer()}
+function showScreen(id){
+  current=id;
+  screens.forEach(s=>document.getElementById(s).classList.toggle("active",s===id));
+  document.getElementById("crumb").textContent=names[id][0];
+  document.getElementById("title").textContent=names[id][1];
+  document.getElementById("backBtn").classList.toggle("hidden",id==="home");
+  closeDrawer();
+  if(id==="guide"){
+    requestAnimationFrame(()=>{renderMarkers();updateProgress();});
+  }
+}
 document.querySelectorAll("[data-go]").forEach(btn=>btn.addEventListener("click",()=>showScreen(btn.dataset.go)));
 document.getElementById("backBtn").addEventListener("click",()=>{const backMap={engine:"home",airbox:"engine",guide:"airbox",learn:"airbox",maintenance:"airbox"};showScreen(backMap[current]||"home")});
 
@@ -77,6 +87,7 @@ function anchorToPhoto(anchor,map=airboxGuideMap){
 
 function renderMarkers(){
   const layerEl=document.getElementById("markerLayer");
+  if(!layerEl)return;
   layerEl.innerHTML="";
   if(layer!==0)return;
 
@@ -84,6 +95,7 @@ function renderMarkers(){
     const pos=anchorToPhoto(a);
     const b=document.createElement("button");
     b.className="marker "+(a.type==="clip"?"clip ":"")+(done.has(id)?" done":"");
+    b.dataset.marker=id;
     b.style.left=pos.x+"%";
     b.style.top=pos.y+"%";
     b.textContent=done.has(id)?"✓":a.label;
@@ -112,4 +124,4 @@ function renderLogs(){const logs=getLogs();const display=logs.length?logs:[{serv
 document.getElementById("addLog").addEventListener("click",()=>{document.getElementById("logForm").classList.toggle("hidden")});
 document.getElementById("logForm").addEventListener("submit",e=>{e.preventDefault();const logs=getLogs();logs.unshift({service:document.getElementById("logService").value,mileage:document.getElementById("logMileage").value||"TBD",notes:document.getElementById("logNotes").value});saveLogs(logs);renderLogs();document.getElementById("logForm").classList.add("hidden")});
 
-setGreeting();renderComponentMaps();renderMarkers();updateProgress();renderLogs();showScreen("home");
+setGreeting();renderComponentMaps();renderMarkers();updateProgress();renderLogs();showScreen("home");window.addEventListener("load",()=>setTimeout(()=>{renderMarkers();updateProgress();},50));

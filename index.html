@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>MY BUICK v4.7 Locked Outline Anchor Fix</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=4.9">
 </head>
 <body>
 <div class="app">
@@ -97,7 +97,15 @@
 
       <div class="repair">
         <img id="layerImg" src="images/airbox/00_installed.jpg" alt="Airbox guide image">
-        <div id="markerLayer"></div>
+        <div id="markerLayer">
+          <button class="marker staticMarker" data-marker="s1" style="left:27.6%;top:32.6%">1</button>
+          <button class="marker staticMarker" data-marker="s2" style="left:72.3%;top:40.2%">2</button>
+          <button class="marker staticMarker" data-marker="s3" style="left:76.4%;top:69.8%">3</button>
+          <button class="marker staticMarker" data-marker="s4" style="left:74.0%;top:88.8%">4</button>
+          <button class="marker staticMarker" data-marker="s5" style="left:54.0%;top:89.5%">5</button>
+          <button class="marker staticMarker" data-marker="s6" style="left:15.6%;top:90.9%">6</button>
+          <button class="marker clip staticMarker" data-marker="clip" style="left:74.0%;top:37.1%">C</button>
+        </div>
       </div>
 
       <div class="hintCard"><strong>Tap = Do</strong><span>Tap a marker to complete it. No popup interrupts the repair.</span></div>
@@ -146,6 +154,6 @@
   <div id="dim" class="dim"></div>
   <aside id="sheet" class="sheet"><button id="closeSheet" class="icon sheetClose">×</button><div id="sheetData"></div></aside>
 </div>
-<script src="app.js"></script>
+<script src="app.js?v=4.9"></script>
 </body>
 </html>

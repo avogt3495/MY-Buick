@@ -50,3 +50,16 @@
   margin-top:4px;
   font-size:14px;
 }
+
+#markerLayer{
+  z-index:30;
+  pointer-events:auto;
+}
+.marker{
+  z-index:31;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  appearance:none;
+  -webkit-appearance:none;
+}
