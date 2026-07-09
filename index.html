@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>MY BUICK v4.7 Locked Outline Anchor Fix</title>
-  <link rel="stylesheet" href="style.css?v=5.7">
+  <link rel="stylesheet" href="style.css?v=5.8">
 </head>
 <body>
 <div class="app">
@@ -118,40 +118,31 @@
 
     <section id="learn" class="screen">
       <div class="sectionHead">
-        <div><h2>Learn</h2><p>Airbox knowledge library.</p></div>
-        <span class="badge">Deep Info</span>
+        <div><h2>Learn</h2><p>Clean view first. Tap Details inside a card for everything.</p></div>
+        <span class="badge">Simple</span>
       </div>
 
-      <div class="learnIntro">
+      <div class="learnIntro simpleLearnIntro">
         <img src="images/airbox/00_installed.jpg" alt="Airbox assembly">
         <div>
           <span class="badge green">Airbox V1</span>
           <h3>Airbox Assembly</h3>
-          <p>Verified service info, part numbers, failure modes, diagnostic logic, and TBD spots clearly separated.</p>
+          <p>Grouped into fewer sections so it feels clean, with a Details tab when you want the deep stuff.</p>
         </div>
       </div>
 
-      <div class="statusLegend">
-        <span><b class="dot gm"></b> GM Verified</span>
-        <span><b class="dot alex"></b> Alex Verified</span>
-        <span><b class="dot tbd"></b> Needs Verification</span>
+      <div class="simpleInfoGrid">
+        <div><span>Filter</span><strong>GM 55560894</strong></div>
+        <div><span>Tool</span><strong>T25 Torx</strong></div>
+        <div><span>Interval</span><strong>50k mi</strong></div>
       </div>
 
-      <button class="learnCard" data-part="quickstart"><div><span class="learnTag">Quick</span><b>Airbox Quick Sheet</b><p>The no-fluff summary of what matters.</p></div><strong>›</strong></button>
-      <button class="learnCard" data-part="overview"><div><span class="learnTag">Overview</span><b>What the Airbox Does</b><p>Purpose, airflow path, and why sealing matters.</p></div><strong>›</strong></button>
-      <button class="learnCard" data-part="service"><div><span class="learnTag">Service</span><b>Inspection & Replacement</b><p>Manual interval, inspection method, and procedure.</p></div><strong>›</strong></button>
-      <button class="learnCard" data-part="filter"><div><span class="learnTag">Filter</span><b>Air Filter Element</b><p>GM 55560894, ACDelco A3128C, dimensions.</p></div><strong>›</strong></button>
-      <button class="learnCard" data-part="assembly"><div><span class="learnTag">Assembly</span><b>Air Cleaner Assembly</b><p>GM 13279567 and full-housing notes.</p></div><strong>›</strong></button>
-      <button class="learnCard" data-part="cover"><div><span class="learnTag">Cover</span><b>Upper Cover & Seal</b><p>What the lid does and what to inspect.</p></div><strong>›</strong></button>
-      <button class="learnCard" data-part="lower"><div><span class="learnTag">Housing</span><b>Lower Airbox Housing</b><p>Debris pocket, sealing base, and mount notes.</p></div><strong>›</strong></button>
-      <button class="learnCard" data-part="duct"><div><span class="learnTag">Duct</span><b>Outlet Duct / Intake Tube</b><p>GM 13250251 and duct inspection logic.</p></div><strong>›</strong></button>
-      <button class="learnCard" data-part="maf"><div><span class="learnTag">Sensor</span><b>MAF Sensor Area</b><p>GM 92196278, connector, bolts, and gasket notes.</p></div><strong>›</strong></button>
-      <button class="learnCard" data-part="fasteners"><div><span class="learnTag">Hardware</span><b>Screws & Rear Clip</b><p>Six screw highlights, rear clip, tool, and torque status.</p></div><strong>›</strong></button>
-      <button class="learnCard" data-part="inspection"><div><span class="learnTag">Checklist</span><b>Inspection Checklist</b><p>What to look for when the lid is open.</p></div><strong>›</strong></button>
-      <button class="learnCard" data-part="diagnostics"><div><span class="learnTag">Diagnose</span><b>Symptoms & Failure Modes</b><p>Dirty filter, leaks, cracked duct, loose lid, MAF area.</p></div><strong>›</strong></button>
-      <button class="learnCard" data-part="buying"><div><span class="learnTag">Replace</span><b>Replacement / Upgrade Options</b><p>Price, HP gain, weight difference, value, and risk.</p></div><strong>›</strong></button>
-      <button class="learnCard" data-part="engineer"><div><span class="learnTag">Nerd</span><b>Engineer’s Corner</b><p>Why the box shape, filter seal, and MAF placement matter.</p></div><strong>›</strong></button>
-      <button class="learnCard" data-part="dataStatus"><div><span class="learnTag">Data</span><b>Verification Status</b><p>What is locked, what is verified, and what is still TBD.</p></div><strong>›</strong></button>
+      <button class="learnCard simpleCard mainCard" data-part="quickstart"><div><span class="learnTag">Start</span><b>Quick Sheet</b><p>The most important airbox info.</p></div><strong>›</strong></button>
+      <button class="learnCard simpleCard" data-part="serviceSimple"><div><span class="learnTag">Service</span><b>Service & Inspection</b><p>When to inspect, replace, and what to check.</p></div><strong>›</strong></button>
+      <button class="learnCard simpleCard" data-part="replacementSimple"><div><span class="learnTag">Replace</span><b>Replacement / Upgrade Options</b><p>Price, HP gain, weight, value, and risk.</p></div><strong>›</strong></button>
+      <button class="learnCard simpleCard" data-part="partsSimple"><div><span class="learnTag">Parts</span><b>Parts & Specs</b><p>Filter, assembly, duct, MAF, screws, and TBD items.</p></div><strong>›</strong></button>
+      <button class="learnCard simpleCard" data-part="diagnosticsSimple"><div><span class="learnTag">Diagnose</span><b>Symptoms & Failure Modes</b><p>What goes wrong and what to inspect first.</p></div><strong>›</strong></button>
+      <button class="learnCard simpleCard" data-part="dataStatus"><div><span class="learnTag">Data</span><b>Verification Status</b><p>What is verified, what is Alex Verified, and what is still TBD.</p></div><strong>›</strong></button>
     </section>
 
     <section id="maintenance" class="screen">
@@ -182,6 +173,6 @@
   <div id="dim" class="dim"></div>
   <aside id="sheet" class="sheet"><button id="closeSheet" class="icon sheetClose">×</button><div id="sheetData"></div></aside>
 </div>
-<script src="app.js?v=5.7"></script>
+<script src="app.js?v=5.8"></script>
 </body>
 </html>

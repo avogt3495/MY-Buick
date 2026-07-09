@@ -33,54 +33,49 @@ const airboxGuideMap={
 const parts={
   "quickstart": {
     "title": "Airbox Quick Sheet",
-    "status": "Mixed: GM Verified + Alex Verified + TBD",
-    "summary": "The airbox is the engine air cleaner/filter housing. It holds the panel filter, seals the intake path, and keeps unfiltered air and debris out of the engine.",
-    "sections": [
-      {
-        "label": "Vehicle",
-        "value": "2010 Buick LaCrosse CXL, 3.0L LF1 V6, FWD. Alex Verified."
-      },
+    "status": "Simple View",
+    "summary": "The short version of the airbox: what it is, what fits, how often to service it, and what is still TBD.",
+    "sections": [],
+    "bullets": [
+      "The airbox protects the engine by making air pass through the filter.",
+      "The filter only works right if the lid and seal are seated evenly.",
+      "A replacement filter is maintenance first, performance second.",
+      "The app’s outline, screws, and clip are visually locked for Airbox V1."
+    ],
+    "source": "2010 Owner Manual, GM Parts, OEM parts listings, Alex Verified app map and location correction and location correction",
+    "quickFacts": [
       {
         "label": "Location",
-        "value": "Engine compartment, passenger-side / vehicle-right area. Alex Verified from your actual Buick photos."
+        "value": "Passenger-side / vehicle-right. Alex Verified."
       },
       {
-        "label": "Service interval",
-        "value": "Inspect at Maintenance II intervals. Replace at first oil change after each 50,000-mile interval. Inspect every oil change in dusty/dirty conditions."
+        "label": "Filter",
+        "value": "GM 55560894 / ACDelco A3128C."
       },
       {
-        "label": "Main filter",
-        "value": "GM 55560894 / ACDelco A3128C. GM Verified."
+        "label": "Interval",
+        "value": "Replace at first oil change after each 50,000-mile interval."
       },
       {
-        "label": "Full air cleaner assembly",
-        "value": "GM 13279567 appears for 2010-2011 LaCrosse 3.0L/3.6L applications. VIN verification still recommended before buying."
+        "label": "Tool",
+        "value": "T25 Torx."
       },
       {
-        "label": "Outlet duct",
-        "value": "GM 13250251. Listed as air cleaner outlet duct for 2010-2011 LaCrosse."
+        "label": "Performance",
+        "value": "No guaranteed HP gain from a drop-in filter."
       },
       {
-        "label": "MAF sensor",
-        "value": "GM 92196278. GM lists it for 2010-2011 LaCrosse."
-      },
-      {
-        "label": "Tool used in app",
-        "value": "T25 Torx for the six lid screws. Alex Verified."
-      },
-      {
-        "label": "Torque",
-        "value": "TBD. No verified published airbox screw torque found yet. Snug evenly only."
+        "label": "Still TBD",
+        "value": "Weights, screw torque, separate lid/lower housing numbers."
       }
     ],
-    "bullets": [
-      "Do not drive with the air cleaner/filter off.",
-      "Check filter seal seating before closing the lid.",
-      "Do not overtighten screws into plastic.",
-      "App map status: outline locked, screw/clip highlights approved.",
-      "Next data work: weigh the filter, weigh the lid/assembly, confirm any separate lid/lower housing part numbers."
-    ],
-    "source": "2010 Owner Manual, GM Parts, OEM parts listings, Alex Verified app map and location correction and location correction"
+    "detailPages": [
+      "overview",
+      "service",
+      "partsSimple",
+      "replacementSimple",
+      "dataStatus"
+    ]
   },
   "overview": {
     "title": "What the Airbox Does",
@@ -702,6 +697,232 @@ const parts={
       "Weight differences remain TBD until parts are weighed."
     ],
     "source": "Current app state + verified source audit"
+  },
+  "serviceSimple": {
+    "title": "Service & Inspection",
+    "status": "Simple View",
+    "summary": "Replace the filter at the manual interval, inspect it more often in dusty/dirty conditions, and check the seal every time the lid is open.",
+    "quickFacts": [
+      {
+        "label": "Normal interval",
+        "value": "Replace at the first oil change after each 50,000-mile interval."
+      },
+      {
+        "label": "Dusty/dirty use",
+        "value": "Inspect every oil change."
+      },
+      {
+        "label": "Tool",
+        "value": "T25 Torx for the six lid screws."
+      },
+      {
+        "label": "Do not",
+        "value": "Do not drive with the air cleaner/filter removed."
+      }
+    ],
+    "bullets": [
+      "Inspect the filter pleats, rubber seal, lower box, lid seating, duct, and MAF connector.",
+      "Replace the filter if it is caked, wet, oily, torn, warped, or has a damaged seal.",
+      "When reinstalling, make sure the filter sits flat and the cover closes evenly."
+    ],
+    "detailPages": [
+      "service",
+      "inspection",
+      "cover",
+      "lower"
+    ],
+    "source": "Simplified from service, inspection, cover, and lower housing pages"
+  },
+  "replacementSimple": {
+    "title": "Replacement / Upgrade Options",
+    "status": "Simple View",
+    "summary": "The replacement tab keeps the realistic stuff up front: cost, power expectations, weight status, value, and risk.",
+    "quickFacts": [
+      {
+        "label": "Best normal choice",
+        "value": "OEM-style paper filter."
+      },
+      {
+        "label": "Main filter",
+        "value": "GM 55560894 / ACDelco A3128C."
+      },
+      {
+        "label": "HP truth",
+        "value": "No guaranteed HP gain from a drop-in filter."
+      },
+      {
+        "label": "K&N option",
+        "value": "K&N 33-2442, reusable, HP claim unverified on this Buick."
+      },
+      {
+        "label": "Weights",
+        "value": "TBD until parts are weighed."
+      }
+    ],
+    "options": [
+      {
+        "name": "OEM-style paper filter",
+        "part": "GM 55560894 / ACDelco A3128C",
+        "price": "$29.99 snapshot",
+        "hp": "0 hp gain if old filter was fine. Can restore lost power if the old filter was heavily restricted.",
+        "weight": "TBD. Difference from current filter likely tiny. Needs scale.",
+        "value": "Best reliability baseline",
+        "risk": "Low. Designed for correct sealing and filtration.",
+        "notes": "Recommended default replacement. Follow owner manual interval."
+      },
+      {
+        "name": "Economy paper filter",
+        "part": "Store-brand equivalent",
+        "price": "TBD, usually cheaper than OE. Needs current store check.",
+        "hp": "0 hp gain. Same goal as OE: clean, sealed airflow.",
+        "weight": "TBD. Usually not meaningful.",
+        "value": "Budget replacement",
+        "risk": "Depends on seal quality and fitment. Inspect edges before installing.",
+        "notes": "Could be fine, but the app should not call it verified until a specific part is chosen."
+      },
+      {
+        "name": "K&N reusable drop-in filter",
+        "part": "K&N 33-2442",
+        "price": "$83.99 snapshot",
+        "hp": "Manufacturer markets it as designed to increase horsepower/acceleration. Buick-specific dyno gain is unverified. Realistic app estimate: 0 to 3 hp on a stock setup.",
+        "weight": "TBD. Needs scale vs OEM paper filter.",
+        "value": "Reusable / enthusiast option",
+        "risk": "Needs cleaning/oiling correctly. Over-oiling near a MAF system is something to avoid.",
+        "notes": "Good app label: Performance claim unverified until dyno or trustworthy test."
+      },
+      {
+        "name": "Full OEM air cleaner assembly",
+        "part": "GM 13279567",
+        "price": "TBD / market varies",
+        "hp": "0 hp gain. Restores proper sealing if the old housing is cracked, warped, or broken.",
+        "weight": "TBD. Full assembly weight needs scale or verified catalog spec.",
+        "value": "Repair broken housing",
+        "risk": "Used parts may have cracked tabs, stripped screw bosses, or missing hardware.",
+        "notes": "VIN-check before buying. Ask for photos of all screw bosses and clip points."
+      },
+      {
+        "name": "Outlet duct / intake tube",
+        "part": "GM 13250251",
+        "price": "TBD / needs current source check",
+        "hp": "0 hp gain unless the old duct is cracked/leaking. Then it restores proper airflow behavior.",
+        "weight": "TBD. Likely small difference unless replacing a damaged duct.",
+        "value": "Fix cracked duct / restore seal",
+        "risk": "Wrong duct or loose clamp can cause fitment or air-metering issues.",
+        "notes": "Inspect accordion ribs and clamp ends before replacing other parts."
+      },
+      {
+        "name": "MAF sensor replacement",
+        "part": "GM / ACDelco 92196278",
+        "price": "$101.99 snapshot for ACDelco 92196278 at AutoZone",
+        "hp": "0 hp upgrade. Only restores drivability/power if the sensor is actually bad.",
+        "weight": "Not meaningful for performance.",
+        "value": "Diagnostic repair only",
+        "risk": "Do not replace just because of a code. Check duct leaks, connector, wiring, and data first.",
+        "notes": "Future OBD2 module can make this much smarter."
+      }
+    ],
+    "bullets": [
+      "If the old filter is dirty, a new filter can restore lost performance.",
+      "If the old filter is already clean, expect little to no real horsepower gain.",
+      "Replace the full airbox or duct only if cracked, broken, warped, or not sealing."
+    ],
+    "detailPages": [
+      "buying",
+      "filter",
+      "assembly",
+      "duct",
+      "maf"
+    ],
+    "source": "Simplified from replacement, filter, assembly, duct, and MAF pages"
+  },
+  "partsSimple": {
+    "title": "Parts & Specs",
+    "status": "Simple View",
+    "summary": "The important part numbers and TBD specs grouped into one clean page.",
+    "quickFacts": [
+      {
+        "label": "Air filter",
+        "value": "GM 55560894 / ACDelco A3128C."
+      },
+      {
+        "label": "Air cleaner assembly",
+        "value": "GM 13279567, VIN check recommended."
+      },
+      {
+        "label": "Outlet duct",
+        "value": "GM 13250251."
+      },
+      {
+        "label": "MAF sensor",
+        "value": "GM / ACDelco 92196278."
+      },
+      {
+        "label": "MAF bolt",
+        "value": "GM 13306967."
+      },
+      {
+        "label": "Torque",
+        "value": "TBD, do not guess."
+      },
+      {
+        "label": "Weights",
+        "value": "TBD, needs scale."
+      }
+    ],
+    "bullets": [
+      "The filter part number is the strongest verified part data.",
+      "Assembly and duct numbers are strong OEM-listing data, but VIN confirmation is still smart.",
+      "Separate lid and lower housing numbers are still not locked."
+    ],
+    "detailPages": [
+      "filter",
+      "assembly",
+      "cover",
+      "lower",
+      "duct",
+      "maf",
+      "fasteners"
+    ],
+    "source": "Simplified from individual part pages"
+  },
+  "diagnosticsSimple": {
+    "title": "Symptoms & Failure Modes",
+    "status": "Simple View",
+    "summary": "Start with the physical checks before blaming sensors or buying parts.",
+    "quickFacts": [
+      {
+        "label": "Dirty filter",
+        "value": "Can restrict airflow and reduce performance."
+      },
+      {
+        "label": "Poor seal",
+        "value": "Can let dirt bypass the filter edge."
+      },
+      {
+        "label": "Loose lid",
+        "value": "Can cause poor sealing or intake noise."
+      },
+      {
+        "label": "Cracked duct",
+        "value": "Can cause airflow-metering issues."
+      },
+      {
+        "label": "MAF connector",
+        "value": "Check before replacing the sensor."
+      }
+    ],
+    "bullets": [
+      "First check filter condition and seal.",
+      "Then check lid seating and screw/clip engagement.",
+      "Then check duct ribs and clamps.",
+      "Then check the MAF connector and wiring."
+    ],
+    "detailPages": [
+      "diagnostics",
+      "inspection",
+      "engineer"
+    ],
+    "source": "Simplified from diagnostics, inspection, and Engineer’s Corner"
   }
 };
 
@@ -790,15 +1011,21 @@ document.getElementById("resetBtn").addEventListener("click",()=>{layer=0;done.c
 document.querySelectorAll("[data-part]").forEach(btn=>btn.addEventListener("click",()=>openSheet(btn.dataset.part)));
 function openSheet(id){
   const data=parts[id]||parts.quickstart||parts.overview;
+
+  const quickHtml=(data.quickFacts||[]).map(item=>{
+    return '<div><span>'+item.label+'</span><strong>'+item.value+'</strong></div>';
+  }).join("");
+
   const sectionHtml=(data.sections||[]).map(item=>{
     return '<div class="info"><span>'+item.label+'</span><b>'+item.value+'</b></div>';
   }).join("");
+
   const optionHtml=(data.options||[]).map(o=>{
-    return '<div class="optionCard">'+
+    return '<div class="optionCard compactOption">'+
       '<div class="optionTop"><h3>'+o.name+'</h3><span>'+o.price+'</span></div>'+
       '<div class="optionPart">'+o.part+'</div>'+
       '<div class="optionGrid">'+
-        '<div><span>HP Gain</span><b>'+o.hp+'</b></div>'+
+        '<div><span>HP</span><b>'+o.hp+'</b></div>'+
         '<div><span>Weight</span><b>'+o.weight+'</b></div>'+
         '<div><span>Value</span><b>'+o.value+'</b></div>'+
         '<div><span>Risk</span><b>'+o.risk+'</b></div>'+
@@ -806,18 +1033,62 @@ function openSheet(id){
       '<p>'+o.notes+'</p>'+
     '</div>';
   }).join("");
+
   const bulletHtml=(data.bullets||[]).map(b=>'<li>'+b+'</li>').join("");
+
+  const detailLinks=(data.detailPages||[]).map(key=>{
+    const d=parts[key];
+    if(!d)return "";
+    return '<button class="detailLink" data-jump="'+key+'"><span>'+d.title+'</span><small>'+d.status+'</small><strong>›</strong></button>';
+  }).join("");
+
+  const detailsHtml =
+    '<div class="detailPanel hidden" id="detailsPanel">'+
+      (detailLinks?'<div class="detailLinkGroup">'+detailLinks+'</div>':'')+
+      '<div class="detailStack">'+sectionHtml+'</div>'+
+      '<div class="info sourceInfo"><span>Source Status</span><b>'+data.source+'</b></div>'+
+    '</div>';
+
   document.getElementById("sheetData").innerHTML=
-    '<div class="sheetHero">'+
+    '<button class="detailsTab" id="detailsTab">Details</button>'+
+    '<div class="sheetHero simpleSheetHero">'+
       '<span class="badge">'+data.status+'</span>'+
       '<h2>'+data.title+'</h2>'+
       '<p>'+data.summary+'</p>'+
     '</div>'+
-    sectionHtml+
-    optionHtml+
-    (bulletHtml?'<div class="info bulletInfo"><span>Notes</span><ul>'+bulletHtml+'</ul></div>':'')+
-    '<div class="info sourceInfo"><span>Source Status</span><b>'+data.source+'</b></div>';
-  sheet.classList.add("open");dim.classList.add("show")
+    '<div class="tabSwitch"><button class="active" id="summaryBtn">Summary</button><button id="detailsBtn">Details</button></div>'+
+    '<div id="summaryPanel">'+
+      (quickHtml?'<div class="quickFactGrid">'+quickHtml+'</div>':'')+
+      optionHtml+
+      (bulletHtml?'<div class="info bulletInfo"><span>Key Notes</span><ul>'+bulletHtml+'</ul></div>':'')+
+    '</div>'+
+    detailsHtml;
+
+  const summaryPanel=document.getElementById("summaryPanel");
+  const detailsPanel=document.getElementById("detailsPanel");
+  const summaryBtn=document.getElementById("summaryBtn");
+  const detailsBtn=document.getElementById("detailsBtn");
+  const detailsTab=document.getElementById("detailsTab");
+
+  function setTab(which){
+    const showDetails=which==="details";
+    summaryPanel.classList.toggle("hidden",showDetails);
+    detailsPanel.classList.toggle("hidden",!showDetails);
+    summaryBtn.classList.toggle("active",!showDetails);
+    detailsBtn.classList.toggle("active",showDetails);
+    detailsTab.textContent=showDetails?"Summary":"Details";
+  }
+
+  summaryBtn.addEventListener("click",()=>setTab("summary"));
+  detailsBtn.addEventListener("click",()=>setTab("details"));
+  detailsTab.addEventListener("click",()=>setTab(detailsPanel.classList.contains("hidden")?"details":"summary"));
+
+  document.querySelectorAll("[data-jump]").forEach(btn=>{
+    btn.addEventListener("click",()=>openSheet(btn.dataset.jump));
+  });
+
+  sheet.classList.add("open");
+  dim.classList.add("show");
 }
 function closeSheet(){sheet.classList.remove("open");if(!drawer.classList.contains("open"))dim.classList.remove("show")}
 document.getElementById("closeSheet").addEventListener("click",closeSheet);
