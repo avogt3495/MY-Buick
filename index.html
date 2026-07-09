@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>MY BUICK v4.6 Anchor Algorithm</title>
+  <title>MY BUICK v4.7 Locked Outline Anchor Fix</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -55,26 +55,25 @@
       </div>
 
       <div class="panel">
-        <strong>Component Map Engine</strong>
-        <p>Each component now owns its outline and anchors. The screws are children of the airbox, not floating photo dots.</p>
+        <strong>Component Map System</strong>
+        <p>The v4.3 true-trace outline is locked as the master map. Anchors now resolve through the map system without replacing the outline.</p>
       </div>
     </section>
 
     <section id="airbox" class="screen">
-      <div class="assemblyHero">
+      <div class="assemblyCard">
         <img src="images/airbox/00_installed.jpg" alt="Airbox assembly">
-        <div class="assemblyFade"></div>
         <div class="assemblyCopy">
           <span class="badge green">Alex Verified</span>
           <h2>Airbox Assembly</h2>
-          <p>Upper cover, air filter, lower housing, rear clip, and six T25 lid screws.</p>
+          <p>Upper cover, air filter, lower housing, MAF area, six T25 screws, and rear clip.</p>
         </div>
       </div>
 
       <div class="assemblyQuickFacts">
         <div><span>Fasteners</span><strong>6 T25</strong></div>
         <div><span>Clip</span><strong>1 Rear</strong></div>
-        <div><span>System</span><strong>Anchored</strong></div>
+        <div><span>Map</span><strong>Locked</strong></div>
       </div>
 
       <button class="bigBtn" data-go="guide"><b>🔧 Guide Me</b><span>Start the interactive airbox repair</span></button>
@@ -98,11 +97,10 @@
 
       <div class="repair">
         <img id="layerImg" src="images/airbox/00_installed.jpg" alt="Airbox guide image">
-        <div id="guideComponentOverlay" class="componentOverlay guideOverlay"></div>
         <div id="markerLayer"></div>
       </div>
 
-      <div class="hintCard"><strong>Anchor Algorithm</strong><span>Markers now follow the Airbox Component Map instead of the full photo.</span></div>
+      <div class="hintCard"><strong>Tap = Do</strong><span>Tap a marker to complete it. No popup interrupts the repair.</span></div>
 
       <div class="bottomBar">
         <button id="resetBtn" class="ghost">Reset</button>
@@ -111,33 +109,21 @@
     </section>
 
     <section id="learn" class="screen">
-      <div class="assemblyMiniHero">
-        <img src="images/airbox/00_installed.jpg" alt="Airbox">
-        <div>
-          <span class="badge">Airbox</span>
-          <h2>Learn</h2>
-          <p>Airbox knowledge library.</p>
-        </div>
+      <div class="sectionHead">
+        <div><h2>Learn</h2><p>Airbox knowledge library.</p></div>
+        <span class="badge">3 Parts</span>
       </div>
-
       <button class="learnCard" data-part="cover"><div><span class="learnTag">Cover</span><b>Airbox Upper Cover</b><p>6 T25 screws, rear clip, seals the filter.</p></div><strong>›</strong></button>
       <button class="learnCard" data-part="filter"><div><span class="learnTag">Filter</span><b>Air Filter Element</b><p>OEM 55560894, ACDelco A3128C.</p></div><strong>›</strong></button>
       <button class="learnCard" data-part="lower"><div><span class="learnTag">Housing</span><b>Lower Airbox Housing</b><p>Holds filter, collects debris, supports intake path.</p></div><strong>›</strong></button>
     </section>
 
     <section id="maintenance" class="screen">
-      <div class="assemblyMiniHero">
-        <img src="images/airbox/00_installed.jpg" alt="Airbox">
-        <div>
-          <span class="badge">Airbox</span>
-          <h2>Maintenance</h2>
-          <p>Airbox service history.</p>
-        </div>
+      <div class="sectionHead">
+        <div><h2>Maintenance</h2><p>Airbox service history.</p></div>
+        <button id="addLog" class="smallBtn">+ Add</button>
       </div>
-
-      <button id="addLog" class="smallBtn">+ Add Entry</button>
       <div id="logList" class="timeline"></div>
-
       <form id="logForm" class="panel hidden">
         <label>Service<input id="logService" value="Air Filter Inspection"></label>
         <label>Mileage<input id="logMileage" placeholder="121842"></label>
