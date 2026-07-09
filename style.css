@@ -329,3 +329,28 @@
 .sourceInfo b{
   color:#bcd2ff;
 }
+
+/* v5.5 deep info pass only */
+.learnCard{
+  min-height:86px;
+}
+.learnCard p{
+  max-width:95%;
+}
+.sheetHero .badge{
+  white-space:normal;
+  line-height:1.25;
+}
+.info b{
+  line-height:1.42;
+}
+.bulletInfo ul{
+  padding-left:19px;
+}
+.bulletInfo li{
+  padding-left:2px;
+}
+.sourceInfo{
+  border-color:rgba(99,164,255,.20);
+  background:linear-gradient(180deg,rgba(60,130,255,.10),rgba(255,255,255,.035));
+}
