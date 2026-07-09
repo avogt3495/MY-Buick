@@ -219,3 +219,31 @@
   width:2.5px;
   height:2.5px;
 }
+
+/* v5.3 clip highlight fix only */
+.marker.clip{
+  background:transparent !important;
+  box-shadow:none !important;
+  border:0 !important;
+  color:transparent !important;
+  text-shadow:none !important;
+  font-size:0 !important;
+}
+
+.marker.clip::before{
+  width:8px !important;
+  height:8px !important;
+  border-width:1px !important;
+  border-color:rgba(255,125,132,.95) !important;
+  background:rgba(255,64,74,.04) !important;
+  box-shadow:
+    0 0 4px rgba(255,64,74,.65),
+    inset 0 0 3px rgba(255,160,165,.24) !important;
+}
+
+.marker.clip::after{
+  width:2px !important;
+  height:2px !important;
+  background:rgba(255,205,208,.95) !important;
+  box-shadow:0 0 3px rgba(255,120,126,.78) !important;
+}
