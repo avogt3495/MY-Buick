@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>MY BUICK v4.2 Component Map</title>
+  <title>MY BUICK v4.4 Airbox Gold Pass</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -56,16 +56,27 @@
 
       <div class="panel">
         <strong>Component Map System</strong>
-        <p>The airbox is now drawn from reusable map data: position, SVG path, label, and destination. Future parts use the same system.</p>
+        <p>The airbox is mapped as a reusable component with visual, touch, and anchor data.</p>
       </div>
     </section>
 
     <section id="airbox" class="screen">
-      <div class="moduleCard">
-        <span class="badge green">Alex Verified</span>
-        <h2>Airbox Module</h2>
-        <p>Upper cover, air filter, and lower housing.</p>
+      <div class="assemblyHero">
+        <img src="images/airbox/00_installed.jpg" alt="Airbox assembly">
+        <div class="assemblyFade"></div>
+        <div class="assemblyCopy">
+          <span class="badge green">Alex Verified</span>
+          <h2>Airbox Assembly</h2>
+          <p>Upper cover, air filter, lower housing, rear clip, and six T25 lid screws.</p>
+        </div>
       </div>
+
+      <div class="assemblyQuickFacts">
+        <div><span>Fasteners</span><strong>6 T25</strong></div>
+        <div><span>Clip</span><strong>1 Rear</strong></div>
+        <div><span>Status</span><strong>Mapped</strong></div>
+      </div>
+
       <button class="bigBtn" data-go="guide"><b>🔧 Guide Me</b><span>Start the interactive airbox repair</span></button>
       <button class="bigBtn" data-go="learn"><b>📚 Learn</b><span>Part info, OEM numbers, materials, and facts</span></button>
       <button class="bigBtn" data-go="maintenance"><b>📝 Maintenance</b><span>Log service and view history</span></button>
@@ -90,7 +101,7 @@
         <div id="markerLayer"></div>
       </div>
 
-      <div class="hintCard"><strong>Tap = Do</strong><span>Tap a marker to complete it. No popup interrupts the repair.</span></div>
+      <div class="hintCard"><strong>Tap = Do</strong><span>Tap a marker to complete it. Long-press Learn comes later.</span></div>
 
       <div class="bottomBar">
         <button id="resetBtn" class="ghost">Reset</button>
@@ -99,21 +110,33 @@
     </section>
 
     <section id="learn" class="screen">
-      <div class="sectionHead">
-        <div><h2>Learn</h2><p>Airbox knowledge library.</p></div>
-        <span class="badge">3 Parts</span>
+      <div class="assemblyMiniHero">
+        <img src="images/airbox/00_installed.jpg" alt="Airbox">
+        <div>
+          <span class="badge">Airbox</span>
+          <h2>Learn</h2>
+          <p>Airbox knowledge library.</p>
+        </div>
       </div>
+
       <button class="learnCard" data-part="cover"><div><span class="learnTag">Cover</span><b>Airbox Upper Cover</b><p>6 T25 screws, rear clip, seals the filter.</p></div><strong>›</strong></button>
       <button class="learnCard" data-part="filter"><div><span class="learnTag">Filter</span><b>Air Filter Element</b><p>OEM 55560894, ACDelco A3128C.</p></div><strong>›</strong></button>
       <button class="learnCard" data-part="lower"><div><span class="learnTag">Housing</span><b>Lower Airbox Housing</b><p>Holds filter, collects debris, supports intake path.</p></div><strong>›</strong></button>
     </section>
 
     <section id="maintenance" class="screen">
-      <div class="sectionHead">
-        <div><h2>Maintenance</h2><p>Airbox service history.</p></div>
-        <button id="addLog" class="smallBtn">+ Add</button>
+      <div class="assemblyMiniHero">
+        <img src="images/airbox/00_installed.jpg" alt="Airbox">
+        <div>
+          <span class="badge">Airbox</span>
+          <h2>Maintenance</h2>
+          <p>Airbox service history.</p>
+        </div>
       </div>
+
+      <button id="addLog" class="smallBtn">+ Add Entry</button>
       <div id="logList" class="timeline"></div>
+
       <form id="logForm" class="panel hidden">
         <label>Service<input id="logService" value="Air Filter Inspection"></label>
         <label>Mileage<input id="logMileage" placeholder="121842"></label>
