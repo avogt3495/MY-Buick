@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>MY BUICK v4.1 Precision Mapping</title>
+  <title>MY BUICK v4.2 Component Map</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -44,26 +44,19 @@
       <div class="sectionHead">
         <div>
           <h2>Engine Bay</h2>
-          <p>Tap the highlighted airbox to begin.</p>
+          <p>The car is the interface. Tap the mapped airbox.</p>
         </div>
-        <span class="badge">Airbox Only</span>
+        <span class="badge">Component Map</span>
       </div>
 
       <div class="photoWrap engineWrap">
         <img src="images/engine/engine_bay_master.jpg" alt="Engine bay">
-
-        <button class="airboxSvgHotspot" data-go="airbox" aria-label="Open Airbox Module">
-          <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-            <path class="airboxFill" d="M 7 39 L 13 34 L 18 22 L 31 22 L 39 12 L 50 14 L 60 22 L 72 28 L 77 40 L 76 70 L 68 86 L 48 86 L 30 82 L 11 77 L 7 62 Z"/>
-            <path class="airboxStroke" d="M 7 39 L 13 34 L 18 22 L 31 22 L 39 12 L 50 14 L 60 22 L 72 28 L 77 40 L 76 70 L 68 86 L 48 86 L 30 82 L 11 77 L 7 62 Z"/>
-          </svg>
-          <span>Airbox</span>
-        </button>
+        <div id="componentOverlay" class="componentOverlay"></div>
       </div>
 
       <div class="panel">
-        <strong>Precision Mapping</strong>
-        <p>The airbox now uses an SVG component shape instead of a rectangle. Future parts will use the same system.</p>
+        <strong>Component Map System</strong>
+        <p>The airbox is now drawn from reusable map data: position, SVG path, label, and destination. Future parts use the same system.</p>
       </div>
     </section>
 
