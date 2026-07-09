@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>MY BUICK v4.4 Airbox Gold Pass</title>
+  <title>MY BUICK v4.6 Anchor Algorithm</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -55,8 +55,8 @@
       </div>
 
       <div class="panel">
-        <strong>Component Map System</strong>
-        <p>The airbox is mapped as a reusable component with visual, touch, and anchor data.</p>
+        <strong>Component Map Engine</strong>
+        <p>Each component now owns its outline and anchors. The screws are children of the airbox, not floating photo dots.</p>
       </div>
     </section>
 
@@ -74,7 +74,7 @@
       <div class="assemblyQuickFacts">
         <div><span>Fasteners</span><strong>6 T25</strong></div>
         <div><span>Clip</span><strong>1 Rear</strong></div>
-        <div><span>Status</span><strong>Mapped</strong></div>
+        <div><span>System</span><strong>Anchored</strong></div>
       </div>
 
       <button class="bigBtn" data-go="guide"><b>🔧 Guide Me</b><span>Start the interactive airbox repair</span></button>
@@ -98,10 +98,11 @@
 
       <div class="repair">
         <img id="layerImg" src="images/airbox/00_installed.jpg" alt="Airbox guide image">
+        <div id="guideComponentOverlay" class="componentOverlay guideOverlay"></div>
         <div id="markerLayer"></div>
       </div>
 
-      <div class="hintCard"><strong>Tap = Do</strong><span>Tap a marker to complete it. Long-press Learn comes later.</span></div>
+      <div class="hintCard"><strong>Anchor Algorithm</strong><span>Markers now follow the Airbox Component Map instead of the full photo.</span></div>
 
       <div class="bottomBar">
         <button id="resetBtn" class="ghost">Reset</button>

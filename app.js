@@ -2,51 +2,63 @@ const screens=["home","engine","airbox","guide","learn","maintenance"];
 const names={home:["MY BUICK","2010 Buick LaCrosse CXL"],engine:["VEHICLE","Engine Bay"],airbox:["ENGINE BAY","Airbox"],guide:["AIRBOX","Guide Me"],learn:["AIRBOX","Learn"],maintenance:["AIRBOX","Maintenance"]};
 let current="home";let layer=0;let done=new Set();
 
-const componentMaps=[
-  {
-    id:"airbox",
-    name:"Airbox",
-    target:"airbox",
-    frame:{x:5.7,y:21.7,w:28.2,h:43.4},
-    viewBox:"0 0 100 100",
-    path:"M 8 44 C 10 36, 15 32, 18 24 C 22 22, 27 23, 31 23 C 35 18, 38 12, 43 11 C 50 10, 55 15, 60 20 C 67 22, 74 27, 78 34 C 82 41, 80 55, 79 67 C 78 75, 75 83, 68 87 C 57 89, 44 87, 32 84 C 22 82, 13 78, 9 69 C 6 60, 5 51, 8 44 Z"
+const airboxMap={
+  id:"airbox",
+  name:"Airbox",
+  target:"airbox",
+  engineFrame:{x:5.7,y:21.7,w:28.2,h:43.4},
+  guideFrame:{x:15.5,y:15.5,w:70.5,h:70.0},
+  viewBox:"0 0 100 100",
+  path:"M 8 44 C 10 36, 15 32, 18 24 C 22 22, 27 23, 31 23 C 35 18, 38 12, 43 11 C 50 10, 55 15, 60 20 C 67 22, 74 27, 78 34 C 82 41, 80 55, 79 67 C 78 75, 75 83, 68 87 C 57 89, 44 87, 32 84 C 22 82, 13 78, 9 69 C 6 60, 5 51, 8 44 Z",
+  anchors:{
+    s1:{label:"1",type:"screw",x:.13,y:.38},
+    s2:{label:"2",type:"screw",x:.30,y:.21},
+    s3:{label:"3",type:"screw",x:.54,y:.12},
+    s4:{label:"4",type:"screw",x:.78,y:.26},
+    s5:{label:"5",type:"screw",x:.86,y:.56},
+    s6:{label:"6",type:"screw",x:.26,y:.68},
+    clip:{label:"C",type:"clip",x:.96,y:.44}
   }
-];
+};
 
 const layerImages=["images/airbox/00_installed.jpg","images/airbox/01_filter_visible.jpg","images/airbox/02_filter_removed.jpg"];
-
-// Revised screw/clip anchors for the current airbox guide image.
-// These are percentage based, so they scale with the photo.
-const markers=[
-  ["s1","1",24.5,37.8,""],
-  ["s2","2",36.8,26.6,""],
-  ["s3","3",53.5,20.8,""],
-  ["s4","4",70.4,29.8,""],
-  ["s5","5",75.8,50.5,""],
-  ["s6","6",34.0,58.8,""],
-  ["clip","C",83.2,42.6,"clip"]
-];
 
 const parts={cover:["Airbox Upper Cover","OEM #: TBD","Weight: TBD","Material: Molded plastic, exact material TBD","Tools: T25 Torx","Torque: TBD if published","Description: Seals the air filter and forces intake air through the filter before the MAF sensor.","Facts: Uses six T25 screws and one rear retaining clip."],filter:["Air Filter Element","OEM #: 55560894","ACDelco: A3128C","Weight: TBD","Material: Filter media with rubber sealing edge","Tools: T25 Torx to access","Torque: Not applicable","Description: Filters incoming air before it reaches the engine."],lower:["Lower Airbox Housing","OEM #: TBD","Weight: TBD","Material: Molded plastic, exact material TBD","Tools: TBD","Torque: TBD if removed","Description: Supports the filter and collects debris in the lower airbox."]};
 
 function setGreeting(){const h=new Date().getHours();const word=h<12?"Good Morning":h<18?"Good Afternoon":"Good Evening";document.getElementById("greeting").textContent=word+", Alex."}
 
+function mountComponentMap(overlay,map,frame,clickable=true){
+  const btn=document.createElement("button");
+  btn.className="componentMap";
+  btn.style.left=frame.x+"%";
+  btn.style.top=frame.y+"%";
+  btn.style.width=frame.w+"%";
+  btn.style.height=frame.h+"%";
+  btn.setAttribute("aria-label","Open "+map.name);
+  btn.innerHTML=`<svg viewBox="${map.viewBox}" preserveAspectRatio="none" aria-hidden="true"><path class="componentFill" d="${map.path}"></path><path class="componentGlow" d="${map.path}"></path></svg>`;
+  if(clickable) btn.addEventListener("click",()=>showScreen(map.target));
+  else btn.style.pointerEvents="none";
+  overlay.appendChild(btn);
+}
+
 function renderComponentMaps(){
   const overlay=document.getElementById("componentOverlay");
   if(!overlay)return;
   overlay.innerHTML="";
-  componentMaps.forEach(c=>{
-    const btn=document.createElement("button");
-    btn.className="componentMap";
-    btn.style.left=c.frame.x+"%";
-    btn.style.top=c.frame.y+"%";
-    btn.style.width=c.frame.w+"%";
-    btn.style.height=c.frame.h+"%";
-    btn.setAttribute("aria-label","Open "+c.name);
-    btn.innerHTML=`<svg viewBox="${c.viewBox}" preserveAspectRatio="none" aria-hidden="true"><path class="componentFill" d="${c.path}"></path><path class="componentGlow" d="${c.path}"></path></svg>`;
-    btn.addEventListener("click",()=>showScreen(c.target));
-    overlay.appendChild(btn);
-  });
+  mountComponentMap(overlay,airboxMap,airboxMap.engineFrame,true);
+}
+
+function renderGuideMap(){
+  const overlay=document.getElementById("guideComponentOverlay");
+  if(!overlay)return;
+  overlay.innerHTML="";
+  if(layer!==0)return;
+  mountComponentMap(overlay,airboxMap,airboxMap.guideFrame,false);
+}
+
+function anchorToPhoto(anchor){
+  const f=airboxMap.guideFrame;
+  return {x:f.x+(anchor.x*f.w), y:f.y+(anchor.y*f.h)};
 }
 
 function showScreen(id){current=id;screens.forEach(s=>document.getElementById(s).classList.toggle("active",s===id));document.getElementById("crumb").textContent=names[id][0];document.getElementById("title").textContent=names[id][1];document.getElementById("backBtn").classList.toggle("hidden",id==="home");closeDrawer()}
@@ -62,15 +74,18 @@ function closeDrawer(){drawer.classList.remove("open");if(!sheet.classList.conta
 function renderMarkers(){
   const layerEl=document.getElementById("markerLayer");
   layerEl.innerHTML="";
+  renderGuideMap();
   if(layer!==0)return;
-  markers.forEach((m,idx)=>{
+
+  Object.entries(airboxMap.anchors).forEach(([id,a])=>{
+    const pos=anchorToPhoto(a);
     const b=document.createElement("button");
-    b.className="marker "+m[4]+(done.has(m[0])?" done":"");
-    b.style.left=m[2]+"%";
-    b.style.top=m[3]+"%";
-    b.textContent=done.has(m[0])?"✓":m[1];
+    b.className="marker "+(a.type==="clip"?"clip ":"")+(done.has(id)?" done":"");
+    b.style.left=pos.x+"%";
+    b.style.top=pos.y+"%";
+    b.textContent=done.has(id)?"✓":a.label;
     b.addEventListener("click",()=>{
-      done.add(m[0]);
+      done.add(id);
       renderMarkers();
       updateProgress();
       if(done.size===7){document.getElementById("stepText").textContent="All fasteners complete. Tap Next Step."}
@@ -116,9 +131,7 @@ document.querySelectorAll("[data-part]").forEach(btn=>btn.addEventListener("clic
 function openSheet(id){
   const data=parts[id]||parts.cover;
   document.getElementById("sheetData").innerHTML="<h2>"+data[0]+"</h2>"+data.slice(1).map(line=>{
-    const i=line.indexOf(":");
-    const k=i>=0?line.slice(0,i):"Info";
-    const v=i>=0?line.slice(i+1).trim():line;
+    const i=line.indexOf(":");const k=i>=0?line.slice(0,i):"Info";const v=i>=0?line.slice(i+1).trim():line;
     return '<div class="info"><span>'+k+'</span><b>'+v+'</b></div>';
   }).join("");
   sheet.classList.add("open");dim.classList.add("show");
