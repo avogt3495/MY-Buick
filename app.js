@@ -521,43 +521,101 @@ const parts={
     "source": "General diagnostic logic + future OBD2 roadmap"
   },
   "buying": {
-    "title": "Buying / Replacement Notes",
-    "status": "Practical + Verification Needed",
-    "summary": "This page helps avoid buying the wrong part while the Buick-specific catalog is still being confirmed.",
+    "title": "Replacement / Upgrade Options",
+    "status": "Price Snapshot + Performance Reality Check",
+    "summary": "This tab compares the realistic options for the airbox system. It separates guaranteed maintenance value from unverified horsepower claims.",
     "sections": [
       {
-        "label": "Always confirm",
-        "value": "Use VIN fitment before ordering airbox, duct, MAF, or hardware."
+        "label": "Rule #1",
+        "value": "A clean filter usually restores lost performance. It does not magically add big horsepower on a stock engine."
       },
       {
-        "label": "Filter confidence",
-        "value": "GM 55560894 / ACDelco A3128C is high confidence."
+        "label": "HP gain status",
+        "value": "No Buick 3.0L LF1 dyno proof found for a drop-in filter. App uses conservative expected gain and marks claims clearly."
       },
       {
-        "label": "Assembly confidence",
-        "value": "13279567 is strong listing confidence for 2010-2011 LaCrosse air cleaner assembly, but final VIN check remains."
+        "label": "Weight difference status",
+        "value": "Exact weights are TBD until you weigh the OEM filter, K&N filter, lid, lower housing, and full assembly."
       },
       {
-        "label": "Duct confidence",
-        "value": "13250251 is listed as air cleaner outlet duct for 2010-2011 LaCrosse."
+        "label": "Price status",
+        "value": "Prices are snapshots and can change by store, sale, shipping, and availability."
       },
       {
-        "label": "MAF confidence",
-        "value": "92196278 is GM-listed for 2010-2011 LaCrosse."
+        "label": "Best baseline",
+        "value": "OEM-style paper filter is the safest default for reliability, filtration, and normal service."
+      }
+    ],
+    "options": [
+      {
+        "name": "OEM-style paper filter",
+        "part": "GM 55560894 / ACDelco A3128C",
+        "price": "$29.99 snapshot",
+        "hp": "0 hp gain if old filter was fine. Can restore lost power if the old filter was heavily restricted.",
+        "weight": "TBD. Difference from current filter likely tiny. Needs scale.",
+        "value": "Best reliability baseline",
+        "risk": "Low. Designed for correct sealing and filtration.",
+        "notes": "Recommended default replacement. Follow owner manual interval."
       },
       {
-        "label": "Used part check",
-        "value": "Ask for photos of tabs, screw bosses, duct ends, clip points, and sensor mounting area."
+        "name": "Economy paper filter",
+        "part": "Store-brand equivalent",
+        "price": "TBD, usually cheaper than OE. Needs current store check.",
+        "hp": "0 hp gain. Same goal as OE: clean, sealed airflow.",
+        "weight": "TBD. Usually not meaningful.",
+        "value": "Budget replacement",
+        "risk": "Depends on seal quality and fitment. Inspect edges before installing.",
+        "notes": "Could be fine, but the app should not call it verified until a specific part is chosen."
+      },
+      {
+        "name": "K&N reusable drop-in filter",
+        "part": "K&N 33-2442",
+        "price": "$83.99 snapshot",
+        "hp": "Manufacturer markets it as designed to increase horsepower/acceleration. Buick-specific dyno gain is unverified. Realistic app estimate: 0 to 3 hp on a stock setup.",
+        "weight": "TBD. Needs scale vs OEM paper filter.",
+        "value": "Reusable / enthusiast option",
+        "risk": "Needs cleaning/oiling correctly. Over-oiling near a MAF system is something to avoid.",
+        "notes": "Good app label: Performance claim unverified until dyno or trustworthy test."
+      },
+      {
+        "name": "Full OEM air cleaner assembly",
+        "part": "GM 13279567",
+        "price": "TBD / market varies",
+        "hp": "0 hp gain. Restores proper sealing if the old housing is cracked, warped, or broken.",
+        "weight": "TBD. Full assembly weight needs scale or verified catalog spec.",
+        "value": "Repair broken housing",
+        "risk": "Used parts may have cracked tabs, stripped screw bosses, or missing hardware.",
+        "notes": "VIN-check before buying. Ask for photos of all screw bosses and clip points."
+      },
+      {
+        "name": "Outlet duct / intake tube",
+        "part": "GM 13250251",
+        "price": "TBD / needs current source check",
+        "hp": "0 hp gain unless the old duct is cracked/leaking. Then it restores proper airflow behavior.",
+        "weight": "TBD. Likely small difference unless replacing a damaged duct.",
+        "value": "Fix cracked duct / restore seal",
+        "risk": "Wrong duct or loose clamp can cause fitment or air-metering issues.",
+        "notes": "Inspect accordion ribs and clamp ends before replacing other parts."
+      },
+      {
+        "name": "MAF sensor replacement",
+        "part": "GM / ACDelco 92196278",
+        "price": "$101.99 snapshot for ACDelco 92196278 at AutoZone",
+        "hp": "0 hp upgrade. Only restores drivability/power if the sensor is actually bad.",
+        "weight": "Not meaningful for performance.",
+        "value": "Diagnostic repair only",
+        "risk": "Do not replace just because of a code. Check duct leaks, connector, wiring, and data first.",
+        "notes": "Future OBD2 module can make this much smarter."
       }
     ],
     "bullets": [
-      "Do not assume every 2010-2016 LaCrosse uses the same airbox.",
-      "Engine, trim, model year, and eAssist differences can matter.",
-      "For used airboxes, missing rubber insulators or cracked screw bosses can make a cheap part annoying.",
-      "For filters, OE-style paper panel is the clean safest baseline.",
-      "Oiled aftermarket filters near a MAF system should be treated carefully and researched before use."
+      "Best HP-per-dollar mod here is probably none. The airbox is more about reliability, sealing, and maintenance.",
+      "Best maintenance value: ACDelco/OE-style paper filter.",
+      "Best enthusiast option: K&N drop-in, but only with honest unverified HP labeling.",
+      "Best repair option: replace housing/duct only if cracked, broken, warped, or not sealing.",
+      "Best future data: weigh each part, log actual prices paid, and dyno or dragy-test before/after if you ever want real performance numbers."
     ],
-    "source": "GM/OEM listings + practical fitment logic"
+    "source": "GM Parts, AutoZone, K&N listing, OEM listings, Alex Verified app data"
   },
   "engineer": {
     "title": "Engineer’s Corner",
@@ -625,13 +683,23 @@ const parts={
       {
         "label": "Next best real-world data",
         "value": "Weigh old/new filter, measure screw head/length if removed, photo underside of lid, photo lower housing empty, confirm VIN catalog at dealer."
+      },
+      {
+        "label": "Replacement tab added",
+        "value": "HP gain, price, weight difference, value, risk, and notes added for OEM filter, economy filter, K&N, full assembly, duct, and MAF."
+      },
+      {
+        "label": "Performance honesty rule",
+        "value": "No unverified air filter horsepower claim is treated as guaranteed. Claims stay marked as manufacturer claim or app estimate until tested."
       }
     ],
     "bullets": [
       "No guessed torque specs were added.",
       "No guessed weights were added.",
       "Part numbers that still need VIN confirmation are labeled that way.",
-      "This is the standard we should use for every future component."
+      "This is the standard we should use for every future component.",
+      "Replacement prices are snapshots and should be updated when you actually shop or buy.",
+      "Weight differences remain TBD until parts are weighed."
     ],
     "source": "Current app state + verified source audit"
   }
@@ -721,9 +789,22 @@ document.getElementById("nextBtn").addEventListener("click",()=>{if(layer===0&&d
 document.getElementById("resetBtn").addEventListener("click",()=>{layer=0;done.clear();document.getElementById("layerImg").src=layerImages[0];document.getElementById("stepTitle").textContent="Remove Fasteners";document.getElementById("stepText").textContent="Tap each blue T25 screw marker, then tap the red rear clip marker.";renderMarkers();updateProgress()});
 document.querySelectorAll("[data-part]").forEach(btn=>btn.addEventListener("click",()=>openSheet(btn.dataset.part)));
 function openSheet(id){
-  const data=parts[id]||parts.quickstart;
+  const data=parts[id]||parts.quickstart||parts.overview;
   const sectionHtml=(data.sections||[]).map(item=>{
     return '<div class="info"><span>'+item.label+'</span><b>'+item.value+'</b></div>';
+  }).join("");
+  const optionHtml=(data.options||[]).map(o=>{
+    return '<div class="optionCard">'+
+      '<div class="optionTop"><h3>'+o.name+'</h3><span>'+o.price+'</span></div>'+
+      '<div class="optionPart">'+o.part+'</div>'+
+      '<div class="optionGrid">'+
+        '<div><span>HP Gain</span><b>'+o.hp+'</b></div>'+
+        '<div><span>Weight</span><b>'+o.weight+'</b></div>'+
+        '<div><span>Value</span><b>'+o.value+'</b></div>'+
+        '<div><span>Risk</span><b>'+o.risk+'</b></div>'+
+      '</div>'+
+      '<p>'+o.notes+'</p>'+
+    '</div>';
   }).join("");
   const bulletHtml=(data.bullets||[]).map(b=>'<li>'+b+'</li>').join("");
   document.getElementById("sheetData").innerHTML=
@@ -733,6 +814,7 @@ function openSheet(id){
       '<p>'+data.summary+'</p>'+
     '</div>'+
     sectionHtml+
+    optionHtml+
     (bulletHtml?'<div class="info bulletInfo"><span>Notes</span><ul>'+bulletHtml+'</ul></div>':'')+
     '<div class="info sourceInfo"><span>Source Status</span><b>'+data.source+'</b></div>';
   sheet.classList.add("open");dim.classList.add("show")
