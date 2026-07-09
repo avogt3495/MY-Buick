@@ -68,7 +68,37 @@ document.getElementById("closeDrawer").addEventListener("click",closeDrawer);
 dim.addEventListener("click",()=>{closeDrawer();closeSheet()});
 function closeDrawer(){drawer.classList.remove("open");if(!sheet.classList.contains("open"))dim.classList.remove("show")}
 
-function renderMarkers(){const layerEl=document.getElementById("markerLayer");layerEl.innerHTML="";if(layer!==0)return;markers.forEach(m=>{const b=document.createElement("button");b.className="marker "+m[4]+(done.has(m[0])?" done":"");b.style.left=m[2]+"%";b.style.top=m[3]+"%";b.textContent=done.has(m[0])?"✓":m[1];b.addEventListener("click",()=>{done.add(m[0]);renderMarkers();updateProgress();if(done.size===7){document.getElementById("stepText").textContent="All fasteners complete. Tap Next Step."}});layerEl.appendChild(b)})}
+function anchorToPhoto(anchor,map=airboxGuideMap){
+  return {
+    x:map.frame.x+(anchor.x*map.frame.w),
+    y:map.frame.y+(anchor.y*map.frame.h)
+  };
+}
+
+function renderMarkers(){
+  const layerEl=document.getElementById("markerLayer");
+  layerEl.innerHTML="";
+  if(layer!==0)return;
+
+  Object.entries(airboxGuideMap.anchors).forEach(([id,a])=>{
+    const pos=anchorToPhoto(a);
+    const b=document.createElement("button");
+    b.className="marker "+(a.type==="clip"?"clip ":"")+(done.has(id)?" done":"");
+    b.style.left=pos.x+"%";
+    b.style.top=pos.y+"%";
+    b.textContent=done.has(id)?"✓":a.label;
+    b.addEventListener("click",()=>{
+      done.add(id);
+      renderMarkers();
+      updateProgress();
+      if(done.size===7){
+        document.getElementById("stepText").textContent="All fasteners complete. Tap Next Step.";
+      }
+    });
+    layerEl.appendChild(b);
+  });
+}
+
 function updateProgress(){const total=7;const completed=done.size;document.getElementById("count").textContent=completed+"/"+total;document.getElementById("progressLabel").textContent=completed+" of "+total+" complete";document.getElementById("progressFill").style.width=Math.round((completed/total)*100)+"%";if(layer===0){document.getElementById("nextAction").textContent=completed===total?"Next: lift cover":"Next: remove lid fasteners"}else if(layer===1){document.getElementById("nextAction").textContent="Next: remove filter"}else{document.getElementById("nextAction").textContent="Next: inspect housing"}}
 document.getElementById("nextBtn").addEventListener("click",()=>{if(layer===0&&done.size<7){document.getElementById("stepText").textContent="Finish fasteners first. "+(7-done.size)+" remaining.";return}if(layer<2){layer+=1;document.getElementById("layerImg").src=layerImages[layer];renderMarkers();document.getElementById("stepTitle").textContent=layer===1?"Inspect Filter":"Lower Housing";document.getElementById("stepText").textContent=layer===1?"The lid is off. Inspect or remove the air filter.":"Filter removed. Inspect the lower housing for debris.";updateProgress()}});
 document.getElementById("resetBtn").addEventListener("click",()=>{layer=0;done.clear();document.getElementById("layerImg").src=layerImages[0];document.getElementById("stepTitle").textContent="Remove Fasteners";document.getElementById("stepText").textContent="Tap each blue T25 screw marker, then tap the red rear clip marker.";renderMarkers();updateProgress()});
