@@ -16,12 +16,12 @@ const componentMaps=[
   {
     id:"coolant",
     name:"Coolant",
-    status:"starter",
+    status:"locked",
     target:"coolant",
-    frame:{x:63.6,y:38.4,w:11.4,h:9.8},
+    frame:{x:69.53,y:38.41,w:10.50,h:7.23},
     label:{x:52,y:54},
     viewBox:"0 0 100 100",
-    path:"M 20 78 C 10 65, 9 42, 17 27 C 25 12, 48 7, 69 13 C 91 20, 97 42, 89 65 C 82 85, 59 95, 37 91 C 30 90, 24 85, 20 78 Z"
+    path:"M 76 2.7 L 71.1 0 L 26.4 0.9 L 13.2 3.6 L 4.1 9.9 L 0.8 20.7 L 4.1 26.1 L 3.3 38.7 L 7.4 61.3 L 0 71.2 L 1.7 88.3 L 9.1 98.2 L 15.7 99.1 L 19.8 86.5 L 31.4 78.4 L 38 78.4 L 40.5 81.1 L 96.7 78.4 L 99.2 58.6 L 92.6 46.8 L 81 10.8 Z"
   }
 ];
 
@@ -964,7 +964,7 @@ const parts={
       "Low coolant can mean a leak, previous service issue, trapped air, or coolant loss.",
       "Coolant should be clean and the correct type. Sludge, oiliness, or heavy contamination needs deeper diagnosis.",
       "The reservoir, cap, hoses, and clamps all get their own life story entries later.",
-      "Never trust this starter map as final precision. It is only to get the coolant module into the app."
+      "This coolant outline is grounded on your traced reference photo. Future passes can tighten the path further if needed."
     ],
     "detailPages": [
       "coolantService",

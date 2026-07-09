@@ -786,7 +786,7 @@
   .lifeStats{grid-template-columns:1fr 1fr 1fr}
 }
 
-/* v6.0 Coolant Module Starter */
+/* v6.1 Coolant Outline Lock */
 .componentMap.starter .componentFill{
   fill:rgba(80,210,255,.10);
 }
@@ -864,4 +864,12 @@
 .coolantDot{
   background:#7eeaff;
   box-shadow:0 0 10px rgba(126,234,255,.85);
+}
+
+.componentMap.locked .componentFill{
+  fill:rgba(55,137,255,.10);
+}
+.componentMap.locked .componentGlow{
+  stroke:rgba(105,178,255,.78);
+  filter:drop-shadow(0 0 8px rgba(65,145,255,.85));
 }
