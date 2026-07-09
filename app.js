@@ -42,13 +42,62 @@ const airboxGuideMap={
 };
 
 const coolantGuideSteps=[
-  {check:"1",title:"Location + Cold Safety",text:"Use the passenger-side context photo first. Confirm the engine is cold before touching the coolant cap or reservoir area.",img:"images/coolant/07_passenger_side_context.jpg",spot:{x:47,y:34,label:"Tank"},tags:["Passenger side","Cold only","Context"]},
-  {check:"2",title:"Level + Coolant Color",text:"Use the side-angle photo to judge visible coolant level and color. The point is to track changes over time, not just one random reading.",img:"images/coolant/04_side_hose_level_angle.jpg",spot:{x:69,y:45,label:"Level"},tags:["Orange coolant","Level line","Log changes"]},
-  {check:"3",title:"Pressure Cap",text:"The cap is photo-verified at 140 kPa / 20 PSI. Inspect the cap area for staining, crust, cracking, or wetness, but do not open it hot.",img:"images/coolant/01_cap_closeup_140kpa_20psi.jpg",spot:{x:50,y:47,label:"140 kPa"},tags:["140 kPa","20 PSI","Do not open hot"]},
-  {check:"4",title:"Front Hose + Clamp",text:"Inspect the front hose, clamp, and plastic nipple area. Look for rusted clamp edges, dampness, dried coolant trail, swelling, or cracks.",img:"images/coolant/03_front_hose_clamp_closeup.jpg",spot:{x:41,y:51,label:"Clamp"},tags:["Front hose","Clamp","Leak signs"]},
-  {check:"4",title:"Lower Hose + Clamp",text:"Inspect the lower hose/clamp close-up. This photo gives the best view of the lower connection, but some surrounding areas remain partially blocked.",img:"images/coolant/05_lower_hose_clamp_closeup.jpg",spot:{x:42,y:37,label:"Lower"},tags:["Lower hose","Partially blocked","Clamp"]},
-  {check:"5",title:"Side Seam + Mount Area",text:"Use this right-side view to inspect what is visible around the reservoir side and nearby mount/clearance area. Hidden zones stay marked as obstructed.",img:"images/coolant/06_right_side_clearance_mount.jpg",spot:{x:78,y:44,label:"Side"},tags:["Side seam","Mount area","Obstructed zones"]},
-  {check:"5",title:"Final Context Check",text:"Finish by looking at the reservoir in context with the battery, fuse box, brake reservoir, and cowl. Then log what you found.",img:"images/coolant/00_reservoir_wide.jpg",spot:{x:66,y:38,label:"Final"},tags:["Wide view","Relationship map","Log it"]}
+  {
+    check:"1",
+    title:"Location + Cold Safety",
+    text:"Start with the reservoir location. Confirm the engine is cold before touching the coolant cap or reservoir area.",
+    img:"images/coolant/07_passenger_side_context.jpg",
+    spot:{x:50,y:30,lx:63,ly:20,label:"Reservoir location"},
+    tags:["Passenger side","Cold only","Context"]
+  },
+  {
+    check:"2",
+    title:"Level + Coolant Color",
+    text:"Use the side-angle photo to judge visible coolant level and color. The goal is tracking changes over time, not guessing from one photo.",
+    img:"images/coolant/04_side_hose_level_angle.jpg",
+    spot:{x:70,y:48,lx:58,ly:62,label:"Visible level area"},
+    tags:["Orange coolant","Level line","Log changes"]
+  },
+  {
+    check:"3",
+    title:"Pressure Cap",
+    text:"The cap is photo-verified at 140 kPa / 20 PSI. Inspect the cap area for staining, crust, cracking, or wetness, but do not open it hot.",
+    img:"images/coolant/01_cap_closeup_140kpa_20psi.jpg",
+    spot:{x:56,y:39,lx:70,ly:27,label:"140 kPa / 20 PSI cap"},
+    tags:["140 kPa","20 PSI","Do not open hot"]
+  },
+  {
+    check:"4",
+    title:"Front Hose + Clamp",
+    text:"Inspect the front hose, clamp, and plastic nipple area. Look for rusted clamp edges, dampness, dried coolant trail, swelling, or cracks.",
+    img:"images/coolant/03_front_hose_clamp_closeup.jpg",
+    spot:{x:43,y:50,lx:25,ly:49,label:"Hose clamp"},
+    tags:["Front hose","Clamp","Leak signs"]
+  },
+  {
+    check:"4",
+    title:"Lower Hose + Clamp",
+    text:"Inspect the lower hose and clamp close-up. This photo gives the best view of the lower connection, while surrounding areas remain partially blocked.",
+    img:"images/coolant/05_lower_hose_clamp_closeup.jpg",
+    spot:{x:41,y:36,lx:56,ly:27,label:"Lower hose connection"},
+    tags:["Lower hose","Partially blocked","Clamp"]
+  },
+  {
+    check:"5",
+    title:"Side Seam + Mount Area",
+    text:"Use this right-side view to inspect the visible reservoir side, nearby mount, and clearance area. Hidden zones stay marked as obstructed.",
+    img:"images/coolant/06_right_side_clearance_mount.jpg",
+    spot:{x:78,y:43,lx:57,ly:35,label:"Visible side seam"},
+    tags:["Side seam","Mount area","Obstructed zones"]
+  },
+  {
+    check:"5",
+    title:"Final Context Check",
+    text:"Finish by checking the reservoir in context with the battery, fuse box, brake reservoir, and cowl. Then log what you found.",
+    img:"images/coolant/00_reservoir_wide.jpg",
+    spot:{x:67,y:28,lx:47,ly:19,label:"Coolant reservoir"},
+    tags:["Wide view","Relationship map","Log it"]
+  }
 ];
 const parts={
   "quickstart": {
@@ -2089,7 +2138,14 @@ function renderCoolantStep(){
   document.getElementById("coolantStepCounter").textContent=(coolantStepIndex+1)+"/"+coolantGuideSteps.length;
   document.getElementById("coolantStepTags").innerHTML=step.tags.map(t=>'<span>'+t+'</span>').join("");
   const layer=document.getElementById("coolantHotspotLayer");
-  layer.innerHTML='<button class="coolantHotspot" type="button" style="left:'+step.spot.x+'%;top:'+step.spot.y+'%">'+step.spot.label+'</button>';
+  const sx=step.spot.x, sy=step.spot.y, lx=step.spot.lx ?? step.spot.x, ly=step.spot.ly ?? step.spot.y;
+  const mx=(sx+lx)/2, my=(sy+ly)/2;
+  layer.innerHTML=
+    '<svg class="coolantLeader" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">'+
+      '<path d="M '+sx+' '+sy+' Q '+mx+' '+my+' '+lx+' '+ly+'"></path>'+
+    '</svg>'+
+    '<span class="coolantPoint" style="left:'+sx+'%;top:'+sy+'%"></span>'+
+    '<span class="coolantCallout" style="left:'+lx+'%;top:'+ly+'%">'+step.spot.label+'</span>';
   document.getElementById("coolantPrevStep").disabled=coolantStepIndex===0;
   document.getElementById("coolantNextStep").disabled=coolantStepIndex===coolantGuideSteps.length-1;
   const mark=document.getElementById("coolantMarkStep");
