@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>MY BUICK Foundation Polish</title>
+  <title>MY BUICK v4.1 Precision Mapping</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -32,52 +32,38 @@
       </div>
 
       <div class="homeCards">
-        <div class="homeCard">
-          <div class="homeIcon">🔧</div>
-          <span>Last Service</span>
-          <strong>Air Filter Inspection</strong>
-          <small>84 miles ago</small>
-        </div>
-        <div class="homeCard">
-          <div class="homeIcon">📅</div>
-          <span>Next Due</span>
-          <strong>Air Filter Inspection</strong>
-          <small>In 3,158 miles</small>
-        </div>
-        <div class="homeCard">
-          <div class="homeIcon">📋</div>
-          <span>Open Items</span>
-          <strong>No open items</strong>
-          <small>All caught up</small>
-        </div>
+        <div class="homeCard"><div class="homeIcon">🔧</div><span>Last Service</span><strong>Air Filter Inspection</strong><small>84 miles ago</small></div>
+        <div class="homeCard"><div class="homeIcon">📅</div><span>Next Due</span><strong>Air Filter Inspection</strong><small>In 3,158 miles</small></div>
+        <div class="homeCard"><div class="homeIcon">📋</div><span>Open Items</span><strong>No open items</strong><small>All caught up</small></div>
       </div>
 
-      <button class="enterBtn" data-go="engine">
-        <span>🚗</span>
-        Enter Vehicle
-        <b>›</b>
-      </button>
+      <button class="enterBtn" data-go="engine"><span>🚗</span>Enter Vehicle<b>›</b></button>
     </section>
 
     <section id="engine" class="screen">
       <div class="sectionHead">
         <div>
           <h2>Engine Bay</h2>
-          <p>Only the finished module is active right now.</p>
+          <p>Tap the highlighted airbox to begin.</p>
         </div>
         <span class="badge">Airbox Only</span>
       </div>
 
       <div class="photoWrap engineWrap">
         <img src="images/engine/engine_bay_master.jpg" alt="Engine bay">
-        <button class="airboxHotspot" data-go="airbox" aria-label="Open Airbox">
+
+        <button class="airboxSvgHotspot" data-go="airbox" aria-label="Open Airbox Module">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <path class="airboxFill" d="M 7 39 L 13 34 L 18 22 L 31 22 L 39 12 L 50 14 L 60 22 L 72 28 L 77 40 L 76 70 L 68 86 L 48 86 L 30 82 L 11 77 L 7 62 Z"/>
+            <path class="airboxStroke" d="M 7 39 L 13 34 L 18 22 L 31 22 L 39 12 L 50 14 L 60 22 L 72 28 L 77 40 L 76 70 L 68 86 L 48 86 L 30 82 L 11 77 L 7 62 Z"/>
+          </svg>
           <span>Airbox</span>
         </button>
       </div>
 
       <div class="panel">
-        <strong>V1 Focus</strong>
-        <p>MY BUICK starts with one polished path: Vehicle → Engine Bay → Airbox. More modules come after Airbox reaches Gold Standard.</p>
+        <strong>Precision Mapping</strong>
+        <p>The airbox now uses an SVG component shape instead of a rectangle. Future parts will use the same system.</p>
       </div>
     </section>
 
@@ -87,21 +73,9 @@
         <h2>Airbox Module</h2>
         <p>Upper cover, air filter, and lower housing.</p>
       </div>
-
-      <button class="bigBtn" data-go="guide">
-        <b>🔧 Guide Me</b>
-        <span>Start the interactive airbox repair</span>
-      </button>
-
-      <button class="bigBtn" data-go="learn">
-        <b>📚 Learn</b>
-        <span>Part info, OEM numbers, materials, and facts</span>
-      </button>
-
-      <button class="bigBtn" data-go="maintenance">
-        <b>📝 Maintenance</b>
-        <span>Log service and view history</span>
-      </button>
+      <button class="bigBtn" data-go="guide"><b>🔧 Guide Me</b><span>Start the interactive airbox repair</span></button>
+      <button class="bigBtn" data-go="learn"><b>📚 Learn</b><span>Part info, OEM numbers, materials, and facts</span></button>
+      <button class="bigBtn" data-go="maintenance"><b>📝 Maintenance</b><span>Log service and view history</span></button>
     </section>
 
     <section id="guide" class="screen">
@@ -114,10 +88,7 @@
       </div>
 
       <div class="progressWrap">
-        <div class="progressText">
-          <span id="progressLabel">0 of 7 complete</span>
-          <span id="nextAction">Next: remove lid fasteners</span>
-        </div>
+        <div class="progressText"><span id="progressLabel">0 of 7 complete</span><span id="nextAction">Next: remove lid fasteners</span></div>
         <div class="progressBar"><div id="progressFill"></div></div>
       </div>
 
@@ -126,10 +97,7 @@
         <div id="markerLayer"></div>
       </div>
 
-      <div class="hintCard">
-        <strong>Tap = Do</strong>
-        <span>Tap a marker to complete it. Learn does not interrupt the repair.</span>
-      </div>
+      <div class="hintCard"><strong>Tap = Do</strong><span>Tap a marker to complete it. No popup interrupts the repair.</span></div>
 
       <div class="bottomBar">
         <button id="resetBtn" class="ghost">Reset</button>
@@ -139,72 +107,31 @@
 
     <section id="learn" class="screen">
       <div class="sectionHead">
-        <div>
-          <h2>Learn</h2>
-          <p>Airbox knowledge library.</p>
-        </div>
+        <div><h2>Learn</h2><p>Airbox knowledge library.</p></div>
         <span class="badge">3 Parts</span>
       </div>
-
-      <button class="learnCard" data-part="cover">
-        <div>
-          <span class="learnTag">Cover</span>
-          <b>Airbox Upper Cover</b>
-          <p>6 T25 screws, rear clip, seals the filter.</p>
-        </div>
-        <strong>›</strong>
-      </button>
-
-      <button class="learnCard" data-part="filter">
-        <div>
-          <span class="learnTag">Filter</span>
-          <b>Air Filter Element</b>
-          <p>OEM 55560894, ACDelco A3128C.</p>
-        </div>
-        <strong>›</strong>
-      </button>
-
-      <button class="learnCard" data-part="lower">
-        <div>
-          <span class="learnTag">Housing</span>
-          <b>Lower Airbox Housing</b>
-          <p>Holds filter, collects debris, supports the intake path.</p>
-        </div>
-        <strong>›</strong>
-      </button>
+      <button class="learnCard" data-part="cover"><div><span class="learnTag">Cover</span><b>Airbox Upper Cover</b><p>6 T25 screws, rear clip, seals the filter.</p></div><strong>›</strong></button>
+      <button class="learnCard" data-part="filter"><div><span class="learnTag">Filter</span><b>Air Filter Element</b><p>OEM 55560894, ACDelco A3128C.</p></div><strong>›</strong></button>
+      <button class="learnCard" data-part="lower"><div><span class="learnTag">Housing</span><b>Lower Airbox Housing</b><p>Holds filter, collects debris, supports intake path.</p></div><strong>›</strong></button>
     </section>
 
     <section id="maintenance" class="screen">
       <div class="sectionHead">
-        <div>
-          <h2>Maintenance</h2>
-          <p>Airbox service history.</p>
-        </div>
+        <div><h2>Maintenance</h2><p>Airbox service history.</p></div>
         <button id="addLog" class="smallBtn">+ Add</button>
       </div>
-
       <div id="logList" class="timeline"></div>
-
       <form id="logForm" class="panel hidden">
-        <label>Service
-          <input id="logService" value="Air Filter Inspection">
-        </label>
-        <label>Mileage
-          <input id="logMileage" placeholder="121842">
-        </label>
-        <label>Notes
-          <textarea id="logNotes" placeholder="Filter condition, brand, debris found..."></textarea>
-        </label>
+        <label>Service<input id="logService" value="Air Filter Inspection"></label>
+        <label>Mileage<input id="logMileage" placeholder="121842"></label>
+        <label>Notes<textarea id="logNotes" placeholder="Filter condition, brand, debris found..."></textarea></label>
         <button class="primary" type="submit">Save Entry</button>
       </form>
     </section>
   </main>
 
   <aside id="drawer" class="drawer">
-    <div class="drawerTop">
-      <strong>MY BUICK</strong>
-      <button id="closeDrawer" class="icon">×</button>
-    </div>
+    <div class="drawerTop"><strong>MY BUICK</strong><button id="closeDrawer" class="icon">×</button></div>
     <button data-go="home">🏠 Home</button>
     <button data-go="engine">🚗 Engine Bay</button>
     <button data-go="airbox">🌬 Airbox</button>
@@ -214,12 +141,7 @@
   </aside>
 
   <div id="dim" class="dim"></div>
-
-  <aside id="sheet" class="sheet">
-    <button id="closeSheet" class="icon sheetClose">×</button>
-    <div id="sheetData"></div>
-  </aside>
-
+  <aside id="sheet" class="sheet"><button id="closeSheet" class="icon sheetClose">×</button><div id="sheetData"></div></aside>
 </div>
 <script src="app.js"></script>
 </body>
