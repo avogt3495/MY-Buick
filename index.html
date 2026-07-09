@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>MY BUICK v6.2 Coolant Deep Info Pass</title>
-  <link rel="stylesheet" href="style.css?v=6.2">
+  <title>MY BUICK v6.3 Coolant Gold Photo Integration</title>
+  <link rel="stylesheet" href="style.css?v=6.3">
 </head>
 <body>
 <div class="app">
@@ -73,7 +73,7 @@
       <div class="assemblyQuickFacts">
         <div><span>Fasteners</span><strong>6 T25</strong></div>
         <div><span>Clip</span><strong>1 Rear</strong></div>
-        <div><span>Map</span><strong>Locked</strong></div>
+        <div><span>Photos</span><strong>Integrated</strong></div>
       </div>
 
       <button class="bigBtn" data-go="guide"><b>🔧 Guide Me</b><span>Start the interactive airbox repair</span></button>
@@ -258,11 +258,11 @@
     
     <section id="coolant" class="screen">
       <div class="assemblyCard coolantCard">
-        <img src="images/engine/engine_bay_master.jpg" alt="Coolant reservoir area">
+        <img src="images/coolant/00_reservoir_wide.jpg" alt="Coolant reservoir area">
         <div class="assemblyCopy">
-          <span class="badge green">Alex Verified Outline</span>
+          <span class="badge green">Gold Photo Pass</span>
           <h2>Coolant Reservoir</h2>
-          <p>Expansion tank / surge tank area, cap, level check, coolant condition, leaks, and cooling-system life story, now mapped from your traced photo reference.</p>
+          <p>Expansion tank / surge tank area, cap, level, hoses, clamps, seams, and life story, now using your organized close-up photo set.</p>
         </div>
       </div>
 
@@ -273,8 +273,15 @@
       </div>
 
       <div class="panel">
-        <strong>Coolant Outline Locked</strong>
-        <p>This coolant reservoir map now follows your traced outline reference so the engine-bay entry point is grounded on your real photo.</p>
+        <strong>Coolant Photo Map Integrated</strong>
+        <p>The coolant module now uses your organized reservoir, cap, hose, clamp, side-clearance, and passenger-side context photos.</p>
+      </div>
+
+      <div class="coolantPhotoRail" aria-label="Coolant verified photo set">
+        <div><img src="images/coolant/01_cap_closeup_140kpa_20psi.jpg" alt="Coolant pressure cap"><span>Cap</span></div>
+        <div><img src="images/coolant/04_side_hose_level_angle.jpg" alt="Coolant level and side angle"><span>Level</span></div>
+        <div><img src="images/coolant/03_front_hose_clamp_closeup.jpg" alt="Front hose and clamp"><span>Front Hose</span></div>
+        <div><img src="images/coolant/05_lower_hose_clamp_closeup.jpg" alt="Lower hose clamp"><span>Lower Hose</span></div>
       </div>
 
       <button class="bigBtn" data-go="coolantguide"><b>🔧 Guide Me</b><span>Check level, cap, tank, hoses, and leaks</span></button>
@@ -288,7 +295,7 @@
           <h2>Coolant Check</h2>
           <p>Cold-engine inspection flow.</p>
         </div>
-        <span class="badge green">Coolant V1</span>
+        <span class="badge green">Coolant Gold Candidate</span>
       </div>
 
       <div class="coolantWarning">
@@ -296,16 +303,32 @@
         <p>Do not remove the coolant cap when the system is hot or pressurized.</p>
       </div>
 
-      <div class="repair coolantGuidePhoto">
-        <img src="images/engine/engine_bay_master.jpg" alt="Coolant reservoir in engine bay">
+      <div class="coolantGoldStepper">
+        <div class="coolantStepHeader">
+          <span id="coolantStepCounter" class="badge">1/7</span>
+          <div>
+            <h3 id="coolantStepTitle">Location Context</h3>
+            <p id="coolantStepText">Start with the reservoir location before moving into close-up checks.</p>
+          </div>
+        </div>
+        <div class="repair coolantGuidePhoto">
+          <img id="coolantStepImg" src="images/coolant/07_passenger_side_context.jpg" alt="Coolant guide step photo">
+          <div id="coolantHotspotLayer" class="coolantHotspotLayer"></div>
+        </div>
+        <div id="coolantStepTags" class="coolantStepTags"></div>
+        <div class="coolantStepControls">
+          <button id="coolantPrevStep" class="ghost" type="button">‹ Previous</button>
+          <button id="coolantMarkStep" class="primary" type="button">Mark Done</button>
+          <button id="coolantNextStep" class="ghost" type="button">Next ›</button>
+        </div>
       </div>
 
-      <div class="checklist" id="coolantChecklist">
-        <button data-cool-check="1"><span></span><b>Engine is cold</b><small>Wait until the system is cool before touching the cap.</small></button>
-        <button data-cool-check="2"><span></span><b>Find reservoir level</b><small>Check level against the cold marks on the reservoir.</small></button>
-        <button data-cool-check="3"><span></span><b>Inspect coolant color</b><small>Look for correct orange coolant, contamination, sludge, or low level.</small></button>
-        <button data-cool-check="4"><span></span><b>Inspect cap and tank</b><small>Check cap area, tank seams, cracks, stains, or dried coolant trails.</small></button>
-        <button data-cool-check="5"><span></span><b>Inspect nearby hoses</b><small>Look for swelling, cracks, loose clamps, or wet spots.</small></button>
+      <div class="checklist coolantGoldChecklist" id="coolantChecklist">
+        <button data-cool-check="1"><span></span><b>Location / engine cold</b><small>Use the passenger-side context photo and confirm the system is cool.</small></button>
+        <button data-cool-check="2"><span></span><b>Level and color</b><small>Use the side-angle photo to check orange coolant level and condition.</small></button>
+        <button data-cool-check="3"><span></span><b>Cap and pressure rating</b><small>Verify the cap area and the 140 kPa / 20 PSI label.</small></button>
+        <button data-cool-check="4"><span></span><b>Visible hoses and clamps</b><small>Inspect the front and lower hose/clamp close-ups.</small></button>
+        <button data-cool-check="5"><span></span><b>Seams / mounts / obstructed zones</b><small>Check what is visible and mark hidden areas as partially obstructed.</small></button>
       </div>
 
       <div class="bottomBar">
@@ -316,16 +339,16 @@
 
     <section id="coolantlearn" class="screen">
       <div class="sectionHead">
-        <div><h2>Learn</h2><p>Coolant system basics, simple first.</p></div>
+        <div><h2>Learn</h2><p>Gold Candidate coolant info, simple first.</p></div>
         <span class="badge">Coolant</span>
       </div>
 
       <div class="learnIntro simpleLearnIntro">
-        <img src="images/engine/engine_bay_master.jpg" alt="Coolant reservoir area">
+        <img src="images/coolant/00_reservoir_wide.jpg" alt="Coolant reservoir area">
         <div>
-          <span class="badge green">Coolant V1</span>
+          <span class="badge green">Coolant Gold Candidate</span>
           <h3>Coolant Reservoir</h3>
-          <p>Deeper info for coolant type, capacity, level checks, overheating signs, parts, replacement notes, and what still needs verification.</p>
+          <p>Photo-backed info for coolant type, cap rating, level checks, hoses, clamps, hidden zones, symptoms, and service logging.</p>
         </div>
       </div>
 
@@ -336,10 +359,12 @@
       </div>
 
       <button class="learnCard simpleCard mainCard" data-part="coolantQuick"><div><span class="learnTag">Start</span><b>Coolant Quick Sheet</b><p>The important coolant info.</p></div><strong>›</strong></button>
-      <button class="learnCard simpleCard" data-part="coolantService"><div><span class="learnTag">Service</span><b>Level Check & Inspection</b><p>When and how to inspect safely.</p></div><strong>›</strong></button>
+      <button class="learnCard simpleCard" data-part="coolantService"><div><span class="learnTag">Service</span><b>Gold Visual Inspection</b><p>Photo-guided level, cap, hose, clamp, seam, and obstruction checks.</p></div><strong>›</strong></button>
+      <button class="learnCard simpleCard" data-part="coolantPhotoMap"><div><span class="learnTag">Photos</span><b>Photo Verification Map</b><p>What each uploaded coolant photo verifies inside the app.</p></div><strong>›</strong></button>
       <button class="learnCard simpleCard" data-part="coolantParts"><div><span class="learnTag">Parts</span><b>Parts & Specs</b><p>Coolant, capacity, reservoir, cap, prices, and TBD items.</p></div><strong>›</strong></button>
       <button class="learnCard simpleCard" data-part="coolantSymptoms"><div><span class="learnTag">Diagnose</span><b>Symptoms & Failure Modes</b><p>Low level, leaks, overheating, cap/tank issues.</p></div><strong>›</strong></button>
       <button class="learnCard simpleCard" data-part="coolantReplacement"><div><span class="learnTag">Replace</span><b>Replacement / Repair Options</b><p>Coolant, reservoir, cap, price, value, risk, and no-HP reality check.</p></div><strong>›</strong></button>
+      <button class="learnCard simpleCard" data-part="coolantDataStatus"><div><span class="learnTag">Data</span><b>Verification Status</b><p>What is verified, what is partially hidden, and what stays TBD.</p></div><strong>›</strong></button>
     </section>
 
     <section id="coolantmaintenance" class="screen">
@@ -352,9 +377,9 @@
       </div>
 
       <div class="lifeHero coolantLifeHero">
-        <img src="images/engine/engine_bay_master.jpg" alt="Coolant reservoir">
+        <img src="images/coolant/04_side_hose_level_angle.jpg" alt="Coolant reservoir">
         <div>
-          <span class="badge starterBadge">Coolant V0.1</span>
+          <span class="badge green">Coolant Gold Candidate</span>
           <h3>Coolant Life Story</h3>
           <p>Level checks, top-offs, flushes, leaks, cap condition, and coolant notes live here.</p>
         </div>
@@ -473,6 +498,6 @@
   <div id="dim" class="dim"></div>
   <aside id="sheet" class="sheet"><button id="closeSheet" class="icon sheetClose">×</button><div id="sheetData"></div></aside>
 </div>
-<script src="app.js?v=6.2"></script>
+<script src="app.js?v=6.3"></script>
 </body>
 </html>

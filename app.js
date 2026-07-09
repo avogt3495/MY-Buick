@@ -40,6 +40,16 @@ const airboxGuideMap={
     clip:{label:"C",type:"clip",x:.740,y:.371}
   }
 };
+
+const coolantGuideSteps=[
+  {check:"1",title:"Location + Cold Safety",text:"Use the passenger-side context photo first. Confirm the engine is cold before touching the coolant cap or reservoir area.",img:"images/coolant/07_passenger_side_context.jpg",spot:{x:47,y:34,label:"Tank"},tags:["Passenger side","Cold only","Context"]},
+  {check:"2",title:"Level + Coolant Color",text:"Use the side-angle photo to judge visible coolant level and color. The point is to track changes over time, not just one random reading.",img:"images/coolant/04_side_hose_level_angle.jpg",spot:{x:69,y:45,label:"Level"},tags:["Orange coolant","Level line","Log changes"]},
+  {check:"3",title:"Pressure Cap",text:"The cap is photo-verified at 140 kPa / 20 PSI. Inspect the cap area for staining, crust, cracking, or wetness, but do not open it hot.",img:"images/coolant/01_cap_closeup_140kpa_20psi.jpg",spot:{x:50,y:47,label:"140 kPa"},tags:["140 kPa","20 PSI","Do not open hot"]},
+  {check:"4",title:"Front Hose + Clamp",text:"Inspect the front hose, clamp, and plastic nipple area. Look for rusted clamp edges, dampness, dried coolant trail, swelling, or cracks.",img:"images/coolant/03_front_hose_clamp_closeup.jpg",spot:{x:41,y:51,label:"Clamp"},tags:["Front hose","Clamp","Leak signs"]},
+  {check:"4",title:"Lower Hose + Clamp",text:"Inspect the lower hose/clamp close-up. This photo gives the best view of the lower connection, but some surrounding areas remain partially blocked.",img:"images/coolant/05_lower_hose_clamp_closeup.jpg",spot:{x:42,y:37,label:"Lower"},tags:["Lower hose","Partially blocked","Clamp"]},
+  {check:"5",title:"Side Seam + Mount Area",text:"Use this right-side view to inspect what is visible around the reservoir side and nearby mount/clearance area. Hidden zones stay marked as obstructed.",img:"images/coolant/06_right_side_clearance_mount.jpg",spot:{x:78,y:44,label:"Side"},tags:["Side seam","Mount area","Obstructed zones"]},
+  {check:"5",title:"Final Context Check",text:"Finish by looking at the reservoir in context with the battery, fuse box, brake reservoir, and cowl. Then log what you found.",img:"images/coolant/00_reservoir_wide.jpg",spot:{x:66,y:38,label:"Final"},tags:["Wide view","Relationship map","Log it"]}
+];
 const parts={
   "quickstart": {
     "title": "Airbox Quick Sheet",
@@ -936,12 +946,12 @@ const parts={
   },
   "coolantQuick": {
     "title": "Coolant Quick Sheet",
-    "status": "GM Verified + Alex Verified Map",
-    "summary": "The coolant reservoir lets you inspect coolant level, condition, and pressure-system clues without opening the whole cooling system.",
+    "status": "Gold Candidate: Photo Integrated",
+    "summary": "The coolant module now combines the locked reservoir outline, your close-up photos, cap rating, hose/clamp views, level view, maintenance log, and verified/TBD system.",
     "quickFacts": [
       {
         "label": "Location",
-        "value": "Passenger-side / vehicle-right rear area of engine bay. Alex Verified from your traced photo."
+        "value": "Passenger-side / vehicle-right rear area of engine bay. Alex Verified from wide and passenger-side context photos."
       },
       {
         "label": "Coolant type",
@@ -950,6 +960,10 @@ const parts={
       {
         "label": "Mixture",
         "value": "50/50 clean drinkable water and DEX-COOL, or approved 50/50 premix."
+      },
+      {
+        "label": "Cap rating",
+        "value": "140 kPa / 20 PSI. Alex photo verified from cap close-up."
       },
       {
         "label": "System capacity",
@@ -970,20 +984,20 @@ const parts={
     ],
     "sections": [
       {
-        "label": "What it does",
-        "value": "The reservoir gives expanding hot coolant somewhere to go and gives you a visible place to check level and condition."
+        "label": "Gold candidate status",
+        "value": "Coolant now has a locked engine-bay outline, organized photo references, cap rating, guide flow, Learn details, and life-story maintenance."
       },
       {
-        "label": "Why it matters",
-        "value": "Low, contaminated, or incorrectly mixed coolant can lead to overheating, corrosion, heater-core/radiator issues, or poor temperature control."
+        "label": "Visible verified zones",
+        "value": "Reservoir body, pressure cap, visible coolant level/color, front hose/clamp, lower hose/clamp, side clearance, and passenger-side installed location."
       },
       {
-        "label": "Gold status",
-        "value": "Outline is locked from your traced reference. Part data is still in coolant V1 information pass, not fully Gold."
+        "label": "Partially obstructed zones",
+        "value": "Backside/bottom of reservoir, underside mounting feet, and any hidden molded markings are not fully visible with everything installed."
       },
       {
         "label": "Owner manual supported",
-        "value": "Manual supports DEX-COOL, 50/50 mixture, level-surface checking, and 9.4 L / 9.9 qt 3.0L V6 cooling-system capacity."
+        "value": "DEX-COOL, 50/50 mixture, level-surface checking, cold-system safety, and 9.4 L / 9.9 qt 3.0L V6 total cooling capacity."
       }
     ],
     "bullets": [
@@ -995,83 +1009,141 @@ const parts={
     ],
     "detailPages": [
       "coolantService",
+      "coolantPhotoMap",
       "coolantParts",
       "coolantSymptoms",
       "coolantReplacement",
-      "coolantEngineer",
       "coolantDataStatus"
     ],
-    "source": "2010 Buick LaCrosse Owner Manual + GM/ACDelco coolant listing + Alex Verified outline"
+    "source": "2010 Buick LaCrosse Owner Manual + GM/ACDelco coolant listing + Alex Verified outline",
+    "photos": [
+      {
+        "src": "images/coolant/00_reservoir_wide.jpg",
+        "label": "Reservoir Wide",
+        "note": "Main installed view for coolant module."
+      },
+      {
+        "src": "images/coolant/01_cap_closeup_140kpa_20psi.jpg",
+        "label": "Pressure Cap",
+        "note": "Verifies 140 kPa / 20 PSI cap label."
+      },
+      {
+        "src": "images/coolant/04_side_hose_level_angle.jpg",
+        "label": "Level / Side Angle",
+        "note": "Shows coolant color and level through reservoir."
+      },
+      {
+        "src": "images/coolant/03_front_hose_clamp_closeup.jpg",
+        "label": "Front Hose Clamp",
+        "note": "Visible hose, clamp, nipple area."
+      }
+    ]
   },
   "coolantService": {
-    "title": "Level Check & Inspection",
-    "status": "GM Manual Verified + Work-Flow Notes",
-    "summary": "The safe coolant check is a cold-engine visual inspection: level, color, cap area, tank seams, hoses, clamps, and leak traces.",
+    "title": "Gold Visual Inspection",
+    "status": "Photo-Guided Inspection",
+    "summary": "Use the uploaded photos as the inspection map: cap, level/color, front hose, lower hose, side clearance, seams, and the areas that are partially blocked.",
     "quickFacts": [
       {
-        "label": "Vehicle position",
-        "value": "Level surface."
+        "label": "Step 1",
+        "value": "Passenger-side context: confirm location and engine cold."
       },
       {
-        "label": "When to check",
-        "value": "Cold engine / cool system."
+        "label": "Step 2",
+        "value": "Level/side angle: verify orange coolant level and condition through the tank."
       },
       {
-        "label": "Normal level check",
-        "value": "Coolant should be visible in the recovery tank and at/above the correct mark when cold."
+        "label": "Step 3",
+        "value": "Cap close-up: verify 140 kPa / 20 PSI and inspect cap/neck area."
       },
       {
-        "label": "If low",
-        "value": "Add only correct 50/50 DEX-COOL mixture when the system is cool."
+        "label": "Step 4",
+        "value": "Front hose close-up: inspect clamp, hose condition, and nipple area."
       },
       {
-        "label": "If boiling",
-        "value": "Do nothing else until it cools down."
+        "label": "Step 5",
+        "value": "Lower hose close-up: inspect clamp, printed hose marking, seepage/crust, and nearby mount."
       },
       {
-        "label": "Service life",
-        "value": "5 years / 150,000 miles for DEX-COOL, but your car’s real service history matters."
+        "label": "Step 6",
+        "value": "Right-side clearance: inspect visible seam/mount area and mark hidden zones as partially obstructed."
+      },
+      {
+        "label": "Step 7",
+        "value": "Log the result in Maintenance so repeated low level or top-offs become a pattern."
       }
     ],
     "sections": [
       {
-        "label": "Step 1",
-        "value": "Confirm the engine is cold and the vehicle is on a level surface."
+        "label": "Cold safety",
+        "value": "Coolant system must be cool before touching/removing the cap. The cap warning is not decoration."
       },
       {
-        "label": "Step 2",
-        "value": "Look through the reservoir to see if coolant is visible and near the correct cold-level mark."
+        "label": "Level and color",
+        "value": "Your side photos show orange coolant visible in the tank. The app should track whether the level changes over time, not just one reading."
       },
       {
-        "label": "Step 3",
-        "value": "Inspect the color and clarity. Healthy coolant should look clean, not muddy, oily, chunky, or full of debris."
+        "label": "Cap verification",
+        "value": "Cap top reads 140 kPa / 20 PSI. This is photo verified."
       },
       {
-        "label": "Step 4",
-        "value": "Look around the cap neck, tank seams, bottom corners, nearby hoses, and clamps for wetness, dried crust, or staining."
+        "label": "Front hose/clamp",
+        "value": "Visible front hose and clamp are mapped as inspection points for cracking, swelling, crust, wetness, or loose clamp behavior."
       },
       {
-        "label": "Step 5",
-        "value": "Log it in Maintenance: date, mileage, level, color, condition, cost, and notes."
+        "label": "Lower hose/clamp",
+        "value": "Lower hose/clamp and nearby mount are visible enough to inspect, but surrounding parts block a perfect straight-on view."
       },
       {
-        "label": "Top-off note",
-        "value": "A small top-off should still be logged. Repeated top-offs are evidence of a problem."
+        "label": "Hidden areas",
+        "value": "Backside, underside, and some mounting points remain partially obstructed with battery/fuse/engine-bay components installed."
       }
     ],
     "bullets": [
-      "Do not open a hot cap.",
-      "Do not spill coolant on hot engine parts.",
-      "Do not add plain water as the normal fix.",
-      "Do not use an unknown coolant just because it is orange.",
-      "If history is unknown, the Life Story tab is where we start tracking from now."
+      "Look for wetness, crust, stains, cracks, swollen rubber, loose clamps, and repeated low level.",
+      "Photograph leaks before wiping them off.",
+      "A top-off is a maintenance event and should be logged.",
+      "If level keeps dropping, do not call it normal.",
+      "Hidden areas stay marked as partially obstructed until the car is already apart for another job."
     ],
     "detailPages": [
+      "coolantPhotoMap",
       "coolantSymptoms",
-      "coolantEngineer",
       "coolantDataStatus"
     ],
-    "source": "2010 Buick LaCrosse Owner Manual"
+    "source": "Alex photo set + 2010 Buick LaCrosse owner manual safety/service guidance",
+    "photos": [
+      {
+        "src": "images/coolant/00_reservoir_wide.jpg",
+        "label": "Reservoir Wide",
+        "note": "Main installed view for coolant module."
+      },
+      {
+        "src": "images/coolant/01_cap_closeup_140kpa_20psi.jpg",
+        "label": "Pressure Cap",
+        "note": "Verifies 140 kPa / 20 PSI cap label."
+      },
+      {
+        "src": "images/coolant/04_side_hose_level_angle.jpg",
+        "label": "Level / Side Angle",
+        "note": "Shows coolant color and level through reservoir."
+      },
+      {
+        "src": "images/coolant/03_front_hose_clamp_closeup.jpg",
+        "label": "Front Hose Clamp",
+        "note": "Visible hose, clamp, nipple area."
+      },
+      {
+        "src": "images/coolant/05_lower_hose_clamp_closeup.jpg",
+        "label": "Lower Hose Clamp",
+        "note": "Lower hose/clamp and nearby mount reference."
+      },
+      {
+        "src": "images/coolant/06_right_side_clearance_mount.jpg",
+        "label": "Right Side Clearance",
+        "note": "Side seam/mount/obstructed zone reference."
+      }
+    ]
   },
   "coolantParts": {
     "title": "Parts & Specs",
@@ -1121,6 +1193,10 @@ const parts={
         "value": "Manual warns to always use DEX-COOL. Wrong coolant can require earlier changes and may cause corrosion problems."
       },
       {
+        "label": "Cap rating photo",
+        "value": "Your cap close-up clearly shows 140 kPa / 20 PSI. Exact cap replacement part number still needs verification."
+      },
+      {
         "label": "Premix vs concentrate",
         "value": "Premix is ready to pour. Concentrate must be mixed correctly with the recommended water type before use."
       },
@@ -1145,10 +1221,28 @@ const parts={
       "A coolant cap can be cheap but still important."
     ],
     "detailPages": [
+      "coolantPhotoMap",
       "coolantReplacement",
       "coolantDataStatus"
     ],
-    "source": "Owner manual + GM/ACDelco coolant listing + AutoZone/Advance catalog snapshots"
+    "source": "Owner manual + GM/ACDelco coolant listing + AutoZone/Advance catalog snapshots",
+    "photos": [
+      {
+        "src": "images/coolant/00_reservoir_wide.jpg",
+        "label": "Reservoir Wide",
+        "note": "Main installed view for coolant module."
+      },
+      {
+        "src": "images/coolant/01_cap_closeup_140kpa_20psi.jpg",
+        "label": "Pressure Cap",
+        "note": "Verifies 140 kPa / 20 PSI cap label."
+      },
+      {
+        "src": "images/coolant/04_side_hose_level_angle.jpg",
+        "label": "Level / Side Angle",
+        "note": "Shows coolant color and level through reservoir."
+      }
+    ]
   },
   "coolantSymptoms": {
     "title": "Symptoms & Failure Modes",
@@ -1218,7 +1312,24 @@ const parts={
       "coolantEngineer",
       "coolantDataStatus"
     ],
-    "source": "Owner manual warnings + general cooling-system diagnostic logic"
+    "source": "Owner manual warnings + general cooling-system diagnostic logic",
+    "photos": [
+      {
+        "src": "images/coolant/00_reservoir_wide.jpg",
+        "label": "Reservoir Wide",
+        "note": "Main installed view for coolant module."
+      },
+      {
+        "src": "images/coolant/01_cap_closeup_140kpa_20psi.jpg",
+        "label": "Pressure Cap",
+        "note": "Verifies 140 kPa / 20 PSI cap label."
+      },
+      {
+        "src": "images/coolant/04_side_hose_level_angle.jpg",
+        "label": "Level / Side Angle",
+        "note": "Shows coolant color and level through reservoir."
+      }
+    ]
   },
   "coolantReplacement": {
     "title": "Replacement / Upgrade Notes",
@@ -1331,7 +1442,24 @@ const parts={
       "coolantService",
       "coolantDataStatus"
     ],
-    "source": "GM/ACDelco coolant listing + AutoZone/Advance catalog snapshots + owner manual"
+    "source": "GM/ACDelco coolant listing + AutoZone/Advance catalog snapshots + owner manual",
+    "photos": [
+      {
+        "src": "images/coolant/00_reservoir_wide.jpg",
+        "label": "Reservoir Wide",
+        "note": "Main installed view for coolant module."
+      },
+      {
+        "src": "images/coolant/01_cap_closeup_140kpa_20psi.jpg",
+        "label": "Pressure Cap",
+        "note": "Verifies 140 kPa / 20 PSI cap label."
+      },
+      {
+        "src": "images/coolant/04_side_hose_level_angle.jpg",
+        "label": "Level / Side Angle",
+        "note": "Shows coolant color and level through reservoir."
+      }
+    ]
   },
   "coolantEngineer": {
     "title": "Engineer’s Corner",
@@ -1387,46 +1515,63 @@ const parts={
       "Pressure cap condition can affect boiling/overflow behavior.",
       "The app should eventually track temperature, level history, and top-off frequency together."
     ],
-    "source": "Engineering explanation based on owner manual and coolant system function"
+    "source": "Engineering explanation based on owner manual and coolant system function",
+    "photos": [
+      {
+        "src": "images/coolant/00_reservoir_wide.jpg",
+        "label": "Reservoir Wide",
+        "note": "Main installed view for coolant module."
+      },
+      {
+        "src": "images/coolant/01_cap_closeup_140kpa_20psi.jpg",
+        "label": "Pressure Cap",
+        "note": "Verifies 140 kPa / 20 PSI cap label."
+      },
+      {
+        "src": "images/coolant/04_side_hose_level_angle.jpg",
+        "label": "Level / Side Angle",
+        "note": "Shows coolant color and level through reservoir."
+      }
+    ]
   },
   "coolantDataStatus": {
     "title": "Coolant Data Status",
-    "status": "V1 Audit",
-    "summary": "This keeps the coolant module honest so it can grow without fake certainty.",
+    "status": "Gold Candidate Audit",
+    "summary": "Coolant is now photo-integrated and very close, but true Gold still waits for final phone testing and any annoying issues you notice.",
     "quickFacts": [
       {
         "label": "Alex Verified",
-        "value": "Coolant reservoir outline/tap target from your traced photo."
+        "value": "Coolant outline/tap target, reservoir location, cap label, visible level/color, front hose/clamp, lower hose/clamp, and passenger-side context."
+      },
+      {
+        "label": "Photo Verified",
+        "value": "Cap rating is 140 kPa / 20 PSI from close-up photo."
       },
       {
         "label": "GM Verified",
         "value": "DEX-COOL use, 50/50 mix, 5 yr/150k service life, 3.0L V6 capacity 9.4 L / 9.9 qt."
       },
       {
-        "label": "Catalog Snapshot",
-        "value": "ACDelco 10-5027 / GM 12378390 coolant; ACDelco 22950436 tank; Dorman 603-385 tank."
+        "label": "Partially obstructed",
+        "value": "Backside, underside mounting feet, lower rear tank area, and hidden molded numbers with engine bay assembled."
       },
       {
         "label": "Still TBD",
-        "value": "Exact reservoir OE fitment by VIN, cap part number, cap pressure rating, hose numbers, weights, exact labor steps."
+        "value": "Exact reservoir OE fitment by VIN, cap part number, cap pressure part match, hose part numbers, weights, and full removal procedure."
       }
     ],
     "sections": [
       {
-        "label": "What is locked",
-        "value": "Engine-bay coolant outline, module entry point, Learn structure, Guide starter checklist, Maintenance life story."
+        "label": "What is now locked",
+        "value": "Engine-bay coolant entry point, photo set paths, Guide Me photo stepper, Learn photo map, and maintenance life-story structure."
       },
       {
-        "label": "What needs a real-world pass",
-        "value": "Close-up coolant photos, cap close-up, visible level marks, hose routing photos, reservoir underside/side seam photos."
+        "label": "What stays honest",
+        "value": "Hidden physical areas remain marked as partially obstructed rather than guessed."
       },
       {
-        "label": "What needs source verification",
-        "value": "Pressure cap number/rating, exact reservoir OE replacement by VIN, hose part numbers, coolant flush service steps."
-      },
-      {
-        "label": "What not to fake",
-        "value": "Do not invent cap pressure, reservoir weight, hose part numbers, or torque specs."
+        "label": "Final Gold test",
+        "value": "Open on phone, tap Coolant, run Guide Me, open each Learn card, add/delete one log, then decide if anything feels annoying."
       }
     ],
     "bullets": [
@@ -1434,7 +1579,145 @@ const parts={
       "The next Gold step is better close-up photos and final part-number verification.",
       "Airbox remains the template for how coolant will eventually become Gold."
     ],
-    "source": "Current app status + owner manual + catalog snapshots"
+    "source": "Current app status + owner manual + catalog snapshots",
+    "photos": [
+      {
+        "src": "images/coolant/00_reservoir_wide.jpg",
+        "label": "Reservoir Wide",
+        "note": "Main installed view for coolant module."
+      },
+      {
+        "src": "images/coolant/01_cap_closeup_140kpa_20psi.jpg",
+        "label": "Pressure Cap",
+        "note": "Verifies 140 kPa / 20 PSI cap label."
+      },
+      {
+        "src": "images/coolant/04_side_hose_level_angle.jpg",
+        "label": "Level / Side Angle",
+        "note": "Shows coolant color and level through reservoir."
+      },
+      {
+        "src": "images/coolant/03_front_hose_clamp_closeup.jpg",
+        "label": "Front Hose Clamp",
+        "note": "Visible hose, clamp, nipple area."
+      },
+      {
+        "src": "images/coolant/05_lower_hose_clamp_closeup.jpg",
+        "label": "Lower Hose Clamp",
+        "note": "Lower hose/clamp and nearby mount reference."
+      },
+      {
+        "src": "images/coolant/06_right_side_clearance_mount.jpg",
+        "label": "Right Side Clearance",
+        "note": "Side seam/mount/obstructed zone reference."
+      }
+    ],
+    "detailPages": [
+      "coolantQuick",
+      "coolantPhotoMap",
+      "coolantService"
+    ]
+  },
+  "coolantPhotoMap": {
+    "title": "Photo Verification Map",
+    "status": "Alex Photo Verified",
+    "summary": "This page explains exactly what each organized coolant photo is used for so the app stays grounded in your real car.",
+    "photos": [
+      {
+        "src": "images/coolant/00_reservoir_wide.jpg",
+        "label": "Reservoir Wide",
+        "note": "Main installed view for coolant module."
+      },
+      {
+        "src": "images/coolant/01_cap_closeup_140kpa_20psi.jpg",
+        "label": "Pressure Cap",
+        "note": "Verifies 140 kPa / 20 PSI cap label."
+      },
+      {
+        "src": "images/coolant/04_side_hose_level_angle.jpg",
+        "label": "Level / Side Angle",
+        "note": "Shows coolant color and level through reservoir."
+      },
+      {
+        "src": "images/coolant/03_front_hose_clamp_closeup.jpg",
+        "label": "Front Hose Clamp",
+        "note": "Visible hose, clamp, nipple area."
+      },
+      {
+        "src": "images/coolant/05_lower_hose_clamp_closeup.jpg",
+        "label": "Lower Hose Clamp",
+        "note": "Lower hose/clamp and nearby mount reference."
+      },
+      {
+        "src": "images/coolant/06_right_side_clearance_mount.jpg",
+        "label": "Right Side Clearance",
+        "note": "Side seam/mount/obstructed zone reference."
+      },
+      {
+        "src": "images/coolant/02_brake_reservoir_context.jpg",
+        "label": "Brake Reservoir Context",
+        "note": "Shows adjacent reservoir spacing."
+      },
+      {
+        "src": "images/coolant/07_passenger_side_context.jpg",
+        "label": "Passenger-Side Context",
+        "note": "Wide reference for where coolant lives."
+      }
+    ],
+    "quickFacts": [
+      {
+        "label": "00_reservoir_wide",
+        "value": "Main module hero and installed reservoir context."
+      },
+      {
+        "label": "01_cap_closeup_140kpa_20psi",
+        "value": "Pressure cap rating and warning-label reference."
+      },
+      {
+        "label": "03_front_hose_clamp_closeup",
+        "value": "Front hose, clamp, nipple, and leak-inspection zone."
+      },
+      {
+        "label": "04_side_hose_level_angle",
+        "value": "Visible coolant level/color and side-angle reference."
+      },
+      {
+        "label": "05_lower_hose_clamp_closeup",
+        "value": "Lower hose, clamp, nearby bracket/mount, and partially blocked lower zone."
+      },
+      {
+        "label": "06_right_side_clearance_mount",
+        "value": "Right-side clearance, side seam, wiring loom, and obstructed mount area."
+      },
+      {
+        "label": "07_passenger_side_context",
+        "value": "Wide passenger-side location reference for guide context."
+      }
+    ],
+    "sections": [
+      {
+        "label": "Gold rule",
+        "value": "A photo only verifies what is actually visible in that photo. Hidden areas stay marked as hidden instead of guessed."
+      },
+      {
+        "label": "Current strongest proof",
+        "value": "Cap rating, installed location, visible level/color, front hose, lower hose, and general reservoir shape are now well-grounded."
+      },
+      {
+        "label": "Still not visible enough",
+        "value": "Back/bottom of reservoir, underside mounting feet, and hidden molded part numbers are not fully verified from current installed photos."
+      }
+    ],
+    "bullets": [
+      "This page is the bridge between your camera roll and the app data.",
+      "Every future component should get a page like this before it becomes Gold.",
+      "Photo map prevents the app from pretending it knows hidden areas."
+    ],
+    "detailPages": [
+      "coolantService",
+      "coolantDataStatus"
+    ],
+    "source": "Alex uploaded coolant photo set"
   }
 };
 
@@ -1473,6 +1756,9 @@ function showScreen(id){
   closeDrawer();
   if(id==="guide"){
     requestAnimationFrame(()=>{renderMarkers();updateProgress();});
+  }
+  if(id==="coolantguide"){
+    requestAnimationFrame(()=>renderCoolantStep());
   }
 }
 document.querySelectorAll("[data-go]").forEach(btn=>btn.addEventListener("click",()=>showScreen(btn.dataset.go)));
@@ -1532,6 +1818,13 @@ function openSheet(id){
     return '<div class="info"><span>'+item.label+'</span><b>'+item.value+'</b></div>';
   }).join("");
 
+  const photoHtml=(data.photos||[]).map(p=>{
+    return '<figure class="sheetPhoto">'+
+      '<img src="'+p.src+'" alt="'+p.label+'">'+
+      '<figcaption><b>'+p.label+'</b><span>'+p.note+'</span></figcaption>'+ 
+    '</figure>';
+  }).join("");
+
   const optionHtml=(data.options||[]).map(o=>{
     return '<div class="optionCard compactOption">'+
       '<div class="optionTop"><h3>'+o.name+'</h3><span>'+o.price+'</span></div>'+
@@ -1571,6 +1864,7 @@ function openSheet(id){
     '<div class="tabSwitch"><button class="active" id="summaryBtn">Summary</button><button id="detailsBtn">Details</button></div>'+
     '<div id="summaryPanel">'+
       (quickHtml?'<div class="quickFactGrid">'+quickHtml+'</div>':'')+
+      (photoHtml?'<div class="sheetPhotoGrid">'+photoHtml+'</div>':'')+
       optionHtml+
       (bulletHtml?'<div class="info bulletInfo"><span>Key Notes</span><ul>'+bulletHtml+'</ul></div>':'')+
     '</div>'+
@@ -1782,6 +2076,39 @@ document.getElementById("seedExample").addEventListener("click",()=>{
 });
 
 
+// Coolant Gold photo stepper
+let coolantStepIndex=0;
+function renderCoolantStep(){
+  const step=coolantGuideSteps[coolantStepIndex]||coolantGuideSteps[0];
+  const img=document.getElementById("coolantStepImg");
+  if(!img)return;
+  img.src=step.img;
+  img.alt=step.title;
+  document.getElementById("coolantStepTitle").textContent=step.title;
+  document.getElementById("coolantStepText").textContent=step.text;
+  document.getElementById("coolantStepCounter").textContent=(coolantStepIndex+1)+"/"+coolantGuideSteps.length;
+  document.getElementById("coolantStepTags").innerHTML=step.tags.map(t=>'<span>'+t+'</span>').join("");
+  const layer=document.getElementById("coolantHotspotLayer");
+  layer.innerHTML='<button class="coolantHotspot" type="button" style="left:'+step.spot.x+'%;top:'+step.spot.y+'%">'+step.spot.label+'</button>';
+  document.getElementById("coolantPrevStep").disabled=coolantStepIndex===0;
+  document.getElementById("coolantNextStep").disabled=coolantStepIndex===coolantGuideSteps.length-1;
+  const mark=document.getElementById("coolantMarkStep");
+  mark.textContent=coolantChecks.has(step.check)?"Marked ✓":"Mark Done";
+}
+
+document.getElementById("coolantPrevStep")?.addEventListener("click",()=>{
+  if(coolantStepIndex>0){coolantStepIndex--;renderCoolantStep();}
+});
+document.getElementById("coolantNextStep")?.addEventListener("click",()=>{
+  if(coolantStepIndex<coolantGuideSteps.length-1){coolantStepIndex++;renderCoolantStep();}
+});
+document.getElementById("coolantMarkStep")?.addEventListener("click",()=>{
+  const step=coolantGuideSteps[coolantStepIndex]||coolantGuideSteps[0];
+  coolantChecks.add(step.check);
+  renderCoolantChecklist();
+  renderCoolantStep();
+});
+
 // Coolant starter guide checklist
 let coolantChecks=new Set();
 function renderCoolantChecklist(){
@@ -1791,6 +2118,10 @@ function renderCoolantChecklist(){
     const dot=btn.querySelector("span");
     if(dot)dot.textContent=coolantChecks.has(id)?"✓":"";
   });
+  const mark=document.getElementById("coolantMarkStep");
+  if(mark && coolantGuideSteps[coolantStepIndex]){
+    mark.textContent=coolantChecks.has(coolantGuideSteps[coolantStepIndex].check)?"Marked ✓":"Mark Done";
+  }
 }
 document.querySelectorAll("[data-cool-check]").forEach(btn=>{
   btn.addEventListener("click",()=>{
@@ -1949,4 +2280,4 @@ document.getElementById("coolantSeedExample")?.addEventListener("click",()=>{
   renderCoolantLogs();
 });
 
-setGreeting();renderComponentMaps();renderMarkers();updateProgress();renderLogs();renderCoolantChecklist();renderCoolantLogs();showScreen("home");window.addEventListener("load",()=>setTimeout(()=>{renderMarkers();updateProgress();},50));
+setGreeting();renderComponentMaps();renderMarkers();updateProgress();renderLogs();renderCoolantChecklist();renderCoolantStep();renderCoolantLogs();showScreen("home");window.addEventListener("load",()=>setTimeout(()=>{renderMarkers();updateProgress();},50));
