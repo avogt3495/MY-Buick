@@ -1898,10 +1898,19 @@ document.getElementById("backBtn").addEventListener("click",()=>{
 });
 
 const drawer=document.getElementById("drawer");const dim=document.getElementById("dim");const sheet=document.getElementById("sheet");
-document.getElementById("menuBtn").addEventListener("click",()=>{drawer.classList.add("open");dim.classList.add("show")});
+document.getElementById("menuBtn").addEventListener("click",()=>{
+  drawer.scrollTop=0;
+  drawer.classList.add("open");
+  drawer.setAttribute("aria-hidden","false");
+  dim.classList.add("show");
+});
 document.getElementById("closeDrawer").addEventListener("click",closeDrawer);
 dim.addEventListener("click",()=>{closeDrawer();closeSheet()});
-function closeDrawer(){drawer.classList.remove("open");if(!sheet.classList.contains("open"))dim.classList.remove("show")}
+function closeDrawer(){
+  drawer.classList.remove("open");
+  drawer.setAttribute("aria-hidden","true");
+  if(!sheet.classList.contains("open"))dim.classList.remove("show");
+}
 
 function anchorToPhoto(anchor,map=airboxGuideMap){
   return {
@@ -2026,10 +2035,17 @@ function openSheet(id){
     btn.addEventListener("click",()=>openSheet(btn.dataset.jump));
   });
 
+  sheet.scrollTop=0;
+  document.getElementById("sheetData")?.scrollTo({top:0,behavior:"instant"});
   sheet.classList.add("open");
+  sheet.setAttribute("aria-hidden","false");
   dim.classList.add("show");
 }
-function closeSheet(){sheet.classList.remove("open");if(!drawer.classList.contains("open"))dim.classList.remove("show")}
+function closeSheet(){
+  sheet.classList.remove("open");
+  sheet.setAttribute("aria-hidden","true");
+  if(!drawer.classList.contains("open"))dim.classList.remove("show");
+}
 document.getElementById("closeSheet").addEventListener("click",closeSheet);
 function getLogs(){return JSON.parse(localStorage.getItem("mybuick_airbox_life_logs")||"[]")}
 function saveLogs(logs){localStorage.setItem("mybuick_airbox_life_logs",JSON.stringify(logs))}
@@ -2251,13 +2267,19 @@ function renderCoolantStep(){
 
 function setCoolantSheetTab(tab){
   document.querySelectorAll("[data-coolant-sheet-tab]").forEach(btn=>{
-    btn.classList.toggle("active",btn.dataset.coolantSheetTab===tab);
+    const active=btn.dataset.coolantSheetTab===tab;
+    btn.classList.toggle("active",active);
+    btn.setAttribute("aria-selected",active?"true":"false");
   });
   document.querySelectorAll("[data-coolant-sheet-panel]").forEach(panel=>{
-    panel.classList.toggle("active",panel.dataset.coolantSheetPanel===tab);
+    const active=panel.dataset.coolantSheetPanel===tab;
+    panel.classList.toggle("active",active);
+    panel.hidden=!active;
   });
   const sheet=document.getElementById("coolantGuideSheet");
   if(sheet)sheet.dataset.activeTab=tab;
+  const body=document.querySelector("#coolantGuideSheet .coolantFloatBody");
+  if(body)body.scrollTop=0;
   if(tab==="flush")renderCoolantFlushStep();
 }
 
@@ -2286,18 +2308,20 @@ document.getElementById("coolantFlushNext")?.addEventListener("click",()=>{
 
 function openCoolantGuideSheet(tab="step"){
   setCoolantSheetTab(tab);
-  document.getElementById("coolantGuideSheet")?.classList.add("open");
+  const sheet=document.getElementById("coolantGuideSheet");
+  sheet?.classList.add("open");
   document.getElementById("coolantSheetBackdrop")?.classList.add("open");
   document.getElementById("coolantGuideDockToggle")?.setAttribute("aria-expanded","true");
-  document.getElementById("coolantGuideSheet")?.setAttribute("aria-hidden","false");
+  sheet?.setAttribute("aria-hidden","false");
   document.body.classList.add("coolantSheetOpen");
 }
 
 function closeCoolantGuideSheet(){
-  document.getElementById("coolantGuideSheet")?.classList.remove("open");
+  const sheet=document.getElementById("coolantGuideSheet");
+  sheet?.classList.remove("open");
   document.getElementById("coolantSheetBackdrop")?.classList.remove("open");
   document.getElementById("coolantGuideDockToggle")?.setAttribute("aria-expanded","false");
-  document.getElementById("coolantGuideSheet")?.setAttribute("aria-hidden","true");
+  sheet?.setAttribute("aria-hidden","true");
   document.body.classList.remove("coolantSheetOpen");
 }
 
@@ -2531,6 +2555,15 @@ const globalFloatBackdrop=document.getElementById("globalFloatBackdrop");
 const globalFloatContent=document.getElementById("globalFloatContent");
 let globalMountedNodes=[];
 let globalFloatCleanup=null;
+let globalRestoreTimer=null;
+let globalLastTrigger=null;
+
+function cancelGlobalRestore(){
+  if(globalRestoreTimer){
+    clearTimeout(globalRestoreTimer);
+    globalRestoreTimer=null;
+  }
+}
 
 function globalDockItems(screenId){
   const map={
@@ -2633,11 +2666,14 @@ function handleGlobalDockAction(btn){
 }
 
 function openGlobalFloatSheet(title,subtitle,html,eyebrow="MY BUICK"){
+  cancelGlobalRestore();
   restoreGlobalMountedNodes();
+  globalLastTrigger=document.activeElement;
   document.getElementById("globalFloatEyebrow").textContent=eyebrow;
   document.getElementById("globalFloatTitle").textContent=title;
   document.getElementById("globalFloatSubtitle").textContent=subtitle||"";
   globalFloatContent.innerHTML=html||"";
+  globalFloatContent.scrollTop=0;
   globalFloatSheet.classList.add("open");
   globalFloatBackdrop.classList.add("open");
   globalFloatSheet.setAttribute("aria-hidden","false");
@@ -2645,7 +2681,9 @@ function openGlobalFloatSheet(title,subtitle,html,eyebrow="MY BUICK"){
 }
 
 function openGlobalMovedSheet(title,subtitle,nodes,options={}){
+  cancelGlobalRestore();
   restoreGlobalMountedNodes();
+  globalLastTrigger=document.activeElement;
   document.getElementById("globalFloatEyebrow").textContent=options.eyebrow||"MY BUICK";
   document.getElementById("globalFloatTitle").textContent=title;
   document.getElementById("globalFloatSubtitle").textContent=subtitle||"";
@@ -2664,6 +2702,7 @@ function openGlobalMovedSheet(title,subtitle,nodes,options={}){
   });
 
   globalFloatCleanup=options.cleanup||null;
+  globalFloatContent.scrollTop=0;
   globalFloatSheet.classList.add("open");
   globalFloatBackdrop.classList.add("open");
   globalFloatSheet.setAttribute("aria-hidden","false");
@@ -2691,8 +2730,36 @@ function closeGlobalFloatSheet(){
   globalFloatBackdrop?.classList.remove("open");
   globalFloatSheet.setAttribute("aria-hidden","true");
   document.body.classList.remove("globalFloatOpen");
-  restoreGlobalMountedNodes();
+  cancelGlobalRestore();
+  globalRestoreTimer=setTimeout(()=>{
+    restoreGlobalMountedNodes();
+    globalRestoreTimer=null;
+    if(globalLastTrigger && document.contains(globalLastTrigger)){
+      globalLastTrigger.focus({preventScroll:true});
+    }
+    globalLastTrigger=null;
+  },300);
 }
+
+function installSwipeDownClose(handle,closeFn){
+  if(!handle)return;
+  let startY=0;
+  let startTime=0;
+  handle.addEventListener("touchstart",event=>{
+    const touch=event.touches[0];
+    startY=touch.clientY;
+    startTime=Date.now();
+  },{passive:true});
+  handle.addEventListener("touchend",event=>{
+    const touch=event.changedTouches[0];
+    const distance=touch.clientY-startY;
+    const elapsed=Date.now()-startTime;
+    if(distance>46 && elapsed<650)closeFn();
+  },{passive:true});
+}
+
+installSwipeDownClose(document.querySelector(".globalFloatHandle"),closeGlobalFloatSheet);
+installSwipeDownClose(document.querySelector("#coolantGuideSheet .coolantSheetHandle"),closeCoolantGuideSheet);
 
 document.getElementById("globalFloatClose")?.addEventListener("click",closeGlobalFloatSheet);
 globalFloatBackdrop?.addEventListener("click",closeGlobalFloatSheet);

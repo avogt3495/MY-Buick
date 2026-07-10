@@ -7,8 +7,8 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <meta name="theme-color" content="#070a10">
-  <title>MY BUICK v6.16 Modern Glass Interface</title>
-  <link rel="stylesheet" href="style.css?v=6.16-modern-glass">
+  <title>MY BUICK v6.17 Modern Glass Refinement</title>
+  <link rel="stylesheet" href="style.css?v=6.17-refined-glass">
 </head>
 <body>
 <div class="app">
@@ -321,7 +321,7 @@
 
       <div id="coolantSheetBackdrop" class="coolantSheetBackdrop coolantFloatBackdrop"></div>
 
-      <aside id="coolantGuideSheet" class="coolantGuideSheet coolantFloatSheet" aria-hidden="true" data-active-tab="step">
+      <aside id="coolantGuideSheet" class="coolantGuideSheet coolantFloatSheet" role="dialog" aria-modal="true" aria-labelledby="coolantStepTitle" aria-hidden="true" data-active-tab="step" tabindex="-1">
         <div class="coolantSheetHandle"></div>
 
         <div class="coolantFloatSheetHead">
@@ -336,9 +336,9 @@
         </div>
 
         <div class="coolantFloatTabs" role="tablist" aria-label="Coolant guide sections">
-          <button class="active" type="button" data-coolant-sheet-tab="step"><span>01</span> Step</button>
-          <button type="button" data-coolant-sheet-tab="checklist"><span>02</span> Checks</button>
-          <button type="button" data-coolant-sheet-tab="flush"><span>03</span> Flush</button>
+          <button class="active" type="button" data-coolant-sheet-tab="step" aria-selected="true"><span>01</span> Step</button>
+          <button type="button" data-coolant-sheet-tab="checklist" aria-selected="false"><span>02</span> Checks</button>
+          <button type="button" data-coolant-sheet-tab="flush" aria-selected="false"><span>03</span> Flush</button>
         </div>
 
         <div class="coolantFloatBody">
@@ -565,7 +565,7 @@
 
   <div id="globalFloatBackdrop" class="globalFloatBackdrop"></div>
 
-  <aside id="globalFloatSheet" class="globalFloatSheet" aria-hidden="true">
+  <aside id="globalFloatSheet" class="globalFloatSheet" role="dialog" aria-modal="true" aria-labelledby="globalFloatTitle" aria-hidden="true" tabindex="-1">
     <div class="globalFloatHandle"></div>
     <div class="globalFloatSheetHead">
       <div>
@@ -578,7 +578,7 @@
     <div id="globalFloatContent" class="globalFloatContent"></div>
   </aside>
 
-  <aside id="drawer" class="drawer">
+  <aside id="drawer" class="drawer" role="dialog" aria-modal="true" aria-label="MY BUICK navigation" aria-hidden="true" tabindex="-1">
     <div class="drawerTop"><strong>MY BUICK</strong><button id="closeDrawer" class="icon">×</button></div>
     <button data-go="home">🏠 Home</button>
     <button data-go="engine">🚗 Engine Bay</button>
@@ -590,8 +590,8 @@
   </aside>
 
   <div id="dim" class="dim"></div>
-  <aside id="sheet" class="sheet"><button id="closeSheet" class="icon sheetClose">×</button><div id="sheetData"></div></aside>
+  <aside id="sheet" class="sheet" role="dialog" aria-modal="true" aria-label="Part information" aria-hidden="true" tabindex="-1"><button id="closeSheet" class="icon sheetClose">×</button><div id="sheetData"></div></aside>
 </div>
-<script src="app.js?v=6.16-modern-glass"></script>
+<script src="app.js?v=6.17-refined-glass"></script>
 </body>
 </html>

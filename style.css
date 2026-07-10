@@ -3291,3 +3291,550 @@ body.coolantSheetOpen #coolantguide .coolantFloatDock{
     transform:translate(-50%,0)!important;
   }
 }
+
+
+/* v6.17 Modern Glass Refinement
+   Polish-only pass over v6.16. No content or screen structure changes. */
+
+:root{
+  --motion-fast:140ms;
+  --motion-base:220ms;
+  --motion-sheet:300ms;
+  --ease-ui:cubic-bezier(.2,.78,.2,1);
+  --ease-sheet:cubic-bezier(.18,.88,.24,1);
+}
+
+html,
+body{
+  min-height:100%;
+  overscroll-behavior-y:none;
+}
+
+body{
+  overflow-x:hidden;
+  text-rendering:optimizeLegibility;
+  -webkit-font-smoothing:antialiased;
+}
+
+button,
+a,
+input,
+select,
+textarea{
+  touch-action:manipulation;
+}
+
+button{
+  transition:
+    transform var(--motion-fast) ease,
+    opacity var(--motion-fast) ease,
+    color var(--motion-base) ease,
+    background-color var(--motion-base) ease,
+    border-color var(--motion-base) ease,
+    box-shadow var(--motion-base) ease;
+}
+
+button:active:not(:disabled){
+  transform:scale(.975);
+}
+
+button:disabled{
+  cursor:not-allowed;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible{
+  outline:2px solid rgba(102,163,255,.92);
+  outline-offset:2px;
+}
+
+/* Smoother page changes without adding extra motion */
+.screen.active{
+  animation:refinedScreenIn var(--motion-base) var(--ease-ui);
+}
+
+@keyframes refinedScreenIn{
+  from{
+    opacity:.68;
+    transform:translateY(4px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* Top bar micro refinement */
+.topbar{
+  min-height:68px;
+  padding-top:max(13px,env(safe-area-inset-top));
+}
+
+.topbar:after{
+  content:"";
+  position:absolute;
+  left:18px;
+  right:18px;
+  bottom:-1px;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(135,176,239,.16),transparent);
+  pointer-events:none;
+}
+
+/* Cards feel lighter and less stacked */
+.assemblyCard,
+.learnIntro,
+.lifeHero,
+.homeCards,
+.panel,
+.globalTopicButton,
+.globalInfoCard{
+  background-image:
+    linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018))!important;
+}
+
+.assemblyQuickFacts div,
+.simpleInfoGrid div,
+.lifeStats div,
+.optionGrid div{
+  border-color:rgba(255,255,255,.065)!important;
+  background:rgba(255,255,255,.028)!important;
+}
+
+/* Consistent modern form controls */
+input,
+textarea,
+select{
+  -webkit-appearance:none;
+  appearance:none;
+  border:1px solid rgba(255,255,255,.085)!important;
+  border-radius:15px!important;
+  color:#f4f7fb!important;
+  background:rgba(255,255,255,.035)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+  transition:
+    border-color var(--motion-base) ease,
+    background-color var(--motion-base) ease,
+    box-shadow var(--motion-base) ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+  border-color:rgba(92,151,255,.52)!important;
+  background:rgba(44,75,126,.12)!important;
+  box-shadow:0 0 0 4px rgba(75,140,255,.09),inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+textarea{
+  resize:vertical;
+}
+
+label{
+  color:#9aa6b8;
+  font-size:12px;
+  font-weight:700;
+}
+
+/* All floating docks settle in more naturally */
+.globalFloatDock,
+#coolantguide .coolantFloatDock{
+  will-change:transform,opacity;
+  animation:refinedDockIn var(--motion-sheet) var(--ease-sheet);
+}
+
+@keyframes refinedDockIn{
+  from{
+    opacity:0;
+    transform:translateY(8px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+#coolantguide .coolantFloatDock{
+  animation-name:refinedCoolantDockIn;
+}
+
+@keyframes refinedCoolantDockIn{
+  from{
+    opacity:0;
+    transform:translate(-50%,8px);
+  }
+  to{
+    opacity:1;
+    transform:translate(-50%,0);
+  }
+}
+
+.globalFloatDock{
+  bottom:calc(12px + env(safe-area-inset-bottom))!important;
+  border-radius:21px!important;
+}
+
+.globalFloatDock button{
+  letter-spacing:-.005em;
+}
+
+.globalFloatDock button .globalDockIcon{
+  transition:
+    transform var(--motion-base) var(--ease-ui),
+    background-color var(--motion-base) ease,
+    box-shadow var(--motion-base) ease;
+}
+
+.globalFloatDock button:active .globalDockIcon{
+  transform:scale(.93);
+}
+
+/* Refined backdrop and sheet movement */
+.globalFloatBackdrop,
+.coolantSheetBackdrop,
+.dim{
+  transition:
+    opacity var(--motion-base) ease,
+    backdrop-filter var(--motion-base) ease!important;
+}
+
+.globalFloatBackdrop.open,
+.coolantSheetBackdrop.open,
+.dim.show{
+  background:rgba(2,4,8,.50)!important;
+}
+
+.globalFloatSheet,
+#coolantguide .coolantGuideSheet.coolantFloatSheet,
+.sheet,
+.drawer{
+  max-height:min(82dvh,760px);
+  will-change:transform,opacity;
+  opacity:0;
+  transition:
+    transform var(--motion-sheet) var(--ease-sheet),
+    opacity var(--motion-base) ease!important;
+}
+
+.globalFloatSheet.open,
+#coolantguide .coolantGuideSheet.coolantFloatSheet.open,
+.sheet.open,
+.drawer.open{
+  opacity:1;
+}
+
+.globalFloatSheet,
+.sheet,
+.drawer{
+  transform:translateY(calc(100% + 34px)) scale(.985)!important;
+}
+
+.globalFloatSheet.open,
+.sheet.open,
+.drawer.open{
+  transform:translateY(0) scale(1)!important;
+}
+
+#coolantguide .coolantGuideSheet.coolantFloatSheet{
+  transform:translateY(calc(100% + 30px)) scale(.985)!important;
+}
+
+#coolantguide .coolantGuideSheet.coolantFloatSheet.open{
+  transform:translateY(0) scale(1)!important;
+}
+
+/* Handles feel intentional and are easier to grab */
+.globalFloatHandle,
+.coolantSheetHandle,
+.drawer:before,
+.sheet:before{
+  content:"";
+  display:block;
+  width:38px;
+  height:4px;
+  flex:0 0 auto;
+  margin:1px auto 10px;
+  border-radius:999px;
+  background:rgba(255,255,255,.16)!important;
+  box-shadow:0 1px 0 rgba(255,255,255,.04);
+}
+
+.drawer:before,
+.sheet:before{
+  position:sticky;
+  top:0;
+  z-index:4;
+}
+
+/* Sticky, cleaner sheet headers */
+.globalFloatSheetHead,
+.coolantFloatSheetHead,
+.drawerTop{
+  position:sticky;
+  z-index:5;
+  top:0;
+  background:linear-gradient(180deg,rgba(15,20,30,.98) 72%,rgba(15,20,30,0));
+}
+
+.globalFloatSheetHead,
+.coolantFloatSheetHead{
+  padding-bottom:12px!important;
+}
+
+.globalFloatSheetHead .icon,
+.drawerTop .icon,
+.sheetClose{
+  border-color:rgba(255,255,255,.065)!important;
+  color:#aeb8c7!important;
+  background:rgba(255,255,255,.035)!important;
+}
+
+.globalFloatSheetHead .icon:active,
+.drawerTop .icon:active,
+.sheetClose:active{
+  background:rgba(255,255,255,.08)!important;
+}
+
+/* Scroll areas are clean but still scroll naturally */
+.globalFloatContent,
+.coolantFloatBody,
+#sheetData,
+.drawer{
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+}
+
+.globalFloatContent::-webkit-scrollbar,
+.coolantFloatBody::-webkit-scrollbar,
+#sheetData::-webkit-scrollbar,
+.drawer::-webkit-scrollbar{
+  display:none;
+}
+
+/* Topic and information cards have better touch rhythm */
+.globalTopicGrid{
+  gap:9px!important;
+}
+
+.globalTopicButton{
+  min-height:88px!important;
+  padding:13px!important;
+}
+
+.globalTopicButton b{
+  letter-spacing:-.012em;
+}
+
+.globalTopicButton:active,
+.globalInfoCard:active{
+  border-color:rgba(111,163,255,.20)!important;
+  background:rgba(75,140,255,.065)!important;
+}
+
+/* Existing Learn sheet refined, not rebuilt */
+.sheet{
+  padding-top:9px!important;
+}
+
+.sheetClose{
+  position:sticky;
+  top:2px;
+  z-index:8;
+  float:right;
+}
+
+#sheetData{
+  padding-top:2px;
+}
+
+.sheet .info,
+.sheet .optionCard,
+.sheet .sheetPhoto,
+.sheet .detailLink{
+  border-color:rgba(255,255,255,.065)!important;
+  background:rgba(255,255,255,.028)!important;
+}
+
+.sheet .detailLink:active{
+  background:rgba(75,140,255,.075)!important;
+}
+
+/* Drawer navigation becomes more current without changing its contents */
+.drawer{
+  padding-top:9px!important;
+}
+
+.drawerTop{
+  margin-bottom:8px!important;
+  padding-bottom:9px;
+}
+
+.drawer button:not(.icon){
+  position:relative;
+  margin:5px 0!important;
+  padding:13px 14px!important;
+  border:1px solid transparent!important;
+  border-radius:15px!important;
+  color:#dce3ed!important;
+  background:rgba(255,255,255,.025)!important;
+  font-weight:720;
+}
+
+.drawer button:not(.icon):active{
+  border-color:rgba(105,158,255,.16)!important;
+  background:rgba(75,140,255,.08)!important;
+}
+
+/* Coolant guide micro-polish */
+#coolantguide .coolantGuidePhoto{
+  transform:translateZ(0);
+}
+
+#coolantguide .coolantGuidePhoto img{
+  transition:opacity var(--motion-base) ease;
+}
+
+.coolantPhotoHud,
+.coolantColdPill{
+  box-shadow:0 8px 24px rgba(0,0,0,.20)!important;
+}
+
+.coolantCallout{
+  border-color:rgba(255,255,255,.68)!important;
+  background:rgba(13,18,27,.70)!important;
+  box-shadow:0 8px 25px rgba(0,0,0,.30)!important;
+  backdrop-filter:blur(16px) saturate(1.2)!important;
+}
+
+.coolantPoint{
+  box-shadow:0 0 0 4px rgba(47,131,255,.14),0 0 12px rgba(47,131,255,.72)!important;
+}
+
+#coolantguide .coolantFloatDock{
+  bottom:calc(12px + env(safe-area-inset-bottom))!important;
+}
+
+#coolantguide .coolantFloatDock:hover{
+  border-color:rgba(127,174,255,.18)!important;
+}
+
+#coolantguide .coolantFloatTabs{
+  position:relative;
+  overflow:hidden;
+}
+
+#coolantguide .coolantFloatTabs button{
+  min-height:36px;
+}
+
+#coolantguide .coolantFloatTabs button.active{
+  border:1px solid rgba(255,255,255,.045)!important;
+}
+
+#coolantguide .coolantFloatStepText{
+  max-width:56ch;
+}
+
+#coolantguide .coolantFloatTags{
+  row-gap:6px!important;
+}
+
+#coolantguide .coolantFloatTags span{
+  letter-spacing:.005em;
+}
+
+#coolantguide .coolantMarkBtn:active{
+  box-shadow:0 5px 16px rgba(35,91,193,.22),inset 0 1px 0 rgba(255,255,255,.12)!important;
+}
+
+#coolantguide .coolantMiniChecklist button{
+  transition:
+    transform var(--motion-fast) ease,
+    border-color var(--motion-base) ease,
+    background-color var(--motion-base) ease;
+}
+
+#coolantguide .coolantMiniChecklist button:active{
+  transform:scale(.985);
+}
+
+#coolantguide .coolantMiniChecklist button.done{
+  box-shadow:inset 0 1px 0 rgba(130,234,174,.04);
+}
+
+/* Forms moved into global sheets keep their actions reachable */
+#globalFloatContent .lifeForm .formActions,
+#globalFloatContent .setupForm .formActions{
+  position:sticky;
+  bottom:0;
+  z-index:4;
+  padding-top:10px;
+  padding-bottom:2px;
+  background:linear-gradient(180deg,transparent,rgba(9,13,21,.97) 30%);
+}
+
+/* Desktop/tablet transform refinement */
+@media(min-width:700px){
+  .globalFloatSheet,
+  .sheet,
+  .drawer{
+    transform:translate(-50%,calc(100% + 34px)) scale(.985)!important;
+  }
+
+  .globalFloatSheet.open,
+  .sheet.open,
+  .drawer.open{
+    transform:translate(-50%,0) scale(1)!important;
+  }
+
+  #coolantguide .coolantGuideSheet.coolantFloatSheet{
+    transform:translate(-50%,calc(100% + 30px)) scale(.985)!important;
+  }
+
+  #coolantguide .coolantGuideSheet.coolantFloatSheet.open{
+    transform:translate(-50%,0) scale(1)!important;
+  }
+}
+
+/* Small-phone tightening */
+@media(max-width:380px){
+  .globalFloatSheet,
+  #coolantguide .coolantGuideSheet.coolantFloatSheet,
+  .sheet,
+  .drawer{
+    left:7px!important;
+    right:7px!important;
+    bottom:calc(7px + env(safe-area-inset-bottom))!important;
+    border-radius:27px!important;
+  }
+
+  .globalFloatDock{
+    left:8px!important;
+    right:8px!important;
+    bottom:calc(8px + env(safe-area-inset-bottom))!important;
+  }
+
+  #coolantguide .coolantFloatDock{
+    width:calc(100% - 18px)!important;
+    bottom:calc(8px + env(safe-area-inset-bottom))!important;
+  }
+
+  .coolantSheetIdentity h3{
+    max-width:190px;
+  }
+}
+
+/* Respect reduced-motion preferences */
+@media(prefers-reduced-motion:reduce){
+  *,
+  *:before,
+  *:after{
+    scroll-behavior:auto!important;
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+  }
+}
