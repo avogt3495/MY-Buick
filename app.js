@@ -41,11 +41,7 @@ const airboxGuideMap={
   }
 };
 
-<<<<<<< HEAD
 /* v6.9 better side seam photo + user-approved level callout */
-=======
-/* v6.8 user-approved callout placement update */
->>>>>>> 2bcc99198b6c5ff8d79017b8621a1130f5dccd6e
 const coolantGuideSteps=[
   {
     check:"1",
@@ -92,11 +88,7 @@ const coolantGuideSteps=[
     title:"Side Seam + Mount Area",
     text:"Use this right-side view to inspect the visible reservoir side, nearby mount, and clearance area. Hidden zones stay marked as obstructed.",
     img:"images/coolant/06_right_side_clearance_mount_flipped.jpg",
-<<<<<<< HEAD
     spot:{x:45,y:63,lx:24,ly:38,label:"Visible side seam"},
-=======
-    spot:{x:24,y:55,lx:23,ly:38,label:"Visible side seam"},
->>>>>>> 2bcc99198b6c5ff8d79017b8621a1130f5dccd6e
     tags:["Side seam","Mount area","Obstructed zones"]
   },
   {
