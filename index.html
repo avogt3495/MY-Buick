@@ -7,8 +7,8 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <meta name="theme-color" content="#070a10">
-  <title>MY CAR v6.26 Dynamic Vehicle Labels</title>
-  <link rel="stylesheet" href="style.css?v=6.26-dynamic-labels">
+  <title>MY CAR v6.23 Movable Digital Twin</title>
+  <link rel="stylesheet" href="style.css?v=6.23-movable-digital-twin">
 </head>
 <body>
 <div class="app">
@@ -142,8 +142,8 @@
               <b>Use the automatic VIN match now, or add your actual car photo.</b>
               <small>Your own photo will replace the representative image everywhere in the Garage.</small>
             </div>
-            <input id="vinMainPhotoInput" type="file" accept="image/*" hidden>
-            <label class="vinMainPhotoButton" for="vinMainPhotoInput">Choose from Photos or Camera</label>
+            <input id="vinMainPhotoInput" type="file" accept="image/*" capture="environment" hidden>
+            <label class="vinMainPhotoButton" for="vinMainPhotoInput">Take or choose my car photo</label>
             <div id="vinMainPhotoPreview" class="vinMainPhotoPreview hidden"><img alt="Selected main vehicle photo"><button id="vinMainPhotoRemove" type="button">Remove</button></div>
           </div>
 
@@ -204,7 +204,7 @@
 
     <section id="digitaltwin" class="screen digitalTwinScreen">
       <div class="twinHead">
-        <div><span>DIGITAL TWIN BETA</span><h2 id="twinVehicleName">My Buick</h2><p id="twinVehicleMeta">2010 Buick LaCrosse CXL</p></div>
+        <div><span>DIGITAL TWIN ALPHA</span><h2 id="twinVehicleName">My Buick</h2><p id="twinVehicleMeta">2010 Buick LaCrosse CXL</p></div>
         <span id="twinCompletionBadge" class="badge">Foundation</span>
       </div>
 
@@ -213,17 +213,56 @@
         <div><span id="twinVehicleImageType">VIN MATCHED IMAGE</span><b id="twinVehicleImageName">Representative vehicle</b><small id="twinVehicleImageSource">Replace it with your own photo anytime.</small></div>
       </div>
 
-      <div class="twinStage">
-        <canvas id="vehicleTwinCanvas" aria-label="Rotatable rough 3D vehicle model"></canvas>
-        <div class="twinStageHint">Drag to rotate</div>
+      <div class="twinToolbarRow">
+        <div class="twinViewTabs" role="tablist" aria-label="Digital twin views">
+          <button type="button" class="active" data-twin-view="main">Main</button>
+          <button type="button" data-twin-view="engine">Engine</button>
+          <button type="button" data-twin-view="interior">Interior</button>
+          <button type="button" data-twin-view="wheels">Wheels</button>
+          <button type="button" data-twin-view="trunk">Trunk</button>
+          <button type="button" data-twin-view="underside">Underside</button>
+        </div>
+        <button id="twinChangeMainPhoto" class="twinGhostAction" type="button">Change photo</button>
+      </div>
+
+      <div class="twinStage twinViewerStage">
+        <div id="twinScene" class="twinScene">
+          <div id="twinPhotoFrame" class="twinPhotoFrame">
+            <img id="twinStageImage" src="images/home/home_garage.png" alt="Movable digital twin vehicle view">
+            <div id="twinHotspotLayer" class="twinHotspotLayer"></div>
+          </div>
+          <div class="twinStageFloor"></div>
+          <div class="twinReflectGlow"></div>
+        </div>
+        <div class="twinStageTopBar">
+          <span class="twinModePill">MOVABLE TWIN</span>
+          <div class="twinControlDock">
+            <button id="twinZoomOut" class="twinMiniControl" type="button" aria-label="Zoom out">−</button>
+            <button id="twinResetView" class="twinMiniControl wide" type="button">Reset</button>
+            <button id="twinZoomIn" class="twinMiniControl" type="button" aria-label="Zoom in">＋</button>
+          </div>
+        </div>
+        <div class="twinStageHint">Drag left/right to rotate • drag up/down to tilt • use +/- to zoom</div>
         <button id="twinRotateLeft" class="twinRotate left" type="button" aria-label="Rotate left">‹</button>
         <button id="twinRotateRight" class="twinRotate right" type="button" aria-label="Rotate right">›</button>
+      </div>
+
+      <div class="twinStageMetaCard">
+        <span id="twinStageViewLabel">MAIN VIEW</span>
+        <b id="twinStageImageTitle">Main vehicle image</b>
+        <small id="twinStageImageSource">Using the best available vehicle photo.</small>
       </div>
 
       <div class="twinStatusStrip">
         <div><span>Mapped</span><strong>Engine Bay</strong></div>
         <div><span>Owner Photos</span><strong id="twinPhotoCount">0</strong></div>
         <div><span>VIN</span><strong id="twinVinMask">Masked</strong></div>
+      </div>
+
+      <div class="twinQuickModuleRail">
+        <button type="button" data-twin-module="airbox"><span>🌬</span><b>Airbox</b><small>Guide, learn, maintenance</small></button>
+        <button type="button" data-twin-module="coolant"><span>🧊</span><b>Coolant</b><small>Guide, learn, maintenance</small></button>
+        <button type="button" data-twin-module="fusebox"><span>⚡</span><b>Fuse Box</b><small>Guide, learn, maintenance</small></button>
       </div>
 
       <div class="twinZoneGrid">
@@ -238,11 +277,8 @@
 
     <section id="photos" class="screen vehiclePhotosScreen">
       <div class="sectionHead photoLibraryHead">
-        <div><h2>Owner Photos</h2><p>Import an existing picture from your Photos library or take a new one.</p></div>
-        <div class="photoLibraryHeadActions">
-          <span id="photoLibraryCount" class="badge">0</span>
-          <button id="photoLibraryAddButton" class="tinyBtn" type="button">+ Add Photos</button>
-        </div>
+        <div><h2>Owner Photos</h2><p>Photos you attach to this vehicle stay on this device.</p></div>
+        <span id="photoLibraryCount" class="badge">0</span>
       </div>
       <div id="photoFilterBar" class="photoFilterBar">
         <button class="active" data-photo-filter="all">All</button>
@@ -940,881 +976,6 @@
   <div id="dim" class="dim"></div>
   <aside id="sheet" class="sheet" role="dialog" aria-modal="true" aria-label="Part information" aria-hidden="true" tabindex="-1"><button id="closeSheet" class="icon sheetClose">×</button><div id="sheetData"></div></aside>
 </div>
-<script src="app.js?v=6.26-dynamic-labels"></script>
-<script src="MY_CAR_auto_photo_patch.js?v=1.2"></script>
-<script>
-/* MY CAR vehicle deletion patch
-   Adds Delete Vehicle controls to Garage cards and the Vehicle Profile editor.
-   Keeps an intentionally empty garage empty after reload and removes photos
-   belonging to a deleted vehicle from IndexedDB when available.
-*/
-(() => {
-  'use strict';
-
-  const VEHICLES_KEY = 'mycar_vehicles_v1';
-  const ACTIVE_KEY = 'mycar_active_vehicle_v1';
-  const ALLOW_EMPTY_KEY = 'mycar_allow_empty_garage_v1';
-  const DEFAULT_ID = 'buick-2010-lacrosse';
-  const PHOTO_DB_NAME = 'mycar_owner_photos';
-  const PHOTO_STORE = 'photos';
-
-  function readVehicles() {
-    try {
-      const value = JSON.parse(localStorage.getItem(VEHICLES_KEY) || '[]');
-      return Array.isArray(value) ? value : [];
-    } catch {
-      return [];
-    }
-  }
-
-  function writeVehicles(vehicles) {
-    localStorage.setItem(VEHICLES_KEY, JSON.stringify(vehicles));
-  }
-
-  function vehicleName(vehicle) {
-    return [vehicle?.year, vehicle?.make, vehicle?.model, vehicle?.trim]
-      .filter(Boolean)
-      .join(' ') || vehicle?.nickname || 'this vehicle';
-  }
-
-  function removeDefaultReseedIfGarageWasIntentionallyEmpty() {
-    if (localStorage.getItem(ALLOW_EMPTY_KEY) !== 'true') return;
-    const vehicles = readVehicles();
-    if (vehicles.length === 1 && vehicles[0]?.id === DEFAULT_ID) {
-      writeVehicles([]);
-      localStorage.removeItem(ACTIVE_KEY);
-    }
-  }
-
-  async function deleteVehiclePhotos(vehicleId) {
-    if (!vehicleId || !window.indexedDB) return;
-
-    await new Promise((resolve) => {
-      const request = indexedDB.open(PHOTO_DB_NAME, 1);
-
-      request.onerror = () => resolve();
-      request.onupgradeneeded = () => {
-        // Do not create a new database just for deletion.
-        try { request.transaction?.abort(); } catch {}
-      };
-      request.onsuccess = () => {
-        const db = request.result;
-        if (!db.objectStoreNames.contains(PHOTO_STORE)) {
-          db.close();
-          resolve();
-          return;
-        }
-
-        const transaction = db.transaction(PHOTO_STORE, 'readwrite');
-        const store = transaction.objectStore(PHOTO_STORE);
-        const index = store.indexNames.contains('vehicleId') ? store.index('vehicleId') : null;
-
-        if (!index) {
-          db.close();
-          resolve();
-          return;
-        }
-
-        const cursorRequest = index.openCursor(IDBKeyRange.only(vehicleId));
-        cursorRequest.onsuccess = (event) => {
-          const cursor = event.target.result;
-          if (!cursor) return;
-          cursor.delete();
-          cursor.continue();
-        };
-        cursorRequest.onerror = () => {};
-        transaction.oncomplete = () => {
-          db.close();
-          resolve();
-        };
-        transaction.onerror = () => {
-          db.close();
-          resolve();
-        };
-        transaction.onabort = () => {
-          db.close();
-          resolve();
-        };
-      };
-    });
-  }
-
-  function showDeleteDialog(vehicle) {
-    const name = vehicleName(vehicle);
-    const id = vehicle?.id;
-    if (!id) return;
-
-    const confirmMessage = `Delete ${name}?\n\nThis removes the vehicle profile and its owner photos from this browser. This cannot be undone.`;
-    if (!window.confirm(confirmMessage)) return;
-
-    performVehicleDelete(id).catch((error) => {
-      console.error('Vehicle deletion failed:', error);
-      window.alert('The vehicle could not be deleted. Please try again.');
-    });
-  }
-
-  async function performVehicleDelete(vehicleId) {
-    const vehicles = readVehicles();
-    const remaining = vehicles.filter((vehicle) => vehicle.id !== vehicleId);
-    if (remaining.length === vehicles.length) return;
-
-    writeVehicles(remaining);
-    await deleteVehiclePhotos(vehicleId);
-
-    if (remaining.length) {
-      localStorage.setItem(ACTIVE_KEY, remaining[0].id);
-      localStorage.removeItem(ALLOW_EMPTY_KEY);
-    } else {
-      localStorage.removeItem(ACTIVE_KEY);
-      localStorage.setItem(ALLOW_EMPTY_KEY, 'true');
-    }
-
-    try { window.closeGlobalFloatSheet?.(); } catch {}
-    try { window.closeSheet?.(); } catch {}
-
-    if (typeof window.showScreen === 'function') {
-      window.showScreen('garage');
-    } else {
-      window.location.reload();
-      return;
-    }
-
-    setTimeout(() => {
-      try { window.renderGarage?.(); } catch {}
-      enhanceGarageCards();
-      renderEmptyGarageMessage();
-    }, 50);
-  }
-
-  function addDeleteButton(card, vehicle) {
-    if (!card || card.querySelector('[data-delete-vehicle]')) return;
-    const actions = card.querySelector('.garageVehicleActions');
-    if (!actions) return;
-
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'deleteVehicleBtn';
-    button.dataset.deleteVehicle = vehicle.id;
-    button.setAttribute('aria-label', `Delete ${vehicleName(vehicle)}`);
-    button.innerHTML = '<span aria-hidden="true">⌫</span> Delete';
-    button.addEventListener('click', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      showDeleteDialog(vehicle);
-    });
-    actions.appendChild(button);
-  }
-
-  function enhanceGarageCards() {
-    const vehicles = readVehicles();
-    const byId = new Map(vehicles.map((vehicle) => [vehicle.id, vehicle]));
-    document.querySelectorAll('[data-vehicle-card]').forEach((card) => {
-      const vehicle = byId.get(card.dataset.vehicleCard);
-      if (vehicle) addDeleteButton(card, vehicle);
-    });
-    renderEmptyGarageMessage();
-  }
-
-  function renderEmptyGarageMessage() {
-    const list = document.getElementById('garageVehicleList');
-    if (!list) return;
-    const vehicles = readVehicles();
-    const existing = list.querySelector('.garageEmptyState');
-
-    if (vehicles.length) {
-      existing?.remove();
-      return;
-    }
-
-    if (existing) return;
-    list.innerHTML = `
-      <div class="garageEmptyState">
-        <span class="garageEmptyIcon">＋</span>
-        <h3>No vehicles yet</h3>
-        <p>Scan or enter a VIN to build your first vehicle profile.</p>
-        <button type="button" class="primary" id="emptyGarageAddVehicle">Add Vehicle</button>
-      </div>`;
-
-    document.getElementById('emptyGarageAddVehicle')?.addEventListener('click', () => {
-      if (typeof window.startVinSetup === 'function') window.startVinSetup();
-      else document.getElementById('garageInlineAdd')?.click();
-    });
-  }
-
-  function addDeleteToProfileEditor() {
-    const content = document.getElementById('globalFloatContent');
-    if (!content || !document.getElementById('profileSaveEdit')) return;
-    if (document.getElementById('profileDeleteVehicle')) return;
-
-    const vehicle = typeof window.getActiveVehicle === 'function'
-      ? window.getActiveVehicle()
-      : readVehicles().find((item) => item.id === localStorage.getItem(ACTIVE_KEY));
-    if (!vehicle?.id) return;
-
-    const button = document.createElement('button');
-    button.id = 'profileDeleteVehicle';
-    button.type = 'button';
-    button.className = 'dangerVehicleButton';
-    button.textContent = 'Delete Vehicle';
-    button.addEventListener('click', () => showDeleteDialog(vehicle));
-    content.appendChild(button);
-  }
-
-  function installStyles() {
-    if (document.getElementById('vehicleDeletePatchStyles')) return;
-    const style = document.createElement('style');
-    style.id = 'vehicleDeletePatchStyles';
-    style.textContent = `
-      .garageVehicleActions { display:grid !important; grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:10px !important; }
-      .garageVehicleActions .deleteVehicleBtn {
-        color: #ff8e98;
-        border-color: rgba(255, 90, 105, .28);
-        background: rgba(255, 67, 84, .075);
-      }
-      .garageVehicleActions .deleteVehicleBtn span {
-        margin-right: 5px;
-      }
-      .dangerVehicleButton {
-        width: 100%;
-        margin-top: 14px;
-        padding: 14px 16px;
-        border-radius: 15px;
-        border: 1px solid rgba(255, 84, 100, .34);
-        background: rgba(255, 61, 80, .09);
-        color: #ff9aa4;
-        font: inherit;
-        font-weight: 800;
-      }
-      .garageEmptyState {
-        padding: 30px 20px;
-        border-radius: 24px;
-        border: 1px solid rgba(255,255,255,.11);
-        background: rgba(255,255,255,.035);
-        text-align: center;
-      }
-      .garageEmptyState .garageEmptyIcon {
-        display: grid;
-        place-items: center;
-        width: 62px;
-        height: 62px;
-        margin: 0 auto 14px;
-        border-radius: 20px;
-        background: rgba(63, 133, 255, .16);
-        color: #82b5ff;
-        font-size: 34px;
-        font-weight: 800;
-      }
-      .garageEmptyState h3 { margin: 0 0 8px; font-size: 22px; }
-      .garageEmptyState p { margin: 0 auto 18px; max-width: 300px; color: #93a0b4; line-height: 1.5; }
-      .garageEmptyState button { min-width: 180px; }
-    `;
-    document.head.appendChild(style);
-  }
-
-  removeDefaultReseedIfGarageWasIntentionallyEmpty();
-  installStyles();
-
-  // Re-run after asynchronous Garage renders and after opening the profile editor.
-  const observer = new MutationObserver(() => {
-    enhanceGarageCards();
-    addDeleteToProfileEditor();
-  });
-  observer.observe(document.body, { childList: true, subtree: true });
-
-  const originalRenderGarage = window.renderGarage;
-  if (typeof originalRenderGarage === 'function') {
-    window.renderGarage = async function patchedRenderGarage(...args) {
-      const result = await originalRenderGarage.apply(this, args);
-      enhanceGarageCards();
-      return result;
-    };
-  }
-
-  // Make adding a vehicle opt the garage back into normal non-empty behavior.
-  const originalUpsertVehicle = window.upsertVehicle;
-  if (typeof originalUpsertVehicle === 'function') {
-    window.upsertVehicle = function patchedUpsertVehicle(vehicle) {
-      localStorage.removeItem(ALLOW_EMPTY_KEY);
-      return originalUpsertVehicle.call(this, vehicle);
-    };
-  }
-
-  setTimeout(() => {
-    try { window.renderGarage?.(); } catch {}
-    enhanceGarageCards();
-  }, 0);
-})();
-
-</script>
-
-<script>
-/* v6.24 Photo Library Import - guarded to prevent render loops */
-(function installPhotoLibraryImport(){
-  let enhancementScheduled = false;
-
-  function allowPhotoLibrary(input){
-    if(!input) return;
-
-    if(input.hasAttribute("capture")){
-      input.removeAttribute("capture");
-    }
-    if(input.getAttribute("accept") !== "image/*"){
-      input.setAttribute("accept", "image/*");
-    }
-  }
-
-  function setTextOnlyWhenChanged(element, value){
-    if(element && element.textContent !== value){
-      element.textContent = value;
-    }
-  }
-
-  function updatePickerCopy(inputId, title, note){
-    const input = document.getElementById(inputId);
-    if(!input) return;
-
-    allowPhotoLibrary(input);
-
-    const label = document.querySelector('label[for="' + inputId + '"]');
-    if(!label) return;
-
-    setTextOnlyWhenChanged(label.querySelector("b"), title);
-    setTextOnlyWhenChanged(label.querySelector("small"), note);
-  }
-
-  function openOwnerPhotoChooser(){
-    if(typeof window.openPhotoCapture === "function"){
-      window.openPhotoCapture("other");
-      scheduleEnhancement();
-      return;
-    }
-
-    const dockButton = document.querySelector('[data-global-action="photo-add"]');
-    if(dockButton){
-      dockButton.click();
-      scheduleEnhancement();
-    }
-  }
-
-  function enhancePhotoPickers(){
-    updatePickerCopy(
-      "vinMainPhotoInput",
-      "Choose from Photos or Camera",
-      "Select an existing image from your library, or take a new picture."
-    );
-
-    updatePickerCopy(
-      "mainVehiclePhotoFile",
-      "Choose from Photos or Camera",
-      "Pick an existing car photo or take a new one. It becomes the main vehicle image."
-    );
-
-    updatePickerCopy(
-      "ownerPhotoFile",
-      "Choose from Photo Library",
-      "Select an existing image. Your iPhone can also offer the camera from the chooser."
-    );
-
-    const addButton = document.getElementById("photoLibraryAddButton");
-    if(addButton && !addButton.dataset.photoLibraryBound){
-      addButton.dataset.photoLibraryBound = "true";
-      addButton.addEventListener("click", openOwnerPhotoChooser);
-    }
-  }
-
-  function scheduleEnhancement(){
-    if(enhancementScheduled) return;
-    enhancementScheduled = true;
-
-    requestAnimationFrame(() => {
-      enhancementScheduled = false;
-      enhancePhotoPickers();
-    });
-  }
-
-  function installPhotoLibraryStyles(){
-    if(document.getElementById("photoLibraryImportStyles")) return;
-
-    const style = document.createElement("style");
-    style.id = "photoLibraryImportStyles";
-    style.textContent = `
-      .photoLibraryHeadActions{
-        display:flex;
-        align-items:center;
-        justify-content:flex-end;
-        gap:9px;
-        flex-wrap:wrap;
-      }
-      #photoLibraryAddButton{
-        white-space:nowrap;
-        min-height:40px;
-        padding-inline:14px;
-      }
-      #vehicleTwinCanvas{
-        touch-action:none;
-      }
-      @media(max-width:430px){
-        .photoLibraryHead{
-          align-items:flex-start;
-          gap:12px;
-        }
-        .photoLibraryHeadActions{
-          flex-direction:column;
-          align-items:flex-end;
-          flex-shrink:0;
-        }
-      }
-    `;
-    document.head.appendChild(style);
-  }
-
-  installPhotoLibraryStyles();
-  scheduleEnhancement();
-
-  const observer = new MutationObserver(mutations => {
-    const hasAddedContent = mutations.some(mutation => mutation.addedNodes.length > 0);
-    if(hasAddedContent) scheduleEnhancement();
-  });
-
-  observer.observe(document.body, {
-    childList: true,
-    subtree: true
-  });
-
-  document.addEventListener("click", scheduleEnhancement, true);
-})();
-</script>
-
-
-<script>
-/* v6.25 Active Vehicle Visual Sync */
-(function installActiveVehicleVisualSync(){
-  if(window.__activeVehicleVisualSyncInstalled) return;
-  window.__activeVehicleVisualSyncInstalled = true;
-
-  function injectStyles(){
-    if(document.getElementById('vehicleVisualSyncStyles')) return;
-    const style = document.createElement('style');
-    style.id = 'vehicleVisualSyncStyles';
-    style.textContent = `
-      #home .homeHero,
-      #vehicleprofile .profileHero,
-      #digitaltwin .twinStage{
-        background-position:center;
-        background-size:cover;
-        background-repeat:no-repeat;
-        overflow:hidden;
-      }
-      #digitaltwin .twinStage{
-        position:relative;
-        isolation:isolate;
-      }
-      #digitaltwin .twinStage::before{
-        content:"";
-        position:absolute;
-        inset:0;
-        background:linear-gradient(180deg, rgba(7,10,16,.18), rgba(7,10,16,.84));
-        z-index:0;
-        pointer-events:none;
-      }
-      #digitaltwin #vehicleTwinCanvas,
-      #digitaltwin .twinStageHint,
-      #digitaltwin .twinRotate{
-        position:relative;
-        z-index:1;
-      }
-    `;
-    document.head.appendChild(style);
-  }
-
-  function cssUrl(url){
-    return 'url("' + String(url || '').replace(/"/g, '%22') + '")';
-  }
-
-  function setScreenBackground(element, url, overlay){
-    if(!element || !url) return;
-    element.style.backgroundImage = (overlay ? overlay + ', ' : '') + cssUrl(url);
-  }
-
-  function normalizeWords(value){
-    return String(value || '').toLowerCase();
-  }
-
-  function pickBodyKind(vehicle){
-    const body = [vehicle?.bodyClass, vehicle?.model, vehicle?.trim, vehicle?.make].filter(Boolean).join(' ').toLowerCase();
-    if(/pickup|truck/.test(body)) return 'truck';
-    if(/van|minivan|cargo van/.test(body)) return 'van';
-    if(/sport utility|utility vehicle|suv|crossover|mpv/.test(body)) return 'suv';
-    if(/coupe|convertible|roadster|2-door/.test(body)) return 'coupe';
-    if(/hatch|wagon|liftback|fastback/.test(body)) return 'hatch';
-    return 'sedan';
-  }
-
-  function pickPaint(color){
-    const name = normalizeWords(color);
-    const table = [
-      ['black','#1f232a'],['white','#d9dfe6'],['silver','#8e99a7'],['gray','#697482'],['grey','#697482'],
-      ['red','#8d2730'],['blue','#375a84'],['green','#3f6a4b'],['tan','#9f8a6b'],['gold','#a78546'],
-      ['brown','#6d513f'],['orange','#b8642f'],['yellow','#b59a2e'],['maroon','#6b2630'],['purple','#5b4c75']
-    ];
-    for(const [word,hex] of table){ if(name.includes(word)) return hex; }
-    return '#7b8794';
-  }
-
-  function hexToRgb(hex){
-    const clean = String(hex || '').replace('#','');
-    const full = clean.length === 3 ? clean.split('').map(ch => ch + ch).join('') : clean;
-    const num = parseInt(full || '7b8794', 16);
-    return { r:(num>>16)&255, g:(num>>8)&255, b:num&255 };
-  }
-
-  function rgbToHex(r,g,b){
-    return '#' + [r,g,b].map(v => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2,'0')).join('');
-  }
-
-  function shade(hex, amount){
-    const {r,g,b} = hexToRgb(hex);
-    return rgbToHex(r + amount, g + amount, b + amount);
-  }
-
-  function paletteFromColor(color){
-    const base = pickPaint(color);
-    return {
-      body:[shade(base,-24), shade(base,14), shade(base,-44)],
-      belt:[shade(base,-14), shade(base,24), shade(base,-34)],
-      roof:[shade(base,-18), shade(base,10), shade(base,-38)],
-      glass:['#182838','#27435a','#0f1a28']
-    };
-  }
-
-  function makeBox(x1,x2,y1,y2,z1,z2,type){
-    const v=[[x1,y1,z1],[x2,y1,z1],[x2,y2,z1],[x1,y2,z1],[x1,y1,z2],[x2,y1,z2],[x2,y2,z2],[x1,y2,z2]];
-    return {vertices:v,faces:[[0,1,2,3],[4,7,6,5],[0,4,5,1],[3,2,6,7],[1,5,6,2],[0,3,7,4]].map(indices=>({indices,type}))};
-  }
-
-  function makeCabin(x1,x2,baseY,topY,zFront,zRear,roofInsetFront,roofInsetRear,typeGlass='glass',typeRoof='roof'){
-    return {
-      vertices:[
-        [x1,baseY,zFront],[x2,baseY,zFront],[x2-roofInsetFront,topY,zFront],[x1+roofInsetRear,topY,zFront],
-        [x1,baseY,zRear],[x2,baseY,zRear],[x2-roofInsetFront,topY,zRear],[x1+roofInsetRear,topY,zRear]
-      ],
-      faces:[
-        {indices:[0,1,2,3],type:typeGlass},
-        {indices:[4,7,6,5],type:typeGlass},
-        {indices:[0,4,5,1],type:typeRoof},
-        {indices:[3,2,6,7],type:typeRoof},
-        {indices:[1,5,6,2],type:typeGlass},
-        {indices:[0,3,7,4],type:typeGlass}
-      ]
-    };
-  }
-
-  function buildVehicleMeshes(kind){
-    if(kind === 'truck'){
-      return [
-        makeBox(-2.55,2.6,.05,.78,-.95,.95,'body'),
-        makeBox(-2.55,-.3,.78,1.18,-.95,.95,'body'),
-        makeCabin(-.35,1.3,.78,1.58,-.78,.78,.28,.16),
-        makeBox(1.05,2.4,.78,1.08,-.85,.85,'belt')
-      ];
-    }
-    if(kind === 'van'){
-      return [
-        makeBox(-2.45,2.45,.05,.86,-.95,.95,'body'),
-        makeCabin(-1.7,1.95,.86,1.95,-.82,.82,.18,.12),
-        makeBox(-2.15,2.15,.86,1.02,-.88,.88,'belt')
-      ];
-    }
-    if(kind === 'suv'){
-      return [
-        makeBox(-2.48,2.48,.05,.82,-.93,.93,'body'),
-        makeCabin(-1.35,1.7,.82,1.82,-.78,.78,.25,.12),
-        makeBox(-2.15,2.15,.82,1.0,-.87,.87,'belt')
-      ];
-    }
-    if(kind === 'coupe'){
-      return [
-        makeBox(-2.38,2.42,.05,.72,-.9,.9,'body'),
-        makeCabin(-.72,1.2,.72,1.42,-.73,.73,.36,.18),
-        makeBox(-2.05,2.05,.72,.9,-.82,.82,'belt')
-      ];
-    }
-    if(kind === 'hatch'){
-      return [
-        makeBox(-2.4,2.42,.05,.76,-.9,.9,'body'),
-        makeCabin(-1.35,1.25,.76,1.56,-.75,.75,.24,.08),
-        makeBox(-2.05,2.05,.76,.94,-.84,.84,'belt')
-      ];
-    }
-    return [
-      makeBox(-2.45,2.45,.05,.76,-.88,.88,'body'),
-      makeBox(-2.15,2.15,.76,.94,-.82,.82,'belt'),
-      makeCabin(-1.05,1.15,.72,1.55,-.73,.73,.38,.18)
-    ];
-  }
-
-  function activeScreenId(){
-    try{
-      if(typeof current !== 'undefined' && current) return current;
-    }catch{}
-    return document.querySelector('.screen.active')?.id || 'garage';
-  }
-
-  function setText(selector,value){
-    const element=document.querySelector(selector);
-    if(element && value!=null && element.textContent!==String(value)) element.textContent=String(value);
-  }
-
-  function setEnterVehicleLabel(nickname){
-    const button=document.querySelector('#home .enterBtn');
-    if(!button)return;
-    const icon=button.querySelector('span');
-    const arrow=button.querySelector('b');
-    [...button.childNodes].forEach(node=>{
-      if(node!==icon && node!==arrow) node.remove();
-    });
-    const label=document.createTextNode('Enter '+nickname);
-    if(arrow)button.insertBefore(label,arrow);else button.appendChild(label);
-    button.setAttribute('aria-label','Enter '+nickname);
-  }
-
-  function updateHeaderForVehicle(){
-    if(typeof getActiveVehicle !== 'function') return;
-    const vehicle=getActiveVehicle();
-    if(!vehicle)return;
-
-    const fullName=typeof formatVehicleName==='function'
-      ? formatVehicleName(vehicle)
-      : [vehicle.year,vehicle.make,vehicle.model,vehicle.trim].filter(Boolean).join(' ');
-    const shortName=[vehicle.make,vehicle.model].filter(Boolean).join(' ') || fullName || 'Vehicle';
-    const nickname=String(vehicle.nickname || shortName || 'My Vehicle').trim();
-    const screen=activeScreenId();
-    const upperNickname=nickname.toUpperCase();
-
-    try{
-      if(typeof names!=='undefined'){
-        names.garage=['MY CAR','Garage'];
-        names.vinsetup=['GARAGE',(typeof vinEditingVehicleId!=='undefined'&&vinEditingVehicleId)?'Edit '+nickname:'Add Vehicle'];
-        names.vehicleprofile=['GARAGE',fullName||'Vehicle Profile'];
-        names.digitaltwin=[upperNickname,'Digital Twin'];
-        names.photos=[upperNickname,'Owner Photos'];
-        names.home=[upperNickname,fullName||shortName];
-        names.engine=[upperNickname,'Engine Bay'];
-        names.airbox=[shortName.toUpperCase(),'Airbox'];
-        names.guide=['AIRBOX • '+nickname.toUpperCase(),'Guide Me'];
-        names.learn=['AIRBOX • '+nickname.toUpperCase(),'Learn'];
-        names.maintenance=['AIRBOX • '+nickname.toUpperCase(),'Maintenance'];
-        names.coolant=[shortName.toUpperCase(),'Coolant Reservoir'];
-        names.coolantguide=['COOLANT • '+nickname.toUpperCase(),'Guide Me'];
-        names.coolantlearn=['COOLANT • '+nickname.toUpperCase(),'Learn'];
-        names.coolantmaintenance=['COOLANT • '+nickname.toUpperCase(),'Maintenance'];
-        names.fusebox=[shortName.toUpperCase(),'Fuse Box'];
-        names.fuseguide=['FUSE BOX • '+nickname.toUpperCase(),'Guide Me'];
-        names.fuselearn=['FUSE BOX • '+nickname.toUpperCase(),'Learn'];
-        names.fusemaintenance=['FUSE BOX • '+nickname.toUpperCase(),'Maintenance'];
-      }
-    }catch{}
-
-    const crumbEl=document.getElementById('crumb');
-    const titleEl=document.getElementById('title');
-    try{
-      if(typeof names!=='undefined' && names[screen]){
-        if(crumbEl)crumbEl.textContent=names[screen][0];
-        if(titleEl)titleEl.textContent=names[screen][1];
-      }
-    }catch{}
-
-    setText('#homeVehicleTitle',fullName||shortName);
-    setText('#profileNickname',nickname);
-    setText('#profileVehicleName',fullName||shortName);
-    setText('#twinVehicleName',nickname);
-    setText('#twinVehicleMeta',fullName||shortName);
-    setText('#photos .photoLibraryHead h2',nickname+' Photos');
-    setText('#photos .photoLibraryHead p','Photos attached to '+(fullName||shortName)+' stay on this device.');
-    setText('#garageInlineAdd','+ Add Vehicle');
-    setText('#photoLibraryAddButton','+ Add Photos');
-    setText('#twinVehicleImageName',fullName||shortName);
-    setText('#vinNicknameInput',document.getElementById('vinNicknameInput')?.value||nickname);
-    setEnterVehicleLabel(nickname);
-
-    const canvas=document.getElementById('vehicleTwinCanvas');
-    if(canvas)canvas.setAttribute('aria-label','Rotatable rough 3D model of '+(fullName||shortName));
-
-    const twinHint=document.querySelector('#digitaltwin .twinStageHint');
-    if(twinHint)twinHint.textContent='Drag to rotate '+nickname;
-  }
-
-  const originalShowScreen = window.showScreen;
-  if(typeof originalShowScreen === 'function'){
-    window.showScreen = function(id){
-      const result = originalShowScreen(id);
-      Promise.resolve(result).then(updateHeaderForVehicle);
-      return result;
-    };
-  }
-
-  const originalRenderVehicleHome = window.renderVehicleHome;
-  if(typeof originalRenderVehicleHome === 'function'){
-    window.renderVehicleHome = async function(){
-      await originalRenderVehicleHome();
-      const vehicle = getActiveVehicle?.();
-      if(!vehicle || typeof vehicleImagePresentation !== 'function') return;
-      const presentation = await vehicleImagePresentation(vehicle,'home');
-      if(typeof applyImageElement === 'function') applyImageElement(document.getElementById('homeVehicleImage'), presentation);
-      setScreenBackground(document.querySelector('#home .homeHero'), presentation.src, 'linear-gradient(180deg, rgba(7,10,16,.05), rgba(7,10,16,.82))');
-      updateHeaderForVehicle();
-    };
-  }
-
-  const originalRenderVehicleProfile = window.renderVehicleProfile;
-  if(typeof originalRenderVehicleProfile === 'function'){
-    window.renderVehicleProfile = async function(){
-      await originalRenderVehicleProfile();
-      const vehicle = getActiveVehicle?.();
-      if(!vehicle || typeof vehicleImagePresentation !== 'function') return;
-      const presentation = await vehicleImagePresentation(vehicle,'profile');
-      if(typeof applyImageElement === 'function') applyImageElement(document.getElementById('profileHeroImage'), presentation);
-      setScreenBackground(document.querySelector('#vehicleprofile .profileHero'), presentation.src, 'linear-gradient(180deg, rgba(7,10,16,.12), rgba(7,10,16,.84))');
-      updateHeaderForVehicle();
-    };
-  }
-
-  window.drawTwinCar = function(){
-    const canvas = document.getElementById('vehicleTwinCanvas');
-    if(!canvas) return;
-    const rect = canvas.getBoundingClientRect();
-    if(!rect.width || !rect.height) return;
-
-    const dpr = Math.min(2, window.devicePixelRatio || 1);
-    canvas.width = Math.max(1, Math.round(rect.width * dpr));
-    canvas.height = Math.max(1, Math.round(rect.height * dpr));
-
-    const ctx = canvas.getContext('2d');
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-    ctx.clearRect(0,0,rect.width,rect.height);
-
-    const vehicle = typeof getActiveVehicle === 'function' ? getActiveVehicle() : {};
-    const kind = pickBodyKind(vehicle);
-    const palettes = paletteFromColor(vehicle?.color);
-    const meshes = buildVehicleMeshes(kind);
-
-    const angle = typeof twinAngle === 'number' ? twinAngle : -0.58;
-    const cx = rect.width / 2;
-    const cy = rect.height * 0.6;
-    const scale = Math.min(rect.width / 6.1, rect.height / 3.4);
-    const camera = 6.8;
-    const c = Math.cos(angle), s = Math.sin(angle);
-
-    const rotate = ([x,y,z]) => [x*c - z*s, y, x*s + z*c];
-    const project = point => {
-      const [x,y,z] = rotate(point);
-      const p = camera / (camera - z);
-      return { x: cx + x * scale * p, y: cy - y * scale * p, z, p };
-    };
-
-    ctx.save();
-    ctx.fillStyle = 'rgba(0,0,0,.30)';
-    ctx.beginPath();
-    ctx.ellipse(cx, cy + scale * 0.38, scale * 2.25, scale * 0.48, 0, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.restore();
-
-    const faces = [];
-    meshes.forEach(mesh => {
-      mesh.faces.forEach(face => {
-        const points = face.indices.map(i => project(mesh.vertices[i]));
-        faces.push({ points, type: face.type, depth: points.reduce((sum,p) => sum + p.z, 0) / points.length });
-      });
-    });
-    faces.sort((a,b) => a.depth - b.depth);
-
-    faces.forEach(face => {
-      const avgX = face.points.reduce((sum,p) => sum + p.x, 0) / face.points.length;
-      const colorIndex = avgX < cx - 8 ? 0 : avgX > cx + 8 ? 2 : 1;
-      ctx.beginPath();
-      face.points.forEach((p,i) => i ? ctx.lineTo(p.x,p.y) : ctx.moveTo(p.x,p.y));
-      ctx.closePath();
-      const palette = palettes[face.type] || palettes.body;
-      ctx.fillStyle = palette[colorIndex] || palette[1] || '#77828f';
-      ctx.fill();
-      ctx.strokeStyle = face.type === 'glass' ? 'rgba(135,182,221,.38)' : 'rgba(240,246,252,.14)';
-      ctx.lineWidth = 1;
-      ctx.stroke();
-    });
-
-    const wheelPositions = kind === 'truck'
-      ? [[-1.6,.18,-1.02],[1.45,.18,-1.02],[-1.6,.18,1.02],[1.45,.18,1.02]]
-      : [[-1.55,.18,-.96],[1.55,.18,-.96],[-1.55,.18,.96],[1.55,.18,.96]];
-    const wheels = wheelPositions.map(center => ({...project(center), depth: rotate(center)[2]})).sort((a,b) => a.depth - b.depth);
-    wheels.forEach(w => {
-      const radius = scale * .34 * w.p;
-      ctx.beginPath();
-      ctx.ellipse(w.x, w.y, radius * .72, radius, 0, 0, Math.PI * 2);
-      ctx.fillStyle = '#090d12';
-      ctx.fill();
-      ctx.strokeStyle = 'rgba(255,255,255,.14)';
-      ctx.lineWidth = 2;
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.arc(w.x, w.y, radius * .42, 0, Math.PI * 2);
-      ctx.fillStyle = '#7a8692';
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(w.x, w.y, radius * .16, 0, Math.PI * 2);
-      ctx.fillStyle = '#202832';
-      ctx.fill();
-    });
-  };
-
-  const originalRenderDigitalTwin = window.renderDigitalTwin;
-  if(typeof originalRenderDigitalTwin === 'function'){
-    window.renderDigitalTwin = async function(){
-      await originalRenderDigitalTwin();
-      const vehicle = getActiveVehicle?.();
-      if(!vehicle || typeof vehicleImagePresentation !== 'function') return;
-      const presentation = await vehicleImagePresentation(vehicle,'twin');
-      if(typeof applyImageElement === 'function') applyImageElement(document.getElementById('twinVehicleImage'), presentation);
-      setScreenBackground(document.querySelector('#digitaltwin .twinStage'), presentation.src, 'linear-gradient(180deg, rgba(7,10,16,.14), rgba(7,10,16,.84))');
-      const typeEl = document.getElementById('twinVehicleImageType');
-      if(typeEl){
-        const kind = pickBodyKind(vehicle);
-        const labelMap = { sedan:'SEDAN TWIN', coupe:'COUPE TWIN', hatch:'HATCHBACK TWIN', suv:'SUV TWIN', truck:'TRUCK TWIN', van:'VAN TWIN' };
-        typeEl.textContent = labelMap[kind] || 'VIN MATCHED TWIN';
-      }
-      updateHeaderForVehicle();
-      window.drawTwinCar();
-    };
-  }
-
-  const originalRenderPhotoGallery = window.renderPhotoGallery;
-  if(typeof originalRenderPhotoGallery === 'function'){
-    window.renderPhotoGallery = async function(){
-      await originalRenderPhotoGallery();
-      updateHeaderForVehicle();
-    };
-  }
-
-  const originalRenderGarage = window.renderGarage;
-  if(typeof originalRenderGarage === 'function'){
-    window.renderGarage = async function(){
-      await originalRenderGarage();
-      updateHeaderForVehicle();
-    };
-  }
-
-  injectStyles();
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', () => {
-      updateHeaderForVehicle();
-      if(activeScreenId() === 'home' && typeof window.renderVehicleHome === 'function') window.renderVehicleHome();
-      if(activeScreenId() === 'vehicleprofile' && typeof window.renderVehicleProfile === 'function') window.renderVehicleProfile();
-      if(activeScreenId() === 'digitaltwin' && typeof window.renderDigitalTwin === 'function') window.renderDigitalTwin();
-    }, { once:true });
-  }else{
-    updateHeaderForVehicle();
-  }
-})();
-</script>
-
+<script src="app.js?v=6.23-movable-digital-twin"></script>
 </body>
 </html>

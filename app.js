@@ -3845,37 +3845,72 @@ async function renderPhotoGallery(){
 }
 document.querySelectorAll("[data-photo-filter]").forEach(btn=>btn.addEventListener("click",()=>{currentPhotoFilter=btn.dataset.photoFilter;document.querySelectorAll("[data-photo-filter]").forEach(item=>item.classList.toggle("active",item===btn));renderPhotoGallery()}));
 
-// Rough rotatable 3D vehicle model
-let twinAngle=-.58;let twinCanvasReady=false;let twinDragging=false;let twinLastX=0;let twinResizeObserver=null;
-function makeBox(x1,x2,y1,y2,z1,z2,type){
-  const v=[[x1,y1,z1],[x2,y1,z1],[x2,y2,z1],[x1,y2,z1],[x1,y1,z2],[x2,y1,z2],[x2,y2,z2],[x1,y2,z2]];
-  return {vertices:v,faces:[[0,1,2,3],[4,7,6,5],[0,4,5,1],[3,2,6,7],[1,5,6,2],[0,3,7,4]].map(indices=>({indices,type}))};
+// Movable digital twin with actual vehicle imagery
+let twinState={yaw:-16,pitch:7,zoom:1,view:"main",ready:false,dragging:false,lastX:0,lastY:0};
+const TWIN_VIEW_CONFIG={
+  main:{label:"MAIN VIEW",title:"Main vehicle image",fallback:"vehicle",description:"Your current main vehicle photo or VIN-matched vehicle image.",hotspots:[{x:31,y:35,title:"Engine Bay",small:"Tap to open",action:"screen",target:"engine"},{x:58,y:34,title:"Interior",small:"Cabin details",action:"zone",target:"interior"},{x:25,y:69,title:"Wheels",small:"Tires & brakes",action:"zone",target:"wheels"},{x:77,y:48,title:"Trunk",small:"Rear cargo area",action:"zone",target:"trunk"}]},
+  engine:{label:"ENGINE VIEW",title:"Engine bay view",fallback:"images/engine/engine_bay_master.jpg",description:"Built from your engine bay photo when available.",hotspots:[{x:25,y:48,title:"Airbox",small:"Mapped module",action:"screen",target:"airbox"},{x:60,y:46,title:"Coolant",small:"Mapped module",action:"screen",target:"coolant"},{x:43,y:18,title:"Fuse Box",small:"Mapped module",action:"screen",target:"fusebox"}]},
+  interior:{label:"INTERIOR VIEW",title:"Interior view",fallback:"vehicle",description:"Add cabin photos to personalize this section.",hotspots:[{x:50,y:50,title:"Interior",small:"Add or review photos",action:"zone",target:"interior"}]},
+  wheels:{label:"WHEELS VIEW",title:"Wheel and brake view",fallback:"vehicle",description:"Add corner photos to document tire, wheel, and brake condition.",hotspots:[{x:28,y:70,title:"Front wheel",small:"Add or review photos",action:"zone",target:"wheels"},{x:74,y:70,title:"Rear wheel",small:"Add or review photos",action:"zone",target:"wheels"}]},
+  trunk:{label:"TRUNK VIEW",title:"Trunk view",fallback:"vehicle",description:"Add trunk photos to document tools, spare, and cargo area condition.",hotspots:[{x:76,y:48,title:"Trunk",small:"Add or review photos",action:"zone",target:"trunk"}]},
+  underside:{label:"UNDERSIDE VIEW",title:"Underside view",fallback:"vehicle",description:"Add underside photos for rust, leaks, exhaust, and suspension tracking.",hotspots:[{x:50,y:60,title:"Underside",small:"Add or review photos",action:"zone",target:"underside"}]}
+};
+function clamp(value,min,max){return Math.max(min,Math.min(max,value))}
+function resetTwinView(redraw=true){twinState.yaw=-16;twinState.pitch=7;twinState.zoom=1;if(redraw)drawTwinCar()}
+function chooseLatestAreaPhoto(photos,area){return (photos||[]).filter(photo=>photo.area===area&&!String(photo.role||"").includes("cover")).sort((a,b)=>String(b.createdAt).localeCompare(String(a.createdAt)))[0]||null}
+function chooseTwinFallback(view,vehicle){const config=TWIN_VIEW_CONFIG[view]||TWIN_VIEW_CONFIG.main;return config.fallback==="vehicle"?null:config.fallback}
+async function getTwinViewPresentation(vehicle,photos,view){
+  const config=TWIN_VIEW_CONFIG[view]||TWIN_VIEW_CONFIG.main;
+  if(view==="main"){
+    const main=await vehicleImagePresentation(vehicle,"twin");
+    return {...main,viewLabel:config.label,viewTitle:main.type==="owner"?"Your actual car":"VIN matched vehicle",viewSource:main.type==="owner"?"This is the main photo saved for your vehicle.":(main.credit||config.description)};
+  }
+  const areaPhoto=chooseLatestAreaPhoto(photos,view);
+  if(areaPhoto?.blob){
+    const src=URL.createObjectURL(areaPhoto.blob);vehicleImageObjectUrls["twin"].push(src);
+    return {src,type:"owner-area",label:"OWNER PHOTO",title:config.title,credit:photoAreaLabel(view)+" photo • "+new Date(areaPhoto.createdAt).toLocaleDateString(),viewLabel:config.label,viewTitle:config.title,viewSource:"Using your latest "+photoAreaLabel(view).toLowerCase()+" photo."};
+  }
+  const fallback=chooseTwinFallback(view,vehicle);
+  if(fallback){
+    return {src:fallback,type:"built-in",label:"APP IMAGE",title:config.title,credit:config.description,viewLabel:config.label,viewTitle:config.title,viewSource:config.description};
+  }
+  const main=await vehicleImagePresentation(vehicle,"twin");
+  return {...main,viewLabel:config.label,viewTitle:config.title,viewSource:"No dedicated "+photoAreaLabel(view).toLowerCase()+" photo yet. Using your main vehicle image for now."};
 }
-function makeCabin(){return {vertices:[[-1.05,.72,-.73],[1.15,.72,-.73],[.77,1.55,-.58],[-.67,1.55,-.58],[-1.05,.72,.73],[1.15,.72,.73],[.77,1.55,.58],[-.67,1.55,.58]],faces:[{indices:[0,1,2,3],type:"glass"},{indices:[4,7,6,5],type:"glass"},{indices:[0,4,5,1],type:"roof"},{indices:[3,2,6,7],type:"roof"},{indices:[1,5,6,2],type:"glass"},{indices:[0,3,7,4],type:"glass"}]}}
+function renderTwinHotspots(view){
+  const config=TWIN_VIEW_CONFIG[view]||TWIN_VIEW_CONFIG.main;const layer=document.getElementById("twinHotspotLayer");if(!layer)return;layer.innerHTML="";
+  (config.hotspots||[]).forEach(spot=>{const btn=document.createElement("button");btn.type="button";btn.className="twinHotspot"+(spot.small&&spot.small.length<14?" compact":"");btn.style.left=spot.x+"%";btn.style.top=spot.y+"%";btn.innerHTML='<div><b>'+escapeHtml(spot.title)+'</b>'+(spot.small?'<small>'+escapeHtml(spot.small)+'</small>':'')+'</div>';
+    btn.addEventListener("click",()=>{if(spot.action==="screen")showScreen(spot.target);else if(spot.action==="zone")openTwinZoneSheet(spot.target)});layer.appendChild(btn);
+  });
+}
 function drawTwinCar(){
-  const canvas=document.getElementById("vehicleTwinCanvas");if(!canvas)return;const rect=canvas.getBoundingClientRect();const dpr=Math.min(2,window.devicePixelRatio||1);canvas.width=Math.max(1,Math.round(rect.width*dpr));canvas.height=Math.max(1,Math.round(rect.height*dpr));const ctx=canvas.getContext("2d");ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,rect.width,rect.height);
-  const cx=rect.width/2,cy=rect.height*.57,scale=Math.min(rect.width/6.2,rect.height/3.45),camera=6.7,c=Math.cos(twinAngle),s=Math.sin(twinAngle);
-  const rotate=([x,y,z])=>[x*c-z*s,y,x*s+z*c];const project=point=>{const [x,y,z]=rotate(point);const p=camera/(camera-z);return {x:cx+x*scale*p,y:cy-y*scale*p,z,p}};
-  ctx.save();ctx.fillStyle="rgba(0,0,0,.32)";ctx.beginPath();ctx.ellipse(cx,cy+scale*.37,scale*2.25,scale*.46,0,0,Math.PI*2);ctx.fill();ctx.restore();
-  const meshes=[makeBox(-2.45,2.45,.05,.76,-.88,.88,"body"),makeBox(-2.15,2.15,.76,.94,-.82,.82,"belt"),makeCabin()];
-  const faces=[];meshes.forEach(mesh=>mesh.faces.forEach(face=>{const points=face.indices.map(i=>project(mesh.vertices[i]));faces.push({points,type:face.type,depth:points.reduce((sum,p)=>sum+p.z,0)/points.length})}));faces.sort((a,b)=>a.depth-b.depth);
-  const palettes={body:["#68727f","#87919d","#55606d"],belt:["#717b87","#919aa5","#5d6773"],roof:["#707a86","#8e98a4","#59636f"],glass:["#172432","#24384b","#101b27"]};
-  faces.forEach(face=>{const avgX=face.points.reduce((sum,p)=>sum+p.x,0)/face.points.length;const colorIndex=avgX<cx-8?0:avgX>cx+8?2:1;ctx.beginPath();face.points.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.fillStyle=palettes[face.type][colorIndex];ctx.fill();ctx.strokeStyle=face.type==="glass"?"rgba(120,174,219,.34)":"rgba(233,241,250,.15)";ctx.lineWidth=1;ctx.stroke()});
-  const wheels=[[-1.55,.18,-.94],[1.55,.18,-.94],[-1.55,.18,.94],[1.55,.18,.94]].map(center=>({...project(center),depth:rotate(center)[2]})).sort((a,b)=>a.depth-b.depth);
-  wheels.forEach(w=>{const radius=scale*.34*w.p;ctx.beginPath();ctx.ellipse(w.x,w.y,radius*.72,radius,0,0,Math.PI*2);ctx.fillStyle="#0a0d12";ctx.fill();ctx.strokeStyle="rgba(255,255,255,.15)";ctx.lineWidth=2;ctx.stroke();ctx.beginPath();ctx.arc(w.x,w.y,radius*.42,0,Math.PI*2);ctx.fillStyle="#78828e";ctx.fill();ctx.beginPath();ctx.arc(w.x,w.y,radius*.16,0,Math.PI*2);ctx.fillStyle="#202832";ctx.fill()});
-  const hoodA=project([1.18,.96,-.72]),hoodB=project([2.22,.96,-.72]);ctx.beginPath();ctx.moveTo(hoodA.x,hoodA.y);ctx.lineTo(hoodB.x,hoodB.y);ctx.strokeStyle="rgba(215,231,248,.24)";ctx.stroke();
+  const frame=document.getElementById("twinPhotoFrame");if(!frame)return;frame.style.transform='translateY(2px) rotateX('+twinState.pitch+'deg) rotateY('+twinState.yaw+'deg) scale('+twinState.zoom+')';
+}
+function setTwinView(view){
+  twinState.view=view;document.querySelectorAll('[data-twin-view]').forEach(btn=>btn.classList.toggle('active',btn.dataset.twinView===view));renderDigitalTwin();
 }
 function initTwinCanvas(){
-  const canvas=document.getElementById("vehicleTwinCanvas");if(!canvas)return;drawTwinCar();if(twinCanvasReady)return;twinCanvasReady=true;
-  canvas.addEventListener("pointerdown",event=>{twinDragging=true;twinLastX=event.clientX;canvas.setPointerCapture(event.pointerId)});canvas.addEventListener("pointermove",event=>{if(!twinDragging)return;const dx=event.clientX-twinLastX;twinLastX=event.clientX;twinAngle+=dx*.012;drawTwinCar()});canvas.addEventListener("pointerup",()=>twinDragging=false);canvas.addEventListener("pointercancel",()=>twinDragging=false);
-  document.getElementById("twinRotateLeft")?.addEventListener("click",()=>{twinAngle-=.34;drawTwinCar()});document.getElementById("twinRotateRight")?.addEventListener("click",()=>{twinAngle+=.34;drawTwinCar()});
-  twinResizeObserver=new ResizeObserver(drawTwinCar);twinResizeObserver.observe(canvas);
+  const scene=document.getElementById("twinScene");if(!scene)return;drawTwinCar();if(twinState.ready)return;twinState.ready=true;
+  scene.addEventListener("pointerdown",event=>{twinState.dragging=true;twinState.lastX=event.clientX;twinState.lastY=event.clientY;scene.setPointerCapture?.(event.pointerId)});
+  scene.addEventListener("pointermove",event=>{if(!twinState.dragging)return;const dx=event.clientX-twinState.lastX;const dy=event.clientY-twinState.lastY;twinState.lastX=event.clientX;twinState.lastY=event.clientY;twinState.yaw=clamp(twinState.yaw+dx*.22,-42,42);twinState.pitch=clamp(twinState.pitch-dy*.16,-16,18);drawTwinCar()});
+  const stop=()=>{twinState.dragging=false};scene.addEventListener("pointerup",stop);scene.addEventListener("pointercancel",stop);scene.addEventListener("pointerleave",stop);
+  document.getElementById("twinRotateLeft")?.addEventListener("click",()=>{twinState.yaw=clamp(twinState.yaw-7,-42,42);drawTwinCar()});
+  document.getElementById("twinRotateRight")?.addEventListener("click",()=>{twinState.yaw=clamp(twinState.yaw+7,-42,42);drawTwinCar()});
+  document.getElementById("twinZoomIn")?.addEventListener("click",()=>{twinState.zoom=clamp(twinState.zoom+.08,.85,1.28);drawTwinCar()});
+  document.getElementById("twinZoomOut")?.addEventListener("click",()=>{twinState.zoom=clamp(twinState.zoom-.08,.85,1.28);drawTwinCar()});
+  document.getElementById("twinResetView")?.addEventListener("click",()=>resetTwinView());
+  document.getElementById("twinChangeMainPhoto")?.addEventListener("click",()=>openMainVehiclePhotoPicker());
+  document.querySelectorAll('[data-twin-view]').forEach(btn=>btn.addEventListener('click',()=>setTwinView(btn.dataset.twinView)));
+  document.querySelectorAll('[data-twin-module]').forEach(btn=>btn.addEventListener('click',()=>showScreen(btn.dataset.twinModule)));
+  window.addEventListener('resize',drawTwinCar);
 }
 async function renderDigitalTwin(){
   const vehicle=getActiveVehicle();document.getElementById("twinVehicleName").textContent=vehicle.nickname||"My Vehicle";document.getElementById("twinVehicleMeta").textContent=formatVehicleName(vehicle);document.getElementById("twinVinMask").textContent=vehicle.vinLinked?maskVin(vehicle.vin):vehicle.vinMasked||"Not linked";
   revokeVehicleImageUrls("twin");const presentation=await vehicleImagePresentation(vehicle,"twin");applyImageElement(document.getElementById("twinVehicleImage"),presentation);document.getElementById("twinVehicleImageType").textContent=presentation.type==="owner"?"YOUR ACTUAL CAR":"VIN MATCHED IMAGE";document.getElementById("twinVehicleImageName").textContent=presentation.title||formatVehicleName(vehicle);document.getElementById("twinVehicleImageSource").textContent=presentation.type==="owner"?"Stored on this device":presentation.credit||"Representative image";
   const photos=await getPhotos(vehicle.id).catch(()=>[]);document.getElementById("twinPhotoCount").textContent=photos.length;document.getElementById("twinCompletionBadge").textContent=photos.length?photos.length+" photos":"Foundation";
-  const counts={};photos.forEach(photo=>{counts[photo.area]=(counts[photo.area]||0)+1});document.querySelectorAll("[data-zone-status]").forEach(el=>{const zone=el.dataset.zoneStatus;const count=counts[zone]||0;el.textContent=count?count+" owner photo"+(count===1?"":"s"):"Not documented"});drawTwinCar();
+  const counts={};photos.forEach(photo=>{counts[photo.area]=(counts[photo.area]||0)+1});document.querySelectorAll("[data-zone-status]").forEach(el=>{const zone=el.dataset.zoneStatus;const count=counts[zone]||0;el.textContent=count?count+" owner photo"+(count===1?"":"s"):"Not documented"});
+  const stageView=await getTwinViewPresentation(vehicle,photos,twinState.view||"main");applyImageElement(document.getElementById("twinStageImage"),stageView);document.getElementById("twinStageViewLabel").textContent=stageView.viewLabel||"MAIN VIEW";document.getElementById("twinStageImageTitle").textContent=stageView.viewTitle||stageView.title||"Vehicle image";document.getElementById("twinStageImageSource").textContent=stageView.viewSource||stageView.credit||"Best available photo";
+  renderTwinHotspots(twinState.view||"main");drawTwinCar();
 }
 function openTwinZoneSheet(zone){
   if(zone==="engine"){showScreen("engine");return}
