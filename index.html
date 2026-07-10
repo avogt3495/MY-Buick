@@ -939,5 +939,309 @@
 </div>
 <script src="app.js?v=6.22-vin-auto-photo"></script>
 <script src="MY_CAR_auto_photo_patch.js?v=1.0"></script>
+<script>
+/* MY CAR vehicle deletion patch
+   Adds Delete Vehicle controls to Garage cards and the Vehicle Profile editor.
+   Keeps an intentionally empty garage empty after reload and removes photos
+   belonging to a deleted vehicle from IndexedDB when available.
+*/
+(() => {
+  'use strict';
+
+  const VEHICLES_KEY = 'mycar_vehicles_v1';
+  const ACTIVE_KEY = 'mycar_active_vehicle_v1';
+  const ALLOW_EMPTY_KEY = 'mycar_allow_empty_garage_v1';
+  const DEFAULT_ID = 'buick-2010-lacrosse';
+  const PHOTO_DB_NAME = 'mycar_owner_photos';
+  const PHOTO_STORE = 'photos';
+
+  function readVehicles() {
+    try {
+      const value = JSON.parse(localStorage.getItem(VEHICLES_KEY) || '[]');
+      return Array.isArray(value) ? value : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function writeVehicles(vehicles) {
+    localStorage.setItem(VEHICLES_KEY, JSON.stringify(vehicles));
+  }
+
+  function vehicleName(vehicle) {
+    return [vehicle?.year, vehicle?.make, vehicle?.model, vehicle?.trim]
+      .filter(Boolean)
+      .join(' ') || vehicle?.nickname || 'this vehicle';
+  }
+
+  function removeDefaultReseedIfGarageWasIntentionallyEmpty() {
+    if (localStorage.getItem(ALLOW_EMPTY_KEY) !== 'true') return;
+    const vehicles = readVehicles();
+    if (vehicles.length === 1 && vehicles[0]?.id === DEFAULT_ID) {
+      writeVehicles([]);
+      localStorage.removeItem(ACTIVE_KEY);
+    }
+  }
+
+  async function deleteVehiclePhotos(vehicleId) {
+    if (!vehicleId || !window.indexedDB) return;
+
+    await new Promise((resolve) => {
+      const request = indexedDB.open(PHOTO_DB_NAME, 1);
+
+      request.onerror = () => resolve();
+      request.onupgradeneeded = () => {
+        // Do not create a new database just for deletion.
+        try { request.transaction?.abort(); } catch {}
+      };
+      request.onsuccess = () => {
+        const db = request.result;
+        if (!db.objectStoreNames.contains(PHOTO_STORE)) {
+          db.close();
+          resolve();
+          return;
+        }
+
+        const transaction = db.transaction(PHOTO_STORE, 'readwrite');
+        const store = transaction.objectStore(PHOTO_STORE);
+        const index = store.indexNames.contains('vehicleId') ? store.index('vehicleId') : null;
+
+        if (!index) {
+          db.close();
+          resolve();
+          return;
+        }
+
+        const cursorRequest = index.openCursor(IDBKeyRange.only(vehicleId));
+        cursorRequest.onsuccess = (event) => {
+          const cursor = event.target.result;
+          if (!cursor) return;
+          cursor.delete();
+          cursor.continue();
+        };
+        cursorRequest.onerror = () => {};
+        transaction.oncomplete = () => {
+          db.close();
+          resolve();
+        };
+        transaction.onerror = () => {
+          db.close();
+          resolve();
+        };
+        transaction.onabort = () => {
+          db.close();
+          resolve();
+        };
+      };
+    });
+  }
+
+  function showDeleteDialog(vehicle) {
+    const name = vehicleName(vehicle);
+    const id = vehicle?.id;
+    if (!id) return;
+
+    const confirmMessage = `Delete ${name}?\n\nThis removes the vehicle profile and its owner photos from this browser. This cannot be undone.`;
+    if (!window.confirm(confirmMessage)) return;
+
+    performVehicleDelete(id).catch((error) => {
+      console.error('Vehicle deletion failed:', error);
+      window.alert('The vehicle could not be deleted. Please try again.');
+    });
+  }
+
+  async function performVehicleDelete(vehicleId) {
+    const vehicles = readVehicles();
+    const remaining = vehicles.filter((vehicle) => vehicle.id !== vehicleId);
+    if (remaining.length === vehicles.length) return;
+
+    writeVehicles(remaining);
+    await deleteVehiclePhotos(vehicleId);
+
+    if (remaining.length) {
+      localStorage.setItem(ACTIVE_KEY, remaining[0].id);
+      localStorage.removeItem(ALLOW_EMPTY_KEY);
+    } else {
+      localStorage.removeItem(ACTIVE_KEY);
+      localStorage.setItem(ALLOW_EMPTY_KEY, 'true');
+    }
+
+    try { window.closeGlobalFloatSheet?.(); } catch {}
+    try { window.closeSheet?.(); } catch {}
+
+    if (typeof window.showScreen === 'function') {
+      window.showScreen('garage');
+    } else {
+      window.location.reload();
+      return;
+    }
+
+    setTimeout(() => {
+      try { window.renderGarage?.(); } catch {}
+      enhanceGarageCards();
+      renderEmptyGarageMessage();
+    }, 50);
+  }
+
+  function addDeleteButton(card, vehicle) {
+    if (!card || card.querySelector('[data-delete-vehicle]')) return;
+    const actions = card.querySelector('.garageVehicleActions');
+    if (!actions) return;
+
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'deleteVehicleBtn';
+    button.dataset.deleteVehicle = vehicle.id;
+    button.setAttribute('aria-label', `Delete ${vehicleName(vehicle)}`);
+    button.innerHTML = '<span aria-hidden="true">⌫</span> Delete';
+    button.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      showDeleteDialog(vehicle);
+    });
+    actions.appendChild(button);
+  }
+
+  function enhanceGarageCards() {
+    const vehicles = readVehicles();
+    const byId = new Map(vehicles.map((vehicle) => [vehicle.id, vehicle]));
+    document.querySelectorAll('[data-vehicle-card]').forEach((card) => {
+      const vehicle = byId.get(card.dataset.vehicleCard);
+      if (vehicle) addDeleteButton(card, vehicle);
+    });
+    renderEmptyGarageMessage();
+  }
+
+  function renderEmptyGarageMessage() {
+    const list = document.getElementById('garageVehicleList');
+    if (!list) return;
+    const vehicles = readVehicles();
+    const existing = list.querySelector('.garageEmptyState');
+
+    if (vehicles.length) {
+      existing?.remove();
+      return;
+    }
+
+    if (existing) return;
+    list.innerHTML = `
+      <div class="garageEmptyState">
+        <span class="garageEmptyIcon">＋</span>
+        <h3>No vehicles yet</h3>
+        <p>Scan or enter a VIN to build your first vehicle profile.</p>
+        <button type="button" class="primary" id="emptyGarageAddVehicle">Add Vehicle</button>
+      </div>`;
+
+    document.getElementById('emptyGarageAddVehicle')?.addEventListener('click', () => {
+      if (typeof window.startVinSetup === 'function') window.startVinSetup();
+      else document.getElementById('garageInlineAdd')?.click();
+    });
+  }
+
+  function addDeleteToProfileEditor() {
+    const content = document.getElementById('globalFloatContent');
+    if (!content || !document.getElementById('profileSaveEdit')) return;
+    if (document.getElementById('profileDeleteVehicle')) return;
+
+    const vehicle = typeof window.getActiveVehicle === 'function'
+      ? window.getActiveVehicle()
+      : readVehicles().find((item) => item.id === localStorage.getItem(ACTIVE_KEY));
+    if (!vehicle?.id) return;
+
+    const button = document.createElement('button');
+    button.id = 'profileDeleteVehicle';
+    button.type = 'button';
+    button.className = 'dangerVehicleButton';
+    button.textContent = 'Delete Vehicle';
+    button.addEventListener('click', () => showDeleteDialog(vehicle));
+    content.appendChild(button);
+  }
+
+  function installStyles() {
+    if (document.getElementById('vehicleDeletePatchStyles')) return;
+    const style = document.createElement('style');
+    style.id = 'vehicleDeletePatchStyles';
+    style.textContent = `
+      .garageVehicleActions { display:grid !important; grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:10px !important; }
+      .garageVehicleActions .deleteVehicleBtn {
+        color: #ff8e98;
+        border-color: rgba(255, 90, 105, .28);
+        background: rgba(255, 67, 84, .075);
+      }
+      .garageVehicleActions .deleteVehicleBtn span {
+        margin-right: 5px;
+      }
+      .dangerVehicleButton {
+        width: 100%;
+        margin-top: 14px;
+        padding: 14px 16px;
+        border-radius: 15px;
+        border: 1px solid rgba(255, 84, 100, .34);
+        background: rgba(255, 61, 80, .09);
+        color: #ff9aa4;
+        font: inherit;
+        font-weight: 800;
+      }
+      .garageEmptyState {
+        padding: 30px 20px;
+        border-radius: 24px;
+        border: 1px solid rgba(255,255,255,.11);
+        background: rgba(255,255,255,.035);
+        text-align: center;
+      }
+      .garageEmptyState .garageEmptyIcon {
+        display: grid;
+        place-items: center;
+        width: 62px;
+        height: 62px;
+        margin: 0 auto 14px;
+        border-radius: 20px;
+        background: rgba(63, 133, 255, .16);
+        color: #82b5ff;
+        font-size: 34px;
+        font-weight: 800;
+      }
+      .garageEmptyState h3 { margin: 0 0 8px; font-size: 22px; }
+      .garageEmptyState p { margin: 0 auto 18px; max-width: 300px; color: #93a0b4; line-height: 1.5; }
+      .garageEmptyState button { min-width: 180px; }
+    `;
+    document.head.appendChild(style);
+  }
+
+  removeDefaultReseedIfGarageWasIntentionallyEmpty();
+  installStyles();
+
+  // Re-run after asynchronous Garage renders and after opening the profile editor.
+  const observer = new MutationObserver(() => {
+    enhanceGarageCards();
+    addDeleteToProfileEditor();
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+
+  const originalRenderGarage = window.renderGarage;
+  if (typeof originalRenderGarage === 'function') {
+    window.renderGarage = async function patchedRenderGarage(...args) {
+      const result = await originalRenderGarage.apply(this, args);
+      enhanceGarageCards();
+      return result;
+    };
+  }
+
+  // Make adding a vehicle opt the garage back into normal non-empty behavior.
+  const originalUpsertVehicle = window.upsertVehicle;
+  if (typeof originalUpsertVehicle === 'function') {
+    window.upsertVehicle = function patchedUpsertVehicle(vehicle) {
+      localStorage.removeItem(ALLOW_EMPTY_KEY);
+      return originalUpsertVehicle.call(this, vehicle);
+    };
+  }
+
+  setTimeout(() => {
+    try { window.renderGarage?.(); } catch {}
+    enhanceGarageCards();
+  }, 0);
+})();
+
+</script>
 </body>
 </html>
