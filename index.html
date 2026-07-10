@@ -7,7 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <meta name="theme-color" content="#070a10">
-  <title>MY CAR v6.22 VIN Auto Car Photo</title>
+  <title>MY CAR v6.23 Photo Library Import</title>
   <link rel="stylesheet" href="style.css?v=6.22-vin-auto-photo">
 </head>
 <body>
@@ -142,8 +142,8 @@
               <b>Use the automatic VIN match now, or add your actual car photo.</b>
               <small>Your own photo will replace the representative image everywhere in the Garage.</small>
             </div>
-            <input id="vinMainPhotoInput" type="file" accept="image/*" capture="environment" hidden>
-            <label class="vinMainPhotoButton" for="vinMainPhotoInput">Take or choose my car photo</label>
+            <input id="vinMainPhotoInput" type="file" accept="image/*" hidden>
+            <label class="vinMainPhotoButton" for="vinMainPhotoInput">Choose from Photos or Camera</label>
             <div id="vinMainPhotoPreview" class="vinMainPhotoPreview hidden"><img alt="Selected main vehicle photo"><button id="vinMainPhotoRemove" type="button">Remove</button></div>
           </div>
 
@@ -238,8 +238,11 @@
 
     <section id="photos" class="screen vehiclePhotosScreen">
       <div class="sectionHead photoLibraryHead">
-        <div><h2>Owner Photos</h2><p>Photos you attach to this vehicle stay on this device.</p></div>
-        <span id="photoLibraryCount" class="badge">0</span>
+        <div><h2>Owner Photos</h2><p>Import an existing picture from your Photos library or take a new one.</p></div>
+        <div class="photoLibraryHeadActions">
+          <span id="photoLibraryCount" class="badge">0</span>
+          <button id="photoLibraryAddButton" class="tinyBtn" type="button">+ Add Photos</button>
+        </div>
       </div>
       <div id="photoFilterBar" class="photoFilterBar">
         <button class="active" data-photo-filter="all">All</button>
@@ -1243,5 +1246,113 @@
 })();
 
 </script>
+
+<script>
+/* v6.23 Photo Library Import
+   Removes camera-only capture from vehicle/owner photo pickers and provides
+   an explicit Add Photos button on the Owner Photos screen. */
+(function installPhotoLibraryImport(){
+  function allowPhotoLibrary(input){
+    if(!input)return;
+    input.removeAttribute('capture');
+    input.setAttribute('accept','image/*');
+  }
+
+  function updatePickerCopy(inputId, title, note){
+    const input=document.getElementById(inputId);
+    if(!input)return;
+    allowPhotoLibrary(input);
+    const label=document.querySelector('label[for="'+inputId+'"]');
+    if(!label)return;
+    const bold=label.querySelector('b');
+    const small=label.querySelector('small');
+    if(bold)bold.textContent=title;
+    if(small)small.textContent=note;
+  }
+
+  function openOwnerPhotoChooser(){
+    // Open the app's normal owner-photo form. The observer below removes
+    // capture="environment" before the user presses the chooser.
+    if(typeof window.openPhotoCapture==='function'){
+      window.openPhotoCapture('other');
+      requestAnimationFrame(enhancePhotoPickers);
+      return;
+    }
+    const dockButton=document.querySelector('[data-global-action="photo-add"]');
+    if(dockButton){dockButton.click();requestAnimationFrame(enhancePhotoPickers);}
+  }
+
+  function enhancePhotoPickers(){
+    // Static VIN-personalization picker.
+    updatePickerCopy(
+      'vinMainPhotoInput',
+      'Choose from Photos or Camera',
+      'Select an existing image from your library, or take a new picture.'
+    );
+
+    // Dynamically created main-vehicle-photo picker.
+    updatePickerCopy(
+      'mainVehiclePhotoFile',
+      'Choose from Photos or Camera',
+      'Pick an existing car photo or take a new one. It becomes the main vehicle image.'
+    );
+
+    // Dynamically created Owner Photos picker.
+    updatePickerCopy(
+      'ownerPhotoFile',
+      'Choose from Photo Library',
+      'Select an existing image. Your iPhone can also offer the camera from the chooser.'
+    );
+
+    const addButton=document.getElementById('photoLibraryAddButton');
+    if(addButton && !addButton.dataset.photoLibraryBound){
+      addButton.dataset.photoLibraryBound='true';
+      addButton.addEventListener('click',openOwnerPhotoChooser);
+    }
+  }
+
+  function installPhotoLibraryStyles(){
+    if(document.getElementById('photoLibraryImportStyles'))return;
+    const style=document.createElement('style');
+    style.id='photoLibraryImportStyles';
+    style.textContent=`
+      .photoLibraryHeadActions{
+        display:flex;
+        align-items:center;
+        justify-content:flex-end;
+        gap:9px;
+        flex-wrap:wrap;
+      }
+      #photoLibraryAddButton{
+        white-space:nowrap;
+        min-height:40px;
+        padding-inline:14px;
+      }
+      @media(max-width:430px){
+        .photoLibraryHead{
+          align-items:flex-start;
+          gap:12px;
+        }
+        .photoLibraryHeadActions{
+          flex-direction:column;
+          align-items:flex-end;
+          flex-shrink:0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  installPhotoLibraryStyles();
+  enhancePhotoPickers();
+
+  const observer=new MutationObserver(enhancePhotoPickers);
+  observer.observe(document.body,{childList:true,subtree:true});
+
+  // Re-apply after screen transitions or floating sheets are opened.
+  document.addEventListener('click',()=>setTimeout(enhancePhotoPickers,0),true);
+})();
+</script>
+
 </body>
 </html>
