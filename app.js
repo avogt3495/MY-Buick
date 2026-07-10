@@ -1,5 +1,5 @@
-const screens=["home","engine","airbox","guide","learn","maintenance","coolant","coolantguide","coolantlearn","coolantmaintenance"];
-const names={home:["MY BUICK","2010 Buick LaCrosse CXL"],engine:["VEHICLE","Engine Bay"],airbox:["ENGINE BAY","Airbox"],guide:["AIRBOX","Guide Me"],learn:["AIRBOX","Learn"],maintenance:["AIRBOX","Maintenance"],coolant:["ENGINE BAY","Coolant Reservoir"],coolantguide:["COOLANT","Guide Me"],coolantlearn:["COOLANT","Learn"],coolantmaintenance:["COOLANT","Maintenance"]};
+const screens=["home","engine","airbox","guide","learn","maintenance","coolant","coolantguide","coolantlearn","coolantmaintenance","fusebox","fuseguide","fuselearn","fusemaintenance"];
+const names={home:["MY BUICK","2010 Buick LaCrosse CXL"],engine:["VEHICLE","Engine Bay"],airbox:["ENGINE BAY","Airbox"],guide:["AIRBOX","Guide Me"],learn:["AIRBOX","Learn"],maintenance:["AIRBOX","Maintenance"],coolant:["ENGINE BAY","Coolant Reservoir"],coolantguide:["COOLANT","Guide Me"],coolantlearn:["COOLANT","Learn"],coolantmaintenance:["COOLANT","Maintenance"],fusebox:["ENGINE BAY","Fuse Box"],fuseguide:["FUSE BOX","Guide Me"],fuselearn:["FUSE BOX","Learn"],fusemaintenance:["FUSE BOX","Maintenance"]};
 let current="home";let layer=0;let done=new Set();
 
 const componentMaps=[
@@ -133,6 +133,46 @@ const coolantFlushSteps=[
   }
 ];
 let coolantFlushIndex=0;
+
+const fuseGuideSteps=[
+  {
+    title:"Locate the fuse box",
+    text:"Identify the underhood fuse box with the cover installed so you know exactly what assembly you are working on.",
+    img:"images/fuse_box/00_cover_on.jpg",
+    label:"Underhood fuse box cover",
+    next:"Open the cover"
+  },
+  {
+    title:"Open the cover",
+    text:"Release the cover and remove it carefully. Keep the lid oriented so the printed legend remains easy to read.",
+    img:"images/fuse_box/01_lid_diagram_inside.jpg",
+    label:"Inside of cover with fuse / relay legend",
+    next:"Read the lid diagram"
+  },
+  {
+    title:"Use the lid diagram",
+    text:"Read the printed fuse and relay legend on the inside of the cover to identify the correct circuit before touching anything.",
+    img:"images/fuse_box/01_lid_diagram_inside.jpg",
+    label:"Printed lid legend",
+    next:"Inspect the box contents"
+  },
+  {
+    title:"Inspect fuses and relays",
+    text:"Look over the fuse and relay layout for burnt, melted, loose, or corroded components. Compare the open box to the legend.",
+    img:"images/fuse_box/02_fuses_relays_overview.jpg",
+    label:"Open fuse box overview",
+    next:"Replace only with same amperage"
+  },
+  {
+    title:"Replace correctly and close",
+    text:"If a fuse is blown, replace it only with the same amperage and style. Reinstall the cover securely when finished.",
+    img:"images/fuse_box/00_cover_on.jpg",
+    label:"Cover reinstalled securely",
+    next:"Guide complete"
+  }
+];
+let fuseGuideIndex=0;
+let fuseGuideDone=new Set();
 
 const parts={
   "quickstart": {
@@ -1873,6 +1913,9 @@ function showScreen(id){
   }else{
     closeCoolantGuideSheet();
   }
+  if(id==="fuseguide"){
+    requestAnimationFrame(()=>renderFuseGuide());
+  }
   renderGlobalFloatDock(id);
 }
 document.querySelectorAll("[data-go]").forEach(btn=>btn.addEventListener("click",()=>showScreen(btn.dataset.go)));
@@ -1893,7 +1936,7 @@ document.getElementById("backBtn").addEventListener("click",()=>{
     closeCoolantGuideSheet();
     return;
   }
-  const backMap={engine:"home",airbox:"engine",guide:"airbox",learn:"airbox",maintenance:"airbox",coolant:"engine",coolantguide:"coolant",coolantlearn:"coolant",coolantmaintenance:"coolant"};
+  const backMap={engine:"home",airbox:"engine",guide:"airbox",learn:"airbox",maintenance:"airbox",coolant:"engine",coolantguide:"coolant",coolantlearn:"coolant",coolantmaintenance:"coolant",fusebox:"engine",fuseguide:"fusebox",fuselearn:"fusebox",fusemaintenance:"fusebox"};
   showScreen(backMap[current]||"home");
 });
 
@@ -2048,6 +2091,110 @@ function closeSheet(){
 }
 document.getElementById("closeSheet").addEventListener("click",closeSheet);
 function getLogs(){return JSON.parse(localStorage.getItem("mybuick_airbox_life_logs")||"[]")}
+Object.assign(parts,{
+  fuseQuickstart:{
+    title:"Fuse Box Quick Sheet",
+    status:"Starter View",
+    items:[
+      {label:"Location",value:"Underhood fuse box in engine bay"},
+      {label:"Photo Set",value:"Cover on, lid legend, open-box overview"},
+      {label:"Main Rule",value:"Replace only with the same amperage and fuse type"},
+      {label:"What it contains",value:"Fuses and relays for major vehicle circuits"},
+      {label:"Best first step",value:"Read the inside lid legend before touching anything"}
+    ],
+    notes:[
+      "A blown fuse is usually a symptom. If the replacement blows again, stop and diagnose the circuit.",
+      "Never install a higher-amperage fuse just to keep a circuit alive.",
+      "Look for heat, corrosion, moisture, and loose fit while the cover is off."
+    ],
+    source:"Alex uploaded fuse box photo set"
+  },
+  fuseLocation:{
+    title:"Location & Layout",
+    status:"Starter View",
+    items:[
+      {label:"Assembly",value:"Underhood fuse / relay center"},
+      {label:"Views verified",value:"3"},
+      {label:"Cover",value:"Removable lid with printed fuse and relay legend"},
+      {label:"Open view",value:"Fuses and relays visible from above"},
+      {label:"Use case",value:"Fast circuit identification and quick inspection"}
+    ],
+    notes:[
+      "The cover-on photo is the location reference.",
+      "The inside-lid photo is the legend reference.",
+      "The open-box photo is the physical layout reference."
+    ],
+    source:"Alex uploaded fuse box photo set"
+  },
+  fuseReading:{
+    title:"How to Read Fuses & Relays",
+    status:"Starter View",
+    items:[
+      {label:"Fuse rating",value:"Read the amperage on the fuse and match color / marking"},
+      {label:"Blown fuse sign",value:"Melted or broken internal element"},
+      {label:"Relay role",value:"Electrically controlled switch for higher-load circuits"},
+      {label:"Legend use",value:"Match circuit name / position to the lid diagram"},
+      {label:"Orientation",value:"Compare the legend and the open-box photo before removal"}
+    ],
+    notes:[
+      "Use the legend first, then confirm position visually in the box.",
+      "A good fuse can still sit loose or corroded, so condition matters too.",
+      "Relays usually are not judged by color like blade fuses; identify them by location and part type."
+    ],
+    source:"General fuse service best practice + Alex photo set"
+  },
+  fuseService:{
+    title:"Inspection & Replacement",
+    status:"Starter View",
+    items:[
+      {label:"Cold / safe state",value:"Vehicle off before routine inspection"},
+      {label:"Removal",value:"Use the correct puller or careful manual removal"},
+      {label:"Replacement rule",value:"Same amperage, same style, proper seating"},
+      {label:"After replacement",value:"Retest the circuit and watch for repeat failure"},
+      {label:"Finish",value:"Reinstall the cover securely"}
+    ],
+    notes:[
+      "Do not upsize fuse amperage.",
+      "If a fuse fails again quickly, the circuit needs diagnosis, not repeated fuse changes.",
+      "Inspect the cover seal and latch condition anytime the box is opened."
+    ],
+    source:"Starter service rules"
+  },
+  fuseTroubleshooting:{
+    title:"Symptoms & Troubleshooting",
+    status:"Starter View",
+    items:[
+      {label:"Possible symptoms",value:"Dead accessory, no power to a system, intermittent operation"},
+      {label:"First checks",value:"Correct fuse location, amperage, visible damage, corrosion"},
+      {label:"Repeat blown fuse",value:"Possible short, overload, or failed component"},
+      {label:"Relay suspicion",value:"Circuit dead or intermittent even with a good fuse"},
+      {label:"Do not assume",value:"A blown fuse does not tell you why it blew"}
+    ],
+    notes:[
+      "Repeated failure means diagnose the circuit.",
+      "Moisture or heat damage inside the box can create weird electrical issues.",
+      "Use maintenance logs later to spot repeated patterns."
+    ],
+    source:"Starter diagnostic framework"
+  },
+  fuseDataStatus:{
+    title:"Fuse Box Verification Status",
+    status:"Photo Verified",
+    items:[
+      {label:"Verified now",value:"Location with cover, inside-lid legend, open-box fuse / relay overview"},
+      {label:"Not yet itemized",value:"Every individual fuse position and each relay part number"},
+      {label:"Good next upgrade",value:"High-resolution legend breakdown and labeled fuse map"},
+      {label:"Starter quality",value:"Good enough to guide safe basic fuse work"},
+      {label:"Source",value:"Alex uploaded fuse box photo set"}
+    ],
+    notes:[
+      "This starter is intentionally clean and usable first.",
+      "Gold standard later can add a position-by-position map and common circuit quick links."
+    ],
+    source:"Alex uploaded fuse box photo set"
+  }
+});
+
 function saveLogs(logs){localStorage.setItem("mybuick_airbox_life_logs",JSON.stringify(logs))}
 function getSetup(){return JSON.parse(localStorage.getItem("mybuick_airbox_current_setup")||"{}")}
 function saveSetup(setup){localStorage.setItem("mybuick_airbox_current_setup",JSON.stringify(setup))}
@@ -2585,6 +2732,11 @@ function globalDockItems(screenId){
       {icon:"📚",label:"Learn",action:"go",target:"coolantlearn"},
       {icon:"📝",label:"Maintenance",action:"go",target:"coolantmaintenance"}
     ],
+    fusebox:[
+      {icon:"🔧",label:"Guide Me",action:"go",target:"fuseguide",primary:true},
+      {icon:"📚",label:"Learn",action:"go",target:"fuselearn"},
+      {icon:"📝",label:"Maintenance",action:"go",target:"fusemaintenance"}
+    ],
     guide:[
       {icon:"↺",label:"Reset",action:"airbox-reset"},
       {icon:"0/7",label:"Progress",action:"airbox-info",primary:true,id:"globalGuideStatus"},
@@ -2600,6 +2752,16 @@ function globalDockItems(screenId){
       {icon:"🔧",label:"Guide",action:"go",target:"coolantguide"},
       {icon:"📝",label:"Maintenance",action:"go",target:"coolantmaintenance"}
     ],
+    fuseguide:[
+      {icon:"‹",label:"Prev",action:"fuse-prev"},
+      {icon:"1/5",label:"Fuse Guide",action:"fuse-info",primary:true,id:"globalFuseStatus"},
+      {icon:"›",label:"Next",action:"fuse-next"}
+    ],
+    fuselearn:[
+      {icon:"▦",label:"Browse Topics",action:"topics",source:"fuselearn",primary:true},
+      {icon:"🔧",label:"Guide",action:"go",target:"fuseguide"},
+      {icon:"📝",label:"Maintenance",action:"go",target:"fusemaintenance"}
+    ],
     maintenance:[
       {icon:"⚙️",label:"Current Setup",action:"airbox-setup",primary:true},
       {icon:"＋",label:"Add Event",action:"airbox-add"},
@@ -2610,6 +2772,11 @@ function globalDockItems(screenId){
       {icon:"＋",label:"Add Event",action:"coolant-add"},
       {icon:"↻",label:"Log Flush",action:"coolant-flush"},
       {icon:"◷",label:"History",action:"coolant-history"}
+    ],
+    fusemaintenance:[
+      {icon:"🔧",label:"Guide",action:"go",target:"fuseguide",primary:true},
+      {icon:"📚",label:"Learn",action:"go",target:"fuselearn"},
+      {icon:"⚡",label:"Overview",action:"fuse-maint-info"}
     ]
   };
   return map[screenId]||[];
@@ -2643,6 +2810,7 @@ function renderGlobalFloatDock(screenId){
     btn.addEventListener("click",()=>handleGlobalDockAction(btn));
   });
   updateGlobalGuideDock();
+  updateGlobalFuseDock();
 }
 
 function handleGlobalDockAction(btn){
@@ -2663,6 +2831,10 @@ function handleGlobalDockAction(btn){
   if(action==="coolant-add"){openMaintenanceAdd("coolant");return;}
   if(action==="coolant-flush"){openMaintenanceFlush();return;}
   if(action==="coolant-history"){openMaintenanceHistory("coolant");return;}
+  if(action==="fuse-prev"){stepFuseGuide(-1);return;}
+  if(action==="fuse-next"){stepFuseGuide(1);return;}
+  if(action==="fuse-info"){openFuseGuideInfo();return;}
+  if(action==="fuse-maint-info"){openFuseMaintenanceInfo();return;}
 }
 
 function openGlobalFloatSheet(title,subtitle,html,eyebrow="MY BUICK"){
@@ -2782,7 +2954,7 @@ function openEngineInfoSheet(){
 function openTopicsSheet(sourceId){
   const source=document.getElementById(sourceId);
   const cards=[...source.querySelectorAll(":scope > .learnCard")];
-  const title=sourceId==="coolantlearn"?"Coolant Topics":"Airbox Topics";
+  const title=sourceId==="coolantlearn"?"Coolant Topics":sourceId==="fuselearn"?"Fuse Box Topics":"Airbox Topics";
   const html='<div class="globalTopicGrid">'+cards.map(card=>{
     const part=card.dataset.part;
     const tag=card.querySelector(".learnTag")?.textContent||"Topic";
@@ -2833,6 +3005,75 @@ function openAirboxGuideInfo(){
     document.getElementById("nextBtn")?.click();
     closeGlobalFloatSheet();
   });
+}
+
+
+function updateGlobalFuseDock(){
+  const btn=document.getElementById("globalFuseStatus");
+  if(!btn)return;
+  const icon=btn.querySelector(".globalDockIcon");
+  if(icon)icon.textContent=(fuseGuideIndex+1)+"/"+fuseGuideSteps.length;
+  const label=btn.querySelector("span:last-child");
+  if(label)label.textContent="Fuse Guide";
+}
+
+function renderFuseChecklist(){
+  const wrap=document.getElementById("fuseChecklist");
+  if(!wrap)return;
+  wrap.innerHTML=fuseGuideSteps.map((step,i)=>`<button type="button" class="${fuseGuideDone.has(i)?"done":""}" data-fuse-check="${i}"><span>${i+1}</span><b>${step.title}</b><small>${step.text}</small></button>`).join("");
+  wrap.querySelectorAll("[data-fuse-check]").forEach(btn=>btn.addEventListener("click",()=>{
+    const i=Number(btn.dataset.fuseCheck);
+    if(fuseGuideDone.has(i))fuseGuideDone.delete(i);else fuseGuideDone.add(i);
+    renderFuseGuide();
+  }));
+}
+
+function renderFuseGuide(){
+  const step=fuseGuideSteps[fuseGuideIndex];
+  if(!step)return;
+  const total=fuseGuideSteps.length;
+  document.getElementById("fuseStepTitle").textContent=step.title;
+  document.getElementById("fuseStepText").textContent=step.text;
+  document.getElementById("fuseStepCounter").textContent=(fuseGuideIndex+1)+"/"+total;
+  document.getElementById("fuseStepImg").src=step.img;
+  document.getElementById("fuseGuideLabel").textContent=step.label;
+  document.getElementById("fuseProgressLabel").textContent=fuseGuideDone.size+" of "+total+" complete";
+  document.getElementById("fuseNextAction").textContent="Next: "+step.next;
+  document.getElementById("fuseProgressFill").style.width=((fuseGuideDone.size/total)*100)+"%";
+  renderFuseChecklist();
+  updateGlobalFuseDock();
+}
+
+function stepFuseGuide(dir){
+  fuseGuideIndex=Math.max(0,Math.min(fuseGuideSteps.length-1,fuseGuideIndex+dir));
+  renderFuseGuide();
+}
+
+function openFuseGuideInfo(){
+  const title=document.getElementById("fuseStepTitle")?.textContent||"Fuse Guide";
+  const text=document.getElementById("fuseStepText")?.textContent||"";
+  const progress=document.getElementById("fuseProgressLabel")?.textContent||"";
+  const width=document.getElementById("fuseProgressFill")?.style.width||"0%";
+  openGlobalFloatSheet(
+    title,
+    progress,
+    '<div class="globalInfoCard"><span>Current Step</span><b>'+text+'</b></div>'+
+    '<div class="globalGuideProgress"><span>'+progress+'</span><div class="progressBar"><div style="height:100%;width:'+width+';background:linear-gradient(90deg,#58cfff,#8ef0ff);border-radius:999px"></div></div></div>'+
+    '<div class="globalSheetActions"><button id="globalFusePrev" class="ghost" type="button">Previous</button><button id="globalFuseNext" class="primary" type="button">Next Step</button></div>',
+    "FUSE GUIDE"
+  );
+  document.getElementById("globalFusePrev")?.addEventListener("click",()=>{stepFuseGuide(-1);closeGlobalFloatSheet();});
+  document.getElementById("globalFuseNext")?.addEventListener("click",()=>{stepFuseGuide(1);closeGlobalFloatSheet();});
+}
+
+function openFuseMaintenanceInfo(){
+  openGlobalFloatSheet(
+    "Fuse Box Maintenance",
+    "Starter overview",
+    '<div class="globalInfoCard"><span>Log ideas</span><b>Blown fuse events, circuit affected, amperage, relay swaps, corrosion, moisture, and repeated electrical faults.</b></div>'+
+    '<div class="globalInfoCard"><span>Next upgrade</span><b>Add a dedicated fuse and relay life log with dates, mileage, and notes.</b></div>',
+    "FUSE BOX"
+  );
 }
 
 function openMaintenanceSetup(type){
@@ -2905,4 +3146,4 @@ document.getElementById("coolantCancelSetupBtn")?.addEventListener("click",close
 document.getElementById("coolantCancelLogBtn")?.addEventListener("click",closeGlobalFloatSheet);
 
 
-setGreeting();renderComponentMaps();renderMarkers();updateProgress();renderLogs();renderCoolantChecklist();renderCoolantStep();renderCoolantLogs();showScreen("home");window.addEventListener("load",()=>setTimeout(()=>{renderMarkers();updateProgress();},50));
+setGreeting();renderComponentMaps();renderMarkers();updateProgress();renderLogs();renderCoolantChecklist();renderCoolantStep();renderCoolantLogs();renderFuseGuide();showScreen("home");window.addEventListener("load",()=>setTimeout(()=>{renderMarkers();updateProgress();renderFuseGuide();},50));

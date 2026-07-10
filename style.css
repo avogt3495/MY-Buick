@@ -3838,3 +3838,42 @@ label{
     transition-duration:.01ms!important;
   }
 }
+
+
+/* v6.18 Fuse Box Starter */
+.fuseGuideWrap{margin-bottom:14px}
+.fuseGuideLabel{
+  position:absolute;
+  left:14px;
+  bottom:14px;
+  max-width:75%;
+  padding:10px 12px;
+  border:1px solid rgba(120,230,255,.25);
+  background:rgba(10,16,24,.74);
+  color:#e8f4ff;
+  border-radius:14px;
+  backdrop-filter:blur(14px);
+  box-shadow:0 8px 20px rgba(0,0,0,.22);
+  font-size:13px;
+  font-weight:800;
+}
+#fuseProgressFill{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#58cfff,#8ef0ff);
+  border-radius:999px;
+  transition:.25s ease;
+}
+#fuseNextAction{
+  color:#9fe7ff;
+  text-align:right;
+}
+#fuseChecklist{margin-bottom:120px}
+#fuseChecklist button span{
+  border-color:rgba(120,230,255,.7);
+  box-shadow:0 0 8px rgba(80,210,255,.32);
+}
+#fuseChecklist button.done span{
+  background:#35dc89;
+  border-color:#9af1c4;
+}
