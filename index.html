@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>MY BUICK v6.13 Coolant Bottom Sheet Guide</title>
-  <link rel="stylesheet" href="style.css?v=6.13">
+  <title>MY BUICK v6.15 Global Floating Interface</title>
+  <link rel="stylesheet" href="style.css?v=6.15">
 </head>
 <body>
 <div class="app">
@@ -289,140 +289,103 @@
       <button class="bigBtn" data-go="coolantmaintenance"><b>📝 Maintenance</b><span>Build the coolant system’s life story</span></button>
     </section>
 
-    <section id="coolantguide" class="screen coolantGuideCompact">
-      <div class="coolantCompactSafety">
-        <span>⚠️</span>
-        <div>
-          <strong>Cold engine only</strong>
-          <small>Never remove the coolant cap while hot or pressurized.</small>
-        </div>
-      </div>
-
-      <div class="coolantCompactStage">
-        <div class="coolantStageTop">
-          <span id="coolantStageCounter" class="badge">1/7</span>
-          <strong id="coolantStageTitle">Location + Cold Safety</strong>
-        </div>
-
+    <section id="coolantguide" class="screen coolantGuideFloat">
+      <div class="coolantFloatStage">
         <div class="repair coolantGuidePhoto">
           <img id="coolantStepImg" src="images/coolant/07_passenger_side_context.jpg" alt="Coolant guide step photo">
           <div id="coolantHotspotLayer" class="coolantHotspotLayer"></div>
+
+          <div class="coolantPhotoHud">
+            <span id="coolantStageCounter" class="coolantHudCounter">1/7</span>
+            <strong id="coolantStageTitle">Location + Cold Safety</strong>
+          </div>
+
+          <div class="coolantColdPill"><span>⚠</span> Cold engine only</div>
         </div>
       </div>
 
-      <button id="coolantGuideDockToggle" class="coolantGuideDock" type="button" aria-expanded="false" aria-controls="coolantGuideSheet">
-        <span id="coolantDockCounter" class="coolantDockCounter">1/7</span>
+      <button id="coolantGuideDockToggle" class="coolantFloatDock" type="button" aria-expanded="false" aria-controls="coolantGuideSheet">
+        <span class="coolantDockIcon">⌃</span>
         <span class="coolantDockCopy">
           <b id="coolantDockTitle">Location + Cold Safety</b>
-          <small id="coolantDockStatus">Tap for instructions and controls</small>
+          <small id="coolantDockStatus">Tap for step controls</small>
         </span>
-        <span class="coolantDockChevron">⌃</span>
+        <span id="coolantDockCounter" class="coolantDockCounter">1/7</span>
+        <span class="coolantDockTrack"><i id="coolantDockProgress"></i></span>
       </button>
 
-      <div id="coolantSheetBackdrop" class="coolantSheetBackdrop"></div>
+      <div id="coolantSheetBackdrop" class="coolantSheetBackdrop coolantFloatBackdrop"></div>
 
-      <aside id="coolantGuideSheet" class="coolantGuideSheet" aria-hidden="true">
+      <aside id="coolantGuideSheet" class="coolantGuideSheet coolantFloatSheet" aria-hidden="true" data-active-tab="step">
         <div class="coolantSheetHandle"></div>
 
-        <div class="coolantSheetHead">
-          <div class="coolantSheetTitle">
-            <span id="coolantStepCounter" class="badge">1/7</span>
-            <div>
-              <small>COOLANT GUIDE</small>
-              <h3 id="coolantStepTitle">Location + Cold Safety</h3>
-            </div>
+        <div class="coolantFloatSheetHead">
+          <div>
+            <small>COOLANT GUIDE</small>
+            <h3 id="coolantStepTitle">Location + Cold Safety</h3>
           </div>
-          <button id="coolantSheetClose" class="icon coolantSheetClose" type="button" aria-label="Close guide details">×</button>
+          <div class="coolantFloatHeadRight">
+            <span id="coolantStepCounter" class="badge">1/7</span>
+            <button id="coolantSheetClose" class="icon coolantSheetClose" type="button" aria-label="Close guide details">×</button>
+          </div>
         </div>
 
-        <div class="coolantSheetTabs" role="tablist" aria-label="Coolant guide sections">
-          <button class="active" type="button" data-coolant-sheet-tab="step">Current Step</button>
-          <button type="button" data-coolant-sheet-tab="checklist">Checklist</button>
-          <button type="button" data-coolant-sheet-tab="flush">Flush How-To</button>
+        <div class="coolantFloatTabs" role="tablist" aria-label="Coolant guide sections">
+          <button class="active" type="button" data-coolant-sheet-tab="step"><span>●</span> Step</button>
+          <button type="button" data-coolant-sheet-tab="checklist"><span>✓</span> Checks</button>
+          <button type="button" data-coolant-sheet-tab="flush"><span>↧</span> Flush</button>
         </div>
 
-        <div class="coolantSheetScroll">
+        <div class="coolantFloatBody">
           <section class="coolantSheetPanel active" data-coolant-sheet-panel="step">
-            <p id="coolantStepText" class="coolantSheetStepText">
-              Start with the reservoir location before moving into close-up checks.
-            </p>
+            <p id="coolantStepText" class="coolantFloatStepText">Start with the reservoir location before moving into close-up checks.</p>
+            <div id="coolantStepTags" class="coolantFloatTags"></div>
 
-            <div id="coolantStepTags" class="coolantStepTags"></div>
-
-            <div class="coolantSheetTip">
-              <strong>Use the photo above</strong>
-              <span>The dot and leader line show the exact area for this step.</span>
-            </div>
-
-            <div class="coolantStepControls coolantSheetControls">
-              <button id="coolantPrevStep" class="ghost" type="button">‹ Previous</button>
-              <button id="coolantMarkStep" class="primary" type="button">Mark Done</button>
-              <button id="coolantNextStep" class="ghost" type="button">Next ›</button>
+            <div class="coolantFloatControls">
+              <button id="coolantPrevStep" class="coolantCircleBtn" type="button" aria-label="Previous step">‹</button>
+              <button id="coolantMarkStep" class="primary coolantMarkBtn" type="button">Mark Done</button>
+              <button id="coolantNextStep" class="coolantCircleBtn" type="button" aria-label="Next step">›</button>
             </div>
           </section>
 
           <section class="coolantSheetPanel" data-coolant-sheet-panel="checklist">
-            <div class="coolantSheetIntro">
-              <h3>Inspection Checklist</h3>
-              <p>Tap an item to mark it complete. The current photo step and checklist remain connected.</p>
+            <div class="coolantCheckHeader">
+              <div><small>INSPECTION</small><strong id="coolantCheckProgressText">0 of 5 complete</strong></div>
+              <button id="coolantResetBtn" class="coolantTextBtn" type="button">Reset</button>
             </div>
 
-            <div class="checklist coolantGoldChecklist" id="coolantChecklist">
-              <button data-cool-check="1"><span></span><b>Location / engine cold</b><small>Use the passenger-side context photo and confirm the system is cool.</small></button>
-              <button data-cool-check="2"><span></span><b>Level and color</b><small>Use the side-angle photo to check orange coolant level and condition.</small></button>
-              <button data-cool-check="3"><span></span><b>Cap and pressure rating</b><small>Verify the cap area and the 140 kPa / 20 PSI label.</small></button>
-              <button data-cool-check="4"><span></span><b>Visible hoses and clamps</b><small>Inspect the front and lower hose/clamp close-ups.</small></button>
-              <button data-cool-check="5"><span></span><b>Seams / mounts / flush drain info</b><small>Check visible tank areas and review the lower-radiator drain reference.</small></button>
+            <div class="coolantMiniChecklist checklist" id="coolantChecklist">
+              <button data-cool-check="1"><span></span><b>Cold + location</b><small>System cool</small></button>
+              <button data-cool-check="2"><span></span><b>Level + color</b><small>Visible condition</small></button>
+              <button data-cool-check="3"><span></span><b>Pressure cap</b><small>140 kPa / 20 PSI</small></button>
+              <button data-cool-check="4"><span></span><b>Hoses + clamps</b><small>Leaks and damage</small></button>
+              <button data-cool-check="5"><span></span><b>Seams + drain</b><small>Tank and flush info</small></button>
             </div>
 
-            <div class="coolantSheetDualActions">
-              <button id="coolantResetBtn" class="ghost" type="button">Reset Checklist</button>
-              <button data-go="coolantmaintenance" class="primary" type="button">Log Inspection</button>
-            </div>
+            <button data-go="coolantmaintenance" class="primary coolantWideAction" type="button">Log Inspection</button>
           </section>
 
           <section class="coolantSheetPanel" data-coolant-sheet-panel="flush">
-            <div class="coolantFlushGuideCard coolantFlushInSheet">
-              <div class="flushGuideTop">
-                <div>
-                  <span class="miniLabel">COOLANT FLUSH</span>
-                  <h3>Flush How-To</h3>
-                  <p>The primary drain is at the lower radiator drain petcock / drain cock, not the coolant reservoir. The exact underside side still needs a photo from your Buick before it becomes Alex Verified.</p>
-                </div>
-                <span class="badge warn">Cold Only</span>
-              </div>
+            <div class="coolantFlushMiniHead">
+              <span id="coolantFlushCounter" class="badge warn">1/6</span>
+              <div><small>COOLANT FLUSH</small><h3 id="coolantFlushTitle">Prep safely</h3></div>
+            </div>
 
-              <div class="flushDrainBox">
-                <strong>Actual drain point</strong>
-                <p><b>Primary:</b> lower radiator drain petcock / drain cock, possibly hidden by the lower splash shield or radiator support.</p>
-                <p><b>Backup:</b> lower radiator hose if the petcock is inaccessible or unusable.</p>
-                <p><b>Part reference:</b> GM radiator drain petcock 13267636 appears as the drain plug/petcock reference.</p>
-              </div>
+            <div class="coolantFlushStepCard">
+              <p id="coolantFlushText">Engine fully cold, vehicle stable, drain pan ready, gloves and eye protection on.</p>
+              <div id="coolantFlushFact" class="coolantFlushFact">Cold engine only</div>
+            </div>
 
-              <div class="flushFactsGrid">
-                <div><span>Fluid</span><b>50/50 DEX-COOL mix</b></div>
-                <div><span>3.0L V6 capacity</span><b>9.4 L / 9.9 qt approx.</b></div>
-                <div><span>Service life</span><b>5 yr / 150k mi</b></div>
-                <div><span>Status</span><b>Drain side photo-TBD</b></div>
-              </div>
+            <div class="coolantFlushQuickFacts">
+              <span>50/50 DEX-COOL</span>
+              <span>9.4 L / 9.9 qt</span>
+              <span>Drain side photo-TBD</span>
+            </div>
 
-              <div class="flushGuideSteps">
-                <div><b>1. Prep safely</b><span>Engine fully cold, vehicle stable, drain pan ready, gloves and eye protection on.</span></div>
-                <div><b>2. Locate drain</b><span>Look underneath at the lower radiator area for the drain petcock. The reservoir is the fill/check point, not the drain point.</span></div>
-                <div><b>3. Drain old coolant</b><span>Use the petcock if accessible. The lower radiator hose is the backup drain path.</span></div>
-                <div><b>4. Refill correctly</b><span>Use the proper 50/50 DEX-COOL mixture and refill slowly.</span></div>
-                <div><b>5. Bleed and warm-check</b><span>Follow the correct fill procedure, verify heater output, and monitor temperature behavior.</span></div>
-                <div><b>6. Recheck after cool-down</b><span>Check the level, cap, seams, hose ends, clamps, and any leak trails again after cooling.</span></div>
-              </div>
-
-              <div class="flushSourceNote">
-                Exact drain-side placement remains unverified until we have an underside photo of your car.
-              </div>
-
-              <div class="flushGuideActions">
-                <button id="coolantGuideFlushLog" class="primary" type="button">Log Flush</button>
-                <button data-go="coolantlearn" class="ghost" type="button">Learn Coolant</button>
-              </div>
+            <div class="coolantFloatControls coolantFlushControls">
+              <button id="coolantFlushPrev" class="coolantCircleBtn" type="button" aria-label="Previous flush step">‹</button>
+              <button id="coolantGuideFlushLog" class="primary coolantMarkBtn" type="button">Log Flush</button>
+              <button id="coolantFlushNext" class="coolantCircleBtn" type="button" aria-label="Next flush step">›</button>
             </div>
           </section>
         </div>
@@ -592,6 +555,24 @@
 
   </main>
 
+
+  <nav id="globalFloatDock" class="globalFloatDock hidden" aria-label="Screen actions"></nav>
+
+  <div id="globalFloatBackdrop" class="globalFloatBackdrop"></div>
+
+  <aside id="globalFloatSheet" class="globalFloatSheet" aria-hidden="true">
+    <div class="globalFloatHandle"></div>
+    <div class="globalFloatSheetHead">
+      <div>
+        <small id="globalFloatEyebrow">MY BUICK</small>
+        <h2 id="globalFloatTitle">Actions</h2>
+        <p id="globalFloatSubtitle"></p>
+      </div>
+      <button id="globalFloatClose" class="icon" type="button" aria-label="Close panel">×</button>
+    </div>
+    <div id="globalFloatContent" class="globalFloatContent"></div>
+  </aside>
+
   <aside id="drawer" class="drawer">
     <div class="drawerTop"><strong>MY BUICK</strong><button id="closeDrawer" class="icon">×</button></div>
     <button data-go="home">🏠 Home</button>
@@ -606,6 +587,6 @@
   <div id="dim" class="dim"></div>
   <aside id="sheet" class="sheet"><button id="closeSheet" class="icon sheetClose">×</button><div id="sheetData"></div></aside>
 </div>
-<script src="app.js?v=6.13"></script>
+<script src="app.js?v=6.15"></script>
 </body>
 </html>
