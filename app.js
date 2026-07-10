@@ -41,13 +41,14 @@ const airboxGuideMap={
   }
 };
 
+/* v6.6 forced callout coordinate reload */
 const coolantGuideSteps=[
   {
     check:"1",
     title:"Location + Cold Safety",
     text:"Start with the reservoir location. Confirm the engine is cold before touching the coolant cap or reservoir area.",
     img:"images/coolant/07_passenger_side_context.jpg",
-    spot:{x:55,y:54,lx:66,ly:20,label:"Reservoir location"},
+    spot:{x:57,y:58,lx:70,ly:28,label:"Reservoir location"},
     tags:["Passenger side","Cold only","Context"]
   },
   {
@@ -87,7 +88,7 @@ const coolantGuideSteps=[
     title:"Side Seam + Mount Area",
     text:"Use this right-side view to inspect the visible reservoir side, nearby mount, and clearance area. Hidden zones stay marked as obstructed.",
     img:"images/coolant/06_right_side_clearance_mount.jpg",
-    spot:{x:74,y:53,lx:54,ly:35,label:"Visible side seam"},
+    spot:{x:77,y:49,lx:53,ly:34,label:"Visible side seam"},
     tags:["Side seam","Mount area","Obstructed zones"]
   },
   {
@@ -95,7 +96,7 @@ const coolantGuideSteps=[
     title:"Final Context Check",
     text:"Finish by checking the reservoir in context with the battery, fuse box, brake reservoir, and cowl. Then log what you found.",
     img:"images/coolant/00_reservoir_wide.jpg",
-    spot:{x:56,y:43,lx:47,ly:18,label:"Coolant reservoir"},
+    spot:{x:58,y:52,lx:47,ly:22,label:"Coolant reservoir"},
     tags:["Wide view","Relationship map","Log it"]
   }
 ];
