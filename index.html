@@ -7,8 +7,8 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <meta name="theme-color" content="#070a10">
-  <title>MY BUICK v6.18 Fuse Box Starter</title>
-  <link rel="stylesheet" href="style.css?v=6.18-fusebox-starter">
+  <title>MY BUICK v6.20 Fuse Box Outline and Clips</title>
+  <link rel="stylesheet" href="style.css?v=6.20-fuse-outline-clips">
 </head>
 <body>
 <div class="app">
@@ -62,8 +62,6 @@
         <strong>Component Map System</strong>
         <p>Airbox is locked. Coolant is now locked from your traced reference outline. Fuse box starter is now live.</p>
       </div>
-
-      <button class="bigBtn" data-go="fusebox"><b>⚡ Fuse Box</b><span>Open the fuse box starter module</span></button>
     </section>
 
     <section id="airbox" class="screen">
@@ -560,6 +558,114 @@
       <div id="coolantLogList" class="lifeTimeline"></div>
     </section>
 
+
+    <section id="fusebox" class="screen">
+      <div class="assemblyCard fuseAssemblyCard">
+        <img src="images/fuse_box/00_cover_on.jpg" alt="Fuse box cover installed">
+        <div class="assemblyCopy">
+          <span class="badge starterBadge">Photo Verified</span>
+          <h2>Underhood Fuse Box</h2>
+          <p>Cover, lid legend, fuses, relays, and safe basic fuse service.</p>
+        </div>
+      </div>
+
+      <div class="assemblyQuickFacts">
+        <div><span>Location</span><strong>Engine Bay</strong></div>
+        <div><span>Photos</span><strong>3 Verified</strong></div>
+        <div><span>Main Rule</span><strong>Same Amp</strong></div>
+      </div>
+
+      <button class="bigBtn" data-go="fuseguide"><b>🔧 Guide Me</b><span>Locate, identify, inspect, and replace correctly</span></button>
+      <button class="bigBtn" data-go="fuselearn"><b>📚 Learn</b><span>Fuse basics, lid legend, relays, and service rules</span></button>
+      <button class="bigBtn" data-go="fusemaintenance"><b>📝 Maintenance</b><span>Inspection checklist and future service log</span></button>
+    </section>
+
+    <section id="fuseguide" class="screen fuseGuideScreen">
+      <div class="fuseGuideStage">
+        <div class="photoWrap fuseGuideWrap">
+          <img id="fuseStepImg" src="images/fuse_box/00_cover_on.jpg" alt="Fuse box guide image">
+          <div id="fuseClipLayer" class="fuseClipLayer" aria-hidden="true"></div>
+
+          <div class="fusePhotoHud">
+            <span id="fuseStepCounter" class="fuseHudCounter">1/5</span>
+            <strong id="fuseStepTitle">Locate the fuse box</strong>
+          </div>
+
+          <div class="fuseRulePill">Same amperage only</div>
+          <div id="fuseGuideLabel" class="fuseGuideLabel">Underhood fuse box cover</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="fuselearn" class="screen">
+      <div class="sectionHead">
+        <div><h2>Learn</h2><p>Clean overview first. Open a topic when you want the deeper details.</p></div>
+        <span class="badge starterBadge">Fuse Box</span>
+      </div>
+
+      <div class="learnIntro simpleLearnIntro fuseLearnIntro">
+        <img src="images/fuse_box/02_fuses_relays_overview.jpg" alt="Fuse box open overview">
+        <div>
+          <span class="badge starterBadge">Photo Verified</span>
+          <h3>Underhood Fuse Box</h3>
+          <p>Learn what the fuses and relays do, how to use the lid legend, and how to inspect safely.</p>
+        </div>
+      </div>
+
+      <div class="simpleInfoGrid">
+        <div><span>Main Rule</span><strong>Same Amperage</strong></div>
+        <div><span>Legend</span><strong>Inside Lid</strong></div>
+        <div><span>Contains</span><strong>Fuses + Relays</strong></div>
+      </div>
+
+      <button class="learnCard simpleCard mainCard" data-part="fuseQuickstart"><div><span class="learnTag">Start</span><b>Quick Sheet</b><p>The most important fuse box information at a glance.</p></div><strong>›</strong></button>
+      <button class="learnCard simpleCard" data-part="fuseLocation"><div><span class="learnTag">Locate</span><b>Location & Layout</b><p>Use the cover, legend, and open-box views together.</p></div><strong>›</strong></button>
+      <button class="learnCard simpleCard" data-part="fuseReading"><div><span class="learnTag">Read</span><b>Fuses & Relays</b><p>Amperage, blown-fuse signs, and relay basics.</p></div><strong>›</strong></button>
+      <button class="learnCard simpleCard" data-part="fuseService"><div><span class="learnTag">Service</span><b>Inspection & Replacement</b><p>Safe replacement rules and mistakes to avoid.</p></div><strong>›</strong></button>
+      <button class="learnCard simpleCard" data-part="fuseTroubleshooting"><div><span class="learnTag">Diagnose</span><b>Symptoms & Troubleshooting</b><p>What a blown fuse can tell you and what it cannot.</p></div><strong>›</strong></button>
+      <button class="learnCard simpleCard" data-part="fuseDataStatus"><div><span class="learnTag">Data</span><b>Verification Status</b><p>What is photo-verified and what is still waiting.</p></div><strong>›</strong></button>
+    </section>
+
+    <section id="fusemaintenance" class="screen">
+      <div class="sectionHead">
+        <div>
+          <h2>Maintenance</h2>
+          <p>The fuse box life story starts here.</p>
+        </div>
+        <span class="badge starterBadge">Starter Log</span>
+      </div>
+
+      <div class="lifeHero fuseLifeHero">
+        <img src="images/fuse_box/02_fuses_relays_overview.jpg" alt="Fuse box open">
+        <div>
+          <span class="badge starterBadge">Fuse Box V1</span>
+          <h3>Fuse Box Life Story</h3>
+          <p>Track inspections, blown fuses, relay swaps, corrosion, moisture, and repeat failures.</p>
+        </div>
+      </div>
+
+      <div class="lifeStats">
+        <div><span>Last Inspection</span><strong>Not logged</strong></div>
+        <div><span>Known Issues</span><strong>None logged</strong></div>
+        <div><span>Status</span><strong>Starter Ready</strong></div>
+      </div>
+
+      <div class="fuseMaintenanceDetails">
+        <div class="panel">
+          <strong>What to log</strong>
+          <p>Blown fuse events, circuit name, amperage, relay swaps, corrosion, moisture, and repeated electrical faults.</p>
+        </div>
+        <div class="panel">
+          <strong>Inspection checklist</strong>
+          <p>Cover and latches, readable lid legend, moisture, corrosion, heat damage, loose components, and correct fuse ratings.</p>
+        </div>
+        <div class="panel">
+          <strong>Next upgrade</strong>
+          <p>A dedicated fuse and relay log with date, mileage, circuit, amperage, and notes.</p>
+        </div>
+      </div>
+    </section>
+
   </main>
 
 
@@ -582,121 +688,6 @@
 
 
 
-    <section id="fusebox" class="screen">
-      <div class="assemblyCard coolantCard">
-        <img src="images/fuse_box/00_cover_on.jpg" alt="Fuse box cover installed">
-        <div class="assemblyCopy">
-          <span class="badge starterBadge">Starter Module</span>
-          <h2>Underhood Fuse Box</h2>
-          <p>Cover, lid legend, fuses, relays, and safe fuse checking in one place.</p>
-        </div>
-      </div>
-
-      <div class="assemblyQuickFacts">
-        <div><span>Location</span><strong>Engine Bay</strong></div>
-        <div><span>Views</span><strong>3 Verified</strong></div>
-        <div><span>Service Rule</span><strong>Same Amp Only</strong></div>
-      </div>
-
-      <button class="bigBtn" data-go="fuseguide"><b>🔧 Guide Me</b><span>Locate, open, identify, inspect, and replace correctly</span></button>
-      <button class="bigBtn" data-go="fuselearn"><b>📚 Learn</b><span>Fuse basics, lid diagram use, relays, and best practices</span></button>
-      <button class="bigBtn" data-go="fusemaintenance"><b>📝 Maintenance</b><span>Track inspections, blown fuses, and replacements</span></button>
-    </section>
-
-    <section id="fuseguide" class="screen">
-      <div class="sectionHead">
-        <div>
-          <h2 id="fuseStepTitle">Locate the fuse box</h2>
-          <p id="fuseStepText">Start by identifying the underhood fuse box with the cover installed.</p>
-        </div>
-        <span id="fuseStepCounter" class="badge starterBadge">1/5</span>
-      </div>
-
-      <div class="progressWrap">
-        <div class="progressText"><span id="fuseProgressLabel">0 of 5 complete</span><span id="fuseNextAction">Next: identify the box</span></div>
-        <div class="progressBar"><div id="fuseProgressFill"></div></div>
-      </div>
-
-      <div class="photoWrap fuseGuideWrap">
-        <img id="fuseStepImg" src="images/fuse_box/00_cover_on.jpg" alt="Fuse box guide image">
-        <div id="fuseGuideLabel" class="fuseGuideLabel">Fuse box cover</div>
-      </div>
-
-      <div class="hintCard"><strong>Starter Flow</strong><span>Tap a checklist item to mark it done. Use Prev/Next in the floating dock to move through the guide.</span></div>
-
-      <div id="fuseChecklist" class="checklist"></div>
-    </section>
-
-    <section id="fuselearn" class="screen">
-      <div class="sectionHead">
-        <div><h2>Learn</h2><p>Clean overview first. Open a topic when you want deeper detail.</p></div>
-        <span class="badge starterBadge">Fuse Box</span>
-      </div>
-
-      <div class="learnIntro simpleLearnIntro">
-        <img src="images/fuse_box/02_fuses_relays_overview.jpg" alt="Fuse box open overview">
-        <div>
-          <span class="badge starterBadge">Starter Module</span>
-          <h3>Underhood Fuse Box</h3>
-          <p>Learn what the fuses and relays do, how to use the lid diagram, and how to inspect safely.</p>
-        </div>
-      </div>
-
-      <div class="simpleInfoGrid">
-        <div><span>Main Rule</span><strong>Same Amperage</strong></div>
-        <div><span>Legend</span><strong>Inside Lid</strong></div>
-        <div><span>Contains</span><strong>Fuses + Relays</strong></div>
-      </div>
-
-      <button class="learnCard simpleCard mainCard" data-part="fuseQuickstart"><div><span class="learnTag">Start</span><b>Quick Sheet</b><p>The most important fuse box information at a glance.</p></div><strong>›</strong></button>
-      <button class="learnCard simpleCard" data-part="fuseLocation"><div><span class="learnTag">Locate</span><b>Location & Layout</b><p>What this box is, what lives inside it, and how to orient yourself.</p></div><strong>›</strong></button>
-      <button class="learnCard simpleCard" data-part="fuseReading"><div><span class="learnTag">Read</span><b>How to Read Fuses & Relays</b><p>Colors, amperage, blown-fuse signs, and relay basics.</p></div><strong>›</strong></button>
-      <button class="learnCard simpleCard" data-part="fuseService"><div><span class="learnTag">Service</span><b>Inspection & Replacement</b><p>Safe replacement rules and common mistakes to avoid.</p></div><strong>›</strong></button>
-      <button class="learnCard simpleCard" data-part="fuseTroubleshooting"><div><span class="learnTag">Diagnose</span><b>Symptoms & Troubleshooting</b><p>When to suspect a fuse, and what to check before replacing parts.</p></div><strong>›</strong></button>
-      <button class="learnCard simpleCard" data-part="fuseDataStatus"><div><span class="learnTag">Data</span><b>Verification Status</b><p>What is photo-verified now and what you can verify later.</p></div><strong>›</strong></button>
-    </section>
-
-    <section id="fusemaintenance" class="screen">
-      <div class="sectionHead">
-        <div>
-          <h2>Maintenance</h2>
-          <p>The fuse box life story starts here.</p>
-        </div>
-        <span class="badge starterBadge">Starter Log</span>
-      </div>
-
-      <div class="lifeHero coolantLifeHero">
-        <img src="images/fuse_box/02_fuses_relays_overview.jpg" alt="Fuse box open">
-        <div>
-          <span class="badge starterBadge">Fuse Box V1</span>
-          <h3>Fuse Box Life Story</h3>
-          <p>Track inspections, blown fuses, relay swaps, corrosion findings, and notes.</p>
-        </div>
-      </div>
-
-      <div class="lifeStats">
-        <div><span>Last Inspection</span><strong>Not logged</strong></div>
-        <div><span>Known Issues</span><strong>None logged</strong></div>
-        <div><span>Status</span><strong>Starter Ready</strong></div>
-      </div>
-
-      <div class="panel">
-        <strong>What to log here</strong>
-        <p>Use this section for blown fuse events, repeated electrical issues, corrosion, water intrusion, relay swaps, and anytime you replace a fuse.</p>
-      </div>
-
-      <div class="timeline">
-        <div class="panel">
-          <strong>Starter Checklist</strong>
-          <p>1. Inspect the cover seal and latches. 2. Verify the lid diagram is readable. 3. Check for corrosion, heat damage, or moisture. 4. Only replace with the same amperage fuse.</p>
-        </div>
-        <div class="panel">
-          <strong>Next Upgrade</strong>
-          <p>Next pass can add a true fuse/relay log with dates, mileage, circuit name, amperage, and notes.</p>
-        </div>
-      </div>
-    </section>
-
   <aside id="drawer" class="drawer" role="dialog" aria-modal="true" aria-label="MY BUICK navigation" aria-hidden="true" tabindex="-1">
     <div class="drawerTop"><strong>MY BUICK</strong><button id="closeDrawer" class="icon">×</button></div>
     <button data-go="home">🏠 Home</button>
@@ -712,6 +703,6 @@
   <div id="dim" class="dim"></div>
   <aside id="sheet" class="sheet" role="dialog" aria-modal="true" aria-label="Part information" aria-hidden="true" tabindex="-1"><button id="closeSheet" class="icon sheetClose">×</button><div id="sheetData"></div></aside>
 </div>
-<script src="app.js?v=6.18-fusebox-starter"></script>
+<script src="app.js?v=6.20-fuse-outline-clips"></script>
 </body>
 </html>

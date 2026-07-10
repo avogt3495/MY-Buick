@@ -3877,3 +3877,366 @@ label{
   background:#35dc89;
   border-color:#9af1c4;
 }
+
+
+/* v6.19 Fuse Box layout match */
+
+/* Overview, Learn, and Maintenance now use the same global floating pattern. */
+#engine > .bigBtn,
+#fusebox > .bigBtn,
+#fuselearn > .learnCard,
+#fusemaintenance > .fuseMaintenanceDetails{
+  display:none;
+}
+
+#fusebox,
+#fuselearn,
+#fusemaintenance{
+  min-height:calc(100svh - 68px);
+}
+
+.fuseAssemblyCard img,
+.fuseLifeHero img,
+.fuseLearnIntro img{
+  object-position:center center;
+}
+
+.fuseGuideScreen{
+  min-height:calc(100svh - 68px);
+  padding:8px 10px 96px;
+}
+
+.fuseGuideStage{
+  width:100%;
+  height:calc(100svh - 164px);
+  min-height:390px;
+}
+
+#fuseguide .fuseGuideWrap{
+  width:100%;
+  height:100%;
+  margin:0;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:30px;
+  background:#0b1018;
+  box-shadow:0 28px 76px rgba(0,0,0,.48);
+}
+
+#fuseguide .fuseGuideWrap:after{
+  content:"";
+  position:absolute;
+  z-index:2;
+  inset:auto 0 0;
+  height:34%;
+  pointer-events:none;
+  background:linear-gradient(180deg,transparent,rgba(5,8,13,.68));
+}
+
+#fuseguide .fuseGuideWrap img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center center;
+  background:#0b1018;
+}
+
+.fusePhotoHud{
+  position:absolute;
+  z-index:5;
+  top:13px;
+  left:13px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  max-width:calc(100% - 150px);
+  padding:6px 10px 6px 6px;
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:15px;
+  background:rgba(8,12,19,.60);
+  backdrop-filter:blur(22px) saturate(1.2);
+  box-shadow:0 10px 28px rgba(0,0,0,.24);
+}
+
+.fusePhotoHud strong{
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  font-size:11px;
+  font-weight:760;
+  letter-spacing:-.01em;
+}
+
+.fuseHudCounter{
+  display:grid;
+  place-items:center;
+  min-width:34px;
+  height:28px;
+  padding:0 5px;
+  border-radius:10px;
+  color:#dcf6ff;
+  background:rgba(55,188,224,.22);
+  font-size:10px;
+  font-weight:900;
+}
+
+.fuseRulePill{
+  position:absolute;
+  z-index:5;
+  top:13px;
+  right:13px;
+  padding:8px 10px;
+  border:1px solid rgba(255,197,66,.18);
+  border-radius:14px;
+  color:#ffe5a8;
+  background:rgba(30,25,15,.60);
+  backdrop-filter:blur(22px) saturate(1.2);
+  box-shadow:0 8px 24px rgba(0,0,0,.20);
+  font-size:9px;
+  font-weight:850;
+  white-space:nowrap;
+}
+
+#fuseguide .fuseGuideLabel{
+  z-index:5;
+  left:14px;
+  bottom:14px;
+  max-width:calc(100% - 28px);
+  padding:9px 11px;
+  border:1px solid rgba(120,230,255,.16);
+  border-radius:14px;
+  color:#d9eaf1;
+  background:rgba(8,13,20,.66);
+  backdrop-filter:blur(18px) saturate(1.15);
+  box-shadow:0 9px 25px rgba(0,0,0,.28);
+  font-size:11px;
+  font-weight:760;
+}
+
+/* Fuse Guide details live inside the same global glass sheet used elsewhere. */
+.fuseSheetStep{
+  padding:13px;
+  border:1px solid rgba(255,255,255,.075);
+  border-radius:18px;
+  background:rgba(255,255,255,.032);
+}
+
+.fuseSheetStep span,
+.fuseSheetSectionTitle span{
+  display:block;
+  color:#78d8ef;
+  font-size:9px;
+  font-weight:950;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+}
+
+.fuseSheetStep b{
+  display:block;
+  margin-top:5px;
+  color:#f3f7fb;
+  font-size:15px;
+  line-height:1.42;
+}
+
+.fuseSheetProgress{
+  margin:9px 0 10px;
+  padding:10px 12px;
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:15px;
+  background:rgba(255,255,255,.025);
+}
+
+.fuseSheetProgressTop{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:8px;
+  color:#9eabbc;
+  font-size:10px;
+  font-weight:760;
+}
+
+.fuseSheetChecklist{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+  margin-top:8px;
+}
+
+.fuseSheetChecklist button{
+  display:grid;
+  grid-template-columns:26px minmax(0,1fr);
+  gap:7px;
+  align-items:center;
+  min-height:54px;
+  padding:8px;
+  text-align:left;
+  border:1px solid rgba(255,255,255,.065);
+  border-radius:15px;
+  color:#dfe6ef;
+  background:rgba(255,255,255,.03);
+}
+
+.fuseSheetChecklist button i{
+  display:grid;
+  place-items:center;
+  width:26px;
+  height:26px;
+  border:1px solid rgba(120,230,255,.24);
+  border-radius:9px;
+  color:#a5dceb;
+  background:rgba(80,210,255,.055);
+  font-size:10px;
+  font-style:normal;
+  font-weight:900;
+}
+
+.fuseSheetChecklist button b{
+  overflow:hidden;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  font-size:10px;
+  line-height:1.22;
+}
+
+.fuseSheetChecklist button.done{
+  border-color:rgba(70,205,130,.18);
+  background:rgba(70,205,130,.065);
+}
+
+.fuseSheetChecklist button.done i{
+  color:#b8f4d0;
+  border-color:rgba(70,205,130,.28);
+  background:rgba(70,205,130,.16);
+}
+
+.fuseSheetActions{
+  display:grid;
+  grid-template-columns:44px minmax(0,1fr) 44px;
+  gap:8px;
+  position:sticky;
+  bottom:0;
+  padding-top:10px;
+  background:linear-gradient(180deg,transparent,rgba(9,13,21,.98) 30%);
+}
+
+.fuseSheetActions button{
+  min-height:43px;
+  border-radius:14px;
+}
+
+.fuseSheetActions .fuseArrow{
+  padding:0;
+  border:1px solid rgba(255,255,255,.075);
+  color:#c7d2e1;
+  background:rgba(255,255,255,.045);
+  font-size:22px;
+}
+
+.fuseSheetActions .fuseArrow:disabled{
+  opacity:.25;
+}
+
+.fuseMaintenanceGrid{
+  display:grid;
+  gap:8px;
+}
+
+.fuseMaintenanceGrid .globalInfoCard{
+  margin:0;
+}
+
+@media(max-width:380px){
+  .fuseGuideScreen{
+    padding-left:7px;
+    padding-right:7px;
+  }
+
+  .fuseGuideStage{
+    height:calc(100svh - 154px);
+  }
+
+  .fuseSheetChecklist{
+    grid-template-columns:1fr;
+  }
+}
+
+
+/* v6.20 Fuse Box engine outline + clip locations */
+.fuseClipLayer{
+  position:absolute;
+  z-index:4;
+  inset:0;
+  display:none;
+  pointer-events:none;
+  overflow:hidden;
+}
+
+.fuseClipLayer.active{
+  display:block;
+}
+
+.fuseClipLines{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  overflow:visible;
+}
+
+.fuseClipLines line{
+  stroke:rgba(238,247,255,.94);
+  stroke-width:2.4;
+  stroke-linecap:round;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.72));
+}
+
+.fuseClipPoint{
+  position:absolute;
+  width:16px;
+  height:16px;
+  border:3px solid #eef7ff;
+  border-radius:50%;
+  background:#2f7fff;
+  box-shadow:
+    0 0 0 4px rgba(47,127,255,.16),
+    0 0 16px rgba(47,127,255,.88),
+    0 4px 10px rgba(0,0,0,.42);
+  transform:translate(-50%,-50%);
+}
+
+.fuseClipLabel{
+  position:absolute;
+  max-width:112px;
+  padding:8px 10px;
+  border:1px solid rgba(255,255,255,.72);
+  border-radius:12px;
+  color:#f8fbff;
+  background:rgba(12,17,26,.82);
+  backdrop-filter:blur(16px) saturate(1.18);
+  box-shadow:0 9px 24px rgba(0,0,0,.40);
+  transform:translate(-50%,-50%);
+  font-size:11px;
+  font-weight:850;
+  line-height:1.08;
+  text-align:center;
+  white-space:nowrap;
+}
+
+.componentMap[data-component="fusebox"] .componentGlow{
+  stroke-width:1.55;
+}
+
+@media(max-width:380px){
+  .fuseClipLabel{
+    max-width:92px;
+    padding:7px 8px;
+    font-size:10px;
+  }
+
+  .fuseClipPoint{
+    width:14px;
+    height:14px;
+  }
+}
