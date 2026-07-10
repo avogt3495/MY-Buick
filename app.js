@@ -1,6 +1,6 @@
-const screens=["home","engine","airbox","guide","learn","maintenance","coolant","coolantguide","coolantlearn","coolantmaintenance","fusebox","fuseguide","fuselearn","fusemaintenance"];
-const names={home:["MY BUICK","2010 Buick LaCrosse CXL"],engine:["VEHICLE","Engine Bay"],airbox:["ENGINE BAY","Airbox"],guide:["AIRBOX","Guide Me"],learn:["AIRBOX","Learn"],maintenance:["AIRBOX","Maintenance"],coolant:["ENGINE BAY","Coolant Reservoir"],coolantguide:["COOLANT","Guide Me"],coolantlearn:["COOLANT","Learn"],coolantmaintenance:["COOLANT","Maintenance"],fusebox:["ENGINE BAY","Fuse Box"],fuseguide:["FUSE BOX","Guide Me"],fuselearn:["FUSE BOX","Learn"],fusemaintenance:["FUSE BOX","Maintenance"]};
-let current="home";let layer=0;let done=new Set();
+const screens=["garage","vinsetup","vehicleprofile","digitaltwin","photos","home","engine","airbox","guide","learn","maintenance","coolant","coolantguide","coolantlearn","coolantmaintenance","fusebox","fuseguide","fuselearn","fusemaintenance"];
+const names={garage:["MY CAR","Garage"],vinsetup:["GARAGE","Add Vehicle"],vehicleprofile:["GARAGE","Vehicle Profile"],digitaltwin:["VEHICLE","Digital Twin"],photos:["VEHICLE","Owner Photos"],home:["MY BUICK","2010 Buick LaCrosse CXL"],engine:["VEHICLE","Engine Bay"],airbox:["ENGINE BAY","Airbox"],guide:["AIRBOX","Guide Me"],learn:["AIRBOX","Learn"],maintenance:["AIRBOX","Maintenance"],coolant:["ENGINE BAY","Coolant Reservoir"],coolantguide:["COOLANT","Guide Me"],coolantlearn:["COOLANT","Learn"],coolantmaintenance:["COOLANT","Maintenance"],fusebox:["ENGINE BAY","Fuse Box"],fuseguide:["FUSE BOX","Guide Me"],fuselearn:["FUSE BOX","Learn"],fusemaintenance:["FUSE BOX","Maintenance"]};
+let current="garage";let layer=0;let done=new Set();
 
 const componentMaps=[
   {
@@ -1916,10 +1916,10 @@ function renderComponentMaps(){
 function showScreen(id){
   closeGlobalFloatSheet();
   current=id;
-  screens.forEach(s=>document.getElementById(s).classList.toggle("active",s===id));
+  screens.forEach(s=>document.getElementById(s)?.classList.toggle("active",s===id));
   document.getElementById("crumb").textContent=names[id][0];
   document.getElementById("title").textContent=names[id][1];
-  document.getElementById("backBtn").classList.toggle("hidden",id==="home");
+  document.getElementById("backBtn").classList.toggle("hidden",id==="garage");
   closeDrawer();
   if(id==="guide"){
     requestAnimationFrame(()=>{renderMarkers();updateProgress();});
@@ -1932,6 +1932,12 @@ function showScreen(id){
   if(id==="fuseguide"){
     requestAnimationFrame(()=>renderFuseGuide());
   }
+  if(id==="garage")renderGarage();
+  if(id==="home")renderVehicleHome();
+  if(id==="vehicleprofile")renderVehicleProfile();
+  if(id==="vinsetup")renderVinOnboardStep();
+  if(id==="digitaltwin")requestAnimationFrame(()=>{renderDigitalTwin();initTwinCanvas();});
+  if(id==="photos")renderPhotoGallery();
   renderGlobalFloatDock(id);
 }
 document.querySelectorAll("[data-go]").forEach(btn=>btn.addEventListener("click",()=>showScreen(btn.dataset.go)));
@@ -1952,8 +1958,8 @@ document.getElementById("backBtn").addEventListener("click",()=>{
     closeCoolantGuideSheet();
     return;
   }
-  const backMap={engine:"home",airbox:"engine",guide:"airbox",learn:"airbox",maintenance:"airbox",coolant:"engine",coolantguide:"coolant",coolantlearn:"coolant",coolantmaintenance:"coolant",fusebox:"engine",fuseguide:"fusebox",fuselearn:"fusebox",fusemaintenance:"fusebox"};
-  showScreen(backMap[current]||"home");
+  const backMap={vinsetup:"garage",vehicleprofile:"garage",digitaltwin:"vehicleprofile",photos:"digitaltwin",home:"garage",engine:"home",airbox:"engine",guide:"airbox",learn:"airbox",maintenance:"airbox",coolant:"engine",coolantguide:"coolant",coolantlearn:"coolant",coolantmaintenance:"coolant",fusebox:"engine",fuseguide:"fusebox",fuselearn:"fusebox",fusemaintenance:"fusebox"};
+  showScreen(backMap[current]||"garage");
 });
 
 const drawer=document.getElementById("drawer");const dim=document.getElementById("dim");const sheet=document.getElementById("sheet");
@@ -2762,8 +2768,34 @@ function cancelGlobalRestore(){
 
 function globalDockItems(screenId){
   const map={
+    garage:[
+      {icon:"＋",label:"Add Vehicle",action:"garage-add",primary:true},
+      {icon:"🚗",label:"Open Buick",action:"go",target:"home"},
+      {icon:"◇",label:"Digital Twin",action:"go",target:"digitaltwin"}
+    ],
+    vinsetup:vinSetupDockItems(),
+    vehicleprofile:[
+      {icon:"🚗",label:"Open Vehicle",action:"go",target:"home",primary:true},
+      {icon:"◇",label:"Digital Twin",action:"go",target:"digitaltwin"},
+      {icon:"▧",label:"Photos",action:"go",target:"photos"},
+      {icon:"✎",label:"Edit",action:"profile-edit"}
+    ],
+    digitaltwin:[
+      {icon:"🚗",label:"Engine Bay",action:"go",target:"engine",primary:true},
+      {icon:"＋",label:"Add Photo",action:"photo-add"},
+      {icon:"▧",label:"Photos",action:"go",target:"photos"},
+      {icon:"▦",label:"Garage",action:"go",target:"garage"}
+    ],
+    photos:[
+      {icon:"＋",label:"Add Photo",action:"photo-add",primary:true},
+      {icon:"◇",label:"Digital Twin",action:"go",target:"digitaltwin"},
+      {icon:"▦",label:"Garage",action:"go",target:"garage"}
+    ],
     home:[
-      {icon:"🚗",label:"Enter Vehicle",action:"go",target:"engine",primary:true}
+      {icon:"▦",label:"Garage",action:"go",target:"garage"},
+      {icon:"◇",label:"Digital Twin",action:"go",target:"digitaltwin"},
+      {icon:"🚗",label:"Engine Bay",action:"go",target:"engine",primary:true},
+      {icon:"▧",label:"Photos",action:"go",target:"photos"}
     ],
     engine:[
       {icon:"🌬",label:"Airbox",action:"go",target:"airbox",primary:true},
@@ -2885,6 +2917,12 @@ function handleGlobalDockAction(btn){
   if(action==="fuse-next"){stepFuseGuide(1);return;}
   if(action==="fuse-info"){openFuseGuideInfo();return;}
   if(action==="fuse-maint-info"){openFuseMaintenanceInfo();return;}
+  if(action==="garage-add"){startVinSetup();return;}
+  if(action==="vin-cancel"){showScreen("garage");return;}
+  if(action==="vin-back"){vinOnboardStep=Math.max(0,vinOnboardStep-1);renderVinOnboardStep();return;}
+  if(action==="vin-next"){advanceVinSetup();return;}
+  if(action==="profile-edit"){openProfileEditor();return;}
+  if(action==="photo-add"){openPhotoCapture();return;}
 }
 
 function openGlobalFloatSheet(title,subtitle,html,eyebrow="MY BUICK"){
@@ -3307,4 +3345,416 @@ window.addEventListener("resize",()=>{
   }
 });
 
-setGreeting();renderComponentMaps();renderMarkers();updateProgress();renderLogs();renderCoolantChecklist();renderCoolantStep();renderCoolantLogs();renderFuseGuide();showScreen("home");window.addEventListener("load",()=>setTimeout(()=>{renderMarkers();updateProgress();renderFuseGuide();},50));
+
+
+// v6.21 Garage + VIN + Digital Twin foundation
+const VEHICLE_STORAGE_KEY="mycar_vehicles_v1";
+const ACTIVE_VEHICLE_KEY="mycar_active_vehicle_v1";
+const DEFAULT_BUICK_ID="buick-2010-lacrosse";
+const DEFAULT_BUICK={
+  id:DEFAULT_BUICK_ID,
+  nickname:"My Buick",
+  year:"2010",
+  make:"Buick",
+  model:"LaCrosse",
+  trim:"CXL",
+  engine:"3.0L LF1 V6",
+  drivetrain:"FWD",
+  bodyClass:"4-door sedan",
+  color:"Silver",
+  mileage:121842,
+  vin:"",
+  vinMasked:"1G4GC5••••F121797",
+  vinLinked:false,
+  manufactured:"08/2009",
+  gvwr:"5,075 lb",
+  frontGawr:"2,579 lb",
+  rearGawr:"2,496 lb",
+  moduleSet:"buick-v1",
+  createdAt:"2026-07-10T00:00:00.000Z"
+};
+
+function escapeHtml(value){
+  return String(value??"").replace(/[&<>'"]/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[char]));
+}
+function getVehicles(){
+  try{
+    const parsed=JSON.parse(localStorage.getItem(VEHICLE_STORAGE_KEY)||"[]");
+    return Array.isArray(parsed)?parsed:[];
+  }catch{return []}
+}
+function saveVehicles(vehicles){localStorage.setItem(VEHICLE_STORAGE_KEY,JSON.stringify(vehicles))}
+function ensureGarageSeed(){
+  const vehicles=getVehicles();
+  if(!vehicles.length){
+    saveVehicles([DEFAULT_BUICK]);
+    localStorage.setItem(ACTIVE_VEHICLE_KEY,DEFAULT_BUICK_ID);
+    return;
+  }
+  if(!localStorage.getItem(ACTIVE_VEHICLE_KEY))localStorage.setItem(ACTIVE_VEHICLE_KEY,vehicles[0].id);
+}
+function getActiveVehicle(){
+  const vehicles=getVehicles();
+  const id=localStorage.getItem(ACTIVE_VEHICLE_KEY);
+  return vehicles.find(vehicle=>vehicle.id===id)||vehicles[0]||DEFAULT_BUICK;
+}
+function setActiveVehicle(id){
+  if(getVehicles().some(vehicle=>vehicle.id===id))localStorage.setItem(ACTIVE_VEHICLE_KEY,id);
+}
+function upsertVehicle(vehicle){
+  const vehicles=getVehicles();
+  const index=vehicles.findIndex(item=>item.id===vehicle.id);
+  if(index>=0)vehicles[index]=vehicle;else vehicles.unshift(vehicle);
+  saveVehicles(vehicles);
+  setActiveVehicle(vehicle.id);
+  return vehicle;
+}
+function maskVin(vin,fallback="VIN not linked"){
+  const clean=String(vin||"").toUpperCase().replace(/[^A-HJ-NPR-Z0-9]/g,"");
+  if(clean.length!==17)return fallback;
+  return clean.slice(0,6)+"••••"+clean.slice(10);
+}
+function formatVehicleName(vehicle){
+  return [vehicle.year,vehicle.make,vehicle.model,vehicle.trim].filter(Boolean).join(" ");
+}
+function cleanNumber(value){const digits=String(value||"").replace(/[^0-9]/g,"");return digits?Number(digits):null}
+
+async function renderGarage(){
+  const vehicles=getVehicles();
+  document.getElementById("garageVehicleCount").textContent=vehicles.length;
+  const list=document.getElementById("garageVehicleList");
+  if(!list)return;
+  list.innerHTML=vehicles.map(vehicle=>{
+    const active=vehicle.id===getActiveVehicle().id;
+    const canOpen=vehicle.moduleSet==="buick-v1";
+    return '<article class="garageVehicleCard" data-vehicle-card="'+escapeHtml(vehicle.id)+'">'+
+      '<div class="garageVehicleImage">'+
+        '<img src="images/home/home_garage.png" alt="'+escapeHtml(formatVehicleName(vehicle))+'">'+
+        '<span class="garageVehicleBadge">'+(active?'ACTIVE VEHICLE':'DIGITAL PROFILE')+'</span>'+
+        '<div class="garageVehicleCopy"><span>'+escapeHtml(vehicle.nickname||"My Vehicle")+'</span><h3>'+escapeHtml(formatVehicleName(vehicle))+'</h3><p>'+escapeHtml([vehicle.engine,vehicle.drivetrain,vehicle.color].filter(Boolean).join(" • "))+'</p></div>'+
+      '</div>'+
+      '<div class="garageVehicleActions">'+
+        '<button class="primary" type="button" data-vehicle-open="'+escapeHtml(vehicle.id)+'">'+(canOpen?'Open Vehicle':'Open Profile')+'</button>'+
+        '<button type="button" data-vehicle-twin="'+escapeHtml(vehicle.id)+'">Digital Twin</button>'+
+        '<button type="button" data-vehicle-profile="'+escapeHtml(vehicle.id)+'">Profile</button>'+
+      '</div>'+
+    '</article>';
+  }).join("");
+
+  list.querySelectorAll("[data-vehicle-open]").forEach(btn=>btn.addEventListener("click",()=>{
+    const id=btn.dataset.vehicleOpen;setActiveVehicle(id);
+    const vehicle=getActiveVehicle();
+    showScreen(vehicle.moduleSet==="buick-v1"?"home":"vehicleprofile");
+  }));
+  list.querySelectorAll("[data-vehicle-twin]").forEach(btn=>btn.addEventListener("click",()=>{setActiveVehicle(btn.dataset.vehicleTwin);showScreen("digitaltwin")}));
+  list.querySelectorAll("[data-vehicle-profile]").forEach(btn=>btn.addEventListener("click",()=>{setActiveVehicle(btn.dataset.vehicleProfile);showScreen("vehicleprofile")}));
+
+  const total=await countAllPhotos();
+  const count=document.getElementById("garagePhotoCount");
+  if(count)count.textContent=total;
+}
+
+document.getElementById("garageInlineAdd")?.addEventListener("click",()=>startVinSetup());
+
+function renderVehicleHome(){
+  const vehicle=getActiveVehicle();
+  document.getElementById("homeVehicleTitle").textContent=formatVehicleName(vehicle);
+  document.getElementById("homeVehicleSub").textContent=[vehicle.engine,vehicle.drivetrain,"Your digital garage"].filter(Boolean).join(" • ");
+  document.getElementById("homeVehicleMileage").textContent=vehicle.mileage?Number(vehicle.mileage).toLocaleString()+" miles":"Mileage not set";
+  document.getElementById("homeVinMask").textContent=vehicle.vinLinked?maskVin(vehicle.vin,vehicle.vinMasked):vehicle.vinMasked||"VIN profile ready";
+}
+
+async function renderVehicleProfile(){
+  const vehicle=getActiveVehicle();
+  const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value||"TBD"};
+  set("profileNickname",vehicle.nickname||"My Vehicle");
+  set("profileVehicleName",formatVehicleName(vehicle));
+  set("profileVehicleMeta",[vehicle.engine,vehicle.drivetrain,vehicle.color].filter(Boolean).join(" • "));
+  set("profileVinMask",vehicle.vinLinked?maskVin(vehicle.vin,vehicle.vinMasked):vehicle.vinMasked||"VIN not linked");
+  set("profileVinState",vehicle.vinLinked?"Full VIN stored only in this browser":"Masked profile • Full VIN not stored in app files");
+  set("profileYear",vehicle.year);set("profileMake",vehicle.make);set("profileModel",vehicle.model);set("profileTrim",vehicle.trim);
+  set("profileEngine",vehicle.engine);set("profileDrive",vehicle.drivetrain);set("profileBuilt",vehicle.manufactured);set("profileGvwr",vehicle.gvwr);
+  const photos=await countPhotos(vehicle.id);
+  const base=vehicle.moduleSet==="buick-v1"?38:18;
+  const completion=Math.min(92,base+Math.min(42,photos*7)+(vehicle.vinLinked?12:0));
+  set("profileCompletion",completion+"% documented");
+  document.getElementById("profileProgressFill").style.width=completion+"%";
+  set("profileProgressText",(vehicle.moduleSet==="buick-v1"?"Engine bay has 3 mapped components. ":"")+photos+" owner photo"+(photos===1?"":"s")+" attached to this vehicle.");
+}
+
+function openProfileEditor(){
+  const vehicle=getActiveVehicle();
+  openGlobalFloatSheet(
+    "Edit Vehicle Profile",
+    "Update the details shown in your Garage.",
+    '<label>Nickname<input id="profileEditNickname" value="'+escapeHtml(vehicle.nickname||"")+'"></label>'+
+    '<label>Color<input id="profileEditColor" value="'+escapeHtml(vehicle.color||"")+'"></label>'+
+    '<label>Mileage<input id="profileEditMileage" inputmode="numeric" value="'+escapeHtml(vehicle.mileage||"")+'"></label>'+
+    '<div class="globalSheetActions"><button id="profileFinishVin" class="ghost" type="button">VIN Setup</button><button id="profileSaveEdit" class="primary" type="button">Save</button></div>',
+    "VEHICLE PROFILE"
+  );
+  document.getElementById("profileFinishVin")?.addEventListener("click",()=>{closeGlobalFloatSheet();startVinSetup(vehicle.id)});
+  document.getElementById("profileSaveEdit")?.addEventListener("click",()=>{
+    const updated={...vehicle,nickname:document.getElementById("profileEditNickname").value.trim()||vehicle.nickname,color:document.getElementById("profileEditColor").value.trim(),mileage:cleanNumber(document.getElementById("profileEditMileage").value)};
+    upsertVehicle(updated);closeGlobalFloatSheet();renderVehicleProfile();renderVehicleHome();
+  });
+}
+
+// VIN onboarding
+let vinOnboardStep=0;
+let vinEditingVehicleId=null;
+let vinPendingValue="";
+let vinDecodedData=null;
+let vinPhotoObjectUrl=null;
+
+function vinSetupDockItems(){
+  const items=[{icon:"×",label:"Cancel",action:"vin-cancel"}];
+  if(vinOnboardStep>0)items.push({icon:"‹",label:"Back",action:"vin-back"});
+  items.push({icon:vinOnboardStep===2?"✓":"›",label:vinOnboardStep===0?"Decode VIN":vinOnboardStep===1?"Personalize":"Save Vehicle",action:"vin-next",primary:true});
+  return items;
+}
+
+function startVinSetup(vehicleId=null){
+  vinEditingVehicleId=vehicleId;
+  vinOnboardStep=0;vinPendingValue="";vinDecodedData=null;
+  const vehicle=vehicleId?getVehicles().find(item=>item.id===vehicleId):null;
+  ["vinInput","vinModelYearInput","vinYearConfirm","vinMakeConfirm","vinModelConfirm","vinTrimConfirm","vinEngineConfirm","vinDriveConfirm","vinBodyConfirm","vinNicknameInput","vinColorInput","vinMileageInput"].forEach(id=>{const el=document.getElementById(id);if(el)el.value=""});
+  if(vehicle){
+    document.getElementById("vinInput").value=vehicle.vin||"";
+    document.getElementById("vinModelYearInput").value=vehicle.year||"";
+    document.getElementById("vinNicknameInput").value=vehicle.nickname||"";
+    document.getElementById("vinColorInput").value=vehicle.color||"";
+    document.getElementById("vinMileageInput").value=vehicle.mileage||"";
+  }
+  document.getElementById("vinDetectStatus").textContent=vehicle?.vinLinked?"VIN loaded from this browser. Review or rescan it.":"Ready for a photo or manual VIN.";
+  document.getElementById("vinDetectStatus").className="vinStatus";
+  document.getElementById("vinPhotoPreviewWrap").classList.add("hidden");
+  showScreen("vinsetup");
+}
+
+function renderVinOnboardStep(){
+  const titles=["Scan or enter VIN","Confirm vehicle details","Personalize your vehicle"];
+  const subtitles=["Use the camera on the VIN label, then confirm the 17 characters.","Review the decoded information and fix anything missing.","Choose how this vehicle appears in your Garage."];
+  document.getElementById("vinStepBadge").textContent=(vinOnboardStep+1)+" of 3";
+  document.getElementById("vinSetupTitle").textContent=titles[vinOnboardStep];
+  document.getElementById("vinSetupSubtitle").textContent=subtitles[vinOnboardStep];
+  document.getElementById("vinProgressFill").style.width=((vinOnboardStep+1)/3*100)+"%";
+  document.querySelectorAll("[data-vin-panel]").forEach(panel=>{
+    const active=Number(panel.dataset.vinPanel)===vinOnboardStep;
+    panel.classList.toggle("active",active);panel.hidden=!active;
+  });
+  renderGlobalFloatDock("vinsetup");
+}
+
+function sanitizeVin(value){return String(value||"").toUpperCase().replace(/[^A-HJ-NPR-Z0-9]/g,"").slice(0,17)}
+function vinCheckDigitValid(vin){
+  if(vin.length!==17)return false;
+  const map={A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,J:1,K:2,L:3,M:4,N:5,P:7,R:9,S:2,T:3,U:4,V:5,W:6,X:7,Y:8,Z:9};
+  const weights=[8,7,6,5,4,3,2,10,0,9,8,7,6,5,4,3,2];
+  let sum=0;
+  for(let i=0;i<17;i++){
+    const char=vin[i];const value=/\d/.test(char)?Number(char):map[char];if(value==null)return false;sum+=value*weights[i];
+  }
+  const expected=sum%11===10?"X":String(sum%11);return vin[8]===expected;
+}
+function guessVinYear(vin){
+  const sequence="ABCDEFGHJKLMNPRSTVWXY123456789";const index=sequence.indexOf(vin[9]);if(index<0)return "";
+  const years=[];for(let year=1980+index;year<=new Date().getFullYear()+1;year+=30)years.push(year);return String(years.at(-1)||"");
+}
+
+async function decodeVinWithNhtsa(vin,year){
+  const suffix=year?"&modelyear="+encodeURIComponent(year):"";
+  const url="https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/"+encodeURIComponent(vin)+"?format=json"+suffix;
+  const response=await fetch(url,{headers:{Accept:"application/json"}});
+  if(!response.ok)throw new Error("Decoder unavailable ("+response.status+")");
+  const data=await response.json();
+  const row=data?.Results?.[0];if(!row)throw new Error("No decoder result returned");
+  return {
+    raw:row,
+    year:row.ModelYear||year||guessVinYear(vin),
+    make:row.Make||"",
+    model:row.Model||"",
+    trim:row.Trim||row.Series||"",
+    engine:[row.DisplacementL?row.DisplacementL+"L":"",row.EngineModel||"",row.EngineCylinders?row.EngineCylinders+"-cyl":""].filter(Boolean).join(" "),
+    drivetrain:row.DriveType||"",
+    bodyClass:row.BodyClass||"",
+    errorCode:row.ErrorCode||"",
+    errorText:row.ErrorText||"",
+    source:"NHTSA vPIC"
+  };
+}
+function fillVinConfirm(data,existing=null){
+  const value=(id,next,fallback="")=>{document.getElementById(id).value=next||fallback||""};
+  value("vinYearConfirm",data?.year,existing?.year);value("vinMakeConfirm",data?.make,existing?.make);value("vinModelConfirm",data?.model,existing?.model);value("vinTrimConfirm",data?.trim,existing?.trim);
+  value("vinEngineConfirm",data?.engine,existing?.engine);value("vinDriveConfirm",data?.drivetrain,existing?.drivetrain);value("vinBodyConfirm",data?.bodyClass,existing?.bodyClass);
+  if(!document.getElementById("vinNicknameInput").value)document.getElementById("vinNicknameInput").value=existing?.nickname||([data?.make,data?.model].filter(Boolean).join(" ")||"My Vehicle");
+}
+
+async function advanceVinSetup(){
+  if(vinOnboardStep===0){
+    const status=document.getElementById("vinDetectStatus");
+    const vin=sanitizeVin(document.getElementById("vinInput").value);document.getElementById("vinInput").value=vin;
+    if(vin.length!==17){status.textContent="VIN must contain exactly 17 valid characters.";status.className="vinStatus warn";return}
+    if(!vinCheckDigitValid(vin)){status.textContent="The VIN check digit does not match. Recheck the photo or typed characters.";status.className="vinStatus warn";return}
+    vinPendingValue=vin;status.textContent="VIN validated. Decoding vehicle…";status.className="vinStatus good";
+    const existing=vinEditingVehicleId?getVehicles().find(item=>item.id===vinEditingVehicleId):null;
+    const year=document.getElementById("vinModelYearInput").value.trim()||guessVinYear(vin);
+    try{
+      vinDecodedData=await decodeVinWithNhtsa(vin,year);
+      fillVinConfirm(vinDecodedData,existing);
+      document.getElementById("vinDecodeHeadline").textContent=[vinDecodedData.year,vinDecodedData.make,vinDecodedData.model].filter(Boolean).join(" ")||"Vehicle decoded";
+      document.getElementById("vinDecodeMessage").textContent=vinDecodedData.errorCode&&vinDecodedData.errorCode!=="0"?"The decoder returned partial information. Confirm the fields below.":"VIN decoded. Confirm the fields below.";
+      document.getElementById("vinDecodeSource").textContent="Decoded with NHTSA vPIC. Missing fields mean the decoder did not return that value.";
+    }catch(error){
+      vinDecodedData={year,make:"",model:"",trim:"",engine:"",drivetrain:"",bodyClass:"",source:"Manual fallback"};
+      fillVinConfirm(vinDecodedData,existing);
+      document.getElementById("vinDecodeHeadline").textContent="Manual confirmation needed";
+      document.getElementById("vinDecodeMessage").textContent="The online decoder could not be reached. You can still finish the profile manually.";
+      document.getElementById("vinDecodeSource").textContent=error.message;
+    }
+    vinOnboardStep=1;renderVinOnboardStep();return;
+  }
+  if(vinOnboardStep===1){
+    const required=["vinYearConfirm","vinMakeConfirm","vinModelConfirm"];
+    if(required.some(id=>!document.getElementById(id).value.trim())){
+      document.getElementById("vinDecodeSource").textContent="Year, make, and model are required before continuing.";return;
+    }
+    vinOnboardStep=2;renderVinOnboardStep();return;
+  }
+  saveVinVehicle();
+}
+
+function saveVinVehicle(){
+  const existing=vinEditingVehicleId?getVehicles().find(item=>item.id===vinEditingVehicleId):null;
+  const year=document.getElementById("vinYearConfirm").value.trim();const make=document.getElementById("vinMakeConfirm").value.trim();const model=document.getElementById("vinModelConfirm").value.trim();
+  const isBuickProfile=existing?.moduleSet==="buick-v1"||(year==="2010"&&make.toLowerCase()==="buick"&&model.toLowerCase().includes("lacrosse"));
+  const id=existing?.id||[year,make,model,Date.now()].join("-").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"");
+  const vehicle={
+    ...(existing||{}),id,
+    nickname:document.getElementById("vinNicknameInput").value.trim()||"My Vehicle",
+    year,make,model,trim:document.getElementById("vinTrimConfirm").value.trim(),
+    engine:document.getElementById("vinEngineConfirm").value.trim(),drivetrain:document.getElementById("vinDriveConfirm").value.trim(),bodyClass:document.getElementById("vinBodyConfirm").value.trim(),
+    color:document.getElementById("vinColorInput").value.trim(),mileage:cleanNumber(document.getElementById("vinMileageInput").value),
+    vin:vinPendingValue,vinMasked:maskVin(vinPendingValue),vinLinked:true,moduleSet:isBuickProfile?"buick-v1":"generic",
+    manufactured:existing?.manufactured||"",gvwr:existing?.gvwr||"",frontGawr:existing?.frontGawr||"",rearGawr:existing?.rearGawr||"",createdAt:existing?.createdAt||new Date().toISOString(),updatedAt:new Date().toISOString()
+  };
+  upsertVehicle(vehicle);vinEditingVehicleId=null;vinPendingValue="";vinDecodedData=null;showScreen("vehicleprofile");
+}
+
+document.getElementById("vinInput")?.addEventListener("input",event=>{event.target.value=sanitizeVin(event.target.value);if(event.target.value.length>=10&&!document.getElementById("vinModelYearInput").value)document.getElementById("vinModelYearInput").value=guessVinYear(event.target.value)});
+document.getElementById("vinCameraInput")?.addEventListener("change",async event=>{
+  const file=event.target.files?.[0];if(!file)return;
+  if(vinPhotoObjectUrl)URL.revokeObjectURL(vinPhotoObjectUrl);vinPhotoObjectUrl=URL.createObjectURL(file);
+  document.getElementById("vinPhotoPreview").src=vinPhotoObjectUrl;document.getElementById("vinPhotoPreviewWrap").classList.remove("hidden");
+  const status=document.getElementById("vinDetectStatus");status.textContent="Photo ready. Looking for a VIN code…";status.className="vinStatus";
+  try{
+    if(!("BarcodeDetector" in window))throw new Error("Automatic code detection is not supported on this browser. Type the VIN from the photo below.");
+    const formats=await BarcodeDetector.getSupportedFormats();const wanted=["data_matrix","qr_code","code_128"].filter(format=>formats.includes(format));if(!wanted.length)throw new Error("This browser cannot read the label code automatically. Type the VIN from the photo below.");
+    const detector=new BarcodeDetector({formats:wanted});const bitmap=await createImageBitmap(file);const results=await detector.detect(bitmap);bitmap.close?.();
+    const match=results.map(item=>String(item.rawValue||"").toUpperCase()).join(" ").match(/[A-HJ-NPR-Z0-9]{17}/);
+    if(!match)throw new Error("No 17-character VIN was detected. Use the photo to type it manually.");
+    document.getElementById("vinInput").value=match[0];document.getElementById("vinModelYearInput").value=guessVinYear(match[0]);status.textContent="VIN detected. Confirm the characters, then tap Decode VIN.";status.className="vinStatus good";
+  }catch(error){status.textContent=error.message;status.className="vinStatus warn"}
+});
+
+// Owner photo database
+const PHOTO_DB_NAME="mycar_owner_photos";const PHOTO_DB_VERSION=1;const PHOTO_STORE="photos";let photoDbPromise=null;let photoObjectUrls=[];let currentPhotoFilter="all";
+function openPhotoDb(){
+  if(photoDbPromise)return photoDbPromise;
+  photoDbPromise=new Promise((resolve,reject)=>{
+    if(!window.indexedDB){reject(new Error("Photo storage is not supported in this browser."));return}
+    const request=indexedDB.open(PHOTO_DB_NAME,PHOTO_DB_VERSION);
+    request.onupgradeneeded=()=>{const db=request.result;if(!db.objectStoreNames.contains(PHOTO_STORE)){const store=db.createObjectStore(PHOTO_STORE,{keyPath:"id"});store.createIndex("vehicleId","vehicleId",{unique:false});store.createIndex("area","area",{unique:false})}};
+    request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error);
+  });return photoDbPromise;
+}
+async function addPhotoRecord(record){const db=await openPhotoDb();return new Promise((resolve,reject)=>{const tx=db.transaction(PHOTO_STORE,"readwrite");tx.objectStore(PHOTO_STORE).put(record);tx.oncomplete=()=>resolve(record);tx.onerror=()=>reject(tx.error)})}
+async function getPhotos(vehicleId){const db=await openPhotoDb();return new Promise((resolve,reject)=>{const tx=db.transaction(PHOTO_STORE,"readonly");const request=tx.objectStore(PHOTO_STORE).index("vehicleId").getAll(vehicleId);request.onsuccess=()=>resolve((request.result||[]).sort((a,b)=>String(b.createdAt).localeCompare(String(a.createdAt))));request.onerror=()=>reject(request.error)})}
+async function deletePhotoRecord(id){const db=await openPhotoDb();return new Promise((resolve,reject)=>{const tx=db.transaction(PHOTO_STORE,"readwrite");tx.objectStore(PHOTO_STORE).delete(id);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)})}
+async function countPhotos(vehicleId){try{return (await getPhotos(vehicleId)).length}catch{return 0}}
+async function countAllPhotos(){let total=0;for(const vehicle of getVehicles())total+=await countPhotos(vehicle.id);return total}
+function photoAreaLabel(area){return ({engine:"Engine Bay",exterior:"Exterior",interior:"Interior",wheels:"Wheels & Brakes",trunk:"Trunk",underside:"Underside",airbox:"Airbox",coolant:"Coolant",fusebox:"Fuse Box",battery:"Battery",documents:"Receipts / Documents",other:"Other"})[area]||"Other"}
+async function compressImageFile(file){
+  const bitmap=await createImageBitmap(file);const max=1800;const scale=Math.min(1,max/Math.max(bitmap.width,bitmap.height));const canvas=document.createElement("canvas");canvas.width=Math.max(1,Math.round(bitmap.width*scale));canvas.height=Math.max(1,Math.round(bitmap.height*scale));canvas.getContext("2d").drawImage(bitmap,0,0,canvas.width,canvas.height);bitmap.close?.();
+  return new Promise(resolve=>canvas.toBlob(blob=>resolve(blob||file),"image/jpeg",.84));
+}
+function openPhotoCapture(defaultArea="engine"){
+  openGlobalFloatSheet(
+    "Add Owner Photo",
+    "Attach a photo to this vehicle and choose where it belongs.",
+    '<input id="ownerPhotoFile" type="file" accept="image/*" capture="environment" hidden><label class="vinScanButton" for="ownerPhotoFile"><span class="vinScanIcon">＋</span><b>Take or choose photo</b><small>The image stays inside this browser.</small></label>'+
+    '<div id="ownerPhotoPreview" class="photoCapturePreview hidden"><img alt="Selected owner photo"></div>'+
+    '<div class="photoCaptureGrid"><label>Area<select id="ownerPhotoArea"><option value="engine">Engine Bay</option><option value="airbox">Airbox</option><option value="coolant">Coolant</option><option value="fusebox">Fuse Box</option><option value="battery">Battery</option><option value="exterior">Exterior</option><option value="interior">Interior</option><option value="wheels">Wheels & Brakes</option><option value="trunk">Trunk</option><option value="underside">Underside</option><option value="documents">Receipts / Documents</option><option value="other">Other</option></select></label><label>Component<input id="ownerPhotoComponent" placeholder="Optional"></label></div>'+
+    '<label>Note<textarea id="ownerPhotoNote" placeholder="What does this photo show?"></textarea></label>'+
+    '<div id="ownerPhotoStatus" class="vinStatus">Choose a photo to continue.</div>'+
+    '<div class="photoCaptureActions"><button id="ownerPhotoCancel" class="ghost" type="button">Cancel</button><button id="ownerPhotoSave" class="primary" type="button">Save Photo</button></div>',
+    "OWNER PHOTOS"
+  );
+  document.getElementById("ownerPhotoArea").value=defaultArea||"engine";
+  let selectedFile=null;let previewUrl=null;
+  document.getElementById("ownerPhotoFile")?.addEventListener("change",event=>{selectedFile=event.target.files?.[0]||null;if(!selectedFile)return;if(previewUrl)URL.revokeObjectURL(previewUrl);previewUrl=URL.createObjectURL(selectedFile);const wrap=document.getElementById("ownerPhotoPreview");wrap.querySelector("img").src=previewUrl;wrap.classList.remove("hidden");document.getElementById("ownerPhotoStatus").textContent="Photo ready to save.";document.getElementById("ownerPhotoStatus").className="vinStatus good"});
+  document.getElementById("ownerPhotoCancel")?.addEventListener("click",closeGlobalFloatSheet);
+  document.getElementById("ownerPhotoSave")?.addEventListener("click",async()=>{
+    const status=document.getElementById("ownerPhotoStatus");if(!selectedFile){status.textContent="Choose a photo first.";status.className="vinStatus warn";return}
+    status.textContent="Preparing photo…";status.className="vinStatus";
+    try{
+      const blob=await compressImageFile(selectedFile);const vehicle=getActiveVehicle();await addPhotoRecord({id:"photo-"+Date.now()+"-"+Math.random().toString(36).slice(2,8),vehicleId:vehicle.id,area:document.getElementById("ownerPhotoArea").value,component:document.getElementById("ownerPhotoComponent").value.trim(),note:document.getElementById("ownerPhotoNote").value.trim(),createdAt:new Date().toISOString(),blob});
+      if(previewUrl)URL.revokeObjectURL(previewUrl);closeGlobalFloatSheet();if(current==="photos")renderPhotoGallery();if(current==="digitaltwin")renderDigitalTwin();renderGarage();
+    }catch(error){status.textContent="Could not save photo: "+error.message;status.className="vinStatus warn"}
+  });
+}
+async function renderPhotoGallery(){
+  const gallery=document.getElementById("photoGallery");if(!gallery)return;photoObjectUrls.forEach(URL.revokeObjectURL);photoObjectUrls=[];
+  let photos=[];try{photos=await getPhotos(getActiveVehicle().id)}catch(error){gallery.innerHTML='<div class="photoEmpty"><span>!</span><h3>Photo storage unavailable</h3><p>'+escapeHtml(error.message)+'</p></div>';return}
+  document.getElementById("photoLibraryCount").textContent=photos.length;
+  const filtered=photos.filter(photo=>currentPhotoFilter==="all"||photo.area===currentPhotoFilter||(currentPhotoFilter==="other"&&!['engine','exterior','interior','wheels'].includes(photo.area)));
+  if(!filtered.length){gallery.innerHTML='<div class="photoEmpty"><span>▧</span><h3>'+(photos.length?'No photos in this filter':'No owner photos yet')+'</h3><p>Use Add Photo to start documenting the real vehicle.</p></div>';return}
+  gallery.innerHTML="";
+  filtered.forEach(photo=>{
+    const url=URL.createObjectURL(photo.blob);photoObjectUrls.push(url);const card=document.createElement("article");card.className="photoCard";
+    card.innerHTML='<img src="'+url+'" alt="Owner vehicle photo"><div class="photoCardCopy"><span>'+escapeHtml(photoAreaLabel(photo.area))+'</span><b>'+escapeHtml(photo.component||photo.note||"Owner photo")+'</b><small>'+new Date(photo.createdAt).toLocaleDateString()+'</small></div><div class="photoCardActions"><button type="button">Delete</button></div>';
+    card.querySelector("button").addEventListener("click",async()=>{if(confirm("Delete this owner photo?")){await deletePhotoRecord(photo.id);renderPhotoGallery();renderDigitalTwin();renderGarage()}});gallery.appendChild(card);
+  });
+}
+document.querySelectorAll("[data-photo-filter]").forEach(btn=>btn.addEventListener("click",()=>{currentPhotoFilter=btn.dataset.photoFilter;document.querySelectorAll("[data-photo-filter]").forEach(item=>item.classList.toggle("active",item===btn));renderPhotoGallery()}));
+
+// Rough rotatable 3D vehicle model
+let twinAngle=-.58;let twinCanvasReady=false;let twinDragging=false;let twinLastX=0;let twinResizeObserver=null;
+function makeBox(x1,x2,y1,y2,z1,z2,type){
+  const v=[[x1,y1,z1],[x2,y1,z1],[x2,y2,z1],[x1,y2,z1],[x1,y1,z2],[x2,y1,z2],[x2,y2,z2],[x1,y2,z2]];
+  return {vertices:v,faces:[[0,1,2,3],[4,7,6,5],[0,4,5,1],[3,2,6,7],[1,5,6,2],[0,3,7,4]].map(indices=>({indices,type}))};
+}
+function makeCabin(){return {vertices:[[-1.05,.72,-.73],[1.15,.72,-.73],[.77,1.55,-.58],[-.67,1.55,-.58],[-1.05,.72,.73],[1.15,.72,.73],[.77,1.55,.58],[-.67,1.55,.58]],faces:[{indices:[0,1,2,3],type:"glass"},{indices:[4,7,6,5],type:"glass"},{indices:[0,4,5,1],type:"roof"},{indices:[3,2,6,7],type:"roof"},{indices:[1,5,6,2],type:"glass"},{indices:[0,3,7,4],type:"glass"}]}}
+function drawTwinCar(){
+  const canvas=document.getElementById("vehicleTwinCanvas");if(!canvas)return;const rect=canvas.getBoundingClientRect();const dpr=Math.min(2,window.devicePixelRatio||1);canvas.width=Math.max(1,Math.round(rect.width*dpr));canvas.height=Math.max(1,Math.round(rect.height*dpr));const ctx=canvas.getContext("2d");ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,rect.width,rect.height);
+  const cx=rect.width/2,cy=rect.height*.57,scale=Math.min(rect.width/6.2,rect.height/3.45),camera=6.7,c=Math.cos(twinAngle),s=Math.sin(twinAngle);
+  const rotate=([x,y,z])=>[x*c-z*s,y,x*s+z*c];const project=point=>{const [x,y,z]=rotate(point);const p=camera/(camera-z);return {x:cx+x*scale*p,y:cy-y*scale*p,z,p}};
+  ctx.save();ctx.fillStyle="rgba(0,0,0,.32)";ctx.beginPath();ctx.ellipse(cx,cy+scale*.37,scale*2.25,scale*.46,0,0,Math.PI*2);ctx.fill();ctx.restore();
+  const meshes=[makeBox(-2.45,2.45,.05,.76,-.88,.88,"body"),makeBox(-2.15,2.15,.76,.94,-.82,.82,"belt"),makeCabin()];
+  const faces=[];meshes.forEach(mesh=>mesh.faces.forEach(face=>{const points=face.indices.map(i=>project(mesh.vertices[i]));faces.push({points,type:face.type,depth:points.reduce((sum,p)=>sum+p.z,0)/points.length})}));faces.sort((a,b)=>a.depth-b.depth);
+  const palettes={body:["#68727f","#87919d","#55606d"],belt:["#717b87","#919aa5","#5d6773"],roof:["#707a86","#8e98a4","#59636f"],glass:["#172432","#24384b","#101b27"]};
+  faces.forEach(face=>{const avgX=face.points.reduce((sum,p)=>sum+p.x,0)/face.points.length;const colorIndex=avgX<cx-8?0:avgX>cx+8?2:1;ctx.beginPath();face.points.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.fillStyle=palettes[face.type][colorIndex];ctx.fill();ctx.strokeStyle=face.type==="glass"?"rgba(120,174,219,.34)":"rgba(233,241,250,.15)";ctx.lineWidth=1;ctx.stroke()});
+  const wheels=[[-1.55,.18,-.94],[1.55,.18,-.94],[-1.55,.18,.94],[1.55,.18,.94]].map(center=>({...project(center),depth:rotate(center)[2]})).sort((a,b)=>a.depth-b.depth);
+  wheels.forEach(w=>{const radius=scale*.34*w.p;ctx.beginPath();ctx.ellipse(w.x,w.y,radius*.72,radius,0,0,Math.PI*2);ctx.fillStyle="#0a0d12";ctx.fill();ctx.strokeStyle="rgba(255,255,255,.15)";ctx.lineWidth=2;ctx.stroke();ctx.beginPath();ctx.arc(w.x,w.y,radius*.42,0,Math.PI*2);ctx.fillStyle="#78828e";ctx.fill();ctx.beginPath();ctx.arc(w.x,w.y,radius*.16,0,Math.PI*2);ctx.fillStyle="#202832";ctx.fill()});
+  const hoodA=project([1.18,.96,-.72]),hoodB=project([2.22,.96,-.72]);ctx.beginPath();ctx.moveTo(hoodA.x,hoodA.y);ctx.lineTo(hoodB.x,hoodB.y);ctx.strokeStyle="rgba(215,231,248,.24)";ctx.stroke();
+}
+function initTwinCanvas(){
+  const canvas=document.getElementById("vehicleTwinCanvas");if(!canvas)return;drawTwinCar();if(twinCanvasReady)return;twinCanvasReady=true;
+  canvas.addEventListener("pointerdown",event=>{twinDragging=true;twinLastX=event.clientX;canvas.setPointerCapture(event.pointerId)});canvas.addEventListener("pointermove",event=>{if(!twinDragging)return;const dx=event.clientX-twinLastX;twinLastX=event.clientX;twinAngle+=dx*.012;drawTwinCar()});canvas.addEventListener("pointerup",()=>twinDragging=false);canvas.addEventListener("pointercancel",()=>twinDragging=false);
+  document.getElementById("twinRotateLeft")?.addEventListener("click",()=>{twinAngle-=.34;drawTwinCar()});document.getElementById("twinRotateRight")?.addEventListener("click",()=>{twinAngle+=.34;drawTwinCar()});
+  twinResizeObserver=new ResizeObserver(drawTwinCar);twinResizeObserver.observe(canvas);
+}
+async function renderDigitalTwin(){
+  const vehicle=getActiveVehicle();document.getElementById("twinVehicleName").textContent=vehicle.nickname||"My Vehicle";document.getElementById("twinVehicleMeta").textContent=formatVehicleName(vehicle);document.getElementById("twinVinMask").textContent=vehicle.vinLinked?maskVin(vehicle.vin):vehicle.vinMasked||"Not linked";
+  const photos=await getPhotos(vehicle.id).catch(()=>[]);document.getElementById("twinPhotoCount").textContent=photos.length;document.getElementById("twinCompletionBadge").textContent=photos.length?photos.length+" photos":"Foundation";
+  const counts={};photos.forEach(photo=>{counts[photo.area]=(counts[photo.area]||0)+1});document.querySelectorAll("[data-zone-status]").forEach(el=>{const zone=el.dataset.zoneStatus;const count=counts[zone]||0;el.textContent=count?count+" owner photo"+(count===1?"":"s"):"Not documented"});drawTwinCar();
+}
+function openTwinZoneSheet(zone){
+  if(zone==="engine"){showScreen("engine");return}
+  const descriptions={exterior:"Body panels, paint, lights, glass, and exterior condition.",interior:"Dashboard, seats, controls, trim, and cabin components.",wheels:"Wheels, tires, brakes, hubs, and suspension corners.",trunk:"Cargo area, spare tire well, tools, wiring, and rear access points.",underside:"Exhaust, subframes, lines, shields, leaks, and rust condition."};
+  openGlobalFloatSheet(photoAreaLabel(zone),descriptions[zone]||"Document this vehicle area.",'<div class="globalInfoCard"><span>DIGITAL TWIN STATUS</span><b>This area becomes personalized as you attach your own photos and service records.</b></div><div class="globalSheetActions"><button id="twinZonePhotos" class="ghost" type="button">View Photos</button><button id="twinZoneAdd" class="primary" type="button">Add Photo</button></div>',"DIGITAL TWIN");
+  document.getElementById("twinZonePhotos")?.addEventListener("click",()=>{closeGlobalFloatSheet();currentPhotoFilter=zone;showScreen("photos")});document.getElementById("twinZoneAdd")?.addEventListener("click",()=>{closeGlobalFloatSheet();setTimeout(()=>openPhotoCapture(zone),320)});
+}
+document.querySelectorAll("[data-twin-zone]").forEach(btn=>btn.addEventListener("click",()=>openTwinZoneSheet(btn.dataset.twinZone)));
+
+ensureGarageSeed();setGreeting();renderComponentMaps();renderMarkers();updateProgress();renderLogs();renderCoolantChecklist();renderCoolantStep();renderCoolantLogs();renderFuseGuide();renderGarage();showScreen("garage");window.addEventListener("load",()=>setTimeout(()=>{renderMarkers();updateProgress();renderFuseGuide();},50));

@@ -7,8 +7,8 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <meta name="theme-color" content="#070a10">
-  <title>MY BUICK v6.20 Fuse Box Outline and Clips</title>
-  <link rel="stylesheet" href="style.css?v=6.20-fuse-outline-clips">
+  <title>MY CAR v6.21 Garage + VIN Digital Twin</title>
+  <link rel="stylesheet" href="style.css?v=6.21-garage-vin-twin">
 </head>
 <body>
 <div class="app">
@@ -23,15 +23,209 @@
   </header>
 
   <main>
-    <section id="home" class="screen active homeScreen">
+    <section id="garage" class="screen active garageScreen">
+      <div class="garageHero">
+        <div>
+          <span class="garageEyebrow">MY CAR</span>
+          <h2>Your digital garage</h2>
+          <p>Each vehicle starts from its VIN and becomes more accurate as you add photos, service history, and verified components.</p>
+        </div>
+        <div class="garageHeroMark" aria-hidden="true">
+          <span></span><i></i><b></b>
+        </div>
+      </div>
+
+      <div class="garageSummary">
+        <div><span>Vehicles</span><strong id="garageVehicleCount">1</strong></div>
+        <div><span>Owner Photos</span><strong id="garagePhotoCount">0</strong></div>
+        <div><span>Storage</span><strong>On Device</strong></div>
+      </div>
+
+      <div class="garageSectionHead">
+        <div><span>MY VEHICLES</span><h3>Choose a car</h3></div>
+        <button id="garageInlineAdd" class="tinyBtn" type="button">+ Add</button>
+      </div>
+      <div id="garageVehicleList" class="garageVehicleList"></div>
+
+      <div class="garagePrivacy">
+        <span>PRIVATE PROTOTYPE</span>
+        <p>Full VINs and owner-added photos stay in this browser. They are not written into the public app files or synced yet.</p>
+      </div>
+    </section>
+
+    <section id="vinsetup" class="screen vinSetupScreen">
+      <div class="vinSetupHead">
+        <div>
+          <span id="vinStepBadge" class="badge">1 of 3</span>
+          <h2 id="vinSetupTitle">Scan or enter VIN</h2>
+          <p id="vinSetupSubtitle">Use the camera on the VIN label, then confirm the 17 characters.</p>
+        </div>
+      </div>
+      <div class="vinProgress"><i id="vinProgressFill"></i></div>
+
+      <div class="vinOnboardCard">
+        <section class="vinPanel active" data-vin-panel="0">
+          <input id="vinCameraInput" type="file" accept="image/*" capture="environment" hidden>
+          <label class="vinScanButton" for="vinCameraInput">
+            <span class="vinScanIcon">⌁</span>
+            <b>Photograph VIN label</b>
+            <small>Data Matrix detection is attempted when the browser supports it.</small>
+          </label>
+
+          <div id="vinPhotoPreviewWrap" class="vinPhotoPreview hidden">
+            <img id="vinPhotoPreview" alt="VIN label preview">
+            <span>Photo stays on this device</span>
+          </div>
+
+          <label class="vinField">VIN
+            <input id="vinInput" maxlength="17" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="17-character VIN">
+          </label>
+          <label class="vinField">Model year <small>Optional, but improves decoding</small>
+            <input id="vinModelYearInput" inputmode="numeric" maxlength="4" placeholder="2010">
+          </label>
+          <div id="vinDetectStatus" class="vinStatus">Ready for a photo or manual VIN.</div>
+          <div class="vinPrivacyNote"><b>Privacy:</b> the full VIN is saved only inside this browser after you confirm the vehicle.</div>
+        </section>
+
+        <section class="vinPanel" data-vin-panel="1" hidden>
+          <div id="vinDecodeBanner" class="vinDecodeBanner">
+            <span>NHTSA vPIC</span>
+            <b id="vinDecodeHeadline">Confirm vehicle details</b>
+            <small id="vinDecodeMessage">Review the decoded information and fix anything that is missing.</small>
+          </div>
+          <div class="vinConfirmGrid">
+            <label>Year<input id="vinYearConfirm" inputmode="numeric"></label>
+            <label>Make<input id="vinMakeConfirm"></label>
+            <label>Model<input id="vinModelConfirm"></label>
+            <label>Trim<input id="vinTrimConfirm"></label>
+            <label class="wide">Engine<input id="vinEngineConfirm"></label>
+            <label>Drivetrain<input id="vinDriveConfirm"></label>
+            <label>Body style<input id="vinBodyConfirm"></label>
+          </div>
+          <div id="vinDecodeSource" class="vinSource">Decoder results will appear here.</div>
+        </section>
+
+        <section class="vinPanel" data-vin-panel="2" hidden>
+          <div class="vinPersonalizeIntro">
+            <span>LAST STEP</span>
+            <h3>Make it yours</h3>
+            <p>This is how the vehicle will appear in your Garage.</p>
+          </div>
+          <label class="vinField">Vehicle nickname
+            <input id="vinNicknameInput" placeholder="My Buick">
+          </label>
+          <div class="vinTwoCol">
+            <label class="vinField">Color<input id="vinColorInput" placeholder="Silver"></label>
+            <label class="vinField">Mileage<input id="vinMileageInput" inputmode="numeric" placeholder="121842"></label>
+          </div>
+          <div class="vinLocalCard">
+            <span>LOCAL DIGITAL TWIN</span>
+            <b>Vehicle profile, photos, and progress are stored on this device.</b>
+            <small>Cloud backup and accounts come later.</small>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section id="vehicleprofile" class="screen vehicleProfileScreen">
+      <div class="profileHero">
+        <img src="images/home/home_garage.png" alt="Vehicle profile">
+        <div class="profileHeroShade"></div>
+        <div class="profileHeroCopy">
+          <span id="profileNickname">My Buick</span>
+          <h2 id="profileVehicleName">2010 Buick LaCrosse CXL</h2>
+          <p id="profileVehicleMeta">3.0L LF1 V6 • FWD • Silver</p>
+        </div>
+      </div>
+
+      <div class="profileIdentityCard">
+        <div>
+          <span>VEHICLE IDENTITY</span>
+          <strong id="profileVinMask">1G4GC5••••F121797</strong>
+          <small id="profileVinState">Masked profile • Full VIN not stored in app files</small>
+        </div>
+        <span class="badge green">Local</span>
+      </div>
+
+      <div class="profileSpecGrid">
+        <div><span>Year</span><b id="profileYear">2010</b></div>
+        <div><span>Make</span><b id="profileMake">Buick</b></div>
+        <div><span>Model</span><b id="profileModel">LaCrosse</b></div>
+        <div><span>Trim</span><b id="profileTrim">CXL</b></div>
+        <div><span>Engine</span><b id="profileEngine">3.0L LF1 V6</b></div>
+        <div><span>Drive</span><b id="profileDrive">FWD</b></div>
+        <div><span>Built</span><b id="profileBuilt">08/2009</b></div>
+        <div><span>GVWR</span><b id="profileGvwr">5,075 lb</b></div>
+      </div>
+
+      <div class="profileProgressCard">
+        <div><span>DIGITAL TWIN PROGRESS</span><strong id="profileCompletion">Foundation ready</strong></div>
+        <div class="profileProgressTrack"><i id="profileProgressFill"></i></div>
+        <p id="profileProgressText">Engine bay has 3 mapped components. Add owner photos to document the rest of the car.</p>
+      </div>
+
+      <div class="profileModuleRow">
+        <div class="ready"><span>🌬</span><b>Airbox</b><small>Mapped</small></div>
+        <div class="ready"><span>🧊</span><b>Coolant</b><small>Mapped</small></div>
+        <div class="ready"><span>⚡</span><b>Fuse Box</b><small>Mapped</small></div>
+      </div>
+    </section>
+
+    <section id="digitaltwin" class="screen digitalTwinScreen">
+      <div class="twinHead">
+        <div><span>DIGITAL TWIN BETA</span><h2 id="twinVehicleName">My Buick</h2><p id="twinVehicleMeta">2010 Buick LaCrosse CXL</p></div>
+        <span id="twinCompletionBadge" class="badge">Foundation</span>
+      </div>
+
+      <div class="twinStage">
+        <canvas id="vehicleTwinCanvas" aria-label="Rotatable rough 3D vehicle model"></canvas>
+        <div class="twinStageHint">Drag to rotate</div>
+        <button id="twinRotateLeft" class="twinRotate left" type="button" aria-label="Rotate left">‹</button>
+        <button id="twinRotateRight" class="twinRotate right" type="button" aria-label="Rotate right">›</button>
+      </div>
+
+      <div class="twinStatusStrip">
+        <div><span>Mapped</span><strong>Engine Bay</strong></div>
+        <div><span>Owner Photos</span><strong id="twinPhotoCount">0</strong></div>
+        <div><span>VIN</span><strong id="twinVinMask">Masked</strong></div>
+      </div>
+
+      <div class="twinZoneGrid">
+        <button data-twin-zone="engine"><span>◉</span><div><b>Engine Bay</b><small>3 components mapped</small></div><i>›</i></button>
+        <button data-twin-zone="exterior"><span>◇</span><div><b>Exterior</b><small data-zone-status="exterior">Not documented</small></div><i>›</i></button>
+        <button data-twin-zone="interior"><span>▱</span><div><b>Interior</b><small data-zone-status="interior">Not documented</small></div><i>›</i></button>
+        <button data-twin-zone="wheels"><span>◎</span><div><b>Wheels & Brakes</b><small data-zone-status="wheels">Not documented</small></div><i>›</i></button>
+        <button data-twin-zone="trunk"><span>▰</span><div><b>Trunk</b><small data-zone-status="trunk">Not documented</small></div><i>›</i></button>
+        <button data-twin-zone="underside"><span>⌁</span><div><b>Underside</b><small data-zone-status="underside">Not documented</small></div><i>›</i></button>
+      </div>
+    </section>
+
+    <section id="photos" class="screen vehiclePhotosScreen">
+      <div class="sectionHead photoLibraryHead">
+        <div><h2>Owner Photos</h2><p>Photos you attach to this vehicle stay on this device.</p></div>
+        <span id="photoLibraryCount" class="badge">0</span>
+      </div>
+      <div id="photoFilterBar" class="photoFilterBar">
+        <button class="active" data-photo-filter="all">All</button>
+        <button data-photo-filter="engine">Engine</button>
+        <button data-photo-filter="exterior">Exterior</button>
+        <button data-photo-filter="interior">Interior</button>
+        <button data-photo-filter="wheels">Wheels</button>
+        <button data-photo-filter="other">Other</button>
+      </div>
+      <div id="photoGallery" class="photoGallery"></div>
+    </section>
+
+    <section id="home" class="screen homeScreen">
       <div class="homeHero">
         <img src="images/home/home_garage.png" alt="MY BUICK home photo">
         <div class="homeFade"></div>
         <div class="homeCopy">
           <div id="greeting" class="greeting">Good Afternoon, Alex.</div>
-          <h2>2010 Buick LaCrosse CXL</h2>
-          <div class="homeSub">3.0L LF1 • FWD • Your digital garage</div>
-          <div class="mileage">121,842 miles</div>
+          <h2 id="homeVehicleTitle">2010 Buick LaCrosse CXL</h2>
+          <div id="homeVehicleSub" class="homeSub">3.0L LF1 • FWD • Your digital garage</div>
+          <div id="homeVehicleMileage" class="mileage">121,842 miles</div>
+          <div id="homeVinMask" class="homeVinMask">VIN profile ready</div>
         </div>
       </div>
 
@@ -689,8 +883,12 @@
 
 
   <aside id="drawer" class="drawer" role="dialog" aria-modal="true" aria-label="MY BUICK navigation" aria-hidden="true" tabindex="-1">
-    <div class="drawerTop"><strong>MY BUICK</strong><button id="closeDrawer" class="icon">×</button></div>
-    <button data-go="home">🏠 Home</button>
+    <div class="drawerTop"><strong>MY CAR</strong><button id="closeDrawer" class="icon">×</button></div>
+    <button data-go="garage">▦ Garage</button>
+    <button data-go="home">🏠 My Buick</button>
+    <button data-go="vehicleprofile">◉ Vehicle Profile</button>
+    <button data-go="digitaltwin">◇ Digital Twin</button>
+    <button data-go="photos">▧ Owner Photos</button>
     <button data-go="engine">🚗 Engine Bay</button>
     <button data-go="airbox">🌬 Airbox</button>
     <button data-go="coolant">🧊 Coolant</button>
@@ -703,6 +901,6 @@
   <div id="dim" class="dim"></div>
   <aside id="sheet" class="sheet" role="dialog" aria-modal="true" aria-label="Part information" aria-hidden="true" tabindex="-1"><button id="closeSheet" class="icon sheetClose">×</button><div id="sheetData"></div></aside>
 </div>
-<script src="app.js?v=6.20-fuse-outline-clips"></script>
+<script src="app.js?v=6.21-garage-vin-twin"></script>
 </body>
 </html>

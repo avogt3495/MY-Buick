@@ -4240,3 +4240,124 @@ label{
     height:14px;
   }
 }
+
+
+/* v6.21 Garage + VIN + Digital Twin foundation */
+.garageScreen,
+.vinSetupScreen,
+.vehicleProfileScreen,
+.digitalTwinScreen,
+.vehiclePhotosScreen{
+  min-height:calc(100svh - 68px);
+  padding-bottom:108px;
+}
+
+.garageHero{
+  position:relative;
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  min-height:178px;
+  padding:22px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.085);
+  border-radius:28px;
+  background:
+    radial-gradient(circle at 88% 22%,rgba(75,140,255,.28),transparent 32%),
+    linear-gradient(145deg,rgba(29,39,59,.94),rgba(10,15,24,.98));
+  box-shadow:0 24px 66px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.055);
+}
+.garageHero > div:first-child{position:relative;z-index:2;max-width:360px}
+.garageEyebrow,.garageSectionHead span,.profileProgressCard span,.vinPersonalizeIntro span,.vinLocalCard span,.twinHead > div > span{
+  display:block;color:#7faeff;font-size:10px;font-weight:950;letter-spacing:.15em;text-transform:uppercase
+}
+.garageHero h2{margin:7px 0 7px;font-size:30px;letter-spacing:-.035em}
+.garageHero p{margin:0;color:#aeb9c9;font-size:13px;line-height:1.42}
+.garageHeroMark{position:absolute;right:-4px;bottom:-14px;width:155px;height:132px;opacity:.9;transform:rotate(-8deg)}
+.garageHeroMark span,.garageHeroMark i,.garageHeroMark b{position:absolute;display:block;border:1px solid rgba(134,184,255,.30);background:rgba(75,140,255,.055);box-shadow:0 0 36px rgba(75,140,255,.10)}
+.garageHeroMark span{inset:18px 8px 8px 24px;border-radius:46% 56% 22% 28%/44% 48% 36% 40%;transform:skewX(-10deg)}
+.garageHeroMark i{left:26px;bottom:4px;width:40px;height:40px;border-radius:50%}
+.garageHeroMark b{right:11px;bottom:7px;width:42px;height:42px;border-radius:50%}
+
+.garageSummary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:11px 0 18px}
+.garageSummary div{padding:11px 8px;border:1px solid rgba(255,255,255,.065);border-radius:17px;background:rgba(255,255,255,.028);text-align:center}
+.garageSummary span{display:block;color:#7f8c9e;font-size:9px;text-transform:uppercase;font-weight:850}
+.garageSummary strong{display:block;margin-top:4px;font-size:13px}
+.garageSectionHead{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:0 2px 9px}
+.garageSectionHead h3{margin:2px 0 0;font-size:20px}
+.garageVehicleList{display:grid;gap:11px}
+.garageVehicleCard{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.085);border-radius:26px;background:rgba(255,255,255,.025);box-shadow:0 18px 45px rgba(0,0,0,.26)}
+.garageVehicleImage{position:relative;height:180px;overflow:hidden}
+.garageVehicleImage img{width:100%;height:100%;object-fit:cover;display:block}
+.garageVehicleImage:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 32%,rgba(8,12,19,.96))}
+.garageVehicleBadge{position:absolute;z-index:2;top:12px;left:12px;padding:7px 9px;border:1px solid rgba(126,172,255,.20);border-radius:12px;color:#dbe8ff;background:rgba(9,14,22,.66);backdrop-filter:blur(18px);font-size:10px;font-weight:850}
+.garageVehicleCopy{position:absolute;z-index:2;left:15px;right:15px;bottom:12px}
+.garageVehicleCopy span{display:block;color:#88b5fa;font-size:10px;font-weight:900;letter-spacing:.08em}
+.garageVehicleCopy h3{margin:3px 0 2px;font-size:23px;letter-spacing:-.025em}
+.garageVehicleCopy p{margin:0;color:#aeb8c7;font-size:12px}
+.garageVehicleActions{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:7px;padding:9px}
+.garageVehicleActions button{min-height:42px;border:1px solid rgba(255,255,255,.065);border-radius:14px;color:#cbd5e3;background:rgba(255,255,255,.035);font-size:11px;font-weight:820}
+.garageVehicleActions button.primary{color:#fff;background:linear-gradient(135deg,#397ef4,#538fff)}
+.garagePrivacy{margin-top:13px;padding:13px;border:1px solid rgba(255,255,255,.065);border-radius:18px;background:rgba(255,255,255,.025)}
+.garagePrivacy span{color:#78d9b1;font-size:9px;font-weight:950;letter-spacing:.13em}
+.garagePrivacy p{margin:4px 0 0;color:#8f9aac;font-size:11px;line-height:1.35}
+
+.vinSetupHead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px}
+.vinSetupHead h2{margin:7px 0 4px;font-size:27px;letter-spacing:-.03em}
+.vinSetupHead p{margin:0;color:#96a2b3;font-size:13px;line-height:1.35}
+.vinProgress{height:3px;margin:0 2px 13px;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.055)}
+.vinProgress i{display:block;width:33.333%;height:100%;border-radius:999px;background:linear-gradient(90deg,#4b8cff,#78c7ff);transition:width .26s ease}
+.vinOnboardCard{min-height:440px;padding:13px;border:1px solid rgba(255,255,255,.085);border-radius:27px;background:linear-gradient(180deg,rgba(24,31,45,.78),rgba(9,13,21,.92));box-shadow:0 22px 60px rgba(0,0,0,.34)}
+.vinPanel{display:none;animation:refinedScreenIn .2s ease}
+.vinPanel.active{display:block}
+.vinScanButton{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:142px;margin:0;padding:18px;border:1px dashed rgba(114,168,255,.34);border-radius:21px;color:#eff5ff;background:rgba(75,140,255,.055);text-align:center;cursor:pointer}
+.vinScanIcon{display:grid;place-items:center;width:45px;height:45px;margin-bottom:9px;border-radius:15px;color:#e8f2ff;background:rgba(75,140,255,.18);font-size:25px}
+.vinScanButton b{font-size:16px}.vinScanButton small{max-width:280px;margin-top:4px;color:#8f9caf;font-size:10px;line-height:1.3}
+.vinPhotoPreview{position:relative;height:142px;margin:10px 0;overflow:hidden;border-radius:18px;border:1px solid rgba(255,255,255,.075)}
+.vinPhotoPreview img{width:100%;height:100%;object-fit:cover}
+.vinPhotoPreview span{position:absolute;right:8px;bottom:8px;padding:5px 7px;border-radius:9px;color:#cfe0f7;background:rgba(6,10,16,.72);font-size:9px}
+.vinField,.vinConfirmGrid label{display:block;margin:11px 0 0;color:#aab5c4;font-size:11px;font-weight:760}
+.vinField small{color:#657286;font-weight:600}
+.vinField input,.vinConfirmGrid input{margin-top:6px;text-transform:none}
+#vinInput{text-transform:uppercase;letter-spacing:.08em;font-weight:800}
+.vinStatus{margin-top:10px;padding:9px 10px;border:1px solid rgba(255,255,255,.06);border-radius:13px;color:#9aa7b9;background:rgba(255,255,255,.025);font-size:11px;line-height:1.3}
+.vinStatus.good{border-color:rgba(65,213,137,.18);color:#91e4b5;background:rgba(65,213,137,.06)}
+.vinStatus.warn{border-color:rgba(255,197,66,.17);color:#f4d28d;background:rgba(255,197,66,.055)}
+.vinPrivacyNote{margin-top:10px;color:#778396;font-size:10px;line-height:1.35}
+.vinDecodeBanner{padding:13px;border:1px solid rgba(100,158,255,.14);border-radius:17px;background:rgba(75,140,255,.055)}
+.vinDecodeBanner span{display:block;color:#7cacf8;font-size:9px;font-weight:950;letter-spacing:.12em}.vinDecodeBanner b{display:block;margin-top:4px}.vinDecodeBanner small{display:block;margin-top:4px;color:#93a0b3;line-height:1.3}
+.vinConfirmGrid{display:grid;grid-template-columns:1fr 1fr;gap:0 9px}.vinConfirmGrid label.wide{grid-column:1/3}
+.vinSource{margin-top:11px;color:#687588;font-size:10px;line-height:1.35}
+.vinPersonalizeIntro{padding:4px 2px 6px}.vinPersonalizeIntro h3{margin:4px 0 4px;font-size:23px}.vinPersonalizeIntro p{margin:0;color:#98a4b5;font-size:12px}
+.vinTwoCol{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.vinLocalCard{margin-top:15px;padding:14px;border:1px solid rgba(69,209,138,.13);border-radius:17px;background:rgba(69,209,138,.045)}
+.vinLocalCard span{color:#76d7a8}.vinLocalCard b,.vinLocalCard small{display:block}.vinLocalCard b{margin-top:5px;font-size:13px}.vinLocalCard small{margin-top:4px;color:#7f8b9b;font-size:10px}
+
+.profileHero{position:relative;height:225px;overflow:hidden;border:1px solid rgba(255,255,255,.08);border-radius:28px;box-shadow:0 22px 60px rgba(0,0,0,.34)}
+.profileHero img{width:100%;height:100%;object-fit:cover}.profileHeroShade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,8,13,.05),rgba(5,8,13,.9))}
+.profileHeroCopy{position:absolute;left:18px;right:18px;bottom:16px}.profileHeroCopy span{color:#8cb9ff;font-size:10px;font-weight:900;letter-spacing:.1em}.profileHeroCopy h2{margin:3px 0 4px;font-size:27px;letter-spacing:-.03em}.profileHeroCopy p{margin:0;color:#b5c0cf;font-size:12px}
+.profileIdentityCard{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:10px 0;padding:13px;border:1px solid rgba(255,255,255,.07);border-radius:18px;background:rgba(255,255,255,.028)}
+.profileIdentityCard > div{min-width:0}.profileIdentityCard span:first-child{display:block;color:#738095;font-size:9px;font-weight:900;letter-spacing:.11em}.profileIdentityCard strong{display:block;margin-top:3px;font-size:14px;letter-spacing:.04em}.profileIdentityCard small{display:block;margin-top:3px;color:#7b8798;font-size:9px}
+.profileSpecGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.profileSpecGrid div{min-width:0;padding:11px;border:1px solid rgba(255,255,255,.06);border-radius:15px;background:rgba(255,255,255,.025)}.profileSpecGrid span{display:block;color:#758195;font-size:9px;text-transform:uppercase}.profileSpecGrid b{display:block;margin-top:3px;overflow:hidden;color:#e8edf5;font-size:12px;text-overflow:ellipsis;white-space:nowrap}
+.profileProgressCard{margin-top:10px;padding:13px;border:1px solid rgba(255,255,255,.07);border-radius:18px;background:rgba(255,255,255,.028)}.profileProgressCard > div:first-child{display:flex;align-items:center;justify-content:space-between;gap:10px}.profileProgressCard strong{font-size:11px}.profileProgressTrack{height:5px;margin:9px 0 7px;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.06)}.profileProgressTrack i{display:block;width:38%;height:100%;border-radius:999px;background:linear-gradient(90deg,#4b8cff,#75c4ff)}.profileProgressCard p{margin:0;color:#8390a2;font-size:10px;line-height:1.35}
+.profileModuleRow{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}.profileModuleRow div{padding:10px 7px;border:1px solid rgba(255,255,255,.06);border-radius:15px;background:rgba(255,255,255,.023);text-align:center}.profileModuleRow span,.profileModuleRow b,.profileModuleRow small{display:block}.profileModuleRow span{font-size:18px}.profileModuleRow b{margin-top:4px;font-size:11px}.profileModuleRow small{margin-top:2px;color:#78d9a9;font-size:9px}
+
+.twinHead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:9px}.twinHead h2{margin:4px 0 2px;font-size:25px}.twinHead p{margin:0;color:#8996a8;font-size:11px}
+.twinStage{position:relative;height:310px;overflow:hidden;border:1px solid rgba(255,255,255,.08);border-radius:29px;background:radial-gradient(circle at 50% 38%,rgba(71,119,194,.20),transparent 36%),linear-gradient(180deg,#111925,#070b12);box-shadow:0 24px 68px rgba(0,0,0,.42)}
+#vehicleTwinCanvas{display:block;width:100%;height:100%;touch-action:none}.twinStageHint{position:absolute;left:50%;bottom:12px;padding:6px 9px;border:1px solid rgba(255,255,255,.07);border-radius:11px;color:#78869a;background:rgba(7,11,18,.56);backdrop-filter:blur(14px);transform:translateX(-50%);font-size:9px;white-space:nowrap}
+.twinRotate{position:absolute;top:50%;display:grid;place-items:center;width:35px;height:35px;padding:0;border:1px solid rgba(255,255,255,.07);border-radius:13px;color:#b9c9de;background:rgba(8,13,20,.55);backdrop-filter:blur(14px);transform:translateY(-50%);font-size:23px}.twinRotate.left{left:9px}.twinRotate.right{right:9px}
+.twinStatusStrip{display:grid;grid-template-columns:1.25fr .75fr 1fr;gap:7px;margin:9px 0}.twinStatusStrip div{padding:9px 7px;border:1px solid rgba(255,255,255,.06);border-radius:14px;background:rgba(255,255,255,.025);text-align:center}.twinStatusStrip span{display:block;color:#748196;font-size:8px;text-transform:uppercase}.twinStatusStrip strong{display:block;margin-top:3px;font-size:10px}
+.twinZoneGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.twinZoneGrid button{display:grid;grid-template-columns:31px minmax(0,1fr) auto;align-items:center;gap:8px;min-width:0;padding:10px;border:1px solid rgba(255,255,255,.065);border-radius:16px;color:#e8edf5;background:rgba(255,255,255,.027);text-align:left}.twinZoneGrid button > span{display:grid;place-items:center;width:31px;height:31px;border-radius:11px;color:#cfe0fb;background:rgba(75,140,255,.10);font-size:16px}.twinZoneGrid button div{min-width:0}.twinZoneGrid b,.twinZoneGrid small{display:block}.twinZoneGrid b{font-size:11px}.twinZoneGrid small{margin-top:2px;overflow:hidden;color:#778498;font-size:8px;text-overflow:ellipsis;white-space:nowrap}.twinZoneGrid i{color:#748398;font-style:normal}
+
+.photoLibraryHead{margin-bottom:9px}.photoFilterBar{display:flex;gap:6px;margin-bottom:10px;overflow-x:auto;scrollbar-width:none}.photoFilterBar::-webkit-scrollbar{display:none}.photoFilterBar button{flex:0 0 auto;padding:7px 10px;border:1px solid rgba(255,255,255,.06);border-radius:12px;color:#7f8b9c;background:rgba(255,255,255,.025);font-size:10px;font-weight:800}.photoFilterBar button.active{border-color:rgba(91,150,255,.18);color:#dce9ff;background:rgba(75,140,255,.13)}
+.photoGallery{display:grid;grid-template-columns:1fr 1fr;gap:8px}.photoCard{overflow:hidden;border:1px solid rgba(255,255,255,.07);border-radius:17px;background:rgba(255,255,255,.025)}.photoCard img{display:block;width:100%;height:145px;object-fit:cover}.photoCardCopy{padding:9px}.photoCardCopy span{display:block;color:#7eaef7;font-size:8px;font-weight:900;text-transform:uppercase}.photoCardCopy b{display:block;margin-top:3px;overflow:hidden;font-size:11px;text-overflow:ellipsis;white-space:nowrap}.photoCardCopy small{display:block;margin-top:3px;color:#778497;font-size:8px}.photoCardActions{display:flex;justify-content:flex-end;padding:0 8px 8px}.photoCardActions button{padding:5px 7px;border:0;border-radius:9px;color:#9ba7b8;background:rgba(255,255,255,.035);font-size:8px}.photoEmpty{grid-column:1/-1;padding:34px 18px;border:1px dashed rgba(255,255,255,.09);border-radius:21px;text-align:center}.photoEmpty span{display:grid;place-items:center;width:48px;height:48px;margin:0 auto 9px;border-radius:16px;color:#a8c9ff;background:rgba(75,140,255,.10);font-size:24px}.photoEmpty h3{margin:0 0 4px}.photoEmpty p{margin:0;color:#7f8b9c;font-size:11px;line-height:1.35}
+.photoCapturePreview{height:180px;margin-top:9px;overflow:hidden;border:1px solid rgba(255,255,255,.07);border-radius:17px;background:rgba(255,255,255,.025)}.photoCapturePreview img{width:100%;height:100%;object-fit:cover}.photoCaptureGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.photoCaptureActions{display:grid;grid-template-columns:1fr 1.25fr;gap:8px;position:sticky;bottom:0;padding-top:10px;background:linear-gradient(180deg,transparent,rgba(9,13,21,.98) 30%)}
+
+.homeVinMask{display:inline-block;margin-top:7px;padding:5px 8px;border:1px solid rgba(255,255,255,.08);border-radius:10px;color:#a9b8cb;background:rgba(8,12,18,.46);font-size:9px;letter-spacing:.04em}
+
+@media(max-width:380px){
+  .garageHero{min-height:165px;padding:18px}.garageHero h2{font-size:27px}.garageHeroMark{width:130px;opacity:.7}
+  .garageVehicleImage{height:165px}.garageVehicleActions{grid-template-columns:1fr 1fr}.garageVehicleActions button:first-child{grid-column:1/3}
+  .vinConfirmGrid{grid-template-columns:1fr}.vinConfirmGrid label.wide{grid-column:auto}.vinTwoCol{grid-template-columns:1fr}
+  .twinStage{height:278px}.twinZoneGrid{grid-template-columns:1fr}.photoGallery{grid-template-columns:1fr}
+}
