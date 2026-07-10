@@ -41,7 +41,7 @@ const airboxGuideMap={
   }
 };
 
-/* v6.6 forced callout coordinate reload */
+/* v6.8 user-approved callout placement update */
 const coolantGuideSteps=[
   {
     check:"1",
@@ -56,7 +56,7 @@ const coolantGuideSteps=[
     title:"Level + Coolant Color",
     text:"Use the side-angle photo to judge visible coolant level and color. The goal is tracking changes over time, not guessing from one photo.",
     img:"images/coolant/04_side_hose_level_angle.jpg",
-    spot:{x:70,y:48,lx:58,ly:62,label:"Visible level area"},
+    spot:{x:67,y:55,lx:57,ly:37,label:"Visible level area"},
     tags:["Orange coolant","Level line","Log changes"]
   },
   {
@@ -87,8 +87,8 @@ const coolantGuideSteps=[
     check:"5",
     title:"Side Seam + Mount Area",
     text:"Use this right-side view to inspect the visible reservoir side, nearby mount, and clearance area. Hidden zones stay marked as obstructed.",
-    img:"images/coolant/06_right_side_clearance_mount.jpg",
-    spot:{x:77,y:49,lx:53,ly:34,label:"Visible side seam"},
+    img:"images/coolant/06_right_side_clearance_mount_flipped.jpg",
+    spot:{x:24,y:55,lx:23,ly:38,label:"Visible side seam"},
     tags:["Side seam","Mount area","Obstructed zones"]
   },
   {
