@@ -100,6 +100,40 @@ const coolantGuideSteps=[
     tags:["Wide view","Relationship map","Log it"]
   }
 ];
+const coolantFlushSteps=[
+  {
+    title:"Prep safely",
+    text:"Engine fully cold, vehicle stable, drain pan ready, gloves and eye protection on. Keep used coolant away from people and pets.",
+    fact:"Cold engine only"
+  },
+  {
+    title:"Locate the drain",
+    text:"The primary drain point is the lower radiator drain petcock / drain cock, not the coolant reservoir. It may be hidden by the lower splash shield or radiator support.",
+    fact:"Primary: lower radiator petcock"
+  },
+  {
+    title:"Drain old coolant",
+    text:"Drain through the petcock if it is accessible and usable. The lower radiator hose is the backup drain path when the petcock cannot be used.",
+    fact:"Backup: lower radiator hose"
+  },
+  {
+    title:"Refill correctly",
+    text:"Use the proper 50/50 DEX-COOL mixture and refill slowly. Do not choose coolant only by color.",
+    fact:"Approx. total capacity: 9.4 L / 9.9 qt"
+  },
+  {
+    title:"Bleed + warm check",
+    text:"Follow the correct fill procedure, verify heater output, and monitor temperature behavior while staying clear of hot parts and electric fans.",
+    fact:"Watch temperature and heater output"
+  },
+  {
+    title:"Cool down + recheck",
+    text:"After the system cools again, recheck level, cap, seams, hose ends, clamps, and any fresh leak trails. Then log the service.",
+    fact:"Final level check happens cold"
+  }
+];
+let coolantFlushIndex=0;
+
 const parts={
   "quickstart": {
     "title": "Airbox Quick Sheet",
@@ -1824,6 +1858,7 @@ function renderComponentMaps(){
 }
 
 function showScreen(id){
+  closeGlobalFloatSheet();
   current=id;
   screens.forEach(s=>document.getElementById(s).classList.toggle("active",s===id));
   document.getElementById("crumb").textContent=names[id][0];
@@ -1838,9 +1873,22 @@ function showScreen(id){
   }else{
     closeCoolantGuideSheet();
   }
+  renderGlobalFloatDock(id);
 }
 document.querySelectorAll("[data-go]").forEach(btn=>btn.addEventListener("click",()=>showScreen(btn.dataset.go)));
 document.getElementById("backBtn").addEventListener("click",()=>{
+  if(document.getElementById("globalFloatSheet")?.classList.contains("open")){
+    closeGlobalFloatSheet();
+    return;
+  }
+  if(sheet?.classList.contains("open")){
+    closeSheet();
+    return;
+  }
+  if(drawer?.classList.contains("open")){
+    closeDrawer();
+    return;
+  }
   if(current==="coolantguide" && document.getElementById("coolantGuideSheet")?.classList.contains("open")){
     closeCoolantGuideSheet();
     return;
@@ -1888,7 +1936,7 @@ function renderMarkers(){
   });
 }
 
-function updateProgress(){const total=7;const completed=done.size;document.getElementById("count").textContent=completed+"/"+total;document.getElementById("progressLabel").textContent=completed+" of "+total+" complete";document.getElementById("progressFill").style.width=Math.round((completed/total)*100)+"%";if(layer===0){document.getElementById("nextAction").textContent=completed===total?"Next: lift cover":"Next: remove lid fasteners"}else if(layer===1){document.getElementById("nextAction").textContent="Next: remove filter"}else{document.getElementById("nextAction").textContent="Next: inspect housing"}}
+function updateProgress(){const total=7;const completed=done.size;document.getElementById("count").textContent=completed+"/"+total;document.getElementById("progressLabel").textContent=completed+" of "+total+" complete";document.getElementById("progressFill").style.width=Math.round((completed/total)*100)+"%";if(layer===0){document.getElementById("nextAction").textContent=completed===total?"Next: lift cover":"Next: remove lid fasteners"}else if(layer===1){document.getElementById("nextAction").textContent="Next: remove filter"}else{document.getElementById("nextAction").textContent="Next: inspect housing"};updateGlobalGuideDock();}
 document.getElementById("nextBtn").addEventListener("click",()=>{if(layer===0&&done.size<7){document.getElementById("stepText").textContent="Finish fasteners first. "+(7-done.size)+" remaining.";return}if(layer<2){layer+=1;document.getElementById("layerImg").src=layerImages[layer];renderMarkers();document.getElementById("stepTitle").textContent=layer===1?"Inspect Filter":"Lower Housing";document.getElementById("stepText").textContent=layer===1?"The lid is off. Inspect or remove the air filter.":"Filter removed. Inspect the lower housing for debris.";updateProgress()}});
 document.getElementById("resetBtn").addEventListener("click",()=>{layer=0;done.clear();document.getElementById("layerImg").src=layerImages[0];document.getElementById("stepTitle").textContent="Remove Fasteners";document.getElementById("stepText").textContent="Tap each blue T25 screw marker, then tap the red rear clip marker.";renderMarkers();updateProgress()});
 document.querySelectorAll("[data-part]").forEach(btn=>btn.addEventListener("click",()=>openSheet(btn.dataset.part)));
@@ -2177,10 +2225,12 @@ function renderCoolantStep(){
   document.getElementById("coolantStageCounter").textContent=(coolantStepIndex+1)+"/"+coolantGuideSteps.length;
   document.getElementById("coolantDockTitle").textContent=step.title;
   document.getElementById("coolantDockCounter").textContent=(coolantStepIndex+1)+"/"+coolantGuideSteps.length;
+  const dockProgress=document.getElementById("coolantDockProgress");
+  if(dockProgress)dockProgress.style.width=(((coolantStepIndex+1)/coolantGuideSteps.length)*100)+"%";
   const dockStatus=document.getElementById("coolantDockStatus");
   if(dockStatus){
     const completed=coolantChecks.has(step.check);
-    dockStatus.textContent=completed?"Completed ✓":"Tap for instructions and controls";
+    dockStatus.textContent=completed?"Completed":"Tap to open";
     dockStatus.classList.toggle("done",completed);
   }
   const layer=document.getElementById("coolantHotspotLayer");
@@ -2206,7 +2256,33 @@ function setCoolantSheetTab(tab){
   document.querySelectorAll("[data-coolant-sheet-panel]").forEach(panel=>{
     panel.classList.toggle("active",panel.dataset.coolantSheetPanel===tab);
   });
+  const sheet=document.getElementById("coolantGuideSheet");
+  if(sheet)sheet.dataset.activeTab=tab;
+  if(tab==="flush")renderCoolantFlushStep();
 }
+
+function renderCoolantFlushStep(){
+  const step=coolantFlushSteps[coolantFlushIndex]||coolantFlushSteps[0];
+  const counter=document.getElementById("coolantFlushCounter");
+  const title=document.getElementById("coolantFlushTitle");
+  const text=document.getElementById("coolantFlushText");
+  const fact=document.getElementById("coolantFlushFact");
+  if(counter)counter.textContent=(coolantFlushIndex+1)+"/"+coolantFlushSteps.length;
+  if(title)title.textContent=step.title;
+  if(text)text.textContent=step.text;
+  if(fact)fact.textContent=step.fact;
+  const prev=document.getElementById("coolantFlushPrev");
+  const next=document.getElementById("coolantFlushNext");
+  if(prev)prev.disabled=coolantFlushIndex===0;
+  if(next)next.disabled=coolantFlushIndex===coolantFlushSteps.length-1;
+}
+
+document.getElementById("coolantFlushPrev")?.addEventListener("click",()=>{
+  if(coolantFlushIndex>0){coolantFlushIndex--;renderCoolantFlushStep();}
+});
+document.getElementById("coolantFlushNext")?.addEventListener("click",()=>{
+  if(coolantFlushIndex<coolantFlushSteps.length-1){coolantFlushIndex++;renderCoolantFlushStep();}
+});
 
 function openCoolantGuideSheet(tab="step"){
   setCoolantSheetTab(tab);
@@ -2257,13 +2333,15 @@ function renderCoolantChecklist(){
     const dot=btn.querySelector("span");
     if(dot)dot.textContent=coolantChecks.has(id)?"✓":"";
   });
+  const progressText=document.getElementById("coolantCheckProgressText");
+  if(progressText)progressText.textContent=coolantChecks.size+" of 5 complete";
   const mark=document.getElementById("coolantMarkStep");
   if(mark && coolantGuideSteps[coolantStepIndex]){
     const completed=coolantChecks.has(coolantGuideSteps[coolantStepIndex].check);
     mark.textContent=completed?"Marked ✓":"Mark Done";
     const dockStatus=document.getElementById("coolantDockStatus");
     if(dockStatus){
-      dockStatus.textContent=completed?"Completed ✓":"Tap for instructions and controls";
+      dockStatus.textContent=completed?"Completed":"Tap to open";
       dockStatus.classList.toggle("done",completed);
     }
   }
@@ -2443,5 +2521,321 @@ document.getElementById("coolantSeedExample")?.addEventListener("click",()=>{
   }
   renderCoolantLogs();
 });
+
+
+
+// v6.15 Global floating interface
+const globalFloatDock=document.getElementById("globalFloatDock");
+const globalFloatSheet=document.getElementById("globalFloatSheet");
+const globalFloatBackdrop=document.getElementById("globalFloatBackdrop");
+const globalFloatContent=document.getElementById("globalFloatContent");
+let globalMountedNodes=[];
+let globalFloatCleanup=null;
+
+function globalDockItems(screenId){
+  const map={
+    home:[
+      {icon:"🚗",label:"Enter Vehicle",action:"go",target:"engine",primary:true}
+    ],
+    engine:[
+      {icon:"🌬",label:"Airbox",action:"go",target:"airbox",primary:true},
+      {icon:"🧊",label:"Coolant",action:"go",target:"coolant"},
+      {icon:"ⓘ",label:"Map Info",action:"engine-info"}
+    ],
+    airbox:[
+      {icon:"🔧",label:"Guide Me",action:"go",target:"guide",primary:true},
+      {icon:"📚",label:"Learn",action:"go",target:"learn"},
+      {icon:"📝",label:"Maintenance",action:"go",target:"maintenance"}
+    ],
+    coolant:[
+      {icon:"🔧",label:"Guide Me",action:"go",target:"coolantguide",primary:true},
+      {icon:"📚",label:"Learn",action:"go",target:"coolantlearn"},
+      {icon:"📝",label:"Maintenance",action:"go",target:"coolantmaintenance"}
+    ],
+    guide:[
+      {icon:"↺",label:"Reset",action:"airbox-reset"},
+      {icon:"0/7",label:"Progress",action:"airbox-info",primary:true,id:"globalGuideStatus"},
+      {icon:"›",label:"Next",action:"airbox-next"}
+    ],
+    learn:[
+      {icon:"▦",label:"Browse Topics",action:"topics",source:"learn",primary:true},
+      {icon:"🔧",label:"Guide",action:"go",target:"guide"},
+      {icon:"📝",label:"Maintenance",action:"go",target:"maintenance"}
+    ],
+    coolantlearn:[
+      {icon:"▦",label:"Browse Topics",action:"topics",source:"coolantlearn",primary:true},
+      {icon:"🔧",label:"Guide",action:"go",target:"coolantguide"},
+      {icon:"📝",label:"Maintenance",action:"go",target:"coolantmaintenance"}
+    ],
+    maintenance:[
+      {icon:"⚙️",label:"Current Setup",action:"airbox-setup",primary:true},
+      {icon:"＋",label:"Add Event",action:"airbox-add"},
+      {icon:"◷",label:"History",action:"airbox-history"}
+    ],
+    coolantmaintenance:[
+      {icon:"⚙️",label:"Current Setup",action:"coolant-setup",primary:true},
+      {icon:"＋",label:"Add Event",action:"coolant-add"},
+      {icon:"↻",label:"Log Flush",action:"coolant-flush"},
+      {icon:"◷",label:"History",action:"coolant-history"}
+    ]
+  };
+  return map[screenId]||[];
+}
+
+function renderGlobalFloatDock(screenId){
+  if(!globalFloatDock)return;
+  const items=globalDockItems(screenId);
+  if(screenId==="coolantguide" || !items.length){
+    globalFloatDock.classList.add("hidden");
+    globalFloatDock.innerHTML="";
+    return;
+  }
+
+  globalFloatDock.classList.remove("hidden");
+  globalFloatDock.classList.toggle("single",items.length===1);
+  globalFloatDock.innerHTML=items.map(item=>
+    '<button type="button"'+
+      (item.id?' id="'+item.id+'"':'')+
+      ' class="'+(item.primary?'primary':'')+'"'+
+      ' data-global-action="'+item.action+'"'+
+      (item.target?' data-global-target="'+item.target+'"':'')+
+      (item.source?' data-global-source="'+item.source+'"':'')+
+    '>'+
+      '<span class="globalDockIcon">'+item.icon+'</span>'+
+      '<span>'+item.label+'</span>'+
+    '</button>'
+  ).join("");
+
+  globalFloatDock.querySelectorAll("[data-global-action]").forEach(btn=>{
+    btn.addEventListener("click",()=>handleGlobalDockAction(btn));
+  });
+  updateGlobalGuideDock();
+}
+
+function handleGlobalDockAction(btn){
+  const action=btn.dataset.globalAction;
+  if(action==="go"){
+    showScreen(btn.dataset.globalTarget);
+    return;
+  }
+  if(action==="engine-info"){openEngineInfoSheet();return;}
+  if(action==="topics"){openTopicsSheet(btn.dataset.globalSource);return;}
+  if(action==="airbox-reset"){document.getElementById("resetBtn")?.click();return;}
+  if(action==="airbox-next"){document.getElementById("nextBtn")?.click();return;}
+  if(action==="airbox-info"){openAirboxGuideInfo();return;}
+  if(action==="airbox-setup"){openMaintenanceSetup("airbox");return;}
+  if(action==="airbox-add"){openMaintenanceAdd("airbox");return;}
+  if(action==="airbox-history"){openMaintenanceHistory("airbox");return;}
+  if(action==="coolant-setup"){openMaintenanceSetup("coolant");return;}
+  if(action==="coolant-add"){openMaintenanceAdd("coolant");return;}
+  if(action==="coolant-flush"){openMaintenanceFlush();return;}
+  if(action==="coolant-history"){openMaintenanceHistory("coolant");return;}
+}
+
+function openGlobalFloatSheet(title,subtitle,html,eyebrow="MY BUICK"){
+  restoreGlobalMountedNodes();
+  document.getElementById("globalFloatEyebrow").textContent=eyebrow;
+  document.getElementById("globalFloatTitle").textContent=title;
+  document.getElementById("globalFloatSubtitle").textContent=subtitle||"";
+  globalFloatContent.innerHTML=html||"";
+  globalFloatSheet.classList.add("open");
+  globalFloatBackdrop.classList.add("open");
+  globalFloatSheet.setAttribute("aria-hidden","false");
+  document.body.classList.add("globalFloatOpen");
+}
+
+function openGlobalMovedSheet(title,subtitle,nodes,options={}){
+  restoreGlobalMountedNodes();
+  document.getElementById("globalFloatEyebrow").textContent=options.eyebrow||"MY BUICK";
+  document.getElementById("globalFloatTitle").textContent=title;
+  document.getElementById("globalFloatSubtitle").textContent=subtitle||"";
+  globalFloatContent.innerHTML="";
+
+  nodes.filter(Boolean).forEach(node=>{
+    const placeholder=document.createComment("global-float-placeholder");
+    node.parentNode.insertBefore(placeholder,node);
+    globalMountedNodes.push({
+      node,
+      placeholder,
+      wasHidden:node.classList.contains("hidden")
+    });
+    node.classList.add("globalMovedNode");
+    globalFloatContent.appendChild(node);
+  });
+
+  globalFloatCleanup=options.cleanup||null;
+  globalFloatSheet.classList.add("open");
+  globalFloatBackdrop.classList.add("open");
+  globalFloatSheet.setAttribute("aria-hidden","false");
+  document.body.classList.add("globalFloatOpen");
+}
+
+function restoreGlobalMountedNodes(){
+  globalMountedNodes.forEach(item=>{
+    if(item.placeholder.parentNode){
+      item.placeholder.parentNode.insertBefore(item.node,item.placeholder);
+      item.placeholder.remove();
+    }
+    item.node.classList.remove("globalMovedNode");
+  });
+  globalMountedNodes=[];
+  if(globalFloatCleanup){
+    globalFloatCleanup();
+    globalFloatCleanup=null;
+  }
+}
+
+function closeGlobalFloatSheet(){
+  if(!globalFloatSheet)return;
+  globalFloatSheet.classList.remove("open");
+  globalFloatBackdrop?.classList.remove("open");
+  globalFloatSheet.setAttribute("aria-hidden","true");
+  document.body.classList.remove("globalFloatOpen");
+  restoreGlobalMountedNodes();
+}
+
+document.getElementById("globalFloatClose")?.addEventListener("click",closeGlobalFloatSheet);
+globalFloatBackdrop?.addEventListener("click",closeGlobalFloatSheet);
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape" && globalFloatSheet?.classList.contains("open")){
+    closeGlobalFloatSheet();
+  }
+});
+
+function openEngineInfoSheet(){
+  openGlobalFloatSheet(
+    "Component Map",
+    "The car stays front and center.",
+    '<div class="globalInfoCard"><span>Locked Components</span><b>Airbox and coolant reservoir are mapped and tappable.</b></div>'+
+    '<div class="globalInfoCard"><span>How to use it</span><b>Tap the glowing outline on the engine photo, or use the floating component buttons.</b></div>',
+    "ENGINE BAY"
+  );
+}
+
+function openTopicsSheet(sourceId){
+  const source=document.getElementById(sourceId);
+  const cards=[...source.querySelectorAll(":scope > .learnCard")];
+  const title=sourceId==="coolantlearn"?"Coolant Topics":"Airbox Topics";
+  const html='<div class="globalTopicGrid">'+cards.map(card=>{
+    const part=card.dataset.part;
+    const tag=card.querySelector(".learnTag")?.textContent||"Topic";
+    const name=card.querySelector("b")?.textContent||"Learn";
+    const desc=card.querySelector("p")?.textContent||"";
+    return '<button class="globalTopicButton" type="button" data-global-part="'+part+'">'+
+      '<span>'+tag+'</span><b>'+name+'</b><small>'+desc+'</small>'+
+    '</button>';
+  }).join("")+'</div>';
+
+  openGlobalFloatSheet(title,"Pick a topic. Deep information opens in another floating sheet.",html,"LEARN");
+  globalFloatContent.querySelectorAll("[data-global-part]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const part=btn.dataset.globalPart;
+      closeGlobalFloatSheet();
+      openSheet(part);
+    });
+  });
+}
+
+function updateGlobalGuideDock(){
+  const btn=document.getElementById("globalGuideStatus");
+  if(!btn)return;
+  const icon=btn.querySelector(".globalDockIcon");
+  if(icon)icon.textContent=done.size+"/7";
+  const label=btn.querySelector("span:last-child");
+  if(label)label.textContent=layer===0?"Fasteners":layer===1?"Filter":"Housing";
+}
+
+function openAirboxGuideInfo(){
+  const title=document.getElementById("stepTitle")?.textContent||"Airbox Guide";
+  const text=document.getElementById("stepText")?.textContent||"";
+  const progress=document.getElementById("progressLabel")?.textContent||"";
+  const width=document.getElementById("progressFill")?.style.width||"0%";
+  openGlobalFloatSheet(
+    title,
+    progress,
+    '<div class="globalInfoCard"><span>Current Step</span><b>'+text+'</b></div>'+
+    '<div class="globalGuideProgress"><span>'+progress+'</span><div class="progressBar"><div style="height:100%;width:'+width+';background:linear-gradient(90deg,#2f77ff,#65d3ff);border-radius:999px"></div></div></div>'+
+    '<div class="globalSheetActions"><button id="globalAirboxReset" class="ghost" type="button">Reset</button><button id="globalAirboxNext" class="primary" type="button">Next Step</button></div>',
+    "AIRBOX GUIDE"
+  );
+  document.getElementById("globalAirboxReset")?.addEventListener("click",()=>{
+    document.getElementById("resetBtn")?.click();
+    closeGlobalFloatSheet();
+  });
+  document.getElementById("globalAirboxNext")?.addEventListener("click",()=>{
+    document.getElementById("nextBtn")?.click();
+    closeGlobalFloatSheet();
+  });
+}
+
+function openMaintenanceSetup(type){
+  const isCoolant=type==="coolant";
+  const card=document.querySelector(isCoolant?"#coolantmaintenance > .currentSetup":"#maintenance > .currentSetup");
+  const form=document.getElementById(isCoolant?"coolantSetupForm":"setupForm");
+  openGlobalMovedSheet(
+    isCoolant?"Current Coolant Setup":"Current Airbox Setup",
+    "View the current setup or tap Edit to change it.",
+    [card,form],
+    {
+      eyebrow:"MAINTENANCE",
+      cleanup:()=>form?.classList.add("hidden")
+    }
+  );
+}
+
+function openMaintenanceAdd(type){
+  const isCoolant=type==="coolant";
+  const trigger=document.getElementById(isCoolant?"coolantAddLog":"addLog");
+  trigger?.click();
+  const form=document.getElementById(isCoolant?"coolantLogForm":"logForm");
+  openGlobalMovedSheet(
+    isCoolant?"Add Coolant Event":"Add Airbox Event",
+    "The form stays inside this floating panel.",
+    [form],
+    {
+      eyebrow:"MAINTENANCE",
+      cleanup:()=>form?.classList.add("hidden")
+    }
+  );
+}
+
+function openMaintenanceFlush(){
+  openCoolantFlushLogForm();
+  const form=document.getElementById("coolantLogForm");
+  openGlobalMovedSheet(
+    "Log Coolant Flush",
+    "Record fluid, mileage, cost, refill, bleeding, temperature behavior, and leak checks.",
+    [form],
+    {
+      eyebrow:"COOLANT MAINTENANCE",
+      cleanup:()=>form?.classList.add("hidden")
+    }
+  );
+}
+
+function openMaintenanceHistory(type){
+  const isCoolant=type==="coolant";
+  if(isCoolant)renderCoolantLogs();else renderLogs();
+  const screen=document.getElementById(isCoolant?"coolantmaintenance":"maintenance");
+  const header=screen.querySelector(":scope > .timelineHeader");
+  const list=document.getElementById(isCoolant?"coolantLogList":"logList");
+  openGlobalMovedSheet(
+    isCoolant?"Coolant History":"Airbox History",
+    "Saved life-story events.",
+    [header,list],
+    {eyebrow:"MAINTENANCE"}
+  );
+}
+
+document.getElementById("setupForm")?.addEventListener("submit",()=>setTimeout(closeGlobalFloatSheet,0));
+document.getElementById("logForm")?.addEventListener("submit",()=>setTimeout(closeGlobalFloatSheet,0));
+document.getElementById("coolantSetupForm")?.addEventListener("submit",()=>setTimeout(closeGlobalFloatSheet,0));
+document.getElementById("coolantLogForm")?.addEventListener("submit",()=>setTimeout(closeGlobalFloatSheet,0));
+
+document.getElementById("cancelSetupBtn")?.addEventListener("click",closeGlobalFloatSheet);
+document.getElementById("cancelLogBtn")?.addEventListener("click",closeGlobalFloatSheet);
+document.getElementById("coolantCancelSetupBtn")?.addEventListener("click",closeGlobalFloatSheet);
+document.getElementById("coolantCancelLogBtn")?.addEventListener("click",closeGlobalFloatSheet);
+
 
 setGreeting();renderComponentMaps();renderMarkers();updateProgress();renderLogs();renderCoolantChecklist();renderCoolantStep();renderCoolantLogs();showScreen("home");window.addEventListener("load",()=>setTimeout(()=>{renderMarkers();updateProgress();},50));
