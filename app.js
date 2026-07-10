@@ -56,7 +56,7 @@ const coolantGuideSteps=[
     title:"Level + Coolant Color",
     text:"Use the side-angle photo to judge visible coolant level and color. The goal is tracking changes over time, not guessing from one photo.",
     img:"images/coolant/04_side_hose_level_angle.jpg",
-    spot:{x:67,y:55,lx:57,ly:37,label:"Visible level area"},
+    spot:{x:66,y:46,lx:44,ly:31,label:"Visible level area"},
     tags:["Orange coolant","Level line","Log changes"]
   },
   {
