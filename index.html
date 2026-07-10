@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>MY BUICK v6.11 Coolant Flush Guide Me</title>
-  <link rel="stylesheet" href="style.css?v=6.11">
+  <title>MY BUICK v6.12 Coolant Flush Drain Info</title>
+  <link rel="stylesheet" href="style.css?v=6.12">
 </head>
 <body>
 <div class="app">
@@ -328,17 +328,36 @@
           <div>
             <span class="miniLabel">COOLANT FLUSH</span>
             <h3>Flush How-To</h3>
-            <p>A guided planning flow for doing a coolant flush and logging it afterward. Exact drain location, capacity, and bleed process stay marked TBD until verified for your car.</p>
+            <p>A guided flush reference for this Buick. The drain point is the radiator drain petcock / drain cock at the lower radiator, not the coolant reservoir. Exact side/visual marker still needs Alex photo verification from underneath.</p>
           </div>
           <span class="badge warn">Cold Only</span>
         </div>
 
+        <div class="flushDrainBox">
+          <strong>Actual drain point</strong>
+          <p><b>Primary:</b> lower radiator drain petcock / drain cock. It may be hidden by the lower splash shield or radiator support area.</p>
+          <p><b>Backup method:</b> lower radiator hose, only if the petcock is inaccessible or not usable.</p>
+          <p><b>Part reference:</b> GM radiator drain petcock 13267636 appears as the drain plug/petcock used with GM radiator assemblies.</p>
+        </div>
+
+        <div class="flushFactsGrid">
+          <div><span>Fluid</span><b>50/50 DEX-COOL mix</b></div>
+          <div><span>3.0L V6 capacity</span><b>9.4 L / 9.9 qt approx.</b></div>
+          <div><span>Service life</span><b>5 yr / 150k mi</b></div>
+          <div><span>Status</span><b>Drain side still photo-TBD</b></div>
+        </div>
+
         <div class="flushGuideSteps">
-          <div><b>1. Prep safely</b><span>Engine fully cold, car stable, drain pan ready, gloves/eye protection, and coolant kept away from pets.</span></div>
-          <div><b>2. Verify fluid</b><span>Use the correct DEX-COOL / compatible coolant plan before draining anything. Mixing unknown coolant is not Gold Standard.</span></div>
-          <div><b>3. Drain old coolant</b><span>Drain point is still TBD for this exact app guide. Use verified service info before loosening anything.</span></div>
-          <div><b>4. Refill and bleed</b><span>Refill slowly, remove air properly, run heat check, and watch temperature behavior.</span></div>
-          <div><b>5. Recheck after warm-up</b><span>Inspect cap, seams, hose ends, clamps, heater output, coolant level, and any leaks after it cools again.</span></div>
+          <div><b>1. Prep safely</b><span>Engine fully cold, vehicle stable, drain pan ready, gloves/eye protection on, and coolant kept away from people/pets.</span></div>
+          <div><b>2. Locate drain</b><span>Look underneath at the lower radiator area for the drain petcock / drain cock. Do not look for a drain on the reservoir itself.</span></div>
+          <div><b>3. Drain old coolant</b><span>Drain through the petcock if accessible. If not, the lower radiator hose is the backup drain path.</span></div>
+          <div><b>4. Refill correctly</b><span>Use the proper 50/50 clean water + DEX-COOL coolant mix. Do not guess based only on color.</span></div>
+          <div><b>5. Bleed / warm check</b><span>With the correct fill procedure, run until the upper radiator hose gets hot, top off if level drops, and keep clear of fans/hot parts.</span></div>
+          <div><b>6. Recheck after cool-down</b><span>After it cools again, recheck the level, cap, seams, hose ends, clamps, heater output, and any leak trails.</span></div>
+        </div>
+
+        <div class="flushSourceNote">
+          Source basis: 2010 owner manual + 2010 LaCrosse flush reference + GM drain petcock listing. Exact underside photo still needed before calling the drain side Alex Verified.
         </div>
 
         <div class="flushGuideActions">
@@ -352,7 +371,7 @@
         <button data-cool-check="2"><span></span><b>Level and color</b><small>Use the side-angle photo to check orange coolant level and condition.</small></button>
         <button data-cool-check="3"><span></span><b>Cap and pressure rating</b><small>Verify the cap area and the 140 kPa / 20 PSI label.</small></button>
         <button data-cool-check="4"><span></span><b>Visible hoses and clamps</b><small>Inspect the front and lower hose/clamp close-ups.</small></button>
-        <button data-cool-check="5"><span></span><b>Seams / mounts / obstructed zones</b><small>Check what is visible and mark hidden areas as partially obstructed.</small></button>
+        <button data-cool-check="5"><span></span><b>Seams / mounts / flush drain info</b><small>Check visible tank areas and review the lower-radiator drain reference.</small></button>
       </div>
 
       <div class="bottomBar">
@@ -538,6 +557,6 @@
   <div id="dim" class="dim"></div>
   <aside id="sheet" class="sheet"><button id="closeSheet" class="icon sheetClose">×</button><div id="sheetData"></div></aside>
 </div>
-<script src="app.js?v=6.11"></script>
+<script src="app.js?v=6.12"></script>
 </body>
 </html>

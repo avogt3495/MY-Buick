@@ -1063,6 +1063,7 @@ const parts={
       "coolantParts",
       "coolantSymptoms",
       "coolantReplacement",
+      "coolantFlushReference",
       "coolantDataStatus"
     ],
     "source": "2010 Buick LaCrosse Owner Manual + GM/ACDelco coolant listing + Alex Verified outline",
@@ -1583,6 +1584,31 @@ const parts={
         "note": "Shows coolant color and level through reservoir."
       }
     ]
+  },
+  "coolantFlushReference": {
+    "title": "Coolant Flush Drain Reference",
+    "status": "Researched + Needs Underside Photo Verification",
+    "summary": "For the 2010 LaCrosse coolant flush guide, the drain point is the lower radiator drain petcock / drain cock. If that cannot be accessed, the lower radiator hose is the backup drain path.",
+    "sections": [
+      {"label":"Actual drain point","value":"Lower radiator drain petcock / drain cock, accessed from underneath/front lower radiator area. It is not on the coolant reservoir."},
+      {"label":"Backup drain method","value":"Lower radiator hose if the petcock is inaccessible, damaged, or not usable."},
+      {"label":"Petcock part reference","value":"GM radiator drain petcock 13267636 appears as the GM drain plug / petcock reference."},
+      {"label":"Fluid","value":"50/50 mixture of clean water and DEX-COOL coolant."},
+      {"label":"3.0L V6 system capacity","value":"9.4 L / 9.9 qt approximate total cooling system capacity."},
+      {"label":"Still TBD","value":"Exact underside location/side on Alex's actual car, until a lower radiator photo verifies it."}
+    ],
+    "bullets": [
+      "Do not open the cap hot.",
+      "Keep hands, clothing, and tools away from electric fans.",
+      "Used coolant must be captured and disposed of properly.",
+      "After refilling, recheck level after warm-up and again after cool-down."
+    ],
+    "source": "2010 owner manual + CarCareKiosk 2010 LaCrosse flush reference + GM drain petcock listing",
+    "photos": [
+      {"src":"images/coolant/00_reservoir_wide.jpg","label":"Reservoir context","note":"Fill/check point, not the drain point."},
+      {"src":"images/coolant/04_side_hose_level_angle.jpg","label":"Level reference","note":"Used for level/color checks after service."}
+    ],
+    "related": ["coolantService","coolantReplacement","coolantDataStatus"]
   },
   "coolantDataStatus": {
     "title": "Coolant Data Status",
