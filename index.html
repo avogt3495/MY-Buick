@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>MY BUICK v6.12 Coolant Flush Drain Info</title>
-  <link rel="stylesheet" href="style.css?v=6.12">
+  <title>MY BUICK v6.13 Coolant Bottom Sheet Guide</title>
+  <link rel="stylesheet" href="style.css?v=6.13">
 </head>
 <body>
 <div class="app">
@@ -289,95 +289,144 @@
       <button class="bigBtn" data-go="coolantmaintenance"><b>📝 Maintenance</b><span>Build the coolant system’s life story</span></button>
     </section>
 
-    <section id="coolantguide" class="screen">
-      <div class="sectionHead">
+    <section id="coolantguide" class="screen coolantGuideCompact">
+      <div class="coolantCompactSafety">
+        <span>⚠️</span>
         <div>
-          <h2>Coolant Check</h2>
-          <p>Cold-engine inspection flow.</p>
+          <strong>Cold engine only</strong>
+          <small>Never remove the coolant cap while hot or pressurized.</small>
         </div>
-        <span class="badge green">Coolant Gold Candidate</span>
       </div>
 
-      <div class="coolantWarning">
-        <strong>Cold engine only</strong>
-        <p>Do not remove the coolant cap when the system is hot or pressurized.</p>
-      </div>
-
-      <div class="coolantGoldStepper">
-        <div class="coolantStepHeader">
-          <span id="coolantStepCounter" class="badge">1/7</span>
-          <div>
-            <h3 id="coolantStepTitle">Location Context</h3>
-            <p id="coolantStepText">Start with the reservoir location before moving into close-up checks.</p>
-          </div>
+      <div class="coolantCompactStage">
+        <div class="coolantStageTop">
+          <span id="coolantStageCounter" class="badge">1/7</span>
+          <strong id="coolantStageTitle">Location + Cold Safety</strong>
         </div>
+
         <div class="repair coolantGuidePhoto">
           <img id="coolantStepImg" src="images/coolant/07_passenger_side_context.jpg" alt="Coolant guide step photo">
           <div id="coolantHotspotLayer" class="coolantHotspotLayer"></div>
         </div>
-        <div id="coolantStepTags" class="coolantStepTags"></div>
-        <div class="coolantStepControls">
-          <button id="coolantPrevStep" class="ghost" type="button">‹ Previous</button>
-          <button id="coolantMarkStep" class="primary" type="button">Mark Done</button>
-          <button id="coolantNextStep" class="ghost" type="button">Next ›</button>
-        </div>
       </div>
 
-      <div class="coolantFlushGuideCard">
-        <div class="flushGuideTop">
-          <div>
-            <span class="miniLabel">COOLANT FLUSH</span>
-            <h3>Flush How-To</h3>
-            <p>A guided flush reference for this Buick. The drain point is the radiator drain petcock / drain cock at the lower radiator, not the coolant reservoir. Exact side/visual marker still needs Alex photo verification from underneath.</p>
+      <button id="coolantGuideDockToggle" class="coolantGuideDock" type="button" aria-expanded="false" aria-controls="coolantGuideSheet">
+        <span id="coolantDockCounter" class="coolantDockCounter">1/7</span>
+        <span class="coolantDockCopy">
+          <b id="coolantDockTitle">Location + Cold Safety</b>
+          <small id="coolantDockStatus">Tap for instructions and controls</small>
+        </span>
+        <span class="coolantDockChevron">⌃</span>
+      </button>
+
+      <div id="coolantSheetBackdrop" class="coolantSheetBackdrop"></div>
+
+      <aside id="coolantGuideSheet" class="coolantGuideSheet" aria-hidden="true">
+        <div class="coolantSheetHandle"></div>
+
+        <div class="coolantSheetHead">
+          <div class="coolantSheetTitle">
+            <span id="coolantStepCounter" class="badge">1/7</span>
+            <div>
+              <small>COOLANT GUIDE</small>
+              <h3 id="coolantStepTitle">Location + Cold Safety</h3>
+            </div>
           </div>
-          <span class="badge warn">Cold Only</span>
+          <button id="coolantSheetClose" class="icon coolantSheetClose" type="button" aria-label="Close guide details">×</button>
         </div>
 
-        <div class="flushDrainBox">
-          <strong>Actual drain point</strong>
-          <p><b>Primary:</b> lower radiator drain petcock / drain cock. It may be hidden by the lower splash shield or radiator support area.</p>
-          <p><b>Backup method:</b> lower radiator hose, only if the petcock is inaccessible or not usable.</p>
-          <p><b>Part reference:</b> GM radiator drain petcock 13267636 appears as the drain plug/petcock used with GM radiator assemblies.</p>
+        <div class="coolantSheetTabs" role="tablist" aria-label="Coolant guide sections">
+          <button class="active" type="button" data-coolant-sheet-tab="step">Current Step</button>
+          <button type="button" data-coolant-sheet-tab="checklist">Checklist</button>
+          <button type="button" data-coolant-sheet-tab="flush">Flush How-To</button>
         </div>
 
-        <div class="flushFactsGrid">
-          <div><span>Fluid</span><b>50/50 DEX-COOL mix</b></div>
-          <div><span>3.0L V6 capacity</span><b>9.4 L / 9.9 qt approx.</b></div>
-          <div><span>Service life</span><b>5 yr / 150k mi</b></div>
-          <div><span>Status</span><b>Drain side still photo-TBD</b></div>
+        <div class="coolantSheetScroll">
+          <section class="coolantSheetPanel active" data-coolant-sheet-panel="step">
+            <p id="coolantStepText" class="coolantSheetStepText">
+              Start with the reservoir location before moving into close-up checks.
+            </p>
+
+            <div id="coolantStepTags" class="coolantStepTags"></div>
+
+            <div class="coolantSheetTip">
+              <strong>Use the photo above</strong>
+              <span>The dot and leader line show the exact area for this step.</span>
+            </div>
+
+            <div class="coolantStepControls coolantSheetControls">
+              <button id="coolantPrevStep" class="ghost" type="button">‹ Previous</button>
+              <button id="coolantMarkStep" class="primary" type="button">Mark Done</button>
+              <button id="coolantNextStep" class="ghost" type="button">Next ›</button>
+            </div>
+          </section>
+
+          <section class="coolantSheetPanel" data-coolant-sheet-panel="checklist">
+            <div class="coolantSheetIntro">
+              <h3>Inspection Checklist</h3>
+              <p>Tap an item to mark it complete. The current photo step and checklist remain connected.</p>
+            </div>
+
+            <div class="checklist coolantGoldChecklist" id="coolantChecklist">
+              <button data-cool-check="1"><span></span><b>Location / engine cold</b><small>Use the passenger-side context photo and confirm the system is cool.</small></button>
+              <button data-cool-check="2"><span></span><b>Level and color</b><small>Use the side-angle photo to check orange coolant level and condition.</small></button>
+              <button data-cool-check="3"><span></span><b>Cap and pressure rating</b><small>Verify the cap area and the 140 kPa / 20 PSI label.</small></button>
+              <button data-cool-check="4"><span></span><b>Visible hoses and clamps</b><small>Inspect the front and lower hose/clamp close-ups.</small></button>
+              <button data-cool-check="5"><span></span><b>Seams / mounts / flush drain info</b><small>Check visible tank areas and review the lower-radiator drain reference.</small></button>
+            </div>
+
+            <div class="coolantSheetDualActions">
+              <button id="coolantResetBtn" class="ghost" type="button">Reset Checklist</button>
+              <button data-go="coolantmaintenance" class="primary" type="button">Log Inspection</button>
+            </div>
+          </section>
+
+          <section class="coolantSheetPanel" data-coolant-sheet-panel="flush">
+            <div class="coolantFlushGuideCard coolantFlushInSheet">
+              <div class="flushGuideTop">
+                <div>
+                  <span class="miniLabel">COOLANT FLUSH</span>
+                  <h3>Flush How-To</h3>
+                  <p>The primary drain is at the lower radiator drain petcock / drain cock, not the coolant reservoir. The exact underside side still needs a photo from your Buick before it becomes Alex Verified.</p>
+                </div>
+                <span class="badge warn">Cold Only</span>
+              </div>
+
+              <div class="flushDrainBox">
+                <strong>Actual drain point</strong>
+                <p><b>Primary:</b> lower radiator drain petcock / drain cock, possibly hidden by the lower splash shield or radiator support.</p>
+                <p><b>Backup:</b> lower radiator hose if the petcock is inaccessible or unusable.</p>
+                <p><b>Part reference:</b> GM radiator drain petcock 13267636 appears as the drain plug/petcock reference.</p>
+              </div>
+
+              <div class="flushFactsGrid">
+                <div><span>Fluid</span><b>50/50 DEX-COOL mix</b></div>
+                <div><span>3.0L V6 capacity</span><b>9.4 L / 9.9 qt approx.</b></div>
+                <div><span>Service life</span><b>5 yr / 150k mi</b></div>
+                <div><span>Status</span><b>Drain side photo-TBD</b></div>
+              </div>
+
+              <div class="flushGuideSteps">
+                <div><b>1. Prep safely</b><span>Engine fully cold, vehicle stable, drain pan ready, gloves and eye protection on.</span></div>
+                <div><b>2. Locate drain</b><span>Look underneath at the lower radiator area for the drain petcock. The reservoir is the fill/check point, not the drain point.</span></div>
+                <div><b>3. Drain old coolant</b><span>Use the petcock if accessible. The lower radiator hose is the backup drain path.</span></div>
+                <div><b>4. Refill correctly</b><span>Use the proper 50/50 DEX-COOL mixture and refill slowly.</span></div>
+                <div><b>5. Bleed and warm-check</b><span>Follow the correct fill procedure, verify heater output, and monitor temperature behavior.</span></div>
+                <div><b>6. Recheck after cool-down</b><span>Check the level, cap, seams, hose ends, clamps, and any leak trails again after cooling.</span></div>
+              </div>
+
+              <div class="flushSourceNote">
+                Exact drain-side placement remains unverified until we have an underside photo of your car.
+              </div>
+
+              <div class="flushGuideActions">
+                <button id="coolantGuideFlushLog" class="primary" type="button">Log Flush</button>
+                <button data-go="coolantlearn" class="ghost" type="button">Learn Coolant</button>
+              </div>
+            </div>
+          </section>
         </div>
-
-        <div class="flushGuideSteps">
-          <div><b>1. Prep safely</b><span>Engine fully cold, vehicle stable, drain pan ready, gloves/eye protection on, and coolant kept away from people/pets.</span></div>
-          <div><b>2. Locate drain</b><span>Look underneath at the lower radiator area for the drain petcock / drain cock. Do not look for a drain on the reservoir itself.</span></div>
-          <div><b>3. Drain old coolant</b><span>Drain through the petcock if accessible. If not, the lower radiator hose is the backup drain path.</span></div>
-          <div><b>4. Refill correctly</b><span>Use the proper 50/50 clean water + DEX-COOL coolant mix. Do not guess based only on color.</span></div>
-          <div><b>5. Bleed / warm check</b><span>With the correct fill procedure, run until the upper radiator hose gets hot, top off if level drops, and keep clear of fans/hot parts.</span></div>
-          <div><b>6. Recheck after cool-down</b><span>After it cools again, recheck the level, cap, seams, hose ends, clamps, heater output, and any leak trails.</span></div>
-        </div>
-
-        <div class="flushSourceNote">
-          Source basis: 2010 owner manual + 2010 LaCrosse flush reference + GM drain petcock listing. Exact underside photo still needed before calling the drain side Alex Verified.
-        </div>
-
-        <div class="flushGuideActions">
-          <button id="coolantGuideFlushLog" class="primary" type="button">Log Flush</button>
-          <button data-go="coolantlearn" class="ghost" type="button">Learn Coolant</button>
-        </div>
-      </div>
-
-      <div class="checklist coolantGoldChecklist" id="coolantChecklist">
-        <button data-cool-check="1"><span></span><b>Location / engine cold</b><small>Use the passenger-side context photo and confirm the system is cool.</small></button>
-        <button data-cool-check="2"><span></span><b>Level and color</b><small>Use the side-angle photo to check orange coolant level and condition.</small></button>
-        <button data-cool-check="3"><span></span><b>Cap and pressure rating</b><small>Verify the cap area and the 140 kPa / 20 PSI label.</small></button>
-        <button data-cool-check="4"><span></span><b>Visible hoses and clamps</b><small>Inspect the front and lower hose/clamp close-ups.</small></button>
-        <button data-cool-check="5"><span></span><b>Seams / mounts / flush drain info</b><small>Check visible tank areas and review the lower-radiator drain reference.</small></button>
-      </div>
-
-      <div class="bottomBar">
-        <button id="coolantResetBtn" class="ghost">Reset</button>
-        <button data-go="coolantmaintenance" class="primary">Log It</button>
-      </div>
+      </aside>
     </section>
 
     <section id="coolantlearn" class="screen">
@@ -557,6 +606,6 @@
   <div id="dim" class="dim"></div>
   <aside id="sheet" class="sheet"><button id="closeSheet" class="icon sheetClose">×</button><div id="sheetData"></div></aside>
 </div>
-<script src="app.js?v=6.12"></script>
+<script src="app.js?v=6.13"></script>
 </body>
 </html>

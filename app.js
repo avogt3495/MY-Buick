@@ -1835,10 +1835,19 @@ function showScreen(id){
   }
   if(id==="coolantguide"){
     requestAnimationFrame(()=>renderCoolantStep());
+  }else{
+    closeCoolantGuideSheet();
   }
 }
 document.querySelectorAll("[data-go]").forEach(btn=>btn.addEventListener("click",()=>showScreen(btn.dataset.go)));
-document.getElementById("backBtn").addEventListener("click",()=>{const backMap={engine:"home",airbox:"engine",guide:"airbox",learn:"airbox",maintenance:"airbox",coolant:"engine",coolantguide:"coolant",coolantlearn:"coolant",coolantmaintenance:"coolant"};showScreen(backMap[current]||"home")});
+document.getElementById("backBtn").addEventListener("click",()=>{
+  if(current==="coolantguide" && document.getElementById("coolantGuideSheet")?.classList.contains("open")){
+    closeCoolantGuideSheet();
+    return;
+  }
+  const backMap={engine:"home",airbox:"engine",guide:"airbox",learn:"airbox",maintenance:"airbox",coolant:"engine",coolantguide:"coolant",coolantlearn:"coolant",coolantmaintenance:"coolant"};
+  showScreen(backMap[current]||"home");
+});
 
 const drawer=document.getElementById("drawer");const dim=document.getElementById("dim");const sheet=document.getElementById("sheet");
 document.getElementById("menuBtn").addEventListener("click",()=>{drawer.classList.add("open");dim.classList.add("show")});
@@ -2164,6 +2173,16 @@ function renderCoolantStep(){
   document.getElementById("coolantStepText").textContent=step.text;
   document.getElementById("coolantStepCounter").textContent=(coolantStepIndex+1)+"/"+coolantGuideSteps.length;
   document.getElementById("coolantStepTags").innerHTML=step.tags.map(t=>'<span>'+t+'</span>').join("");
+  document.getElementById("coolantStageTitle").textContent=step.title;
+  document.getElementById("coolantStageCounter").textContent=(coolantStepIndex+1)+"/"+coolantGuideSteps.length;
+  document.getElementById("coolantDockTitle").textContent=step.title;
+  document.getElementById("coolantDockCounter").textContent=(coolantStepIndex+1)+"/"+coolantGuideSteps.length;
+  const dockStatus=document.getElementById("coolantDockStatus");
+  if(dockStatus){
+    const completed=coolantChecks.has(step.check);
+    dockStatus.textContent=completed?"Completed ✓":"Tap for instructions and controls";
+    dockStatus.classList.toggle("done",completed);
+  }
   const layer=document.getElementById("coolantHotspotLayer");
   const sx=step.spot.x, sy=step.spot.y, lx=step.spot.lx ?? step.spot.x, ly=step.spot.ly ?? step.spot.y;
   const mx=(sx+lx)/2, my=(sy+ly)/2;
@@ -2178,6 +2197,43 @@ function renderCoolantStep(){
   const mark=document.getElementById("coolantMarkStep");
   mark.textContent=coolantChecks.has(step.check)?"Marked ✓":"Mark Done";
 }
+
+
+function setCoolantSheetTab(tab){
+  document.querySelectorAll("[data-coolant-sheet-tab]").forEach(btn=>{
+    btn.classList.toggle("active",btn.dataset.coolantSheetTab===tab);
+  });
+  document.querySelectorAll("[data-coolant-sheet-panel]").forEach(panel=>{
+    panel.classList.toggle("active",panel.dataset.coolantSheetPanel===tab);
+  });
+}
+
+function openCoolantGuideSheet(tab="step"){
+  setCoolantSheetTab(tab);
+  document.getElementById("coolantGuideSheet")?.classList.add("open");
+  document.getElementById("coolantSheetBackdrop")?.classList.add("open");
+  document.getElementById("coolantGuideDockToggle")?.setAttribute("aria-expanded","true");
+  document.getElementById("coolantGuideSheet")?.setAttribute("aria-hidden","false");
+  document.body.classList.add("coolantSheetOpen");
+}
+
+function closeCoolantGuideSheet(){
+  document.getElementById("coolantGuideSheet")?.classList.remove("open");
+  document.getElementById("coolantSheetBackdrop")?.classList.remove("open");
+  document.getElementById("coolantGuideDockToggle")?.setAttribute("aria-expanded","false");
+  document.getElementById("coolantGuideSheet")?.setAttribute("aria-hidden","true");
+  document.body.classList.remove("coolantSheetOpen");
+}
+
+document.getElementById("coolantGuideDockToggle")?.addEventListener("click",()=>openCoolantGuideSheet("step"));
+document.getElementById("coolantSheetClose")?.addEventListener("click",closeCoolantGuideSheet);
+document.getElementById("coolantSheetBackdrop")?.addEventListener("click",closeCoolantGuideSheet);
+document.querySelectorAll("[data-coolant-sheet-tab]").forEach(btn=>{
+  btn.addEventListener("click",()=>setCoolantSheetTab(btn.dataset.coolantSheetTab));
+});
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape")closeCoolantGuideSheet();
+});
 
 document.getElementById("coolantPrevStep")?.addEventListener("click",()=>{
   if(coolantStepIndex>0){coolantStepIndex--;renderCoolantStep();}
@@ -2203,7 +2259,13 @@ function renderCoolantChecklist(){
   });
   const mark=document.getElementById("coolantMarkStep");
   if(mark && coolantGuideSteps[coolantStepIndex]){
-    mark.textContent=coolantChecks.has(coolantGuideSteps[coolantStepIndex].check)?"Marked ✓":"Mark Done";
+    const completed=coolantChecks.has(coolantGuideSteps[coolantStepIndex].check);
+    mark.textContent=completed?"Marked ✓":"Mark Done";
+    const dockStatus=document.getElementById("coolantDockStatus");
+    if(dockStatus){
+      dockStatus.textContent=completed?"Completed ✓":"Tap for instructions and controls";
+      dockStatus.classList.toggle("done",completed);
+    }
   }
 }
 document.querySelectorAll("[data-cool-check]").forEach(btn=>{
@@ -2333,6 +2395,7 @@ function openCoolantFlushLogForm(){
   form.scrollIntoView({behavior:"smooth",block:"start"});
 }
 document.getElementById("coolantGuideFlushLog")?.addEventListener("click",()=>{
+  closeCoolantGuideSheet();
   showScreen("coolantmaintenance");
   requestAnimationFrame(()=>openCoolantFlushLogForm());
 });
