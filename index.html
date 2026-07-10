@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>MY BUICK v6.9 Coolant Better Side Seam Photo</title>
-  <link rel="stylesheet" href="style.css?v=6.9.1">
+  <title>MY BUICK v6.11 Coolant Flush Guide Me</title>
+  <link rel="stylesheet" href="style.css?v=6.11">
 </head>
 <body>
 <div class="app">
@@ -323,6 +323,30 @@
         </div>
       </div>
 
+      <div class="coolantFlushGuideCard">
+        <div class="flushGuideTop">
+          <div>
+            <span class="miniLabel">COOLANT FLUSH</span>
+            <h3>Flush How-To</h3>
+            <p>A guided planning flow for doing a coolant flush and logging it afterward. Exact drain location, capacity, and bleed process stay marked TBD until verified for your car.</p>
+          </div>
+          <span class="badge warn">Cold Only</span>
+        </div>
+
+        <div class="flushGuideSteps">
+          <div><b>1. Prep safely</b><span>Engine fully cold, car stable, drain pan ready, gloves/eye protection, and coolant kept away from pets.</span></div>
+          <div><b>2. Verify fluid</b><span>Use the correct DEX-COOL / compatible coolant plan before draining anything. Mixing unknown coolant is not Gold Standard.</span></div>
+          <div><b>3. Drain old coolant</b><span>Drain point is still TBD for this exact app guide. Use verified service info before loosening anything.</span></div>
+          <div><b>4. Refill and bleed</b><span>Refill slowly, remove air properly, run heat check, and watch temperature behavior.</span></div>
+          <div><b>5. Recheck after warm-up</b><span>Inspect cap, seams, hose ends, clamps, heater output, coolant level, and any leaks after it cools again.</span></div>
+        </div>
+
+        <div class="flushGuideActions">
+          <button id="coolantGuideFlushLog" class="primary" type="button">Log Flush</button>
+          <button data-go="coolantlearn" class="ghost" type="button">Learn Coolant</button>
+        </div>
+      </div>
+
       <div class="checklist coolantGoldChecklist" id="coolantChecklist">
         <button data-cool-check="1"><span></span><b>Location / engine cold</b><small>Use the passenger-side context photo and confirm the system is cool.</small></button>
         <button data-cool-check="2"><span></span><b>Level and color</b><small>Use the side-angle photo to check orange coolant level and condition.</small></button>
@@ -404,6 +428,22 @@
           <div><span>Mix</span><b id="coolantSetupMix">TBD</b></div>
           <div><span>Last Mileage</span><b id="coolantSetupMileage">Not logged</b></div>
           <div><span>Condition</span><b id="coolantSetupCondition">Unknown</b></div>
+        </div>
+      </div>
+
+      <div class="lifeCard coolantFlushSpot">
+        <div class="lifeCardHead">
+          <div>
+            <span class="miniLabel">Service Spot</span>
+            <h3>Coolant Flush</h3>
+          </div>
+          <button id="coolantFlushQuick" class="tinyBtn" type="button">Log Flush</button>
+        </div>
+        <div class="setupGrid">
+          <div><span>Record</span><b>Drain / flush / refill</b></div>
+          <div><span>Track</span><b>Fluid, mileage, cost, notes</b></div>
+          <div><span>After</span><b>Bleed, heat, leaks</b></div>
+          <div><span>Status</span><b>Serviced</b></div>
         </div>
       </div>
 
@@ -498,6 +538,6 @@
   <div id="dim" class="dim"></div>
   <aside id="sheet" class="sheet"><button id="closeSheet" class="icon sheetClose">×</button><div id="sheetData"></div></aside>
 </div>
-<script src="app.js?v=6.9.1"></script>
+<script src="app.js?v=6.11"></script>
 </body>
 </html>

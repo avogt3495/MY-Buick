@@ -1162,3 +1162,81 @@
 /* v6.6 forced cache reload */
 
 /* v6.9 better coolant side seam photo */
+
+/* v6.10 dedicated coolant flush spot */
+.coolantFlushSpot{
+  border-color:rgba(120,230,255,.18);
+  background:linear-gradient(180deg,rgba(80,210,255,.08),rgba(255,255,255,.035));
+}
+.coolantFlushSpot h3{
+  margin-top:2px;
+}
+
+/* v6.11 Coolant Guide Me flush spot */
+.coolantFlushGuideCard{
+  background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.035));
+  border:1px solid rgba(255,197,66,.22);
+  border-radius:24px;
+  padding:14px;
+  margin:14px 0;
+  box-shadow:0 14px 34px rgba(0,0,0,.18);
+}
+.flushGuideTop{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
+  margin-bottom:12px;
+}
+.flushGuideTop h3{
+  margin:3px 0 4px;
+  font-size:21px;
+}
+.flushGuideTop p{
+  margin:0;
+  color:#b8c2d2;
+  line-height:1.38;
+  font-size:14px;
+}
+.miniLabel{
+  display:inline-block;
+  color:#ffd784;
+  font-size:11px;
+  font-weight:950;
+  letter-spacing:.14em;
+}
+.badge.warn{
+  border-color:rgba(255,197,66,.35);
+  color:#ffd784;
+  background:rgba(255,197,66,.12);
+  flex:0 0 auto;
+}
+.flushGuideSteps{
+  display:grid;
+  gap:8px;
+}
+.flushGuideSteps div{
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(7,10,16,.28);
+  border-radius:16px;
+  padding:10px;
+}
+.flushGuideSteps b{
+  display:block;
+  margin-bottom:3px;
+}
+.flushGuideSteps span{
+  display:block;
+  color:#c7d1df;
+  font-size:13px;
+  line-height:1.34;
+}
+.flushGuideActions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:12px;
+}
+.flushGuideActions button{
+  min-width:0;
+}

@@ -41,7 +41,7 @@ const airboxGuideMap={
   }
 };
 
-/* v6.9 better side seam photo + user-approved level callout */
+/* v6.10 coolant flush spot + prior callout fixes */
 const coolantGuideSteps=[
   {
     check:"1",
@@ -2292,8 +2292,26 @@ document.getElementById("coolantSetupForm")?.addEventListener("submit",e=>{
 });
 document.getElementById("coolantAddLog")?.addEventListener("click",()=>{
   document.getElementById("coolantLogDate").value=todayISO();
+  document.getElementById("coolantLogNotes").placeholder="Level, color, smell, leaks, cap condition, hose condition...";
   document.getElementById("coolantLogForm").classList.remove("hidden");
 });
+
+function openCoolantFlushLogForm(){
+  document.getElementById("coolantLogType").value="Coolant Flush";
+  document.getElementById("coolantLogDate").value=todayISO();
+  document.getElementById("coolantLogCondition").value="Serviced";
+  document.getElementById("coolantLogPart").placeholder="DEX-COOL 50/50, brand, amount used, cap if replaced...";
+  document.getElementById("coolantLogNotes").placeholder="Flush method, amount drained/refilled, air bled, heater output, leaks after warm-up, temp behavior...";
+  const form=document.getElementById("coolantLogForm");
+  form.classList.remove("hidden");
+  form.scrollIntoView({behavior:"smooth",block:"start"});
+}
+document.getElementById("coolantGuideFlushLog")?.addEventListener("click",()=>{
+  showScreen("coolantmaintenance");
+  requestAnimationFrame(()=>openCoolantFlushLogForm());
+});
+
+document.getElementById("coolantFlushQuick")?.addEventListener("click",()=>openCoolantFlushLogForm());
 document.getElementById("coolantCancelLogBtn")?.addEventListener("click",()=>document.getElementById("coolantLogForm").classList.add("hidden"));
 document.getElementById("coolantLogForm")?.addEventListener("submit",e=>{
   e.preventDefault();
