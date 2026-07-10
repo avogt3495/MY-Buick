@@ -3371,6 +3371,12 @@ const DEFAULT_BUICK={
   frontGawr:"2,579 lb",
   rearGawr:"2,496 lb",
   moduleSet:"buick-v1",
+  representativeImage:"images/vehicles/2010_buick_lacrosse_cxl_front_left.jpg",
+  representativeImageType:"representative",
+  representativeImageTitle:"2010 Buick LaCrosse CXL",
+  representativeImageCredit:"SsmIntrigue / Wikimedia Commons",
+  representativeImageLicense:"CC BY-SA 4.0",
+  representativeImageSourcePage:"https://commons.wikimedia.org/wiki/File:2010_Buick_LaCrosse_CXL,_Front_Left,_10-02-2020.jpg",
   createdAt:"2026-07-10T00:00:00.000Z"
 };
 
@@ -3391,7 +3397,9 @@ function ensureGarageSeed(){
     localStorage.setItem(ACTIVE_VEHICLE_KEY,DEFAULT_BUICK_ID);
     return;
   }
-  if(!localStorage.getItem(ACTIVE_VEHICLE_KEY))localStorage.setItem(ACTIVE_VEHICLE_KEY,vehicles[0].id);
+  const migrated=vehicles.map(migrateVehicleImage);
+  if(JSON.stringify(migrated)!==JSON.stringify(vehicles))saveVehicles(migrated);
+  if(!localStorage.getItem(ACTIVE_VEHICLE_KEY))localStorage.setItem(ACTIVE_VEHICLE_KEY,migrated[0].id);
 }
 function getActiveVehicle(){
   const vehicles=getVehicles();
@@ -3419,18 +3427,91 @@ function formatVehicleName(vehicle){
 }
 function cleanNumber(value){const digits=String(value||"").replace(/[^0-9]/g,"");return digits?Number(digits):null}
 
+const VEHICLE_IMAGE_CACHE_KEY="mycar_vehicle_image_cache_v1";
+const BUILTIN_BUICK_IMAGE={
+  src:"images/vehicles/2010_buick_lacrosse_cxl_front_left.jpg",
+  type:"representative",
+  title:"2010 Buick LaCrosse CXL",
+  credit:"SsmIntrigue / Wikimedia Commons",
+  license:"CC BY-SA 4.0",
+  sourcePage:"https://commons.wikimedia.org/wiki/File:2010_Buick_LaCrosse_CXL,_Front_Left,_10-02-2020.jpg",
+  provider:"Wikimedia Commons"
+};
+let vehicleImageObjectUrls={garage:[],profile:[],home:[],twin:[]};
+let vinPendingImage=null;
+let vinSelectedMainPhotoFile=null;
+let vinSelectedMainPhotoUrl=null;
+
+function normalizedVehicleKey(data){
+  return [data?.year,data?.make,data?.model,data?.trim].filter(Boolean).join(" ").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
+}
+function is2010BuickLacrosse(data){
+  const key=normalizedVehicleKey(data);
+  return key.includes("2010")&&key.includes("buick")&&key.includes("lacrosse");
+}
+function stripMarkup(value){
+  const div=document.createElement("div");div.innerHTML=String(value||"");return (div.textContent||"").trim();
+}
+function readVehicleImageCache(){try{return JSON.parse(localStorage.getItem(VEHICLE_IMAGE_CACHE_KEY)||"{}")||{}}catch{return {}}}
+function saveVehicleImageCache(cache){try{localStorage.setItem(VEHICLE_IMAGE_CACHE_KEY,JSON.stringify(cache))}catch{}}
+function migrateVehicleImage(vehicle){
+  if(is2010BuickLacrosse(vehicle)&&!vehicle.representativeImage){
+    return {...vehicle,representativeImage:BUILTIN_BUICK_IMAGE.src,representativeImageType:"representative",representativeImageTitle:BUILTIN_BUICK_IMAGE.title,representativeImageCredit:BUILTIN_BUICK_IMAGE.credit,representativeImageLicense:BUILTIN_BUICK_IMAGE.license,representativeImageSourcePage:BUILTIN_BUICK_IMAGE.sourcePage};
+  }
+  return vehicle;
+}
+async function findRepresentativeVehicleImage(data,{force=false}={}){
+  if(is2010BuickLacrosse(data))return {...BUILTIN_BUICK_IMAGE};
+  const key=normalizedVehicleKey(data);if(!key)return null;
+  const cache=readVehicleImageCache();if(!force&&cache[key])return cache[key];
+  const year=String(data.year||"").trim();const make=String(data.make||"").trim();const model=String(data.model||"").trim();const trim=String(data.trim||"").trim();const color=String(data.color||"").trim();
+  if(!make||!model)return null;
+  const search=[year,make,model,trim,color,"front side automobile"].filter(Boolean).join(" ");
+  const params=new URLSearchParams({action:"query",format:"json",origin:"*",generator:"search",gsrsearch:search,gsrnamespace:"6",gsrlimit:"12",prop:"imageinfo",iiprop:"url|extmetadata",iiurlwidth:"1280"});
+  const response=await fetch("https://commons.wikimedia.org/w/api.php?"+params.toString(),{headers:{Accept:"application/json"}});
+  if(!response.ok)throw new Error("Vehicle image search unavailable ("+response.status+")");
+  const json=await response.json();const pages=Object.values(json?.query?.pages||{});
+  const required=[make,model].join(" ").toLowerCase().split(/\s+/).filter(Boolean);
+  const avoid=["rear","interior","engine","dashboard","diagram","logo","wheel","wreck","police"];
+  const scored=pages.map(page=>{
+    const info=page.imageinfo?.[0];const title=String(page.title||"").replace(/^File:/i,"");const lower=title.toLowerCase();let score=0;
+    if(year&&lower.includes(year.toLowerCase()))score+=5;
+    required.forEach(token=>{if(lower.includes(token))score+=4});
+    if(trim&&lower.includes(trim.toLowerCase()))score+=2;
+    if(color&&lower.includes(color.toLowerCase()))score+=1;
+    if(/front|side|left|right/.test(lower))score+=2;
+    avoid.forEach(token=>{if(lower.includes(token))score-=4});
+    return {page,info,title,score};
+  }).filter(item=>item.info&&(item.info.thumburl||item.info.url)).sort((a,b)=>b.score-a.score);
+  const best=scored[0];if(!best||best.score<6)return null;
+  const meta=best.info.extmetadata||{};
+  const result={src:best.info.thumburl||best.info.url,type:"representative",title:best.title.replace(/\.[^.]+$/,"").replace(/_/g," "),credit:stripMarkup(meta.Artist?.value||meta.Credit?.value||"Wikimedia Commons contributor"),license:stripMarkup(meta.LicenseShortName?.value||"Wikimedia Commons license"),sourcePage:best.info.descriptionurl||("https://commons.wikimedia.org/wiki/"+encodeURIComponent(best.page.title)),provider:"Wikimedia Commons"};
+  cache[key]=result;saveVehicleImageCache(cache);return result;
+}
+function revokeVehicleImageUrls(context){(vehicleImageObjectUrls[context]||[]).forEach(url=>URL.revokeObjectURL(url));vehicleImageObjectUrls[context]=[]}
+async function vehicleImagePresentation(vehicle,context){
+  if(vehicle.coverPhotoId){
+    try{const record=await getPhotoRecord(vehicle.coverPhotoId);if(record?.blob){const src=URL.createObjectURL(record.blob);vehicleImageObjectUrls[context].push(src);return {src,type:"owner",label:"YOUR PHOTO",title:"Your actual vehicle photo",credit:"Stored on this device",sourcePage:""}}}catch{}
+  }
+  if(vehicle.representativeImage)return {src:vehicle.representativeImage,type:"representative",label:"VIN MATCH",title:vehicle.representativeImageTitle||formatVehicleName(vehicle),credit:[vehicle.representativeImageCredit,vehicle.representativeImageLicense].filter(Boolean).join(" • ")||"Representative image",sourcePage:vehicle.representativeImageSourcePage||""};
+  return {src:"images/home/home_garage.png",type:"fallback",label:"PROFILE IMAGE",title:formatVehicleName(vehicle),credit:"Add your own vehicle photo",sourcePage:""};
+}
+function applyImageElement(img,presentation){if(!img)return;img.classList.add("vehicleImageLoading");img.onload=()=>img.classList.remove("vehicleImageLoading");img.onerror=()=>{img.classList.remove("vehicleImageLoading");img.src="images/home/home_garage.png"};img.src=presentation.src}
+
 async function renderGarage(){
-  const vehicles=getVehicles();
+  const vehicles=getVehicles().map(migrateVehicleImage);
   document.getElementById("garageVehicleCount").textContent=vehicles.length;
-  const list=document.getElementById("garageVehicleList");
-  if(!list)return;
-  list.innerHTML=vehicles.map(vehicle=>{
-    const active=vehicle.id===getActiveVehicle().id;
-    const canOpen=vehicle.moduleSet==="buick-v1";
+  const list=document.getElementById("garageVehicleList");if(!list)return;
+  revokeVehicleImageUrls("garage");
+  const activeVehicle=getActiveVehicle();
+  const rows=await Promise.all(vehicles.map(async vehicle=>({vehicle,presentation:await vehicleImagePresentation(vehicle,"garage")})));
+  list.innerHTML=rows.map(({vehicle,presentation})=>{
+    const active=vehicle.id===activeVehicle.id;const canOpen=vehicle.moduleSet==="buick-v1";
     return '<article class="garageVehicleCard" data-vehicle-card="'+escapeHtml(vehicle.id)+'">'+
       '<div class="garageVehicleImage">'+
-        '<img src="images/home/home_garage.png" alt="'+escapeHtml(formatVehicleName(vehicle))+'">'+
+        '<img src="'+escapeHtml(presentation.src)+'" alt="'+escapeHtml(formatVehicleName(vehicle))+'">'+
         '<span class="garageVehicleBadge">'+(active?'ACTIVE VEHICLE':'DIGITAL PROFILE')+'</span>'+
+        '<span class="garageVehicleSource">'+escapeHtml(presentation.label)+'</span>'+
         '<div class="garageVehicleCopy"><span>'+escapeHtml(vehicle.nickname||"My Vehicle")+'</span><h3>'+escapeHtml(formatVehicleName(vehicle))+'</h3><p>'+escapeHtml([vehicle.engine,vehicle.drivetrain,vehicle.color].filter(Boolean).join(" • "))+'</p></div>'+
       '</div>'+
       '<div class="garageVehicleActions">'+
@@ -3441,27 +3522,21 @@ async function renderGarage(){
     '</article>';
   }).join("");
 
-  list.querySelectorAll("[data-vehicle-open]").forEach(btn=>btn.addEventListener("click",()=>{
-    const id=btn.dataset.vehicleOpen;setActiveVehicle(id);
-    const vehicle=getActiveVehicle();
-    showScreen(vehicle.moduleSet==="buick-v1"?"home":"vehicleprofile");
-  }));
+  list.querySelectorAll("[data-vehicle-open]").forEach(btn=>btn.addEventListener("click",()=>{const id=btn.dataset.vehicleOpen;setActiveVehicle(id);const vehicle=getActiveVehicle();showScreen(vehicle.moduleSet==="buick-v1"?"home":"vehicleprofile")}));
   list.querySelectorAll("[data-vehicle-twin]").forEach(btn=>btn.addEventListener("click",()=>{setActiveVehicle(btn.dataset.vehicleTwin);showScreen("digitaltwin")}));
   list.querySelectorAll("[data-vehicle-profile]").forEach(btn=>btn.addEventListener("click",()=>{setActiveVehicle(btn.dataset.vehicleProfile);showScreen("vehicleprofile")}));
-
-  const total=await countAllPhotos();
-  const count=document.getElementById("garagePhotoCount");
-  if(count)count.textContent=total;
+  const total=await countAllPhotos();const count=document.getElementById("garagePhotoCount");if(count)count.textContent=total;
 }
 
 document.getElementById("garageInlineAdd")?.addEventListener("click",()=>startVinSetup());
 
-function renderVehicleHome(){
+async function renderVehicleHome(){
   const vehicle=getActiveVehicle();
   document.getElementById("homeVehicleTitle").textContent=formatVehicleName(vehicle);
   document.getElementById("homeVehicleSub").textContent=[vehicle.engine,vehicle.drivetrain,"Your digital garage"].filter(Boolean).join(" • ");
   document.getElementById("homeVehicleMileage").textContent=vehicle.mileage?Number(vehicle.mileage).toLocaleString()+" miles":"Mileage not set";
   document.getElementById("homeVinMask").textContent=vehicle.vinLinked?maskVin(vehicle.vin,vehicle.vinMasked):vehicle.vinMasked||"VIN profile ready";
+  revokeVehicleImageUrls("home");const presentation=await vehicleImagePresentation(vehicle,"home");applyImageElement(document.getElementById("homeVehicleImage"),presentation);
 }
 
 async function renderVehicleProfile(){
@@ -3480,6 +3555,8 @@ async function renderVehicleProfile(){
   set("profileCompletion",completion+"% documented");
   document.getElementById("profileProgressFill").style.width=completion+"%";
   set("profileProgressText",(vehicle.moduleSet==="buick-v1"?"Engine bay has 3 mapped components. ":"")+photos+" owner photo"+(photos===1?"":"s")+" attached to this vehicle.");
+  revokeVehicleImageUrls("profile");const presentation=await vehicleImagePresentation(vehicle,"profile");applyImageElement(document.getElementById("profileHeroImage"),presentation);
+  const credit=document.getElementById("profileImageCredit");if(credit){credit.textContent=presentation.type==="owner"?"Your actual car photo":presentation.credit||"Representative image";credit.classList.toggle("owner",presentation.type==="owner");if(presentation.sourcePage){credit.href=presentation.sourcePage;credit.removeAttribute("aria-disabled")}else{credit.removeAttribute("href");credit.setAttribute("aria-disabled","true")}}
 }
 
 function openProfileEditor(){
@@ -3490,9 +3567,11 @@ function openProfileEditor(){
     '<label>Nickname<input id="profileEditNickname" value="'+escapeHtml(vehicle.nickname||"")+'"></label>'+
     '<label>Color<input id="profileEditColor" value="'+escapeHtml(vehicle.color||"")+'"></label>'+
     '<label>Mileage<input id="profileEditMileage" inputmode="numeric" value="'+escapeHtml(vehicle.mileage||"")+'"></label>'+
+    '<button id="profileEditMainPhoto" class="ghost" type="button">Change Main Vehicle Photo</button>'+
     '<div class="globalSheetActions"><button id="profileFinishVin" class="ghost" type="button">VIN Setup</button><button id="profileSaveEdit" class="primary" type="button">Save</button></div>',
     "VEHICLE PROFILE"
   );
+  document.getElementById("profileEditMainPhoto")?.addEventListener("click",()=>{closeGlobalFloatSheet();setTimeout(openMainVehiclePhotoPicker,320)});
   document.getElementById("profileFinishVin")?.addEventListener("click",()=>{closeGlobalFloatSheet();startVinSetup(vehicle.id)});
   document.getElementById("profileSaveEdit")?.addEventListener("click",()=>{
     const updated={...vehicle,nickname:document.getElementById("profileEditNickname").value.trim()||vehicle.nickname,color:document.getElementById("profileEditColor").value.trim(),mileage:cleanNumber(document.getElementById("profileEditMileage").value)};
@@ -3516,7 +3595,8 @@ function vinSetupDockItems(){
 
 function startVinSetup(vehicleId=null){
   vinEditingVehicleId=vehicleId;
-  vinOnboardStep=0;vinPendingValue="";vinDecodedData=null;
+  vinOnboardStep=0;vinPendingValue="";vinDecodedData=null;vinPendingImage=null;vinSelectedMainPhotoFile=null;
+  if(vinSelectedMainPhotoUrl){URL.revokeObjectURL(vinSelectedMainPhotoUrl);vinSelectedMainPhotoUrl=null}
   const vehicle=vehicleId?getVehicles().find(item=>item.id===vehicleId):null;
   ["vinInput","vinModelYearInput","vinYearConfirm","vinMakeConfirm","vinModelConfirm","vinTrimConfirm","vinEngineConfirm","vinDriveConfirm","vinBodyConfirm","vinNicknameInput","vinColorInput","vinMileageInput"].forEach(id=>{const el=document.getElementById(id);if(el)el.value=""});
   if(vehicle){
@@ -3529,6 +3609,8 @@ function startVinSetup(vehicleId=null){
   document.getElementById("vinDetectStatus").textContent=vehicle?.vinLinked?"VIN loaded from this browser. Review or rescan it.":"Ready for a photo or manual VIN.";
   document.getElementById("vinDetectStatus").className="vinStatus";
   document.getElementById("vinPhotoPreviewWrap").classList.add("hidden");
+  document.getElementById("vinVehicleImageCard")?.classList.add("hidden");
+  document.getElementById("vinMainPhotoPreview")?.classList.add("hidden");
   showScreen("vinsetup");
 }
 
@@ -3590,6 +3672,23 @@ function fillVinConfirm(data,existing=null){
   if(!document.getElementById("vinNicknameInput").value)document.getElementById("vinNicknameInput").value=existing?.nickname||([data?.make,data?.model].filter(Boolean).join(" ")||"My Vehicle");
 }
 
+function currentVinConfirmData(){return {year:document.getElementById("vinYearConfirm").value.trim(),make:document.getElementById("vinMakeConfirm").value.trim(),model:document.getElementById("vinModelConfirm").value.trim(),trim:document.getElementById("vinTrimConfirm").value.trim(),color:document.getElementById("vinColorInput").value.trim()}}
+function showVinImageState(state,message=""){
+  const card=document.getElementById("vinVehicleImageCard");const img=document.getElementById("vinVehicleImagePreview");const placeholder=document.getElementById("vinVehicleImagePlaceholder");if(!card||!img||!placeholder)return;card.classList.remove("hidden");
+  if(state==="loading"){img.removeAttribute("src");img.classList.add("hidden");placeholder.classList.remove("hidden");placeholder.querySelector("b").textContent=message||"Finding a vehicle image…";document.getElementById("vinVehicleImageTitle").textContent="Searching by decoded year, make, and model";document.getElementById("vinVehicleImageSource").textContent="The VIN itself is not sent to the image search.";return}
+  if(state==="found"&&vinPendingImage){img.classList.remove("hidden");placeholder.classList.add("hidden");img.src=vinPendingImage.src;document.getElementById("vinVehicleImageTitle").textContent=vinPendingImage.title||"Representative vehicle";document.getElementById("vinVehicleImageSource").textContent=[vinPendingImage.credit,vinPendingImage.license].filter(Boolean).join(" • ")||"Representative vehicle image";return}
+  img.classList.add("hidden");placeholder.classList.remove("hidden");placeholder.querySelector("b").textContent=message||"No automatic image was found";document.getElementById("vinVehicleImageTitle").textContent="You can still add your actual car photo";document.getElementById("vinVehicleImageSource").textContent="The profile will use the built-in fallback until you add a photo.";
+}
+async function prepareVinRepresentativeImage(data,{force=false}={}){
+  showVinImageState("loading");
+  try{vinPendingImage=await findRepresentativeVehicleImage(data,{force});if(vinPendingImage)showVinImageState("found");else showVinImageState("empty")}catch(error){vinPendingImage=null;showVinImageState("empty",error.message)}
+}
+document.getElementById("vinRefreshVehicleImage")?.addEventListener("click",()=>prepareVinRepresentativeImage(currentVinConfirmData(),{force:true}));
+document.getElementById("vinMainPhotoInput")?.addEventListener("change",event=>{
+  const file=event.target.files?.[0]||null;if(!file)return;vinSelectedMainPhotoFile=file;if(vinSelectedMainPhotoUrl)URL.revokeObjectURL(vinSelectedMainPhotoUrl);vinSelectedMainPhotoUrl=URL.createObjectURL(file);const wrap=document.getElementById("vinMainPhotoPreview");wrap.querySelector("img").src=vinSelectedMainPhotoUrl;wrap.classList.remove("hidden");
+});
+document.getElementById("vinMainPhotoRemove")?.addEventListener("click",()=>{vinSelectedMainPhotoFile=null;if(vinSelectedMainPhotoUrl){URL.revokeObjectURL(vinSelectedMainPhotoUrl);vinSelectedMainPhotoUrl=null}document.getElementById("vinMainPhotoPreview")?.classList.add("hidden");document.getElementById("vinMainPhotoInput").value=""});
+
 async function advanceVinSetup(){
   if(vinOnboardStep===0){
     const status=document.getElementById("vinDetectStatus");
@@ -3612,7 +3711,7 @@ async function advanceVinSetup(){
       document.getElementById("vinDecodeMessage").textContent="The online decoder could not be reached. You can still finish the profile manually.";
       document.getElementById("vinDecodeSource").textContent=error.message;
     }
-    vinOnboardStep=1;renderVinOnboardStep();return;
+    vinOnboardStep=1;renderVinOnboardStep();prepareVinRepresentativeImage({year:document.getElementById("vinYearConfirm").value.trim(),make:document.getElementById("vinMakeConfirm").value.trim(),model:document.getElementById("vinModelConfirm").value.trim(),trim:document.getElementById("vinTrimConfirm").value.trim()});return;
   }
   if(vinOnboardStep===1){
     const required=["vinYearConfirm","vinMakeConfirm","vinModelConfirm"];
@@ -3621,10 +3720,10 @@ async function advanceVinSetup(){
     }
     vinOnboardStep=2;renderVinOnboardStep();return;
   }
-  saveVinVehicle();
+  await saveVinVehicle();
 }
 
-function saveVinVehicle(){
+async function saveVinVehicle(){
   const existing=vinEditingVehicleId?getVehicles().find(item=>item.id===vinEditingVehicleId):null;
   const year=document.getElementById("vinYearConfirm").value.trim();const make=document.getElementById("vinMakeConfirm").value.trim();const model=document.getElementById("vinModelConfirm").value.trim();
   const isBuickProfile=existing?.moduleSet==="buick-v1"||(year==="2010"&&make.toLowerCase()==="buick"&&model.toLowerCase().includes("lacrosse"));
@@ -3636,9 +3735,19 @@ function saveVinVehicle(){
     engine:document.getElementById("vinEngineConfirm").value.trim(),drivetrain:document.getElementById("vinDriveConfirm").value.trim(),bodyClass:document.getElementById("vinBodyConfirm").value.trim(),
     color:document.getElementById("vinColorInput").value.trim(),mileage:cleanNumber(document.getElementById("vinMileageInput").value),
     vin:vinPendingValue,vinMasked:maskVin(vinPendingValue),vinLinked:true,moduleSet:isBuickProfile?"buick-v1":"generic",
-    manufactured:existing?.manufactured||"",gvwr:existing?.gvwr||"",frontGawr:existing?.frontGawr||"",rearGawr:existing?.rearGawr||"",createdAt:existing?.createdAt||new Date().toISOString(),updatedAt:new Date().toISOString()
+    manufactured:existing?.manufactured||"",gvwr:existing?.gvwr||"",frontGawr:existing?.frontGawr||"",rearGawr:existing?.rearGawr||"",createdAt:existing?.createdAt||new Date().toISOString(),updatedAt:new Date().toISOString(),
+    representativeImage:vinPendingImage?.src||existing?.representativeImage||"",
+    representativeImageType:vinPendingImage?"representative":existing?.representativeImageType||"",
+    representativeImageTitle:vinPendingImage?.title||existing?.representativeImageTitle||"",
+    representativeImageCredit:vinPendingImage?.credit||existing?.representativeImageCredit||"",
+    representativeImageLicense:vinPendingImage?.license||existing?.representativeImageLicense||"",
+    representativeImageSourcePage:vinPendingImage?.sourcePage||existing?.representativeImageSourcePage||"",
+    coverPhotoId:existing?.coverPhotoId||""
   };
-  upsertVehicle(vehicle);vinEditingVehicleId=null;vinPendingValue="";vinDecodedData=null;showScreen("vehicleprofile");
+  if(!vehicle.representativeImage){const match=await findRepresentativeVehicleImage(vehicle).catch(()=>null);if(match){vehicle.representativeImage=match.src;vehicle.representativeImageType="representative";vehicle.representativeImageTitle=match.title;vehicle.representativeImageCredit=match.credit;vehicle.representativeImageLicense=match.license;vehicle.representativeImageSourcePage=match.sourcePage}}
+  upsertVehicle(vehicle);
+  if(vinSelectedMainPhotoFile){vehicle.coverPhotoId=await saveMainVehiclePhoto(vehicle,vinSelectedMainPhotoFile);upsertVehicle(vehicle)}
+  vinEditingVehicleId=null;vinPendingValue="";vinDecodedData=null;vinPendingImage=null;vinSelectedMainPhotoFile=null;if(vinSelectedMainPhotoUrl){URL.revokeObjectURL(vinSelectedMainPhotoUrl);vinSelectedMainPhotoUrl=null}showScreen("vehicleprofile");
 }
 
 document.getElementById("vinInput")?.addEventListener("input",event=>{event.target.value=sanitizeVin(event.target.value);if(event.target.value.length>=10&&!document.getElementById("vinModelYearInput").value)document.getElementById("vinModelYearInput").value=guessVinYear(event.target.value)});
@@ -3670,6 +3779,7 @@ function openPhotoDb(){
 }
 async function addPhotoRecord(record){const db=await openPhotoDb();return new Promise((resolve,reject)=>{const tx=db.transaction(PHOTO_STORE,"readwrite");tx.objectStore(PHOTO_STORE).put(record);tx.oncomplete=()=>resolve(record);tx.onerror=()=>reject(tx.error)})}
 async function getPhotos(vehicleId){const db=await openPhotoDb();return new Promise((resolve,reject)=>{const tx=db.transaction(PHOTO_STORE,"readonly");const request=tx.objectStore(PHOTO_STORE).index("vehicleId").getAll(vehicleId);request.onsuccess=()=>resolve((request.result||[]).sort((a,b)=>String(b.createdAt).localeCompare(String(a.createdAt))));request.onerror=()=>reject(request.error)})}
+async function getPhotoRecord(id){if(!id)return null;const db=await openPhotoDb();return new Promise((resolve,reject)=>{const tx=db.transaction(PHOTO_STORE,"readonly");const request=tx.objectStore(PHOTO_STORE).get(id);request.onsuccess=()=>resolve(request.result||null);request.onerror=()=>reject(request.error)})}
 async function deletePhotoRecord(id){const db=await openPhotoDb();return new Promise((resolve,reject)=>{const tx=db.transaction(PHOTO_STORE,"readwrite");tx.objectStore(PHOTO_STORE).delete(id);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)})}
 async function countPhotos(vehicleId){try{return (await getPhotos(vehicleId)).length}catch{return 0}}
 async function countAllPhotos(){let total=0;for(const vehicle of getVehicles())total+=await countPhotos(vehicle.id);return total}
@@ -3678,6 +3788,23 @@ async function compressImageFile(file){
   const bitmap=await createImageBitmap(file);const max=1800;const scale=Math.min(1,max/Math.max(bitmap.width,bitmap.height));const canvas=document.createElement("canvas");canvas.width=Math.max(1,Math.round(bitmap.width*scale));canvas.height=Math.max(1,Math.round(bitmap.height*scale));canvas.getContext("2d").drawImage(bitmap,0,0,canvas.width,canvas.height);bitmap.close?.();
   return new Promise(resolve=>canvas.toBlob(blob=>resolve(blob||file),"image/jpeg",.84));
 }
+async function saveMainVehiclePhoto(vehicle,file){
+  const blob=await compressImageFile(file);const id="cover-"+vehicle.id+"-"+Date.now();if(vehicle.coverPhotoId)await deletePhotoRecord(vehicle.coverPhotoId).catch(()=>{});await addPhotoRecord({id,vehicleId:vehicle.id,area:"exterior",role:"vehicle-cover",component:"Main vehicle photo",note:"Main Garage and vehicle-profile photo",createdAt:new Date().toISOString(),blob});return id;
+}
+function openMainVehiclePhotoPicker(){
+  const vehicle=getActiveVehicle();
+  openGlobalFloatSheet("Main Vehicle Photo","Use your real car photo everywhere, or return to the automatic VIN match.",
+    '<input id="mainVehiclePhotoFile" type="file" accept="image/*" capture="environment" hidden><label class="vinScanButton" for="mainVehiclePhotoFile"><span class="vinScanIcon">＋</span><b>Take or choose my car photo</b><small>This becomes the Garage, profile, home, and Digital Twin reference image.</small></label>'+ 
+    '<div id="mainVehiclePhotoPreview" class="mainPhotoPickerPreview hidden"><img alt="Selected main vehicle photo"></div>'+ 
+    '<div id="mainVehiclePhotoStatus" class="vinStatus">Your current image stays until you save a replacement.</div>'+ 
+    '<div class="photoCaptureActions"><button id="mainVehicleUseAuto" class="ghost" type="button">Use VIN Match</button><button id="mainVehiclePhotoSave" class="primary" type="button">Save Photo</button></div>',"VEHICLE IMAGE");
+  let file=null;let url=null;
+  document.getElementById("mainVehiclePhotoFile")?.addEventListener("change",event=>{file=event.target.files?.[0]||null;if(!file)return;if(url)URL.revokeObjectURL(url);url=URL.createObjectURL(file);const wrap=document.getElementById("mainVehiclePhotoPreview");wrap.querySelector("img").src=url;wrap.classList.remove("hidden");document.getElementById("mainVehiclePhotoStatus").textContent="Photo ready to become your main vehicle image.";document.getElementById("mainVehiclePhotoStatus").className="vinStatus good"});
+  document.getElementById("mainVehicleUseAuto")?.addEventListener("click",async()=>{if(vehicle.coverPhotoId)await deletePhotoRecord(vehicle.coverPhotoId).catch(()=>{});const updated={...vehicle,coverPhotoId:"",updatedAt:new Date().toISOString()};upsertVehicle(updated);if(url)URL.revokeObjectURL(url);closeGlobalFloatSheet();renderVehicleProfile();renderVehicleHome();renderDigitalTwin();renderGarage()});
+  document.getElementById("mainVehiclePhotoSave")?.addEventListener("click",async()=>{const status=document.getElementById("mainVehiclePhotoStatus");if(!file){status.textContent="Choose a photo first.";status.className="vinStatus warn";return}try{status.textContent="Saving your main vehicle photo…";const id=await saveMainVehiclePhoto(vehicle,file);upsertVehicle({...vehicle,coverPhotoId:id,updatedAt:new Date().toISOString()});if(url)URL.revokeObjectURL(url);closeGlobalFloatSheet();renderVehicleProfile();renderVehicleHome();renderDigitalTwin();renderGarage()}catch(error){status.textContent="Could not save photo: "+error.message;status.className="vinStatus warn"}});
+}
+document.getElementById("profileMainPhotoButton")?.addEventListener("click",openMainVehiclePhotoPicker);
+
 function openPhotoCapture(defaultArea="engine"){
   openGlobalFloatSheet(
     "Add Owner Photo",
@@ -3712,8 +3839,8 @@ async function renderPhotoGallery(){
   gallery.innerHTML="";
   filtered.forEach(photo=>{
     const url=URL.createObjectURL(photo.blob);photoObjectUrls.push(url);const card=document.createElement("article");card.className="photoCard";
-    card.innerHTML='<img src="'+url+'" alt="Owner vehicle photo"><div class="photoCardCopy"><span>'+escapeHtml(photoAreaLabel(photo.area))+'</span><b>'+escapeHtml(photo.component||photo.note||"Owner photo")+'</b><small>'+new Date(photo.createdAt).toLocaleDateString()+'</small></div><div class="photoCardActions"><button type="button">Delete</button></div>';
-    card.querySelector("button").addEventListener("click",async()=>{if(confirm("Delete this owner photo?")){await deletePhotoRecord(photo.id);renderPhotoGallery();renderDigitalTwin();renderGarage()}});gallery.appendChild(card);
+    card.innerHTML='<img src="'+url+'" alt="Owner vehicle photo"><div class="photoCardCopy"><span>'+escapeHtml(photo.role==="vehicle-cover"?"MAIN VEHICLE PHOTO":photoAreaLabel(photo.area))+'</span><b>'+escapeHtml(photo.component||photo.note||"Owner photo")+'</b><small>'+new Date(photo.createdAt).toLocaleDateString()+'</small></div><div class="photoCardActions"><button type="button">Delete</button></div>';
+    card.querySelector("button").addEventListener("click",async()=>{if(confirm("Delete this owner photo?")){await deletePhotoRecord(photo.id);const vehicle=getActiveVehicle();if(vehicle.coverPhotoId===photo.id)upsertVehicle({...vehicle,coverPhotoId:"",updatedAt:new Date().toISOString()});renderPhotoGallery();renderDigitalTwin();renderGarage();renderVehicleProfile();renderVehicleHome()}});gallery.appendChild(card);
   });
 }
 document.querySelectorAll("[data-photo-filter]").forEach(btn=>btn.addEventListener("click",()=>{currentPhotoFilter=btn.dataset.photoFilter;document.querySelectorAll("[data-photo-filter]").forEach(item=>item.classList.toggle("active",item===btn));renderPhotoGallery()}));
@@ -3746,6 +3873,7 @@ function initTwinCanvas(){
 }
 async function renderDigitalTwin(){
   const vehicle=getActiveVehicle();document.getElementById("twinVehicleName").textContent=vehicle.nickname||"My Vehicle";document.getElementById("twinVehicleMeta").textContent=formatVehicleName(vehicle);document.getElementById("twinVinMask").textContent=vehicle.vinLinked?maskVin(vehicle.vin):vehicle.vinMasked||"Not linked";
+  revokeVehicleImageUrls("twin");const presentation=await vehicleImagePresentation(vehicle,"twin");applyImageElement(document.getElementById("twinVehicleImage"),presentation);document.getElementById("twinVehicleImageType").textContent=presentation.type==="owner"?"YOUR ACTUAL CAR":"VIN MATCHED IMAGE";document.getElementById("twinVehicleImageName").textContent=presentation.title||formatVehicleName(vehicle);document.getElementById("twinVehicleImageSource").textContent=presentation.type==="owner"?"Stored on this device":presentation.credit||"Representative image";
   const photos=await getPhotos(vehicle.id).catch(()=>[]);document.getElementById("twinPhotoCount").textContent=photos.length;document.getElementById("twinCompletionBadge").textContent=photos.length?photos.length+" photos":"Foundation";
   const counts={};photos.forEach(photo=>{counts[photo.area]=(counts[photo.area]||0)+1});document.querySelectorAll("[data-zone-status]").forEach(el=>{const zone=el.dataset.zoneStatus;const count=counts[zone]||0;el.textContent=count?count+" owner photo"+(count===1?"":"s"):"Not documented"});drawTwinCar();
 }

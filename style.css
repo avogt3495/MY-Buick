@@ -4361,3 +4361,209 @@ label{
   .vinConfirmGrid{grid-template-columns:1fr}.vinConfirmGrid label.wide{grid-column:auto}.vinTwoCol{grid-template-columns:1fr}
   .twinStage{height:278px}.twinZoneGrid{grid-template-columns:1fr}.photoGallery{grid-template-columns:1fr}
 }
+
+
+/* v6.22 VIN matched vehicle image + owner main-photo override */
+.vinVehicleImageCard{
+  margin-top:14px;
+  padding:10px;
+  border:1px solid rgba(255,255,255,.085);
+  border-radius:22px;
+  background:rgba(255,255,255,.03);
+}
+.vinVehicleImageFrame{
+  position:relative;
+  height:190px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:17px;
+  background:linear-gradient(145deg,#111927,#090d14);
+}
+.vinVehicleImageFrame img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+}
+.vinVehicleImagePlaceholder{
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-content:center;
+  gap:7px;
+  color:#8f9bad;
+  text-align:center;
+}
+.vinVehicleImagePlaceholder span{font-size:30px;color:#77a8ff}
+.vinVehicleImagePlaceholder b{font-size:13px}
+.vinVehicleImageBadge{
+  position:absolute;
+  top:10px;
+  left:10px;
+  padding:7px 9px;
+  border:1px solid rgba(116,170,255,.28);
+  border-radius:11px;
+  color:#dceaff;
+  background:rgba(10,15,24,.72);
+  backdrop-filter:blur(16px);
+  font-size:9px;
+  font-weight:950;
+  letter-spacing:.11em;
+}
+.vinVehicleImageCopy{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:11px 3px 2px;
+}
+.vinVehicleImageCopy>div{min-width:0}
+.vinVehicleImageCopy span,.vinMainPhotoCard span{
+  display:block;
+  color:#79a8ea;
+  font-size:9px;
+  font-weight:950;
+  letter-spacing:.12em;
+}
+.vinVehicleImageCopy b,.vinVehicleImageCopy small{display:block}
+.vinVehicleImageCopy b{margin-top:2px;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vinVehicleImageCopy small{margin-top:3px;color:#8995a7;font-size:10px;line-height:1.25}
+
+.vinMainPhotoCard{
+  margin-top:14px;
+  padding:14px;
+  border:1px solid rgba(90,150,255,.13);
+  border-radius:20px;
+  background:linear-gradient(180deg,rgba(75,140,255,.07),rgba(255,255,255,.025));
+}
+.vinMainPhotoCard b,.vinMainPhotoCard small{display:block}
+.vinMainPhotoCard b{margin-top:5px;font-size:14px;line-height:1.32}
+.vinMainPhotoCard small{margin-top:5px;color:#91a0b4;font-size:11px;line-height:1.35}
+.vinMainPhotoButton{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:44px;
+  margin-top:12px;
+  border:1px solid rgba(112,164,255,.20);
+  border-radius:14px;
+  color:#edf4ff;
+  background:rgba(75,140,255,.13);
+  font-size:13px;
+  font-weight:850;
+}
+.vinMainPhotoPreview{
+  position:relative;
+  height:170px;
+  margin-top:10px;
+  overflow:hidden;
+  border-radius:15px;
+  background:#0a0e15;
+}
+.vinMainPhotoPreview img{width:100%;height:100%;object-fit:cover;display:block}
+.vinMainPhotoPreview button{
+  position:absolute;
+  top:9px;
+  right:9px;
+  padding:7px 10px;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:11px;
+  color:#fff;
+  background:rgba(8,12,19,.78);
+  backdrop-filter:blur(14px);
+  font-size:10px;
+  font-weight:850;
+}
+
+.profileMainPhotoButton{
+  position:absolute;
+  z-index:4;
+  top:12px;
+  right:12px;
+  min-height:36px;
+  padding:8px 11px;
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:13px;
+  color:#eef5ff;
+  background:rgba(8,12,19,.68);
+  backdrop-filter:blur(18px);
+  font-size:10px;
+  font-weight:850;
+}
+.profileImageCredit{
+  position:absolute;
+  z-index:4;
+  right:13px;
+  bottom:12px;
+  max-width:44%;
+  overflow:hidden;
+  color:rgba(229,237,249,.67);
+  font-size:8px;
+  text-align:right;
+  text-decoration:none;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+.profileImageCredit.owner{color:#9be9b8}
+
+.garageVehicleImage img.vehicleImageLoading,
+#profileHeroImage.vehicleImageLoading,
+#homeVehicleImage.vehicleImageLoading,
+#twinVehicleImage.vehicleImageLoading{opacity:.42;filter:saturate(.5)}
+
+.garageVehicleSource{
+  position:absolute;
+  z-index:3;
+  top:10px;
+  right:10px;
+  padding:6px 8px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:10px;
+  color:#dce6f5;
+  background:rgba(7,11,17,.66);
+  backdrop-filter:blur(14px);
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.08em;
+}
+
+.twinVehicleReference{
+  display:grid;
+  grid-template-columns:105px minmax(0,1fr);
+  gap:11px;
+  align-items:center;
+  margin:0 0 11px;
+  padding:8px;
+  border:1px solid rgba(255,255,255,.075);
+  border-radius:19px;
+  background:rgba(255,255,255,.028);
+}
+.twinVehicleReference img{
+  width:105px;
+  height:70px;
+  display:block;
+  object-fit:cover;
+  border-radius:13px;
+  background:#0c111a;
+}
+.twinVehicleReference span,.twinVehicleReference b,.twinVehicleReference small{display:block}
+.twinVehicleReference span{color:#78a9ed;font-size:8px;font-weight:950;letter-spacing:.12em}
+.twinVehicleReference b{margin-top:3px;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.twinVehicleReference small{margin-top:3px;color:#8d99aa;font-size:10px;line-height:1.25}
+
+.mainPhotoPickerPreview{
+  height:205px;
+  margin:10px 0;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:17px;
+  background:#0a0e15;
+}
+.mainPhotoPickerPreview img{width:100%;height:100%;display:block;object-fit:cover}
+
+@media(max-width:390px){
+  .vinVehicleImageFrame{height:170px}
+  .twinVehicleReference{grid-template-columns:92px minmax(0,1fr)}
+  .twinVehicleReference img{width:92px;height:64px}
+  .profileImageCredit{max-width:38%}
+}

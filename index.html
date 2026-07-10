@@ -7,8 +7,8 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <meta name="theme-color" content="#070a10">
-  <title>MY CAR v6.21 Garage + VIN Digital Twin</title>
-  <link rel="stylesheet" href="style.css?v=6.21-garage-vin-twin">
+  <title>MY CAR v6.22 VIN Auto Car Photo</title>
+  <link rel="stylesheet" href="style.css?v=6.22-vin-auto-photo">
 </head>
 <body>
 <div class="app">
@@ -103,6 +103,24 @@
             <label>Body style<input id="vinBodyConfirm"></label>
           </div>
           <div id="vinDecodeSource" class="vinSource">Decoder results will appear here.</div>
+
+          <div id="vinVehicleImageCard" class="vinVehicleImageCard hidden">
+            <div class="vinVehicleImageFrame">
+              <img id="vinVehicleImagePreview" alt="Representative decoded vehicle">
+              <div id="vinVehicleImagePlaceholder" class="vinVehicleImagePlaceholder">
+                <span>◇</span><b>Finding a vehicle image…</b>
+              </div>
+              <span id="vinVehicleImageBadge" class="vinVehicleImageBadge">VIN MATCH</span>
+            </div>
+            <div class="vinVehicleImageCopy">
+              <div>
+                <span>REPRESENTATIVE VEHICLE</span>
+                <b id="vinVehicleImageTitle">Searching by decoded year, make, and model</b>
+                <small id="vinVehicleImageSource">The VIN itself is not sent to the image search.</small>
+              </div>
+              <button id="vinRefreshVehicleImage" class="tinyBtn" type="button">Refresh</button>
+            </div>
+          </div>
         </section>
 
         <section class="vinPanel" data-vin-panel="2" hidden>
@@ -118,6 +136,17 @@
             <label class="vinField">Color<input id="vinColorInput" placeholder="Silver"></label>
             <label class="vinField">Mileage<input id="vinMileageInput" inputmode="numeric" placeholder="121842"></label>
           </div>
+          <div class="vinMainPhotoCard">
+            <div>
+              <span>MAIN VEHICLE PHOTO</span>
+              <b>Use the automatic VIN match now, or add your actual car photo.</b>
+              <small>Your own photo will replace the representative image everywhere in the Garage.</small>
+            </div>
+            <input id="vinMainPhotoInput" type="file" accept="image/*" capture="environment" hidden>
+            <label class="vinMainPhotoButton" for="vinMainPhotoInput">Take or choose my car photo</label>
+            <div id="vinMainPhotoPreview" class="vinMainPhotoPreview hidden"><img alt="Selected main vehicle photo"><button id="vinMainPhotoRemove" type="button">Remove</button></div>
+          </div>
+
           <div class="vinLocalCard">
             <span>LOCAL DIGITAL TWIN</span>
             <b>Vehicle profile, photos, and progress are stored on this device.</b>
@@ -129,13 +158,15 @@
 
     <section id="vehicleprofile" class="screen vehicleProfileScreen">
       <div class="profileHero">
-        <img src="images/home/home_garage.png" alt="Vehicle profile">
+        <img id="profileHeroImage" src="images/home/home_garage.png" alt="Vehicle profile">
         <div class="profileHeroShade"></div>
         <div class="profileHeroCopy">
           <span id="profileNickname">My Buick</span>
           <h2 id="profileVehicleName">2010 Buick LaCrosse CXL</h2>
           <p id="profileVehicleMeta">3.0L LF1 V6 • FWD • Silver</p>
         </div>
+        <button id="profileMainPhotoButton" class="profileMainPhotoButton" type="button">Change photo</button>
+        <a id="profileImageCredit" class="profileImageCredit" target="_blank" rel="noopener noreferrer">Representative image</a>
       </div>
 
       <div class="profileIdentityCard">
@@ -175,6 +206,11 @@
       <div class="twinHead">
         <div><span>DIGITAL TWIN BETA</span><h2 id="twinVehicleName">My Buick</h2><p id="twinVehicleMeta">2010 Buick LaCrosse CXL</p></div>
         <span id="twinCompletionBadge" class="badge">Foundation</span>
+      </div>
+
+      <div class="twinVehicleReference">
+        <img id="twinVehicleImage" src="images/home/home_garage.png" alt="Vehicle reference image">
+        <div><span id="twinVehicleImageType">VIN MATCHED IMAGE</span><b id="twinVehicleImageName">Representative vehicle</b><small id="twinVehicleImageSource">Replace it with your own photo anytime.</small></div>
       </div>
 
       <div class="twinStage">
@@ -218,7 +254,7 @@
 
     <section id="home" class="screen homeScreen">
       <div class="homeHero">
-        <img src="images/home/home_garage.png" alt="MY BUICK home photo">
+        <img id="homeVehicleImage" src="images/home/home_garage.png" alt="MY BUICK home photo">
         <div class="homeFade"></div>
         <div class="homeCopy">
           <div id="greeting" class="greeting">Good Afternoon, Alex.</div>
@@ -901,6 +937,6 @@
   <div id="dim" class="dim"></div>
   <aside id="sheet" class="sheet" role="dialog" aria-modal="true" aria-label="Part information" aria-hidden="true" tabindex="-1"><button id="closeSheet" class="icon sheetClose">×</button><div id="sheetData"></div></aside>
 </div>
-<script src="app.js?v=6.21-garage-vin-twin"></script>
+<script src="app.js?v=6.22-vin-auto-photo"></script>
 </body>
 </html>
