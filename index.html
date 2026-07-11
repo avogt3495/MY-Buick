@@ -7,8 +7,9 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <meta name="theme-color" content="#070a10">
-  <title>MY CAR v7.0 Real 3D Twin</title>
-  <link rel="stylesheet" href="style.css?v=7.0-real-3d-twin">
+  <title>MY CAR v7.01 Fast 3D Load</title>
+  <link rel="stylesheet" href="style.css?v=7.01-fast-3d-load">
+  <link rel="modulepreload" href="twin3d.bundle.js?v=7.01-fast-3d-load">
 </head>
 <body>
 <div class="app">
@@ -227,7 +228,7 @@
         <div id="vehicle3DLoading" class="vehicle3DLoading">
           <div class="vehicle3DSpinner"></div>
           <b>Building your 3D twin</b>
-          <span id="vehicle3DLoadingText">Loading the vehicle model…</span>
+          <span id="vehicle3DLoadingText">Starting the optimized 3D viewer…</span>
         </div>
 
         <div id="vehicle3DError" class="vehicle3DError hidden">
@@ -992,7 +993,7 @@
   <div id="dim" class="dim"></div>
   <aside id="sheet" class="sheet" role="dialog" aria-modal="true" aria-label="Part information" aria-hidden="true" tabindex="-1"><button id="closeSheet" class="icon sheetClose">×</button><div id="sheetData"></div></aside>
 </div>
-<script src="app.js?v=7.0-real-3d-twin"></script>
-<script type="module" src="twin3d.bundle.js?v=7.0-real-3d-twin"></script>
+<script src="app.js?v=7.01-fast-3d-load"></script>
+<script type="module" src="twin3d.bundle.js?v=7.01-fast-3d-load" onerror="document.getElementById('vehicle3DLoading')?.classList.add('hidden');document.getElementById('vehicle3DError')?.classList.remove('hidden');const message=document.querySelector('#vehicle3DError span');if(message)message.textContent='The 3D engine file did not load. Confirm twin3d.bundle.js was uploaded beside index.html.'"></script>
 </body>
 </html>

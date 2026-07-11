@@ -4672,3 +4672,7 @@ label{
   .twin3dHint{font-size:9px}
   .real3dQuickRail{grid-template-columns:1fr}
 }
+
+
+/* v7.01 loading optimization */
+.vehicle3DLoading b::after{content:" • optimized";color:#72a7ed;font-size:10px;font-weight:850;letter-spacing:.08em;text-transform:uppercase}

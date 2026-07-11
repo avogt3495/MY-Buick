@@ -3847,6 +3847,10 @@ document.querySelectorAll("[data-photo-filter]").forEach(btn=>btn.addEventListen
 
 // v7.0 Real 3D Digital Twin bridge
 let twin3dInitialized=false;
+let twin3dLastVehicleKey="";
+function twin3dVehicleKey(vehicle){
+  return [vehicle?.year,vehicle?.make,vehicle?.model,vehicle?.trim,vehicle?.color,vehicle?.moduleSet].map(value=>String(value||"").toLowerCase().trim()).join("|");
+}
 function sanitizeVehicleFor3D(vehicle){
   return {
     id:vehicle.id,
@@ -3863,13 +3867,21 @@ function sanitizeVehicleFor3D(vehicle){
   };
 }
 function initTwinCanvas(){
-  twin3dInitialized=true;
   const vehicle=sanitizeVehicleFor3D(getActiveVehicle());
   window.MYCAR_ACTIVE_VEHICLE_3D=vehicle;
+  if(twin3dInitialized)return;
+  twin3dInitialized=true;
+  twin3dLastVehicleKey=twin3dVehicleKey(vehicle);
   window.dispatchEvent(new CustomEvent("mycar:3d-init",{detail:{vehicle}}));
 }
 async function renderDigitalTwin(){
   const vehicle=getActiveVehicle();
+  const vehicle3d=sanitizeVehicleFor3D(vehicle);
+  const vehicleKey=twin3dVehicleKey(vehicle3d);
+  window.MYCAR_ACTIVE_VEHICLE_3D=vehicle3d;
+  const shouldUpdateMountedViewer=twin3dInitialized&&vehicleKey!==twin3dLastVehicleKey;
+  twin3dLastVehicleKey=vehicleKey;
+  if(shouldUpdateMountedViewer)window.dispatchEvent(new CustomEvent("mycar:3d-vehicle",{detail:{vehicle:vehicle3d}}));
   const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value};
   set("twinVehicleName",vehicle.nickname||"My Vehicle");
   set("twinVehicleMeta",formatVehicleName(vehicle));
@@ -3878,9 +3890,6 @@ async function renderDigitalTwin(){
   const photos=await getPhotos(vehicle.id).catch(()=>[]);
   set("twinPhotoCount",photos.length);
   set("twinCompletionBadge",photos.length?photos.length+" optional photo"+(photos.length===1?"":"s"):"3D Ready");
-  const vehicle3d=sanitizeVehicleFor3D(vehicle);
-  window.MYCAR_ACTIVE_VEHICLE_3D=vehicle3d;
-  window.dispatchEvent(new CustomEvent("mycar:3d-vehicle",{detail:{vehicle:vehicle3d}}));
 }
 function openTwinZoneSheet(zone){
   if(zone==="engine"){showScreen("engine");return}
@@ -3916,4 +3925,4 @@ window.addEventListener("mycar:3d-model-status",event=>{
 document.querySelectorAll("[data-twin-module]").forEach(btn=>btn.addEventListener("click",()=>showScreen(btn.dataset.twinModule)));
 document.querySelectorAll("[data-twin-zone]").forEach(btn=>btn.addEventListener("click",()=>openTwinZoneSheet(btn.dataset.twinZone)));
 
-ensureGarageSeed();setGreeting();renderComponentMaps();renderMarkers();updateProgress();renderLogs();renderCoolantChecklist();renderCoolantStep();renderCoolantLogs();renderFuseGuide();renderGarage();showScreen(getActiveVehicle()?"digitaltwin":"garage");window.addEventListener("load",()=>setTimeout(()=>{renderMarkers();updateProgress();renderFuseGuide();},50));
+ensureGarageSeed();window.MYCAR_ACTIVE_VEHICLE_3D=sanitizeVehicleFor3D(getActiveVehicle());twin3dLastVehicleKey=twin3dVehicleKey(window.MYCAR_ACTIVE_VEHICLE_3D);setGreeting();renderComponentMaps();renderMarkers();updateProgress();renderLogs();renderCoolantChecklist();renderCoolantStep();renderCoolantLogs();renderFuseGuide();renderGarage();showScreen(getActiveVehicle()?"digitaltwin":"garage");window.addEventListener("load",()=>setTimeout(()=>{renderMarkers();updateProgress();renderFuseGuide();},50));
