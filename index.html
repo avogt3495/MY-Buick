@@ -7,8 +7,8 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <meta name="theme-color" content="#070a10">
-  <title>MY CAR v6.23 Movable Digital Twin</title>
-  <link rel="stylesheet" href="style.css?v=6.23-movable-digital-twin">
+  <title>MY CAR v6.24 Default Digital Twin</title>
+  <link rel="stylesheet" href="style.css?v=6.24-default-digital-twin">
 </head>
 <body>
 <div class="app">
@@ -165,7 +165,7 @@
           <h2 id="profileVehicleName">2010 Buick LaCrosse CXL</h2>
           <p id="profileVehicleMeta">3.0L LF1 V6 • FWD • Silver</p>
         </div>
-        <button id="profileMainPhotoButton" class="profileMainPhotoButton" type="button">Change photo</button>
+        <button id="profileMainPhotoButton" class="profileMainPhotoButton" type="button">Add photo (optional)</button>
         <a id="profileImageCredit" class="profileImageCredit" target="_blank" rel="noopener noreferrer">Representative image</a>
       </div>
 
@@ -222,7 +222,7 @@
           <button type="button" data-twin-view="trunk">Trunk</button>
           <button type="button" data-twin-view="underside">Underside</button>
         </div>
-        <button id="twinChangeMainPhoto" class="twinGhostAction" type="button">Change photo</button>
+        <button id="twinChangeMainPhoto" class="twinGhostAction" type="button">Add photo (optional)</button>
       </div>
 
       <div class="twinStage twinViewerStage">
@@ -253,9 +253,17 @@
         <small id="twinStageImageSource">Using the best available vehicle photo.</small>
       </div>
 
+      <div class="twinPresetRail" aria-label="Twin view presets">
+        <button type="button" class="active" data-twin-preset="frontleft">Front Left</button>
+        <button type="button" data-twin-preset="front">Front</button>
+        <button type="button" data-twin-preset="driver">Driver</button>
+        <button type="button" data-twin-preset="passenger">Passenger</button>
+        <button type="button" data-twin-preset="focus">Focus</button>
+      </div>
+
       <div class="twinStatusStrip">
         <div><span>Mapped</span><strong>Engine Bay</strong></div>
-        <div><span>Owner Photos</span><strong id="twinPhotoCount">0</strong></div>
+        <div><span>Custom Photos</span><strong id="twinPhotoCount">0</strong></div>
         <div><span>VIN</span><strong id="twinVinMask">Masked</strong></div>
       </div>
 
@@ -976,6 +984,6 @@
   <div id="dim" class="dim"></div>
   <aside id="sheet" class="sheet" role="dialog" aria-modal="true" aria-label="Part information" aria-hidden="true" tabindex="-1"><button id="closeSheet" class="icon sheetClose">×</button><div id="sheetData"></div></aside>
 </div>
-<script src="app.js?v=6.23-movable-digital-twin"></script>
+<script src="app.js?v=6.24-default-digital-twin"></script>
 </body>
 </html>

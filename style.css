@@ -4608,3 +4608,11 @@ label{
 .twinViewerStage .twinRotate{top:50%;transform:translateY(-50%);z-index:5}
 #twinStageImage.vehicleImageLoading{opacity:.55;filter:saturate(.55)}
 @media(max-width:420px){.twinViewerStage{min-height:305px;padding:12px}.twinScene{height:224px}.twinPhotoFrame{width:min(86vw,312px)}.twinHotspot{padding:7px 9px;font-size:10px}.twinQuickModuleRail{grid-template-columns:1fr}.twinGhostAction{padding:9px 10px;font-size:11px}}
+
+
+/* v6.24 Default Digital Twin */
+
+.twinPresetRail{display:flex;gap:8px;overflow:auto;margin:12px 0 10px;padding-bottom:2px;scrollbar-width:none}
+.twinPresetRail::-webkit-scrollbar{display:none}
+.twinPresetRail button{flex:0 0 auto;min-height:34px;padding:8px 12px;border:1px solid rgba(255,255,255,.08);border-radius:999px;background:rgba(255,255,255,.04);color:#bfcde0;font-size:11px;font-weight:800;letter-spacing:.02em}
+.twinPresetRail button.active{background:linear-gradient(180deg,rgba(99,164,255,.22),rgba(99,164,255,.1));border-color:rgba(112,174,255,.32);color:#fff;box-shadow:0 10px 30px rgba(50,110,215,.18)}
