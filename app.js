@@ -3845,82 +3845,75 @@ async function renderPhotoGallery(){
 }
 document.querySelectorAll("[data-photo-filter]").forEach(btn=>btn.addEventListener("click",()=>{currentPhotoFilter=btn.dataset.photoFilter;document.querySelectorAll("[data-photo-filter]").forEach(item=>item.classList.toggle("active",item===btn));renderPhotoGallery()}));
 
-// Movable digital twin with actual vehicle imagery
-let twinState={yaw:-16,pitch:7,zoom:1,view:"main",ready:false,dragging:false,lastX:0,lastY:0,preset:"frontleft"};
-const TWIN_PRESETS={frontleft:{yaw:-16,pitch:7,zoom:1},front:{yaw:0,pitch:6,zoom:1.02},driver:{yaw:-36,pitch:8,zoom:1.03},passenger:{yaw:30,pitch:8,zoom:1.03},focus:{yaw:-12,pitch:3,zoom:1.15}};
-const TWIN_VIEW_CONFIG={
-  main:{label:"MAIN VIEW",title:"Main vehicle image",fallback:"vehicle",description:"Your current main vehicle photo or VIN-matched vehicle image.",hotspots:[{x:31,y:35,title:"Engine Bay",small:"Tap to open",action:"screen",target:"engine"},{x:58,y:34,title:"Interior",small:"Cabin details",action:"zone",target:"interior"},{x:25,y:69,title:"Wheels",small:"Tires & brakes",action:"zone",target:"wheels"},{x:77,y:48,title:"Trunk",small:"Rear cargo area",action:"zone",target:"trunk"}]},
-  engine:{label:"ENGINE VIEW",title:"Engine bay view",fallback:"images/engine/engine_bay_master.jpg",description:"Built from your engine bay photo when available.",hotspots:[{x:25,y:48,title:"Airbox",small:"Mapped module",action:"screen",target:"airbox"},{x:60,y:46,title:"Coolant",small:"Mapped module",action:"screen",target:"coolant"},{x:43,y:18,title:"Fuse Box",small:"Mapped module",action:"screen",target:"fusebox"}]},
-  interior:{label:"INTERIOR VIEW",title:"Interior view",fallback:"vehicle",description:"Add cabin photos to personalize this section.",hotspots:[{x:50,y:50,title:"Interior",small:"Add or review photos",action:"zone",target:"interior"}]},
-  wheels:{label:"WHEELS VIEW",title:"Wheel and brake view",fallback:"vehicle",description:"Add corner photos to document tire, wheel, and brake condition.",hotspots:[{x:28,y:70,title:"Front wheel",small:"Add or review photos",action:"zone",target:"wheels"},{x:74,y:70,title:"Rear wheel",small:"Add or review photos",action:"zone",target:"wheels"}]},
-  trunk:{label:"TRUNK VIEW",title:"Trunk view",fallback:"vehicle",description:"Add trunk photos to document tools, spare, and cargo area condition.",hotspots:[{x:76,y:48,title:"Trunk",small:"Add or review photos",action:"zone",target:"trunk"}]},
-  underside:{label:"UNDERSIDE VIEW",title:"Underside view",fallback:"vehicle",description:"Add underside photos for rust, leaks, exhaust, and suspension tracking.",hotspots:[{x:50,y:60,title:"Underside",small:"Add or review photos",action:"zone",target:"underside"}]}
-};
-function clamp(value,min,max){return Math.max(min,Math.min(max,value))}
-function setTwinPreset(preset,redraw=true){const next=TWIN_PRESETS[preset]||TWIN_PRESETS.frontleft;twinState.preset=preset in TWIN_PRESETS?preset:"frontleft";twinState.yaw=next.yaw;twinState.pitch=next.pitch;twinState.zoom=next.zoom;document.querySelectorAll("[data-twin-preset]").forEach(btn=>btn.classList.toggle("active",btn.dataset.twinPreset===twinState.preset));if(redraw)drawTwinCar()}
-function resetTwinView(redraw=true){setTwinPreset("frontleft",redraw)}
-function chooseLatestAreaPhoto(photos,area){return (photos||[]).filter(photo=>photo.area===area&&!String(photo.role||"").includes("cover")).sort((a,b)=>String(b.createdAt).localeCompare(String(a.createdAt)))[0]||null}
-function chooseTwinFallback(view,vehicle){const config=TWIN_VIEW_CONFIG[view]||TWIN_VIEW_CONFIG.main;return config.fallback==="vehicle"?null:config.fallback}
-async function getTwinViewPresentation(vehicle,photos,view){
-  const config=TWIN_VIEW_CONFIG[view]||TWIN_VIEW_CONFIG.main;
-  if(view==="main"){
-    const main=await vehicleImagePresentation(vehicle,"twin");
-    return {...main,viewLabel:config.label,viewTitle:main.type==="owner"?"Your actual car":"VIN matched vehicle",viewSource:main.type==="owner"?"This is the main photo saved for your vehicle.":(main.credit||config.description)};
-  }
-  const areaPhoto=chooseLatestAreaPhoto(photos,view);
-  if(areaPhoto?.blob){
-    const src=URL.createObjectURL(areaPhoto.blob);vehicleImageObjectUrls["twin"].push(src);
-    return {src,type:"owner-area",label:"OWNER PHOTO",title:config.title,credit:photoAreaLabel(view)+" photo • "+new Date(areaPhoto.createdAt).toLocaleDateString(),viewLabel:config.label,viewTitle:config.title,viewSource:"Using your latest "+photoAreaLabel(view).toLowerCase()+" photo."};
-  }
-  const fallback=chooseTwinFallback(view,vehicle);
-  if(fallback){
-    return {src:fallback,type:"built-in",label:"APP IMAGE",title:config.title,credit:config.description,viewLabel:config.label,viewTitle:config.title,viewSource:config.description};
-  }
-  const main=await vehicleImagePresentation(vehicle,"twin");
-  return {...main,viewLabel:config.label,viewTitle:config.title,viewSource:"Using the built-in digital twin for "+photoAreaLabel(view).toLowerCase()+". Add your own photo only if you want to personalize it."};
-}
-function renderTwinHotspots(view){
-  const config=TWIN_VIEW_CONFIG[view]||TWIN_VIEW_CONFIG.main;const layer=document.getElementById("twinHotspotLayer");if(!layer)return;layer.innerHTML="";
-  (config.hotspots||[]).forEach(spot=>{const btn=document.createElement("button");btn.type="button";btn.className="twinHotspot"+(spot.small&&spot.small.length<14?" compact":"");btn.style.left=spot.x+"%";btn.style.top=spot.y+"%";btn.innerHTML='<div><b>'+escapeHtml(spot.title)+'</b>'+(spot.small?'<small>'+escapeHtml(spot.small)+'</small>':'')+'</div>';
-    btn.addEventListener("click",()=>{if(spot.action==="screen")showScreen(spot.target);else if(spot.action==="zone")openTwinZoneSheet(spot.target)});layer.appendChild(btn);
-  });
-}
-function drawTwinCar(){
-  const frame=document.getElementById("twinPhotoFrame");if(!frame)return;frame.style.transform='translateY(2px) rotateX('+twinState.pitch+'deg) rotateY('+twinState.yaw+'deg) scale('+twinState.zoom+')';
-}
-function setTwinView(view){
-  twinState.view=view;document.querySelectorAll('[data-twin-view]').forEach(btn=>btn.classList.toggle('active',btn.dataset.twinView===view));renderDigitalTwin();
+// v7.0 Real 3D Digital Twin bridge
+let twin3dInitialized=false;
+function sanitizeVehicleFor3D(vehicle){
+  return {
+    id:vehicle.id,
+    year:vehicle.year,
+    make:vehicle.make,
+    model:vehicle.model,
+    trim:vehicle.trim,
+    engine:vehicle.engine,
+    drivetrain:vehicle.drivetrain,
+    bodyClass:vehicle.bodyClass,
+    color:vehicle.color,
+    moduleSet:vehicle.moduleSet,
+    vinMasked:vehicle.vinLinked?maskVin(vehicle.vin):vehicle.vinMasked||"VIN not linked"
+  };
 }
 function initTwinCanvas(){
-  const scene=document.getElementById("twinScene");if(!scene)return;drawTwinCar();if(twinState.ready)return;twinState.ready=true;
-  scene.addEventListener("pointerdown",event=>{twinState.dragging=true;twinState.lastX=event.clientX;twinState.lastY=event.clientY;scene.setPointerCapture?.(event.pointerId)});
-  scene.addEventListener("pointermove",event=>{if(!twinState.dragging)return;const dx=event.clientX-twinState.lastX;const dy=event.clientY-twinState.lastY;twinState.lastX=event.clientX;twinState.lastY=event.clientY;twinState.preset="";document.querySelectorAll("[data-twin-preset]").forEach(btn=>btn.classList.remove("active"));twinState.yaw=clamp(twinState.yaw+dx*.22,-58,58);twinState.pitch=clamp(twinState.pitch-dy*.16,-18,20);drawTwinCar()});
-  const stop=()=>{twinState.dragging=false};scene.addEventListener("pointerup",stop);scene.addEventListener("pointercancel",stop);scene.addEventListener("pointerleave",stop);
-  document.getElementById("twinRotateLeft")?.addEventListener("click",()=>{twinState.preset="";document.querySelectorAll("[data-twin-preset]").forEach(btn=>btn.classList.remove("active"));twinState.yaw=clamp(twinState.yaw-7,-58,58);drawTwinCar()});
-  document.getElementById("twinRotateRight")?.addEventListener("click",()=>{twinState.preset="";document.querySelectorAll("[data-twin-preset]").forEach(btn=>btn.classList.remove("active"));twinState.yaw=clamp(twinState.yaw+7,-58,58);drawTwinCar()});
-  document.getElementById("twinZoomIn")?.addEventListener("click",()=>{twinState.zoom=clamp(twinState.zoom+.08,.85,1.28);drawTwinCar()});
-  document.getElementById("twinZoomOut")?.addEventListener("click",()=>{twinState.zoom=clamp(twinState.zoom-.08,.85,1.28);drawTwinCar()});
-  document.getElementById("twinResetView")?.addEventListener("click",()=>resetTwinView());
-  document.getElementById("twinChangeMainPhoto")?.addEventListener("click",()=>openMainVehiclePhotoPicker());
-  document.querySelectorAll("[data-twin-preset]").forEach(btn=>btn.addEventListener("click",()=>setTwinPreset(btn.dataset.twinPreset)));
-  document.querySelectorAll('[data-twin-view]').forEach(btn=>btn.addEventListener('click',()=>setTwinView(btn.dataset.twinView)));
-  document.querySelectorAll('[data-twin-module]').forEach(btn=>btn.addEventListener('click',()=>showScreen(btn.dataset.twinModule)));
-  window.addEventListener('resize',drawTwinCar);
+  twin3dInitialized=true;
+  const vehicle=sanitizeVehicleFor3D(getActiveVehicle());
+  window.MYCAR_ACTIVE_VEHICLE_3D=vehicle;
+  window.dispatchEvent(new CustomEvent("mycar:3d-init",{detail:{vehicle}}));
 }
 async function renderDigitalTwin(){
-  const vehicle=getActiveVehicle();document.getElementById("twinVehicleName").textContent=vehicle.nickname||"My Vehicle";document.getElementById("twinVehicleMeta").textContent=formatVehicleName(vehicle);document.getElementById("twinVinMask").textContent=vehicle.vinLinked?maskVin(vehicle.vin):vehicle.vinMasked||"Not linked";
-  revokeVehicleImageUrls("twin");const presentation=await vehicleImagePresentation(vehicle,"twin");applyImageElement(document.getElementById("twinVehicleImage"),presentation);document.getElementById("twinVehicleImageType").textContent=presentation.type==="owner"?"YOUR ACTUAL CAR":"DEFAULT DIGITAL TWIN";document.getElementById("twinVehicleImageName").textContent=presentation.title||formatVehicleName(vehicle);document.getElementById("twinVehicleImageSource").textContent=presentation.type==="owner"?"Stored on this device":presentation.credit||"Built-in vehicle twin";
-  const photos=await getPhotos(vehicle.id).catch(()=>[]);document.getElementById("twinPhotoCount").textContent=photos.length;document.getElementById("twinCompletionBadge").textContent=photos.length?photos.length+" custom":"Photo-optional";
-  const counts={};photos.forEach(photo=>{counts[photo.area]=(counts[photo.area]||0)+1});document.querySelectorAll("[data-zone-status]").forEach(el=>{const zone=el.dataset.zoneStatus;const count=counts[zone]||0;el.textContent=count?count+" owner photo"+(count===1?"":"s"):"Not documented"});
-  const stageView=await getTwinViewPresentation(vehicle,photos,twinState.view||"main");applyImageElement(document.getElementById("twinStageImage"),stageView);document.getElementById("twinStageViewLabel").textContent=stageView.viewLabel||"MAIN VIEW";document.getElementById("twinStageImageTitle").textContent=stageView.viewTitle||stageView.title||"Vehicle image";document.getElementById("twinStageImageSource").textContent=stageView.viewSource||stageView.credit||"Best available photo";
-  renderTwinHotspots(twinState.view||"main");document.querySelectorAll("[data-twin-preset]").forEach(btn=>btn.classList.toggle("active",btn.dataset.twinPreset===twinState.preset));drawTwinCar();
+  const vehicle=getActiveVehicle();
+  const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value};
+  set("twinVehicleName",vehicle.nickname||"My Vehicle");
+  set("twinVehicleMeta",formatVehicleName(vehicle));
+  set("twinVinMask",vehicle.vinLinked?maskVin(vehicle.vin):vehicle.vinMasked||"Not linked");
+  set("twin3dVehicleSpec",[vehicle.year,vehicle.make,vehicle.model,vehicle.trim].filter(Boolean).join(" ")+" base twin");
+  const photos=await getPhotos(vehicle.id).catch(()=>[]);
+  set("twinPhotoCount",photos.length);
+  set("twinCompletionBadge",photos.length?photos.length+" optional photo"+(photos.length===1?"":"s"):"3D Ready");
+  const vehicle3d=sanitizeVehicleFor3D(vehicle);
+  window.MYCAR_ACTIVE_VEHICLE_3D=vehicle3d;
+  window.dispatchEvent(new CustomEvent("mycar:3d-vehicle",{detail:{vehicle:vehicle3d}}));
 }
 function openTwinZoneSheet(zone){
   if(zone==="engine"){showScreen("engine");return}
-  const descriptions={exterior:"Body panels, paint, lights, glass, and exterior condition.",interior:"Dashboard, seats, controls, trim, and cabin components.",wheels:"Wheels, tires, brakes, hubs, and suspension corners.",trunk:"Cargo area, spare tire well, tools, wiring, and rear access points.",underside:"Exhaust, subframes, lines, shields, leaks, and rust condition."};
-  openGlobalFloatSheet(photoAreaLabel(zone),descriptions[zone]||"Document this vehicle area.",'<div class="globalInfoCard"><span>DIGITAL TWIN STATUS</span><b>This area becomes personalized as you attach your own photos and service records.</b></div><div class="globalSheetActions"><button id="twinZonePhotos" class="ghost" type="button">View Photos</button><button id="twinZoneAdd" class="primary" type="button">Add Photo</button></div>',"DIGITAL TWIN");
-  document.getElementById("twinZonePhotos")?.addEventListener("click",()=>{closeGlobalFloatSheet();currentPhotoFilter=zone;showScreen("photos")});document.getElementById("twinZoneAdd")?.addEventListener("click",()=>{closeGlobalFloatSheet();setTimeout(()=>openPhotoCapture(zone),320)});
+  const descriptions={
+    exterior:"Body panels, paint, lights, glass, and exterior condition.",
+    interior:"Dashboard, seats, controls, trim, and cabin components.",
+    wheels:"Wheels, tires, brakes, hubs, and suspension corners.",
+    trunk:"Cargo area, spare tire well, tools, wiring, and rear access points.",
+    underside:"Exhaust, subframes, lines, shields, leaks, and rust condition."
+  };
+  openGlobalFloatSheet(
+    photoAreaLabel(zone),
+    descriptions[zone]||"Explore this vehicle area.",
+    '<div class="globalInfoCard"><span>3D DIGITAL TWIN</span><b>This area works without owner photos. Photos remain an optional personalization layer.</b></div><div class="globalSheetActions"><button id="twinZonePhotos" class="ghost" type="button">Optional Photos</button><button id="twinZoneExplore" class="primary" type="button">Keep Exploring</button></div>',
+    "DIGITAL TWIN"
+  );
+  document.getElementById("twinZonePhotos")?.addEventListener("click",()=>{closeGlobalFloatSheet();currentPhotoFilter=zone;showScreen("photos")});
+  document.getElementById("twinZoneExplore")?.addEventListener("click",()=>closeGlobalFloatSheet());
 }
+function routeFrom3D(target){
+  if(!target)return;
+  if(["engine","airbox","coolant","fusebox","vehicleprofile","photos"].includes(target)){showScreen(target);return}
+  if(["exterior","interior","wheels","trunk","underside"].includes(target)){openTwinZoneSheet(target);return}
+}
+window.addEventListener("mycar:3d-route",event=>routeFrom3D(event.detail?.target));
+window.addEventListener("mycar:3d-model-status",event=>{
+  const detail=event.detail||{};
+  const set=(id,value)=>{const el=document.getElementById(id);if(el&&value)el.textContent=value};
+  set("twin3dModelStatus",detail.status);
+  set("twin3dModelType",detail.type);
+  set("twin3dVehicleSpec",detail.spec);
+});
+document.querySelectorAll("[data-twin-module]").forEach(btn=>btn.addEventListener("click",()=>showScreen(btn.dataset.twinModule)));
 document.querySelectorAll("[data-twin-zone]").forEach(btn=>btn.addEventListener("click",()=>openTwinZoneSheet(btn.dataset.twinZone)));
 
-ensureGarageSeed();setGreeting();renderComponentMaps();renderMarkers();updateProgress();renderLogs();renderCoolantChecklist();renderCoolantStep();renderCoolantLogs();renderFuseGuide();renderGarage();showScreen("garage");window.addEventListener("load",()=>setTimeout(()=>{renderMarkers();updateProgress();renderFuseGuide();},50));
+ensureGarageSeed();setGreeting();renderComponentMaps();renderMarkers();updateProgress();renderLogs();renderCoolantChecklist();renderCoolantStep();renderCoolantLogs();renderFuseGuide();renderGarage();showScreen(getActiveVehicle()?"digitaltwin":"garage");window.addEventListener("load",()=>setTimeout(()=>{renderMarkers();updateProgress();renderFuseGuide();},50));

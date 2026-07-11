@@ -1,22 +1,37 @@
-# MY BUICK v2
+# MY CAR v7.0 Real 3D Twin
 
-Proper project structure for MY BUICK. This version starts the Airbox Gold Standard module.
+This version replaces the photo-tilting twin with a real WebGL 3D vehicle viewer.
 
-## Upload to GitHub Pages
-Upload the contents of this folder to the root of the `MY-Buick` repo:
+## Replace or upload
 
 - `index.html`
 - `style.css`
 - `app.js`
-- `data/`
-- `images/`
+- `twin3d.bundle.js`
+- `README.md`
+- `models/model-registry.json`
+- `models/README.md`
 
-Do not upload only the zip. GitHub Pages needs the files extracted in the repo.
+Keep your existing `images/` folders and all previous app assets.
 
-## Airbox module images
-- `images/airbox/00_installed.jpeg`
-- `images/airbox/01_filter_visible.jpeg`
-- `images/airbox/02_filter_removed.jpeg`
+## v7.0 features
 
-## Notes
-This is the first proper multi-file version. The airbox module is the template for future components.
+- Opens directly to the 3D Digital Twin
+- True one-finger orbiting and pinch zooming
+- Front, rear, driver, passenger, top, and underside camera views
+- Clickable body, four doors, hood, trunk, wheels, and underside
+- Animated opening and closing doors, hood, and trunk
+- Clickable Airbox, Coolant, and Fuse Box inside the engine bay
+- Open All, Close All, and Reset controls
+- Optional owner photos remain available but are never required
+- VIN/model registry is ready for a licensed exact `.glb` model later
+
+## Current model accuracy
+
+The bundled v7.0 model is a real, fully interactive procedural 3D foundation shaped and configured for a 2010 Buick LaCrosse-style sedan. It is not factory CAD and should not be represented as an exact exterior scan.
+
+The exact-model slot is already wired into `models/model-registry.json`. When a licensed and properly prepared 2010 Buick LaCrosse GLB is available, it can replace the procedural body without changing the main app flow.
+
+## Privacy
+
+The 3D module receives only vehicle profile details needed to select a model. The full VIN is not passed into the 3D viewer.

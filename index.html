@@ -7,8 +7,8 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <meta name="theme-color" content="#070a10">
-  <title>MY CAR v6.24 Default Digital Twin</title>
-  <link rel="stylesheet" href="style.css?v=6.24-default-digital-twin">
+  <title>MY CAR v7.0 Real 3D Twin</title>
+  <link rel="stylesheet" href="style.css?v=7.0-real-3d-twin">
 </head>
 <body>
 <div class="app">
@@ -202,84 +202,92 @@
       </div>
     </section>
 
-    <section id="digitaltwin" class="screen digitalTwinScreen">
-      <div class="twinHead">
-        <div><span>DIGITAL TWIN ALPHA</span><h2 id="twinVehicleName">My Buick</h2><p id="twinVehicleMeta">2010 Buick LaCrosse CXL</p></div>
-        <span id="twinCompletionBadge" class="badge">Foundation</span>
-      </div>
-
-      <div class="twinVehicleReference">
-        <img id="twinVehicleImage" src="images/home/home_garage.png" alt="Vehicle reference image">
-        <div><span id="twinVehicleImageType">VIN MATCHED IMAGE</span><b id="twinVehicleImageName">Representative vehicle</b><small id="twinVehicleImageSource">Replace it with your own photo anytime.</small></div>
-      </div>
-
-      <div class="twinToolbarRow">
-        <div class="twinViewTabs" role="tablist" aria-label="Digital twin views">
-          <button type="button" class="active" data-twin-view="main">Main</button>
-          <button type="button" data-twin-view="engine">Engine</button>
-          <button type="button" data-twin-view="interior">Interior</button>
-          <button type="button" data-twin-view="wheels">Wheels</button>
-          <button type="button" data-twin-view="trunk">Trunk</button>
-          <button type="button" data-twin-view="underside">Underside</button>
+    <section id="digitaltwin" class="screen digitalTwinScreen real3dTwinScreen">
+      <div class="twinHead real3dHead">
+        <div>
+          <span>REAL 3D DIGITAL TWIN</span>
+          <h2 id="twinVehicleName">My Buick</h2>
+          <p id="twinVehicleMeta">2010 Buick LaCrosse CXL</p>
         </div>
-        <button id="twinChangeMainPhoto" class="twinGhostAction" type="button">Add photo (optional)</button>
+        <span id="twinCompletionBadge" class="badge">3D Ready</span>
       </div>
 
-      <div class="twinStage twinViewerStage">
-        <div id="twinScene" class="twinScene">
-          <div id="twinPhotoFrame" class="twinPhotoFrame">
-            <img id="twinStageImage" src="images/home/home_garage.png" alt="Movable digital twin vehicle view">
-            <div id="twinHotspotLayer" class="twinHotspotLayer"></div>
+      <div class="twin3dStatusRow">
+        <div>
+          <span id="twin3dModelStatus">BUILT-IN MODEL</span>
+          <b id="twin3dVehicleSpec">2010 Buick LaCrosse base twin</b>
+          <small>No photos required. Your own photos remain optional.</small>
+        </div>
+        <span class="twin3dLiveDot">LIVE</span>
+      </div>
+
+      <div id="vehicle3DStage" class="vehicle3DStage" aria-label="Interactive 3D vehicle viewer">
+        <div id="vehicle3DCanvas" class="vehicle3DCanvas"></div>
+
+        <div id="vehicle3DLoading" class="vehicle3DLoading">
+          <div class="vehicle3DSpinner"></div>
+          <b>Building your 3D twin</b>
+          <span id="vehicle3DLoadingText">Loading the vehicle model…</span>
+        </div>
+
+        <div id="vehicle3DError" class="vehicle3DError hidden">
+          <b>3D viewer unavailable</b>
+          <span>This device or browser could not start WebGL.</span>
+        </div>
+
+        <div class="twin3dTopControls">
+          <span id="twin3dViewLabel" class="twin3dModePill">FRONT LEFT</span>
+          <div class="twin3dControlGroup">
+            <button id="twin3dOpenAll" type="button">Open all</button>
+            <button id="twin3dCloseAll" type="button">Close all</button>
+            <button id="twin3dReset" type="button">Reset</button>
           </div>
-          <div class="twinStageFloor"></div>
-          <div class="twinReflectGlow"></div>
         </div>
-        <div class="twinStageTopBar">
-          <span class="twinModePill">MOVABLE TWIN</span>
-          <div class="twinControlDock">
-            <button id="twinZoomOut" class="twinMiniControl" type="button" aria-label="Zoom out">−</button>
-            <button id="twinResetView" class="twinMiniControl wide" type="button">Reset</button>
-            <button id="twinZoomIn" class="twinMiniControl" type="button" aria-label="Zoom in">＋</button>
-          </div>
+
+        <div class="twin3dHint">Drag to spin • pinch to zoom • tap a door, hood, trunk, wheel, or body</div>
+      </div>
+
+      <div class="twin3dViews" aria-label="3D camera views">
+        <button type="button" class="active" data-3d-view="frontLeft">Front Left</button>
+        <button type="button" data-3d-view="front">Front</button>
+        <button type="button" data-3d-view="driver">Driver</button>
+        <button type="button" data-3d-view="passenger">Passenger</button>
+        <button type="button" data-3d-view="rear">Rear</button>
+        <button type="button" data-3d-view="top">Top</button>
+        <button type="button" data-3d-view="underside">Underside</button>
+      </div>
+
+      <div id="twin3dSelection" class="twin3dSelection">
+        <div>
+          <span id="twin3dPartEyebrow">SELECT A PART</span>
+          <b id="twin3dPartTitle">Tap the 3D car</b>
+          <small id="twin3dPartSubtitle">Movable parts open directly. Other parts take you into their vehicle area.</small>
         </div>
-        <div class="twinStageHint">Drag left/right to rotate • drag up/down to tilt • use +/- to zoom</div>
-        <button id="twinRotateLeft" class="twinRotate left" type="button" aria-label="Rotate left">‹</button>
-        <button id="twinRotateRight" class="twinRotate right" type="button" aria-label="Rotate right">›</button>
+        <div class="twin3dSelectionActions">
+          <button id="twin3dTogglePart" class="ghost hidden" type="button">Open</button>
+          <button id="twin3dExplorePart" class="primary hidden" type="button">Explore area</button>
+        </div>
       </div>
 
-      <div class="twinStageMetaCard">
-        <span id="twinStageViewLabel">MAIN VIEW</span>
-        <b id="twinStageImageTitle">Main vehicle image</b>
-        <small id="twinStageImageSource">Using the best available vehicle photo.</small>
-      </div>
-
-      <div class="twinPresetRail" aria-label="Twin view presets">
-        <button type="button" class="active" data-twin-preset="frontleft">Front Left</button>
-        <button type="button" data-twin-preset="front">Front</button>
-        <button type="button" data-twin-preset="driver">Driver</button>
-        <button type="button" data-twin-preset="passenger">Passenger</button>
-        <button type="button" data-twin-preset="focus">Focus</button>
-      </div>
-
-      <div class="twinStatusStrip">
-        <div><span>Mapped</span><strong>Engine Bay</strong></div>
-        <div><span>Custom Photos</span><strong id="twinPhotoCount">0</strong></div>
+      <div class="twinStatusStrip real3dStatusStrip">
+        <div><span>Model</span><strong id="twin3dModelType">Procedural 3D</strong></div>
+        <div><span>Optional Photos</span><strong id="twinPhotoCount">0</strong></div>
         <div><span>VIN</span><strong id="twinVinMask">Masked</strong></div>
       </div>
 
-      <div class="twinQuickModuleRail">
+      <div class="twinQuickModuleRail real3dQuickRail">
+        <button type="button" data-twin-module="engine"><span>◉</span><b>Engine Bay</b><small>Open the hood or enter directly</small></button>
         <button type="button" data-twin-module="airbox"><span>🌬</span><b>Airbox</b><small>Guide, learn, maintenance</small></button>
         <button type="button" data-twin-module="coolant"><span>🧊</span><b>Coolant</b><small>Guide, learn, maintenance</small></button>
         <button type="button" data-twin-module="fusebox"><span>⚡</span><b>Fuse Box</b><small>Guide, learn, maintenance</small></button>
       </div>
 
-      <div class="twinZoneGrid">
-        <button data-twin-zone="engine"><span>◉</span><div><b>Engine Bay</b><small>3 components mapped</small></div><i>›</i></button>
-        <button data-twin-zone="exterior"><span>◇</span><div><b>Exterior</b><small data-zone-status="exterior">Not documented</small></div><i>›</i></button>
-        <button data-twin-zone="interior"><span>▱</span><div><b>Interior</b><small data-zone-status="interior">Not documented</small></div><i>›</i></button>
-        <button data-twin-zone="wheels"><span>◎</span><div><b>Wheels & Brakes</b><small data-zone-status="wheels">Not documented</small></div><i>›</i></button>
-        <button data-twin-zone="trunk"><span>▰</span><div><b>Trunk</b><small data-zone-status="trunk">Not documented</small></div><i>›</i></button>
-        <button data-twin-zone="underside"><span>⌁</span><div><b>Underside</b><small data-zone-status="underside">Not documented</small></div><i>›</i></button>
+      <div class="twinZoneGrid real3dZoneGrid">
+        <button data-twin-zone="exterior"><span>◇</span><div><b>Exterior</b><small data-zone-status="exterior">Ready in 3D</small></div><i>›</i></button>
+        <button data-twin-zone="interior"><span>▱</span><div><b>Interior</b><small data-zone-status="interior">Open a door</small></div><i>›</i></button>
+        <button data-twin-zone="wheels"><span>◎</span><div><b>Wheels & Brakes</b><small data-zone-status="wheels">Tap a wheel</small></div><i>›</i></button>
+        <button data-twin-zone="trunk"><span>▰</span><div><b>Trunk</b><small data-zone-status="trunk">Tap the trunk lid</small></div><i>›</i></button>
+        <button data-twin-zone="underside"><span>⌁</span><div><b>Underside</b><small data-zone-status="underside">Use underside view</small></div><i>›</i></button>
       </div>
     </section>
 
@@ -984,6 +992,7 @@
   <div id="dim" class="dim"></div>
   <aside id="sheet" class="sheet" role="dialog" aria-modal="true" aria-label="Part information" aria-hidden="true" tabindex="-1"><button id="closeSheet" class="icon sheetClose">×</button><div id="sheetData"></div></aside>
 </div>
-<script src="app.js?v=6.24-default-digital-twin"></script>
+<script src="app.js?v=7.0-real-3d-twin"></script>
+<script type="module" src="twin3d.bundle.js?v=7.0-real-3d-twin"></script>
 </body>
 </html>

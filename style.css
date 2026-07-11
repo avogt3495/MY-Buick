@@ -4616,3 +4616,59 @@ label{
 .twinPresetRail::-webkit-scrollbar{display:none}
 .twinPresetRail button{flex:0 0 auto;min-height:34px;padding:8px 12px;border:1px solid rgba(255,255,255,.08);border-radius:999px;background:rgba(255,255,255,.04);color:#bfcde0;font-size:11px;font-weight:800;letter-spacing:.02em}
 .twinPresetRail button.active{background:linear-gradient(180deg,rgba(99,164,255,.22),rgba(99,164,255,.1));border-color:rgba(112,174,255,.32);color:#fff;box-shadow:0 10px 30px rgba(50,110,215,.18)}
+
+/* v7.0 Real 3D Digital Twin */
+.real3dTwinScreen{padding-bottom:132px}
+.real3dHead{margin-bottom:12px}
+.twin3dStatusRow{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:0 0 12px;padding:13px 14px;border:1px solid rgba(255,255,255,.08);border-radius:19px;background:linear-gradient(180deg,rgba(76,139,232,.09),rgba(255,255,255,.025));box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
+.twin3dStatusRow>div{min-width:0}
+.twin3dStatusRow span,.twin3dStatusRow b,.twin3dStatusRow small{display:block}
+.twin3dStatusRow>div>span{color:#79adee;font-size:9px;font-weight:950;letter-spacing:.13em}
+.twin3dStatusRow b{margin-top:3px;font-size:14px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.twin3dStatusRow small{margin-top:3px;color:#8e9bad;font-size:10px;line-height:1.3}
+.twin3dLiveDot{flex:0 0 auto;padding:8px 10px;border:1px solid rgba(93,219,149,.22);border-radius:999px;color:#91edb7;background:rgba(59,186,111,.08);font-size:9px;font-weight:950;letter-spacing:.11em}
+.vehicle3DStage{position:relative;height:min(65vh,540px);min-height:390px;overflow:hidden;border:1px solid rgba(255,255,255,.09);border-radius:28px;background:radial-gradient(circle at 50% 20%,rgba(66,117,194,.24),rgba(15,23,36,.82) 42%,#070a10 82%);box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 24px 70px rgba(0,0,0,.4)}
+.vehicle3DCanvas{position:absolute;inset:0}
+.vehicle3DCanvas canvas{display:block;width:100%;height:100%;touch-action:none}
+.vehicle3DLoading,.vehicle3DError{position:absolute;inset:0;z-index:7;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#e8f0fb;text-align:center;background:radial-gradient(circle at center,rgba(14,24,39,.82),rgba(5,8,13,.96));transition:opacity .28s ease,visibility .28s ease}
+.vehicle3DLoading.hidden,.vehicle3DError.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.vehicle3DLoading b,.vehicle3DError b{font-size:16px}
+.vehicle3DLoading span,.vehicle3DError span{max-width:250px;color:#91a0b3;font-size:11px;line-height:1.4}
+.vehicle3DSpinner{width:32px;height:32px;border:3px solid rgba(255,255,255,.13);border-top-color:#79adf2;border-radius:50%;animation:twin3dSpin .9s linear infinite}
+@keyframes twin3dSpin{to{transform:rotate(360deg)}}
+.twin3dTopControls{position:absolute;z-index:5;top:12px;left:12px;right:12px;display:flex;align-items:center;justify-content:space-between;gap:8px;pointer-events:none}
+.twin3dModePill{padding:8px 10px;border:1px solid rgba(255,255,255,.11);border-radius:999px;color:#e1ebf9;background:rgba(7,11,18,.68);backdrop-filter:blur(16px);font-size:9px;font-weight:950;letter-spacing:.12em;pointer-events:auto}
+.twin3dControlGroup{display:flex;gap:6px;pointer-events:auto}
+.twin3dControlGroup button{min-height:36px;padding:7px 9px;border:1px solid rgba(255,255,255,.12);border-radius:12px;color:#e9f2ff;background:rgba(7,11,18,.7);backdrop-filter:blur(16px);font-size:10px;font-weight:850}
+.twin3dHint{position:absolute;z-index:5;left:12px;right:12px;bottom:11px;padding:9px 12px;border:1px solid rgba(255,255,255,.075);border-radius:13px;color:#afbed1;background:rgba(7,11,18,.62);backdrop-filter:blur(15px);font-size:10px;text-align:center;pointer-events:none}
+.twin3dViews{display:flex;gap:8px;overflow:auto;margin:12px 0 10px;padding:1px 0 2px;scrollbar-width:none}
+.twin3dViews::-webkit-scrollbar{display:none}
+.twin3dViews button{flex:0 0 auto;min-height:37px;padding:8px 12px;border:1px solid rgba(255,255,255,.085);border-radius:999px;color:#b9c8da;background:rgba(255,255,255,.038);font-size:11px;font-weight:820}
+.twin3dViews button.active{border-color:rgba(109,171,255,.38);color:#fff;background:linear-gradient(180deg,rgba(89,155,247,.24),rgba(89,155,247,.1));box-shadow:0 10px 30px rgba(42,100,196,.2)}
+.twin3dSelection{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:10px 0 12px;padding:14px;border:1px solid rgba(255,255,255,.08);border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.047),rgba(255,255,255,.024))}
+.twin3dSelection>div:first-child{min-width:0}
+.twin3dSelection span,.twin3dSelection b,.twin3dSelection small{display:block}
+.twin3dSelection span{color:#78aaf0;font-size:9px;font-weight:950;letter-spacing:.12em}
+.twin3dSelection b{margin-top:3px;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.twin3dSelection small{margin-top:4px;max-width:410px;color:#91a0b2;font-size:10px;line-height:1.35}
+.twin3dSelectionActions{display:flex;flex:0 0 auto;gap:7px}
+.twin3dSelectionActions button{min-height:38px;padding:8px 11px;border-radius:12px;font-size:10px;font-weight:850}
+.real3dStatusStrip{margin-top:0}
+.real3dQuickRail{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:12px}
+.real3dZoneGrid{margin-top:12px}
+@media(max-width:560px){
+  .vehicle3DStage{height:58vh;min-height:390px}
+  .twin3dTopControls{align-items:flex-start}
+  .twin3dControlGroup{display:grid;grid-template-columns:repeat(3,auto);gap:5px}
+  .twin3dControlGroup button{min-height:34px;padding:6px 8px;font-size:9px}
+  .twin3dSelection{align-items:flex-start;flex-direction:column}
+  .twin3dSelectionActions{width:100%}
+  .twin3dSelectionActions button{flex:1}
+  .real3dQuickRail{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:390px){
+  .vehicle3DStage{height:54vh;min-height:360px;border-radius:24px}
+  .twin3dStatusRow small{display:none}
+  .twin3dHint{font-size:9px}
+  .real3dQuickRail{grid-template-columns:1fr}
+}
