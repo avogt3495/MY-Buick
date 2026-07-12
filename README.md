@@ -53,3 +53,11 @@ The 3D module receives only vehicle profile details needed to select a model. Th
 - Fixed the procedural model crash caused by an unscoped `BoxGeometry` constructor in the front grille.
 - Bumped the Three.js bundle cache key so Safari and GitHub Pages load the corrected file.
 - Preserves the v7.01 mobile loading and performance improvements.
+
+
+## v7.03 Orientation Fix
+
+- Corrected U.S.-market side orientation.
+- Driver side is the vehicle's left side.
+- Passenger side is the vehicle's right side.
+- Updated camera presets and side-specific labels accordingly.
