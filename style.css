@@ -4676,3 +4676,12 @@ label{
 
 /* v7.01 loading optimization */
 .vehicle3DLoading b::after{content:" • optimized";color:#72a7ed;font-size:10px;font-weight:850;letter-spacing:.08em;text-transform:uppercase}
+
+.usSideOrientation{
+  margin:8px 2px 12px;
+  color:#8fa4c0;
+  font-size:10px;
+  font-weight:750;
+  text-align:center;
+  letter-spacing:.02em;
+}
