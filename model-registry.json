@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "schema": "mycar-model-registry-v3",
   "defaultFallback": "procedural-universal-v2",
   "resolutionOrder": [
@@ -12,9 +12,9 @@
   "models": {
     "family|buick|lacrosse|2010-2013": {
       "kind": "generation",
-      "label": "2010-2013 Buick LaCrosse",
+      "label": "2010-2013 Buick LaCrosse Living Twin",
       "generation": "Second generation",
-      "confidence": 0.9,
+      "confidence": 0.92,
       "match": {
         "yearFrom": 2010,
         "yearTo": 2013,
@@ -29,7 +29,7 @@
       },
       "assetReady": false,
       "asset": "models/2010-buick-lacrosse.glb",
-      "fallback": "procedural-2010-buick-lacrosse-v2",
+      "fallback": "procedural-2010-buick-lacrosse-living-v3",
       "partNodes": {
         "body": "Body",
         "hood": "Hood",
@@ -148,5 +148,15 @@
       "asset": "",
       "fallback": "procedural-universal-v2"
     }
-  }
+  },
+  "viewerVersion": "7.08",
+  "proceduralFeatures": [
+    "sculpted body geometry",
+    "movable hood, trunk, and four doors",
+    "working exterior lights",
+    "steerable front wheels",
+    "showroom orbit mode",
+    "interactive engine components",
+    "interior and underside foundations"
+  ]
 }

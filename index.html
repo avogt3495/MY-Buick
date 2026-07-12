@@ -7,9 +7,9 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <meta name="theme-color" content="#070a10">
-  <title>MY CAR v7.07 Clean Root Deploy</title>
-  <link rel="stylesheet" href="style.css?v=7.07-clean-root-deploy">
-  <link rel="modulepreload" href="twin3d.bundle.js?v=7.07-clean-root-deploy">
+  <title>MY CAR v7.08 Clean Root Deploy</title>
+  <link rel="stylesheet" href="style.css?v=7.08-my-car-living-twin">
+  <link rel="modulepreload" href="twin3d.bundle.js?v=7.08-my-car-living-twin">
 </head>
 <body>
 <div class="app">
@@ -230,14 +230,19 @@
 
       <div class="twin3dStatusRow">
         <div>
-          <span id="twin3dModelStatus">BUILT-IN MODEL</span>
-          <b id="twin3dVehicleSpec">2010 Buick LaCrosse base twin</b>
+          <span id="twin3dModelStatus">MY CAR LIVING TWIN</span>
+          <b id="twin3dVehicleSpec">VIN-resolved interactive vehicle</b>
           <small>No photos required. Your own photos remain optional.</small>
         </div>
         <div class="twin3dStatusActions">
           <span class="twin3dLiveDot">LIVE</span>
           <button id="twinVinScanButton" class="twinVinScanButton" type="button">Scan VIN</button>
         </div>
+      </div>
+
+      <div class="livingTwinStrip">
+        <div><span>MY CAR MODE</span><b>Movable panels, lights, steering, and vehicle-specific proportions</b></div>
+        <small>VIN data builds the default twin. Owner photos remain optional.</small>
       </div>
 
       <div id="vehicle3DStage" class="vehicle3DStage" aria-label="Interactive 3D vehicle viewer">
@@ -257,13 +262,16 @@
         <div class="twin3dTopControls">
           <span id="twin3dViewLabel" class="twin3dModePill">FRONT LEFT</span>
           <div class="twin3dControlGroup">
+            <button id="twin3dLights" type="button">Lights</button>
+            <button id="twin3dSteer" type="button">Wheels: straight</button>
+            <button id="twin3dShowroom" type="button">Showroom</button>
             <button id="twin3dOpenAll" type="button">Open all</button>
             <button id="twin3dCloseAll" type="button">Close all</button>
             <button id="twin3dReset" type="button">Reset</button>
           </div>
         </div>
 
-        <div class="twin3dHint">Drag to spin • pinch to zoom • tap a door, hood, trunk, wheel, or body</div>
+        <div class="twin3dHint">Drag to spin • pinch to zoom • tap movable panels and vehicle components</div>
       </div>
 
       <div class="twin3dViews" aria-label="3D camera views">
@@ -1013,8 +1021,8 @@
   <div id="dim" class="dim"></div>
   <aside id="sheet" class="sheet" role="dialog" aria-modal="true" aria-label="Part information" aria-hidden="true" tabindex="-1"><button id="closeSheet" class="icon sheetClose">×</button><div id="sheetData"></div></aside>
 </div>
-<script src="app.js?v=7.07-clean-root-deploy"></script>
-<script type="module" src="twin3d.bundle.js?v=7.07-clean-root-deploy" onerror="document.getElementById('vehicle3DLoading')?.classList.add('hidden');document.getElementById('vehicle3DError')?.classList.remove('hidden');const message=document.querySelector('#vehicle3DError span');if(message)message.textContent='The 3D engine file did not load. Confirm twin3d.bundle.js was uploaded beside index.html.'"></script>
+<script src="app.js?v=7.08-my-car-living-twin"></script>
+<script type="module" src="twin3d.bundle.js?v=7.08-my-car-living-twin" onerror="document.getElementById('vehicle3DLoading')?.classList.add('hidden');document.getElementById('vehicle3DError')?.classList.remove('hidden');const message=document.querySelector('#vehicle3DError span');if(message)message.textContent='The 3D engine file did not load. Confirm twin3d.bundle.js was uploaded beside index.html.'"></script>
 
 <script>
 window.addEventListener('load',()=>{

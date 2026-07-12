@@ -4736,3 +4736,61 @@ label{
 .vin3dModelCard.approximate{border-color:rgba(255,190,92,.2);background:rgba(229,158,51,.06)}
 .vin3dModelCard.exact{border-color:rgba(89,222,145,.24);background:rgba(51,180,106,.07)}
 @media(max-width:420px){.garageVehicleActions{grid-template-columns:1fr 1fr auto}.garageVehicleActions button:first-child{grid-column:1/3}.garageVehicleActions .deleteVehicleBtn{grid-column:3;grid-row:1/3;height:100%}}
+
+
+/* v7.08 MY CAR Living Twin */
+.livingTwinStrip{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  margin:10px 0 12px;
+  padding:12px 14px;
+  border:1px solid rgba(105,170,255,.13);
+  border-radius:18px;
+  background:linear-gradient(135deg,rgba(70,137,238,.09),rgba(255,255,255,.025));
+}
+.livingTwinStrip span,.livingTwinStrip b,.livingTwinStrip small{display:block}
+.livingTwinStrip span{
+  color:#7facf1;
+  font-size:9px;
+  font-weight:950;
+  letter-spacing:.14em;
+}
+.livingTwinStrip b{
+  margin-top:3px;
+  color:#f3f7ff;
+  font-size:12px;
+  line-height:1.3;
+}
+.livingTwinStrip small{
+  max-width:38%;
+  color:#8e9bad;
+  font-size:10px;
+  line-height:1.32;
+  text-align:right;
+}
+.twin3dControlGroup{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  gap:7px;
+}
+.twin3dControlGroup button.active{
+  border-color:rgba(95,174,255,.42)!important;
+  color:#f3f8ff!important;
+  background:linear-gradient(180deg,rgba(73,150,255,.25),rgba(73,150,255,.10))!important;
+  box-shadow:0 8px 24px rgba(31,98,200,.22);
+}
+#twin3dLights.active{
+  color:#fff6bf!important;
+  border-color:rgba(255,222,104,.36)!important;
+  background:linear-gradient(180deg,rgba(255,213,85,.22),rgba(255,213,85,.08))!important;
+}
+@media(max-width:430px){
+  .livingTwinStrip{align-items:flex-start;flex-direction:column}
+  .livingTwinStrip small{max-width:none;text-align:left}
+  .twin3dTopControls{align-items:flex-start}
+  .twin3dControlGroup{max-width:74%;gap:5px}
+  .twin3dControlGroup button{padding:7px 8px;font-size:9px}
+}
