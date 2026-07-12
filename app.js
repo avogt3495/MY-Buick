@@ -3585,6 +3585,9 @@ let vinEditingVehicleId=null;
 let vinPendingValue="";
 let vinDecodedData=null;
 let vinPhotoObjectUrl=null;
+let vinPendingModelMatch=null;
+let vinModelRegistryPromise=null;
+let vinScannerLibraryPromise=null;
 
 function vinSetupDockItems(){
   const items=[{icon:"×",label:"Cancel",action:"vin-cancel"}];
@@ -3595,7 +3598,7 @@ function vinSetupDockItems(){
 
 function startVinSetup(vehicleId=null){
   vinEditingVehicleId=vehicleId;
-  vinOnboardStep=0;vinPendingValue="";vinDecodedData=null;vinPendingImage=null;vinSelectedMainPhotoFile=null;
+  vinOnboardStep=0;vinPendingValue="";vinDecodedData=null;vinPendingImage=null;vinPendingModelMatch=null;vinSelectedMainPhotoFile=null;
   if(vinSelectedMainPhotoUrl){URL.revokeObjectURL(vinSelectedMainPhotoUrl);vinSelectedMainPhotoUrl=null}
   const vehicle=vehicleId?getVehicles().find(item=>item.id===vehicleId):null;
   ["vinInput","vinModelYearInput","vinYearConfirm","vinMakeConfirm","vinModelConfirm","vinTrimConfirm","vinEngineConfirm","vinDriveConfirm","vinBodyConfirm","vinNicknameInput","vinColorInput","vinMileageInput"].forEach(id=>{const el=document.getElementById(id);if(el)el.value=""});
@@ -3615,8 +3618,8 @@ function startVinSetup(vehicleId=null){
 }
 
 function renderVinOnboardStep(){
-  const titles=["Scan or enter VIN","Confirm vehicle details","Personalize your vehicle"];
-  const subtitles=["Use the camera on the VIN label, then confirm the 17 characters.","Review the decoded information and fix anything missing.","Choose how this vehicle appears in your Garage."];
+  const titles=["Scan or enter VIN","Match vehicle to 3D model","Finish your 3D twin"];
+  const subtitles=["Photograph the VIN barcode or enter the 17 characters.","Confirm the decoded vehicle and its selected 3D package.","Save the VIN-selected model. Photos remain optional."];
   document.getElementById("vinStepBadge").textContent=(vinOnboardStep+1)+" of 3";
   document.getElementById("vinSetupTitle").textContent=titles[vinOnboardStep];
   document.getElementById("vinSetupSubtitle").textContent=subtitles[vinOnboardStep];
@@ -3672,6 +3675,61 @@ function fillVinConfirm(data,existing=null){
   if(!document.getElementById("vinNicknameInput").value)document.getElementById("vinNicknameInput").value=existing?.nickname||([data?.make,data?.model].filter(Boolean).join(" ")||"My Vehicle");
 }
 
+
+function normalizeModelValue(value){return String(value||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim()}
+async function loadVinModelRegistry(){
+  if(vinModelRegistryPromise)return vinModelRegistryPromise;
+  vinModelRegistryPromise=fetch("models/model-registry.json?v=7.05",{cache:"force-cache"}).then(response=>{if(!response.ok)throw new Error("Model registry unavailable ("+response.status+")");return response.json()}).catch(error=>{vinModelRegistryPromise=null;throw error});
+  return vinModelRegistryPromise;
+}
+function registryRuleMatches(data,rule={}){
+  const year=Number(data?.year)||0;const make=normalizeModelValue(data?.make);const model=normalizeModelValue(data?.model);const body=normalizeModelValue(data?.bodyClass);
+  if(rule.yearFrom&&year<Number(rule.yearFrom))return false;if(rule.yearTo&&year>Number(rule.yearTo))return false;
+  if(rule.make&&make!==normalizeModelValue(rule.make))return false;
+  if(Array.isArray(rule.modelIncludes)&&rule.modelIncludes.length&&!rule.modelIncludes.some(token=>model.includes(normalizeModelValue(token))))return false;
+  if(Array.isArray(rule.bodyIncludes)&&rule.bodyIncludes.length&&!rule.bodyIncludes.some(token=>body.includes(normalizeModelValue(token))))return false;
+  return true;
+}
+async function resolveVin3DModel(data){
+  const registry=await loadVinModelRegistry();const models=registry?.models||{};
+  const exactKey=[data?.year,data?.make,data?.model].map(normalizeModelValue).join("|");
+  if(models[exactKey]){const entry=models[exactKey];return {key:exactKey,entry,matchType:entry.assetReady?"exact-asset":"exact-fallback",label:entry.label||[data.year,data.make,data.model].filter(Boolean).join(" "),assetReady:!!entry.assetReady,asset:entry.asset||"",fallback:entry.fallback||registry.defaultFallback||"procedural-generic-vehicle-v1"}}
+  const specific=Object.entries(models).filter(([key])=>!key.startsWith("generic|")).find(([,entry])=>registryRuleMatches(data,entry.match));
+  if(specific){const [key,entry]=specific;return {key,entry,matchType:entry.assetReady?"generation-asset":"generation-fallback",label:entry.label||[data.year,data.make,data.model].filter(Boolean).join(" "),assetReady:!!entry.assetReady,asset:entry.asset||"",fallback:entry.fallback||registry.defaultFallback||"procedural-generic-vehicle-v1"}}
+  const genericKey=normalizeModelValue(data?.bodyClass).match(/sedan|saloon/)?"generic|sedan":"generic|vehicle";const entry=models[genericKey]||{label:"Generic vehicle foundation",assetReady:false,fallback:registry.defaultFallback};
+  return {key:genericKey,entry,matchType:"generic",label:entry.label,assetReady:false,asset:"",fallback:entry.fallback||registry.defaultFallback||"procedural-generic-vehicle-v1"};
+}
+function showVin3DModelMatch(match,error=""){
+  const card=document.getElementById("vin3dModelCard");const title=document.getElementById("vin3dModelTitle");const detail=document.getElementById("vin3dModelDetail");const badge=document.getElementById("vin3dModelBadge");if(!card||!title||!detail||!badge)return;
+  card.classList.remove("matched","exact","generic");
+  if(!match){title.textContent="Model library check unavailable";detail.textContent=error||"The vehicle can still use the generic 3D foundation.";badge.textContent="FALLBACK";card.classList.add("generic");return}
+  const exact=match.matchType.includes("exact")||match.matchType.includes("generation");card.classList.add(exact?"matched":"generic");if(match.assetReady)card.classList.add("exact");
+  title.textContent=match.label;badge.textContent=match.assetReady?"EXACT GLB":exact?"VIN MATCH":"GENERIC";
+  detail.textContent=match.assetReady?"An exact prepared 3D asset is ready and will load automatically.":exact?"VIN matched to this vehicle package. The optimized built-in 3D model loads now, with an exact GLB swap path ready.":"No dedicated model package exists yet, so the app will load the closest generic 3D foundation.";
+}
+async function prepareVin3DModelMatch(data){
+  const title=document.getElementById("vin3dModelTitle"),detail=document.getElementById("vin3dModelDetail"),badge=document.getElementById("vin3dModelBadge"),card=document.getElementById("vin3dModelCard");if(card){card.classList.remove("matched","exact","generic")}if(title)title.textContent="Checking the 3D model library…";if(detail)detail.textContent="Matching year, make, model, body style, and generation.";if(badge)badge.textContent="CHECKING";
+  try{vinPendingModelMatch=await resolveVin3DModel(data);showVin3DModelMatch(vinPendingModelMatch);return vinPendingModelMatch}catch(error){vinPendingModelMatch={key:"generic|vehicle",matchType:"generic",label:"Generic vehicle foundation",assetReady:false,asset:"",fallback:"procedural-generic-vehicle-v1"};showVin3DModelMatch(vinPendingModelMatch,error.message);return vinPendingModelMatch}
+}
+function waitForVinImage(image){return image.complete&&image.naturalWidth?Promise.resolve():new Promise((resolve,reject)=>{const done=()=>{image.removeEventListener("load",done);image.removeEventListener("error",fail);resolve()};const fail=()=>{image.removeEventListener("load",done);image.removeEventListener("error",fail);reject(new Error("The VIN photo could not be read."))};image.addEventListener("load",done,{once:true});image.addEventListener("error",fail,{once:true})})}
+function extractVinFromScanText(text){
+  const sequences=String(text||"").toUpperCase().match(/[A-HJ-NPR-Z0-9]{17,}/g)||[];let fallback="";
+  for(const sequence of sequences){for(let i=0;i<=sequence.length-17;i++){const candidate=sequence.slice(i,i+17);if(!fallback)fallback=candidate;if(vinCheckDigitValid(candidate))return candidate}}
+  return fallback&&sanitizeVin(fallback).length===17?sanitizeVin(fallback):"";
+}
+function loadVinScannerLibrary(){
+  if(window.ZXing)return Promise.resolve(window.ZXing);if(vinScannerLibraryPromise)return vinScannerLibraryPromise;
+  vinScannerLibraryPromise=new Promise((resolve,reject)=>{const script=document.createElement("script");script.src="zxing.min.js?v=7.05";script.async=true;script.onload=()=>window.ZXing?resolve(window.ZXing):reject(new Error("VIN scanner library did not initialize."));script.onerror=()=>reject(new Error("VIN scanner library could not load."));document.head.appendChild(script)}).catch(error=>{vinScannerLibraryPromise=null;throw error});return vinScannerLibraryPromise;
+}
+async function scanVinWithNativeDetector(file){
+  if(!("BarcodeDetector" in window))return "";const formats=await BarcodeDetector.getSupportedFormats();const wanted=["data_matrix","code_39","code_128","pdf417","qr_code"].filter(format=>formats.includes(format));if(!wanted.length)return "";
+  const detector=new BarcodeDetector({formats:wanted});const bitmap=await createImageBitmap(file);try{const results=await detector.detect(bitmap);for(const item of results){const vin=extractVinFromScanText(item.rawValue);if(vin)return vin}}finally{bitmap.close?.()}return "";
+}
+async function scanVinWithZxing(image){
+  const ZXing=await loadVinScannerLibrary();await waitForVinImage(image);const hints=new Map();const formats=[ZXing.BarcodeFormat.DATA_MATRIX,ZXing.BarcodeFormat.CODE_39,ZXing.BarcodeFormat.CODE_128,ZXing.BarcodeFormat.PDF_417,ZXing.BarcodeFormat.QR_CODE].filter(value=>value!==undefined);hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS,formats);hints.set(ZXing.DecodeHintType.TRY_HARDER,true);const reader=new ZXing.BrowserMultiFormatReader(hints,300);
+  try{const result=await reader.decodeFromImageElement(image);return extractVinFromScanText(result?.getText?.()||result?.text||"")}finally{reader.reset?.()}
+}
+
 function currentVinConfirmData(){return {year:document.getElementById("vinYearConfirm").value.trim(),make:document.getElementById("vinMakeConfirm").value.trim(),model:document.getElementById("vinModelConfirm").value.trim(),trim:document.getElementById("vinTrimConfirm").value.trim(),color:document.getElementById("vinColorInput").value.trim()}}
 function showVinImageState(state,message=""){
   const card=document.getElementById("vinVehicleImageCard");const img=document.getElementById("vinVehicleImagePreview");const placeholder=document.getElementById("vinVehicleImagePlaceholder");if(!card||!img||!placeholder)return;card.classList.remove("hidden");
@@ -3711,13 +3769,14 @@ async function advanceVinSetup(){
       document.getElementById("vinDecodeMessage").textContent="The online decoder could not be reached. You can still finish the profile manually.";
       document.getElementById("vinDecodeSource").textContent=error.message;
     }
-    vinOnboardStep=1;renderVinOnboardStep();prepareVinRepresentativeImage({year:document.getElementById("vinYearConfirm").value.trim(),make:document.getElementById("vinMakeConfirm").value.trim(),model:document.getElementById("vinModelConfirm").value.trim(),trim:document.getElementById("vinTrimConfirm").value.trim()});return;
+    vinOnboardStep=1;renderVinOnboardStep();const confirmedData={year:document.getElementById("vinYearConfirm").value.trim(),make:document.getElementById("vinMakeConfirm").value.trim(),model:document.getElementById("vinModelConfirm").value.trim(),trim:document.getElementById("vinTrimConfirm").value.trim(),bodyClass:document.getElementById("vinBodyConfirm").value.trim()};prepareVin3DModelMatch(confirmedData);prepareVinRepresentativeImage(confirmedData);return;
   }
   if(vinOnboardStep===1){
     const required=["vinYearConfirm","vinMakeConfirm","vinModelConfirm"];
     if(required.some(id=>!document.getElementById(id).value.trim())){
       document.getElementById("vinDecodeSource").textContent="Year, make, and model are required before continuing.";return;
     }
+    await prepareVin3DModelMatch({year:document.getElementById("vinYearConfirm").value.trim(),make:document.getElementById("vinMakeConfirm").value.trim(),model:document.getElementById("vinModelConfirm").value.trim(),trim:document.getElementById("vinTrimConfirm").value.trim(),bodyClass:document.getElementById("vinBodyConfirm").value.trim()});
     vinOnboardStep=2;renderVinOnboardStep();return;
   }
   await saveVinVehicle();
@@ -3728,6 +3787,7 @@ async function saveVinVehicle(){
   const year=document.getElementById("vinYearConfirm").value.trim();const make=document.getElementById("vinMakeConfirm").value.trim();const model=document.getElementById("vinModelConfirm").value.trim();
   const isBuickProfile=existing?.moduleSet==="buick-v1"||(year==="2010"&&make.toLowerCase()==="buick"&&model.toLowerCase().includes("lacrosse"));
   const id=existing?.id||[year,make,model,Date.now()].join("-").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"");
+  if(!vinPendingModelMatch)vinPendingModelMatch=await resolveVin3DModel({year,make,model,trim:document.getElementById("vinTrimConfirm").value.trim(),bodyClass:document.getElementById("vinBodyConfirm").value.trim()}).catch(()=>({key:"generic|vehicle",matchType:"generic",label:"Generic vehicle foundation",assetReady:false,asset:"",fallback:"procedural-generic-vehicle-v1"}));
   const vehicle={
     ...(existing||{}),id,
     nickname:document.getElementById("vinNicknameInput").value.trim()||"My Vehicle",
@@ -3742,29 +3802,37 @@ async function saveVinVehicle(){
     representativeImageCredit:vinPendingImage?.credit||existing?.representativeImageCredit||"",
     representativeImageLicense:vinPendingImage?.license||existing?.representativeImageLicense||"",
     representativeImageSourcePage:vinPendingImage?.sourcePage||existing?.representativeImageSourcePage||"",
-    coverPhotoId:existing?.coverPhotoId||""
+    coverPhotoId:existing?.coverPhotoId||"",
+    modelRegistryKey:vinPendingModelMatch?.key||existing?.modelRegistryKey||"generic|vehicle",
+    modelMatchType:vinPendingModelMatch?.matchType||existing?.modelMatchType||"generic",
+    modelLabel:vinPendingModelMatch?.label||existing?.modelLabel||[year,make,model].filter(Boolean).join(" "),
+    modelAssetReady:!!vinPendingModelMatch?.assetReady,
+    modelAsset:vinPendingModelMatch?.asset||existing?.modelAsset||"",
+    modelFallback:vinPendingModelMatch?.fallback||existing?.modelFallback||"procedural-generic-vehicle-v1"
   };
   if(!vehicle.representativeImage){const match=await findRepresentativeVehicleImage(vehicle).catch(()=>null);if(match){vehicle.representativeImage=match.src;vehicle.representativeImageType="representative";vehicle.representativeImageTitle=match.title;vehicle.representativeImageCredit=match.credit;vehicle.representativeImageLicense=match.license;vehicle.representativeImageSourcePage=match.sourcePage}}
   upsertVehicle(vehicle);
   if(vinSelectedMainPhotoFile){vehicle.coverPhotoId=await saveMainVehiclePhoto(vehicle,vinSelectedMainPhotoFile);upsertVehicle(vehicle)}
-  vinEditingVehicleId=null;vinPendingValue="";vinDecodedData=null;vinPendingImage=null;vinSelectedMainPhotoFile=null;if(vinSelectedMainPhotoUrl){URL.revokeObjectURL(vinSelectedMainPhotoUrl);vinSelectedMainPhotoUrl=null}showScreen("vehicleprofile");
+  vinEditingVehicleId=null;vinPendingValue="";vinDecodedData=null;vinPendingImage=null;vinPendingModelMatch=null;vinSelectedMainPhotoFile=null;if(vinSelectedMainPhotoUrl){URL.revokeObjectURL(vinSelectedMainPhotoUrl);vinSelectedMainPhotoUrl=null}showScreen("digitaltwin");
 }
 
 document.getElementById("vinInput")?.addEventListener("input",event=>{event.target.value=sanitizeVin(event.target.value);if(event.target.value.length>=10&&!document.getElementById("vinModelYearInput").value)document.getElementById("vinModelYearInput").value=guessVinYear(event.target.value)});
 document.getElementById("vinCameraInput")?.addEventListener("change",async event=>{
   const file=event.target.files?.[0];if(!file)return;
   if(vinPhotoObjectUrl)URL.revokeObjectURL(vinPhotoObjectUrl);vinPhotoObjectUrl=URL.createObjectURL(file);
-  document.getElementById("vinPhotoPreview").src=vinPhotoObjectUrl;document.getElementById("vinPhotoPreviewWrap").classList.remove("hidden");
-  const status=document.getElementById("vinDetectStatus");status.textContent="Photo ready. Looking for a VIN code…";status.className="vinStatus";
+  const preview=document.getElementById("vinPhotoPreview");preview.src=vinPhotoObjectUrl;document.getElementById("vinPhotoPreviewWrap").classList.remove("hidden");
+  const status=document.getElementById("vinDetectStatus");status.textContent="Scanning the VIN barcode on this device…";status.className="vinStatus";
   try{
-    if(!("BarcodeDetector" in window))throw new Error("Automatic code detection is not supported on this browser. Type the VIN from the photo below.");
-    const formats=await BarcodeDetector.getSupportedFormats();const wanted=["data_matrix","qr_code","code_128"].filter(format=>formats.includes(format));if(!wanted.length)throw new Error("This browser cannot read the label code automatically. Type the VIN from the photo below.");
-    const detector=new BarcodeDetector({formats:wanted});const bitmap=await createImageBitmap(file);const results=await detector.detect(bitmap);bitmap.close?.();
-    const match=results.map(item=>String(item.rawValue||"").toUpperCase()).join(" ").match(/[A-HJ-NPR-Z0-9]{17}/);
-    if(!match)throw new Error("No 17-character VIN was detected. Use the photo to type it manually.");
-    document.getElementById("vinInput").value=match[0];document.getElementById("vinModelYearInput").value=guessVinYear(match[0]);status.textContent="VIN detected. Confirm the characters, then tap Decode VIN.";status.className="vinStatus good";
+    let vin="";try{vin=await scanVinWithNativeDetector(file)}catch{}
+    if(!vin){status.textContent="Using the enhanced VIN scanner…";vin=await scanVinWithZxing(preview)}
+    if(!vin)throw new Error("No valid 17-character VIN was detected. Retake the photo straight-on with good light, or type the VIN manually.");
+    document.getElementById("vinInput").value=vin;document.getElementById("vinModelYearInput").value=guessVinYear(vin);status.textContent="VIN detected and check digit verified. Review it, then tap Decode VIN.";status.className="vinStatus good";
   }catch(error){status.textContent=error.message;status.className="vinStatus warn"}
 });
+
+
+let vinModelRefreshTimer=null;
+["vinYearConfirm","vinMakeConfirm","vinModelConfirm","vinTrimConfirm","vinBodyConfirm"].forEach(id=>document.getElementById(id)?.addEventListener("input",()=>{clearTimeout(vinModelRefreshTimer);vinModelRefreshTimer=setTimeout(()=>prepareVin3DModelMatch({year:document.getElementById("vinYearConfirm").value.trim(),make:document.getElementById("vinMakeConfirm").value.trim(),model:document.getElementById("vinModelConfirm").value.trim(),trim:document.getElementById("vinTrimConfirm").value.trim(),bodyClass:document.getElementById("vinBodyConfirm").value.trim()}),450)}));
 
 // Owner photo database
 const PHOTO_DB_NAME="mycar_owner_photos";const PHOTO_DB_VERSION=1;const PHOTO_STORE="photos";let photoDbPromise=null;let photoObjectUrls=[];let currentPhotoFilter="all";
@@ -3849,7 +3917,7 @@ document.querySelectorAll("[data-photo-filter]").forEach(btn=>btn.addEventListen
 let twin3dInitialized=false;
 let twin3dLastVehicleKey="";
 function twin3dVehicleKey(vehicle){
-  return [vehicle?.year,vehicle?.make,vehicle?.model,vehicle?.trim,vehicle?.color,vehicle?.moduleSet].map(value=>String(value||"").toLowerCase().trim()).join("|");
+  return [vehicle?.year,vehicle?.make,vehicle?.model,vehicle?.trim,vehicle?.color,vehicle?.moduleSet,vehicle?.modelRegistryKey,vehicle?.modelMatchType,vehicle?.modelAssetReady].map(value=>String(value||"").toLowerCase().trim()).join("|");
 }
 function sanitizeVehicleFor3D(vehicle){
   return {
@@ -3863,6 +3931,12 @@ function sanitizeVehicleFor3D(vehicle){
     bodyClass:vehicle.bodyClass,
     color:vehicle.color,
     moduleSet:vehicle.moduleSet,
+    modelRegistryKey:vehicle.modelRegistryKey||"",
+    modelMatchType:vehicle.modelMatchType||"generic",
+    modelLabel:vehicle.modelLabel||[vehicle.year,vehicle.make,vehicle.model].filter(Boolean).join(" "),
+    modelAssetReady:!!vehicle.modelAssetReady,
+    modelAsset:vehicle.modelAsset||"",
+    modelFallback:vehicle.modelFallback||"procedural-generic-vehicle-v1",
     vinMasked:vehicle.vinLinked?maskVin(vehicle.vin):vehicle.vinMasked||"VIN not linked"
   };
 }
@@ -3886,7 +3960,8 @@ async function renderDigitalTwin(){
   set("twinVehicleName",vehicle.nickname||"My Vehicle");
   set("twinVehicleMeta",formatVehicleName(vehicle));
   set("twinVinMask",vehicle.vinLinked?maskVin(vehicle.vin):vehicle.vinMasked||"Not linked");
-  set("twin3dVehicleSpec",[vehicle.year,vehicle.make,vehicle.model,vehicle.trim].filter(Boolean).join(" ")+" base twin");
+  set("twin3dVehicleSpec",vehicle.modelLabel||[vehicle.year,vehicle.make,vehicle.model,vehicle.trim].filter(Boolean).join(" ")+" base twin");
+  set("twin3dVinMatch",vehicle.modelMatchType&&vehicle.modelMatchType!=="generic"?"Matched":"Generic");
   const photos=await getPhotos(vehicle.id).catch(()=>[]);
   set("twinPhotoCount",photos.length);
   set("twinCompletionBadge",photos.length?photos.length+" optional photo"+(photos.length===1?"":"s"):"3D Ready");
@@ -3922,6 +3997,7 @@ window.addEventListener("mycar:3d-model-status",event=>{
   set("twin3dModelType",detail.type);
   set("twin3dVehicleSpec",detail.spec);
 });
+document.getElementById("twinVinScanButton")?.addEventListener("click",()=>startVinSetup(getActiveVehicle()?.id||null));
 document.querySelectorAll("[data-twin-module]").forEach(btn=>btn.addEventListener("click",()=>showScreen(btn.dataset.twinModule)));
 document.querySelectorAll("[data-twin-zone]").forEach(btn=>btn.addEventListener("click",()=>openTwinZoneSheet(btn.dataset.twinZone)));
 

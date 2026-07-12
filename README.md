@@ -61,3 +61,38 @@ The 3D module receives only vehicle profile details needed to select a model. Th
 - Driver side is the vehicle's left side.
 - Passenger side is the vehicle's right side.
 - Updated camera presets and side-specific labels accordingly.
+
+
+## v7.04 True U.S. Side Fix
+
+This version corrects the actual bundled 3D scene rather than only changing unused labels.
+
+- U.S. driver side = vehicle left.
+- U.S. passenger side = vehicle right.
+- Swapped the live driver/passenger camera positions.
+- Corrected front-left camera placement.
+- Corrected physical door placement and opening direction.
+- Corrected wheel, headlight, taillight, and steering-wheel placement.
+- Added explicit Driver • Left and Passenger • Right labels.
+- Changed cache version to 7.04 so Safari loads the corrected bundle.
+
+
+## v7.05 VIN-to-3D Model Pipeline
+
+- A VIN label photo can now be scanned locally for Data Matrix, Code 39, Code 128, PDF417, and QR barcodes.
+- The scanner first uses the browser's native BarcodeDetector when available, then lazily loads the bundled ZXing decoder for Safari/iPhone compatibility.
+- The detected VIN is validated with its check digit before decoding.
+- NHTSA vPIC supplies year, make, model, trim, engine, drivetrain, and body information when available.
+- Decoded vehicle details are matched against `models/model-registry.json`.
+- The selected registry key is saved to the local vehicle profile and sent into the real 3D viewer.
+- The 3D viewer reloads automatically when the VIN selects a different model package.
+- Full VIN values stay in the user's browser and are never sent into the public 3D bundle. Only decoded vehicle details and the masked VIN enter the viewer.
+- Owner photos remain optional.
+
+### Current model coverage
+
+The 2010-2013 Buick LaCrosse is matched to the Buick-specific procedural 3D package. The exact GLB path is already registered as `models/2010-buick-lacrosse.glb`; once a properly prepared and licensed model is placed there and `assetReady` is set to `true`, VIN-matched vehicles will load it automatically.
+
+### Bundled barcode decoder
+
+`zxing.min.js` is from `@zxing/library` 0.23.0 and is distributed under the Apache License 2.0. See `ZXING-LICENSE.txt`.
