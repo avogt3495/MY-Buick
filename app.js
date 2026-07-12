@@ -1,3 +1,5 @@
+const MYCAR_EMBEDDED_MODEL_REGISTRY={"version":3,"schema":"mycar-model-registry-v3","defaultFallback":"procedural-universal-v2","resolutionOrder":["remote-exact","local-exact","generation","body-template","universal"],"models":{"family|buick|lacrosse|2010-2013":{"kind":"generation","label":"2010-2013 Buick LaCrosse","generation":"Second generation","confidence":0.9,"match":{"yearFrom":2010,"yearTo":2013,"make":"buick","modelIncludes":["lacrosse"],"bodyIncludes":["sedan","saloon"]},"assetReady":false,"asset":"models/2010-buick-lacrosse.glb","fallback":"procedural-2010-buick-lacrosse-v2","partNodes":{"body":"Body","hood":"Hood","trunk":"Trunk","driverFrontDoor":"Door_Driver_Front","passengerFrontDoor":"Door_Passenger_Front","driverRearDoor":"Door_Driver_Rear","passengerRearDoor":"Door_Passenger_Rear","wheelFL":"Wheel_Front_Driver","wheelFR":"Wheel_Front_Passenger","wheelRL":"Wheel_Rear_Driver","wheelRR":"Wheel_Rear_Passenger"},"hinges":{"hood":{"axis":"z","closed":0,"open":1.05},"trunk":{"axis":"z","closed":0,"open":-1.18},"driverFrontDoor":{"axis":"y","closed":0,"open":1.12},"passengerFrontDoor":{"axis":"y","closed":0,"open":-1.12},"driverRearDoor":{"axis":"y","closed":0,"open":1.05},"passengerRearDoor":{"axis":"y","closed":0,"open":-1.05}}},"template|sedan":{"kind":"template","label":"Automatic sedan foundation","confidence":0.62,"assetReady":false,"asset":"","fallback":"procedural-sedan-v2"},"template|suv":{"kind":"template","label":"Automatic SUV/crossover foundation","confidence":0.58,"assetReady":false,"asset":"","fallback":"procedural-suv-v2"},"template|pickup":{"kind":"template","label":"Automatic pickup foundation","confidence":0.56,"assetReady":false,"asset":"","fallback":"procedural-pickup-v2"},"template|hatchback":{"kind":"template","label":"Automatic hatchback foundation","confidence":0.58,"assetReady":false,"asset":"","fallback":"procedural-hatchback-v2"},"template|wagon":{"kind":"template","label":"Automatic wagon/estate foundation","confidence":0.58,"assetReady":false,"asset":"","fallback":"procedural-wagon-v2"},"template|coupe":{"kind":"template","label":"Automatic coupe foundation","confidence":0.57,"assetReady":false,"asset":"","fallback":"procedural-coupe-v2"},"template|convertible":{"kind":"template","label":"Automatic convertible foundation","confidence":0.52,"assetReady":false,"asset":"","fallback":"procedural-convertible-v2"},"template|van":{"kind":"template","label":"Automatic van/MPV foundation","confidence":0.54,"assetReady":false,"asset":"","fallback":"procedural-van-v2"},"template|universal":{"kind":"template","label":"Universal interactive vehicle foundation","confidence":0.3,"assetReady":false,"asset":"","fallback":"procedural-universal-v2"}}};
+const MYCAR_EMBEDDED_RESOLVER_CONFIG={"version":1,"enabled":false,"endpoint":"","timeoutMs":3500,"cacheDays":7,"privacy":{"sendFullVin":false,"fieldsSent":["year","make","model","trim","bodyClass","engine","drivetrain"]},"notes":"Set enabled true and endpoint to a deployed resolver API when the cloud model broker is ready. The static app continues working with local generation and body templates."};
 const screens=["garage","vinsetup","vehicleprofile","digitaltwin","photos","home","engine","airbox","guide","learn","maintenance","coolant","coolantguide","coolantlearn","coolantmaintenance","fusebox","fuseguide","fuselearn","fusemaintenance"];
 const names={garage:["MY CAR","Garage"],vinsetup:["GARAGE","Add Vehicle"],vehicleprofile:["GARAGE","Vehicle Profile"],digitaltwin:["VEHICLE","Digital Twin"],photos:["VEHICLE","Owner Photos"],home:["MY BUICK","2010 Buick LaCrosse CXL"],engine:["VEHICLE","Engine Bay"],airbox:["ENGINE BAY","Airbox"],guide:["AIRBOX","Guide Me"],learn:["AIRBOX","Learn"],maintenance:["AIRBOX","Maintenance"],coolant:["ENGINE BAY","Coolant Reservoir"],coolantguide:["COOLANT","Guide Me"],coolantlearn:["COOLANT","Learn"],coolantmaintenance:["COOLANT","Maintenance"],fusebox:["ENGINE BAY","Fuse Box"],fuseguide:["FUSE BOX","Guide Me"],fuselearn:["FUSE BOX","Learn"],fusemaintenance:["FUSE BOX","Maintenance"]};
 let current="garage";let layer=0;let done=new Set();
@@ -3596,10 +3598,7 @@ let vinDecodedData=null;
 let vinPhotoObjectUrl=null;
 let vinPendingModelMatch=null;
 let vinModelRegistryPromise=null;
-<<<<<<< HEAD
 let vinResolverConfigPromise=null;
-=======
->>>>>>> ef39d562b6bcc2f6d70cdc65375f762f2878a73e
 let vinScannerLibraryPromise=null;
 
 function vinSetupDockItems(){
@@ -3690,9 +3689,26 @@ function fillVinConfirm(data,existing=null){
 
 
 function normalizeModelValue(value){return String(value||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim()}
-<<<<<<< HEAD
-async function loadVinModelRegistry(){if(vinModelRegistryPromise)return vinModelRegistryPromise;vinModelRegistryPromise=fetch("models/model-registry.json?v=7.06",{cache:"force-cache"}).then(response=>{if(!response.ok)throw new Error("Model registry unavailable ("+response.status+")");return response.json()}).catch(error=>{vinModelRegistryPromise=null;throw error});return vinModelRegistryPromise}
-async function loadModelResolverConfig(){if(vinResolverConfigPromise)return vinResolverConfigPromise;vinResolverConfigPromise=fetch("services/model-resolver-config.json?v=7.06",{cache:"force-cache"}).then(response=>response.ok?response.json():{}).catch(()=>({}));return vinResolverConfigPromise}
+async function loadVinModelRegistry(){
+  if(vinModelRegistryPromise)return vinModelRegistryPromise;
+  vinModelRegistryPromise=(async()=>{
+    for(const path of ["model-registry.json?v=7.07","models/model-registry.json?v=7.07"]){
+      try{const response=await fetch(path,{cache:"force-cache"});if(response.ok)return await response.json()}catch{}
+    }
+    return MYCAR_EMBEDDED_MODEL_REGISTRY;
+  })();
+  return vinModelRegistryPromise;
+}
+async function loadModelResolverConfig(){
+  if(vinResolverConfigPromise)return vinResolverConfigPromise;
+  vinResolverConfigPromise=(async()=>{
+    for(const path of ["model-resolver-config.json?v=7.07","services/model-resolver-config.json?v=7.07"]){
+      try{const response=await fetch(path,{cache:"force-cache"});if(response.ok)return await response.json()}catch{}
+    }
+    return MYCAR_EMBEDDED_RESOLVER_CONFIG;
+  })();
+  return vinResolverConfigPromise;
+}
 function registryRuleMatches(data,rule={}){const year=Number(data?.year)||0,make=normalizeModelValue(data?.make),model=normalizeModelValue(data?.model),body=normalizeModelValue(data?.bodyClass);if(rule.yearFrom&&year<Number(rule.yearFrom))return false;if(rule.yearTo&&year>Number(rule.yearTo))return false;if(rule.make&&make!==normalizeModelValue(rule.make))return false;if(Array.isArray(rule.modelIncludes)&&rule.modelIncludes.length&&!rule.modelIncludes.some(token=>model.includes(normalizeModelValue(token))))return false;if(Array.isArray(rule.bodyIncludes)&&rule.bodyIncludes.length&&!rule.bodyIncludes.some(token=>body.includes(normalizeModelValue(token))))return false;return true}
 function modelResolutionSignature(data){return [data?.year,data?.make,data?.model,data?.trim,data?.bodyClass,data?.engine,data?.drivetrain].map(normalizeModelValue).join("|")}
 function readModelResolutionCache(){try{return JSON.parse(localStorage.getItem(MODEL_RESOLUTION_CACHE_KEY)||"{}")||{}}catch{return {}}}
@@ -3712,42 +3728,6 @@ async function resolveVin3DModel(data){
 }
 function showVin3DModelMatch(match,error=""){const card=document.getElementById("vin3dModelCard"),title=document.getElementById("vin3dModelTitle"),detail=document.getElementById("vin3dModelDetail"),badge=document.getElementById("vin3dModelBadge");if(!card||!title||!detail||!badge)return;card.classList.remove("matched","exact","generic","generation","approximate");if(!match){title.textContent="Automatic vehicle foundation";detail.textContent=error||"The app will still build a universal interactive 3D vehicle.";badge.textContent="AUTO";card.classList.add("approximate");return}const accuracy=match.accuracy||match.matchType;if(accuracy==="exact")card.classList.add("exact");else if(accuracy==="generation")card.classList.add("generation");else card.classList.add("approximate");title.textContent=match.label;badge.textContent=accuracy==="exact"?"EXACT":accuracy==="generation"?"GENERATION":accuracy==="approximate"?"AUTOMATIC":"FOUNDATION";detail.textContent=accuracy==="exact"?"A prepared exact 3D asset is ready for this decoded vehicle.":accuracy==="generation"?"Matched to the correct vehicle generation. Trim-level differences can be refined later.":accuracy==="approximate"?"No dedicated asset is required. The app generated the closest body-style foundation automatically.":"A universal interactive vehicle foundation will load now. Photos remain optional."}
 async function prepareVin3DModelMatch(data){const title=document.getElementById("vin3dModelTitle"),detail=document.getElementById("vin3dModelDetail"),badge=document.getElementById("vin3dModelBadge"),card=document.getElementById("vin3dModelCard");if(card)card.classList.remove("matched","exact","generic","generation","approximate");if(title)title.textContent="Resolving the best 3D vehicle…";if(detail)detail.textContent="Checking exact, generation, body-style, and universal model tiers.";if(badge)badge.textContent="CHECKING";try{vinPendingModelMatch=await resolveVin3DModel(data);showVin3DModelMatch(vinPendingModelMatch);return vinPendingModelMatch}catch(error){vinPendingModelMatch={key:"template|universal",matchType:"universal",accuracy:"universal",label:"Universal vehicle foundation",assetReady:false,asset:"",fallback:"procedural-universal-v2",source:"procedural-template",sourceLabel:"Universal fallback",confidence:.25};showVin3DModelMatch(vinPendingModelMatch,error.message);return vinPendingModelMatch}}
-=======
-async function loadVinModelRegistry(){
-  if(vinModelRegistryPromise)return vinModelRegistryPromise;
-  vinModelRegistryPromise=fetch("models/model-registry.json?v=7.05",{cache:"force-cache"}).then(response=>{if(!response.ok)throw new Error("Model registry unavailable ("+response.status+")");return response.json()}).catch(error=>{vinModelRegistryPromise=null;throw error});
-  return vinModelRegistryPromise;
-}
-function registryRuleMatches(data,rule={}){
-  const year=Number(data?.year)||0;const make=normalizeModelValue(data?.make);const model=normalizeModelValue(data?.model);const body=normalizeModelValue(data?.bodyClass);
-  if(rule.yearFrom&&year<Number(rule.yearFrom))return false;if(rule.yearTo&&year>Number(rule.yearTo))return false;
-  if(rule.make&&make!==normalizeModelValue(rule.make))return false;
-  if(Array.isArray(rule.modelIncludes)&&rule.modelIncludes.length&&!rule.modelIncludes.some(token=>model.includes(normalizeModelValue(token))))return false;
-  if(Array.isArray(rule.bodyIncludes)&&rule.bodyIncludes.length&&!rule.bodyIncludes.some(token=>body.includes(normalizeModelValue(token))))return false;
-  return true;
-}
-async function resolveVin3DModel(data){
-  const registry=await loadVinModelRegistry();const models=registry?.models||{};
-  const exactKey=[data?.year,data?.make,data?.model].map(normalizeModelValue).join("|");
-  if(models[exactKey]){const entry=models[exactKey];return {key:exactKey,entry,matchType:entry.assetReady?"exact-asset":"exact-fallback",label:entry.label||[data.year,data.make,data.model].filter(Boolean).join(" "),assetReady:!!entry.assetReady,asset:entry.asset||"",fallback:entry.fallback||registry.defaultFallback||"procedural-generic-vehicle-v1"}}
-  const specific=Object.entries(models).filter(([key])=>!key.startsWith("generic|")).find(([,entry])=>registryRuleMatches(data,entry.match));
-  if(specific){const [key,entry]=specific;return {key,entry,matchType:entry.assetReady?"generation-asset":"generation-fallback",label:entry.label||[data.year,data.make,data.model].filter(Boolean).join(" "),assetReady:!!entry.assetReady,asset:entry.asset||"",fallback:entry.fallback||registry.defaultFallback||"procedural-generic-vehicle-v1"}}
-  const genericKey=normalizeModelValue(data?.bodyClass).match(/sedan|saloon/)?"generic|sedan":"generic|vehicle";const entry=models[genericKey]||{label:"Generic vehicle foundation",assetReady:false,fallback:registry.defaultFallback};
-  return {key:genericKey,entry,matchType:"generic",label:entry.label,assetReady:false,asset:"",fallback:entry.fallback||registry.defaultFallback||"procedural-generic-vehicle-v1"};
-}
-function showVin3DModelMatch(match,error=""){
-  const card=document.getElementById("vin3dModelCard");const title=document.getElementById("vin3dModelTitle");const detail=document.getElementById("vin3dModelDetail");const badge=document.getElementById("vin3dModelBadge");if(!card||!title||!detail||!badge)return;
-  card.classList.remove("matched","exact","generic");
-  if(!match){title.textContent="Model library check unavailable";detail.textContent=error||"The vehicle can still use the generic 3D foundation.";badge.textContent="FALLBACK";card.classList.add("generic");return}
-  const exact=match.matchType.includes("exact")||match.matchType.includes("generation");card.classList.add(exact?"matched":"generic");if(match.assetReady)card.classList.add("exact");
-  title.textContent=match.label;badge.textContent=match.assetReady?"EXACT GLB":exact?"VIN MATCH":"GENERIC";
-  detail.textContent=match.assetReady?"An exact prepared 3D asset is ready and will load automatically.":exact?"VIN matched to this vehicle package. The optimized built-in 3D model loads now, with an exact GLB swap path ready.":"No dedicated model package exists yet, so the app will load the closest generic 3D foundation.";
-}
-async function prepareVin3DModelMatch(data){
-  const title=document.getElementById("vin3dModelTitle"),detail=document.getElementById("vin3dModelDetail"),badge=document.getElementById("vin3dModelBadge"),card=document.getElementById("vin3dModelCard");if(card){card.classList.remove("matched","exact","generic")}if(title)title.textContent="Checking the 3D model library…";if(detail)detail.textContent="Matching year, make, model, body style, and generation.";if(badge)badge.textContent="CHECKING";
-  try{vinPendingModelMatch=await resolveVin3DModel(data);showVin3DModelMatch(vinPendingModelMatch);return vinPendingModelMatch}catch(error){vinPendingModelMatch={key:"generic|vehicle",matchType:"generic",label:"Generic vehicle foundation",assetReady:false,asset:"",fallback:"procedural-generic-vehicle-v1"};showVin3DModelMatch(vinPendingModelMatch,error.message);return vinPendingModelMatch}
-}
->>>>>>> ef39d562b6bcc2f6d70cdc65375f762f2878a73e
 function waitForVinImage(image){return image.complete&&image.naturalWidth?Promise.resolve():new Promise((resolve,reject)=>{const done=()=>{image.removeEventListener("load",done);image.removeEventListener("error",fail);resolve()};const fail=()=>{image.removeEventListener("load",done);image.removeEventListener("error",fail);reject(new Error("The VIN photo could not be read."))};image.addEventListener("load",done,{once:true});image.addEventListener("error",fail,{once:true})})}
 function extractVinFromScanText(text){
   const sequences=String(text||"").toUpperCase().match(/[A-HJ-NPR-Z0-9]{17,}/g)||[];let fallback="";
@@ -3756,11 +3736,7 @@ function extractVinFromScanText(text){
 }
 function loadVinScannerLibrary(){
   if(window.ZXing)return Promise.resolve(window.ZXing);if(vinScannerLibraryPromise)return vinScannerLibraryPromise;
-<<<<<<< HEAD
-  vinScannerLibraryPromise=new Promise((resolve,reject)=>{const script=document.createElement("script");script.src="zxing.min.js?v=7.06";script.async=true;script.onload=()=>window.ZXing?resolve(window.ZXing):reject(new Error("VIN scanner library did not initialize."));script.onerror=()=>reject(new Error("VIN scanner library could not load."));document.head.appendChild(script)}).catch(error=>{vinScannerLibraryPromise=null;throw error});return vinScannerLibraryPromise;
-=======
-  vinScannerLibraryPromise=new Promise((resolve,reject)=>{const script=document.createElement("script");script.src="zxing.min.js?v=7.05";script.async=true;script.onload=()=>window.ZXing?resolve(window.ZXing):reject(new Error("VIN scanner library did not initialize."));script.onerror=()=>reject(new Error("VIN scanner library could not load."));document.head.appendChild(script)}).catch(error=>{vinScannerLibraryPromise=null;throw error});return vinScannerLibraryPromise;
->>>>>>> ef39d562b6bcc2f6d70cdc65375f762f2878a73e
+  vinScannerLibraryPromise=new Promise((resolve,reject)=>{const script=document.createElement("script");script.src="zxing.min.js?v=7.07";script.async=true;script.onload=()=>window.ZXing?resolve(window.ZXing):reject(new Error("VIN scanner library did not initialize."));script.onerror=()=>reject(new Error("VIN scanner library could not load."));document.head.appendChild(script)}).catch(error=>{vinScannerLibraryPromise=null;throw error});return vinScannerLibraryPromise;
 }
 async function scanVinWithNativeDetector(file){
   if(!("BarcodeDetector" in window))return "";const formats=await BarcodeDetector.getSupportedFormats();const wanted=["data_matrix","code_39","code_128","pdf417","qr_code"].filter(format=>formats.includes(format));if(!wanted.length)return "";
@@ -3849,7 +3825,6 @@ async function saveVinVehicle(){
     modelLabel:vinPendingModelMatch?.label||existing?.modelLabel||[year,make,model].filter(Boolean).join(" "),
     modelAssetReady:!!vinPendingModelMatch?.assetReady,
     modelAsset:vinPendingModelMatch?.asset||existing?.modelAsset||"",
-<<<<<<< HEAD
     modelFallback:vinPendingModelMatch?.fallback||existing?.modelFallback||"procedural-universal-v2",
     modelAccuracy:vinPendingModelMatch?.accuracy||vinPendingModelMatch?.matchType||existing?.modelAccuracy||"approximate",
     modelSource:vinPendingModelMatch?.source||existing?.modelSource||"procedural-template",
@@ -3858,9 +3833,6 @@ async function saveVinVehicle(){
     modelFamilyKey:vinPendingModelMatch?.familyKey||existing?.modelFamilyKey||"",
     modelPartNodes:vinPendingModelMatch?.partNodes||existing?.modelPartNodes||null,
     modelHinges:vinPendingModelMatch?.hinges||existing?.modelHinges||null
-=======
-    modelFallback:vinPendingModelMatch?.fallback||existing?.modelFallback||"procedural-generic-vehicle-v1"
->>>>>>> ef39d562b6bcc2f6d70cdc65375f762f2878a73e
   };
   if(!vehicle.representativeImage){const match=await findRepresentativeVehicleImage(vehicle).catch(()=>null);if(match){vehicle.representativeImage=match.src;vehicle.representativeImageType="representative";vehicle.representativeImageTitle=match.title;vehicle.representativeImageCredit=match.credit;vehicle.representativeImageLicense=match.license;vehicle.representativeImageSourcePage=match.sourcePage}}
   upsertVehicle(vehicle);
@@ -3989,16 +3961,12 @@ function sanitizeVehicleFor3D(vehicle){
     modelLabel:vehicle.modelLabel||[vehicle.year,vehicle.make,vehicle.model].filter(Boolean).join(" "),
     modelAssetReady:!!vehicle.modelAssetReady,
     modelAsset:vehicle.modelAsset||"",
-<<<<<<< HEAD
     modelFallback:vehicle.modelFallback||"procedural-universal-v2",
     modelAccuracy:vehicle.modelAccuracy||vehicle.modelMatchType||"approximate",
     modelSource:vehicle.modelSource||"procedural-template",
     modelConfidence:Number(vehicle.modelConfidence||0),
     modelPartNodes:vehicle.modelPartNodes||null,
     modelHinges:vehicle.modelHinges||null,
-=======
-    modelFallback:vehicle.modelFallback||"procedural-generic-vehicle-v1",
->>>>>>> ef39d562b6bcc2f6d70cdc65375f762f2878a73e
     vinMasked:vehicle.vinLinked?maskVin(vehicle.vin):vehicle.vinMasked||"VIN not linked"
   };
 }
@@ -4023,11 +3991,7 @@ async function renderDigitalTwin(){
   set("twinVehicleMeta",formatVehicleName(vehicle));
   set("twinVinMask",vehicle.vinLinked?maskVin(vehicle.vin):vehicle.vinMasked||"Not linked");
   set("twin3dVehicleSpec",vehicle.modelLabel||[vehicle.year,vehicle.make,vehicle.model,vehicle.trim].filter(Boolean).join(" ")+" base twin");
-<<<<<<< HEAD
   const accuracyLabels={exact:"Exact",generation:"Generation",approximate:"Automatic",universal:"Foundation","exact-asset":"Exact",generic:"Automatic"};set("twin3dVinMatch",accuracyLabels[vehicle.modelAccuracy||vehicle.modelMatchType]||"Automatic");
-=======
-  set("twin3dVinMatch",vehicle.modelMatchType&&vehicle.modelMatchType!=="generic"?"Matched":"Generic");
->>>>>>> ef39d562b6bcc2f6d70cdc65375f762f2878a73e
   const photos=await getPhotos(vehicle.id).catch(()=>[]);
   set("twinPhotoCount",photos.length);
   set("twinCompletionBadge",photos.length?photos.length+" optional photo"+(photos.length===1?"":"s"):"3D Ready");

@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "version": 3,
   "schema": "mycar-model-registry-v3",
   "defaultFallback": "procedural-universal-v2",
@@ -16,14 +15,6 @@
       "label": "2010-2013 Buick LaCrosse",
       "generation": "Second generation",
       "confidence": 0.9,
-=======
-  "version": 2,
-  "defaultFallback": "procedural-generic-sedan-v1",
-  "models": {
-    "2010|buick|lacrosse": {
-      "label": "2010-2013 Buick LaCrosse",
-      "generation": "Second generation",
->>>>>>> ef39d562b6bcc2f6d70cdc65375f762f2878a73e
       "match": {
         "yearFrom": 2010,
         "yearTo": 2013,
@@ -85,7 +76,6 @@
         }
       }
     },
-<<<<<<< HEAD
     "template|sedan": {
       "kind": "template",
       "label": "Automatic sedan foundation",
@@ -157,26 +147,6 @@
       "assetReady": false,
       "asset": "",
       "fallback": "procedural-universal-v2"
-=======
-    "generic|sedan": {
-      "label": "Generic four-door sedan",
-      "match": {
-        "bodyIncludes": [
-          "sedan",
-          "saloon"
-        ]
-      },
-      "assetReady": false,
-      "asset": "",
-      "fallback": "procedural-generic-sedan-v1"
-    },
-    "generic|vehicle": {
-      "label": "Generic vehicle foundation",
-      "match": {},
-      "assetReady": false,
-      "asset": "",
-      "fallback": "procedural-generic-vehicle-v1"
->>>>>>> ef39d562b6bcc2f6d70cdc65375f762f2878a73e
     }
   }
 }

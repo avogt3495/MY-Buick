@@ -7,15 +7,9 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <meta name="theme-color" content="#070a10">
-<<<<<<< HEAD
-  <title>MY CAR v7.06 Worldwide Model Resolver</title>
-  <link rel="stylesheet" href="style.css?v=7.06-worldwide-model-resolver">
-  <link rel="modulepreload" href="twin3d.bundle.js?v=7.06-worldwide-model-resolver">
-=======
-  <title>MY CAR v7.05 3D Viewer Fix</title>
-  <link rel="stylesheet" href="style.css?v=7.05-vin-to-3d">
-  <link rel="modulepreload" href="twin3d.bundle.js?v=7.05-vin-to-3d">
->>>>>>> ef39d562b6bcc2f6d70cdc65375f762f2878a73e
+  <title>MY CAR v7.07 Clean Root Deploy</title>
+  <link rel="stylesheet" href="style.css?v=7.07-clean-root-deploy">
+  <link rel="modulepreload" href="twin3d.bundle.js?v=7.07-clean-root-deploy">
 </head>
 <body>
 <div class="app">
@@ -114,15 +108,9 @@
           <div id="vin3dModelCard" class="vin3dModelCard">
             <div class="vin3dModelIcon">3D</div>
             <div class="vin3dModelCopy">
-<<<<<<< HEAD
               <span>WORLDWIDE MODEL RESOLVER</span>
               <b id="vin3dModelTitle">Waiting for decoded vehicle</b>
               <small id="vin3dModelDetail">The resolver checks exact, generation, body-style, and universal model tiers automatically.</small>
-=======
-              <span>3D MODEL LIBRARY</span>
-              <b id="vin3dModelTitle">Waiting for decoded vehicle</b>
-              <small id="vin3dModelDetail">The VIN will select the closest supported 3D package automatically.</small>
->>>>>>> ef39d562b6bcc2f6d70cdc65375f762f2878a73e
             </div>
             <span id="vin3dModelBadge" class="vin3dModelBadge">WAITING</span>
           </div>
@@ -303,11 +291,7 @@
 
       <div class="twinStatusStrip real3dStatusStrip">
         <div><span>Model</span><strong id="twin3dModelType">Procedural 3D</strong></div>
-<<<<<<< HEAD
         <div><span>Model Accuracy</span><strong id="twin3dVinMatch">Checking</strong></div>
-=======
-        <div><span>VIN Match</span><strong id="twin3dVinMatch">Checking</strong></div>
->>>>>>> ef39d562b6bcc2f6d70cdc65375f762f2878a73e
         <div><span>Optional Photos</span><strong id="twinPhotoCount">0</strong></div>
         <div><span>VIN</span><strong id="twinVinMask">Masked</strong></div>
       </div>
@@ -1029,12 +1013,23 @@
   <div id="dim" class="dim"></div>
   <aside id="sheet" class="sheet" role="dialog" aria-modal="true" aria-label="Part information" aria-hidden="true" tabindex="-1"><button id="closeSheet" class="icon sheetClose">×</button><div id="sheetData"></div></aside>
 </div>
-<<<<<<< HEAD
-<script src="app.js?v=7.06-worldwide-model-resolver"></script>
-<script type="module" src="twin3d.bundle.js?v=7.06-worldwide-model-resolver" onerror="document.getElementById('vehicle3DLoading')?.classList.add('hidden');document.getElementById('vehicle3DError')?.classList.remove('hidden');const message=document.querySelector('#vehicle3DError span');if(message)message.textContent='The 3D engine file did not load. Confirm twin3d.bundle.js was uploaded beside index.html.'"></script>
-=======
-<script src="app.js?v=7.05-vin-to-3d"></script>
-<script type="module" src="twin3d.bundle.js?v=7.05-vin-to-3d" onerror="document.getElementById('vehicle3DLoading')?.classList.add('hidden');document.getElementById('vehicle3DError')?.classList.remove('hidden');const message=document.querySelector('#vehicle3DError span');if(message)message.textContent='The 3D engine file did not load. Confirm twin3d.bundle.js was uploaded beside index.html.'"></script>
->>>>>>> ef39d562b6bcc2f6d70cdc65375f762f2878a73e
+<script src="app.js?v=7.07-clean-root-deploy"></script>
+<script type="module" src="twin3d.bundle.js?v=7.07-clean-root-deploy" onerror="document.getElementById('vehicle3DLoading')?.classList.add('hidden');document.getElementById('vehicle3DError')?.classList.remove('hidden');const message=document.querySelector('#vehicle3DError span');if(message)message.textContent='The 3D engine file did not load. Confirm twin3d.bundle.js was uploaded beside index.html.'"></script>
+
+<script>
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    const host=document.getElementById('vehicle3DCanvas');
+    const error=document.getElementById('vehicle3DError');
+    const loading=document.getElementById('vehicle3DLoading');
+    if(host&&!host.querySelector('canvas')&&error?.classList.contains('hidden')){
+      loading?.classList.add('hidden');
+      error.classList.remove('hidden');
+      const message=error.querySelector('span');
+      if(message)message.textContent='The 3D engine file is missing or blocked. Upload twin3d.bundle.js beside index.html and reload.';
+    }
+  },9000);
+});
+</script>
 </body>
 </html>
