@@ -96,6 +96,7 @@ The 2010-2013 Buick LaCrosse is matched to the Buick-specific procedural 3D pack
 ### Bundled barcode decoder
 
 `zxing.min.js` is from `@zxing/library` 0.23.0 and is distributed under the Apache License 2.0. See `ZXING-LICENSE.txt`.
+<<<<<<< HEAD
 
 
 ## v7.06 Worldwide Model Resolver
@@ -108,3 +109,5 @@ The 2010-2013 Buick LaCrosse is matched to the Buick-specific procedural 3D pack
 - Restored Delete Vehicle in Garage and Vehicle Profile.
 - Deleting a vehicle also removes its locally stored photos.
 - The Garage can now remain empty without recreating the default Buick after an intentional deletion.
+=======
+>>>>>>> ef39d562b6bcc2f6d70cdc65375f762f2878a73e
