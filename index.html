@@ -7,9 +7,9 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <meta name="theme-color" content="#070a10">
-  <title>MY CAR v7.08 Clean Root Deploy</title>
-  <link rel="stylesheet" href="style.css?v=7.08-my-car-living-twin">
-  <link rel="modulepreload" href="twin3d.bundle.js?v=7.08-my-car-living-twin">
+  <title>MY CAR v7.09 Clean Root Deploy</title>
+  <link rel="stylesheet" href="style.css?v=7.09-exact-scale-vin-resolver">
+  <link rel="modulepreload" href="twin3d.bundle.js?v=7.09-exact-scale-vin-resolver">
 </head>
 <body>
 <div class="app">
@@ -297,9 +297,30 @@
         </div>
       </div>
 
+      <div id="twinScaleCard" class="twinScaleCard">
+        <div class="twinScaleHead">
+          <div>
+            <span id="twin3dScaleBadge">RESOLVING SCALE</span>
+            <b id="twin3dScaleTitle">Vehicle dimensions</b>
+            <small id="twin3dScaleSource">Matching decoded vehicle data to the dimension catalog.</small>
+          </div>
+          <span id="twin3dScaleConfidence" class="twinScaleConfidence">CHECKING</span>
+        </div>
+        <div class="twinDimensionGrid">
+          <div><span>Length</span><strong id="twinDimLength">—</strong></div>
+          <div><span>Width</span><strong id="twinDimWidth">—</strong></div>
+          <div><span>Height</span><strong id="twinDimHeight">—</strong></div>
+          <div><span>Wheelbase</span><strong id="twinDimWheelbase">—</strong></div>
+          <div><span>Front Track</span><strong id="twinDimFrontTrack">—</strong></div>
+          <div><span>Rear Track</span><strong id="twinDimRearTrack">—</strong></div>
+        </div>
+        <p id="twin3dScaleNote">Geometry accuracy and physical scale accuracy are measured separately.</p>
+      </div>
+
       <div class="twinStatusStrip real3dStatusStrip">
         <div><span>Model</span><strong id="twin3dModelType">Procedural 3D</strong></div>
-        <div><span>Model Accuracy</span><strong id="twin3dVinMatch">Checking</strong></div>
+        <div><span>Geometry</span><strong id="twin3dVinMatch">Checking</strong></div>
+        <div><span>Physical Scale</span><strong id="twin3dScaleStatus">Checking</strong></div>
         <div><span>Optional Photos</span><strong id="twinPhotoCount">0</strong></div>
         <div><span>VIN</span><strong id="twinVinMask">Masked</strong></div>
       </div>
@@ -1021,8 +1042,8 @@
   <div id="dim" class="dim"></div>
   <aside id="sheet" class="sheet" role="dialog" aria-modal="true" aria-label="Part information" aria-hidden="true" tabindex="-1"><button id="closeSheet" class="icon sheetClose">×</button><div id="sheetData"></div></aside>
 </div>
-<script src="app.js?v=7.08-my-car-living-twin"></script>
-<script type="module" src="twin3d.bundle.js?v=7.08-my-car-living-twin" onerror="document.getElementById('vehicle3DLoading')?.classList.add('hidden');document.getElementById('vehicle3DError')?.classList.remove('hidden');const message=document.querySelector('#vehicle3DError span');if(message)message.textContent='The 3D engine file did not load. Confirm twin3d.bundle.js was uploaded beside index.html.'"></script>
+<script src="app.js?v=7.09-exact-scale-vin-resolver"></script>
+<script type="module" src="twin3d.bundle.js?v=7.09-exact-scale-vin-resolver" onerror="document.getElementById('vehicle3DLoading')?.classList.add('hidden');document.getElementById('vehicle3DError')?.classList.remove('hidden');const message=document.querySelector('#vehicle3DError span');if(message)message.textContent='The 3D engine file did not load. Confirm twin3d.bundle.js was uploaded beside index.html.'"></script>
 
 <script>
 window.addEventListener('load',()=>{

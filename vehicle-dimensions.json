@@ -1,0 +1,153 @@
+{
+  "version": 1,
+  "schema": "mycar-vehicle-dimensions-v1",
+  "defaultUnits": "in",
+  "resolutionOrder": [
+    "exact",
+    "generation",
+    "body-template"
+  ],
+  "entries": {
+    "exact|2010|buick|lacrosse": {
+      "accuracy": "catalog-exact",
+      "label": "2010 Buick LaCrosse catalog dimensions",
+      "sourceLabel": "Published 2010 Buick LaCrosse specifications",
+      "units": "in",
+      "length": 196.9,
+      "width": 73.1,
+      "height": 59.2,
+      "wheelbase": 111.7,
+      "frontTrack": 61.7,
+      "rearTrack": 62.0,
+      "match": {
+        "yearFrom": 2010,
+        "yearTo": 2010,
+        "make": "buick",
+        "modelIncludes": [
+          "lacrosse"
+        ]
+      }
+    },
+    "family|buick|lacrosse|2010-2013": {
+      "accuracy": "generation",
+      "label": "2010-2013 Buick LaCrosse generation dimensions",
+      "sourceLabel": "Second-generation LaCrosse specification package",
+      "units": "in",
+      "length": 196.9,
+      "width": 73.1,
+      "height": 59.2,
+      "wheelbase": 111.7,
+      "frontTrack": 61.7,
+      "rearTrack": 62.0,
+      "match": {
+        "yearFrom": 2010,
+        "yearTo": 2013,
+        "make": "buick",
+        "modelIncludes": [
+          "lacrosse"
+        ]
+      }
+    }
+  },
+  "templates": {
+    "sedan": {
+      "accuracy": "estimated-template",
+      "label": "Midsize sedan estimated dimensions",
+      "units": "in",
+      "length": 190.0,
+      "width": 72.0,
+      "height": 58.0,
+      "wheelbase": 109.0,
+      "frontTrack": 61.0,
+      "rearTrack": 61.0
+    },
+    "suv": {
+      "accuracy": "estimated-template",
+      "label": "Midsize SUV estimated dimensions",
+      "units": "in",
+      "length": 188.0,
+      "width": 75.0,
+      "height": 67.0,
+      "wheelbase": 110.0,
+      "frontTrack": 64.0,
+      "rearTrack": 64.0
+    },
+    "pickup": {
+      "accuracy": "estimated-template",
+      "label": "Crew-cab pickup estimated dimensions",
+      "units": "in",
+      "length": 225.0,
+      "width": 79.0,
+      "height": 74.0,
+      "wheelbase": 143.0,
+      "frontTrack": 67.0,
+      "rearTrack": 67.0
+    },
+    "hatchback": {
+      "accuracy": "estimated-template",
+      "label": "Compact hatchback estimated dimensions",
+      "units": "in",
+      "length": 171.0,
+      "width": 70.0,
+      "height": 57.0,
+      "wheelbase": 104.0,
+      "frontTrack": 60.0,
+      "rearTrack": 60.0
+    },
+    "wagon": {
+      "accuracy": "estimated-template",
+      "label": "Midsize wagon estimated dimensions",
+      "units": "in",
+      "length": 190.0,
+      "width": 72.0,
+      "height": 59.0,
+      "wheelbase": 110.0,
+      "frontTrack": 61.0,
+      "rearTrack": 61.0
+    },
+    "coupe": {
+      "accuracy": "estimated-template",
+      "label": "Midsize coupe estimated dimensions",
+      "units": "in",
+      "length": 184.0,
+      "width": 73.0,
+      "height": 54.0,
+      "wheelbase": 108.0,
+      "frontTrack": 62.0,
+      "rearTrack": 62.0
+    },
+    "convertible": {
+      "accuracy": "estimated-template",
+      "label": "Convertible estimated dimensions",
+      "units": "in",
+      "length": 181.0,
+      "width": 72.0,
+      "height": 52.0,
+      "wheelbase": 106.0,
+      "frontTrack": 61.0,
+      "rearTrack": 61.0
+    },
+    "van": {
+      "accuracy": "estimated-template",
+      "label": "Passenger van estimated dimensions",
+      "units": "in",
+      "length": 204.0,
+      "width": 79.0,
+      "height": 69.0,
+      "wheelbase": 121.0,
+      "frontTrack": 66.0,
+      "rearTrack": 66.0
+    },
+    "universal": {
+      "accuracy": "estimated-template",
+      "label": "Universal vehicle estimated dimensions",
+      "units": "in",
+      "length": 185.0,
+      "width": 72.0,
+      "height": 60.0,
+      "wheelbase": 108.0,
+      "frontTrack": 61.0,
+      "rearTrack": 61.0
+    }
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "version": 4,
+  "version": 5,
   "schema": "mycar-model-registry-v3",
   "defaultFallback": "procedural-universal-v2",
   "resolutionOrder": [
@@ -74,7 +74,10 @@
           "closed": 0,
           "open": -1.05
         }
-      }
+      },
+      "dimensionsKey": "family|buick|lacrosse|2010-2013",
+      "scaleReady": true,
+      "scaleAccuracy": "catalog-exact"
     },
     "template|sedan": {
       "kind": "template",
@@ -149,7 +152,7 @@
       "fallback": "procedural-universal-v2"
     }
   },
-  "viewerVersion": "7.08",
+  "viewerVersion": "7.09",
   "proceduralFeatures": [
     "sculpted body geometry",
     "movable hood, trunk, and four doors",
@@ -158,5 +161,11 @@
     "showroom orbit mode",
     "interactive engine components",
     "interior and underside foundations"
+  ],
+  "dimensionCatalog": "vehicle-dimensions.json",
+  "scaleAccuracyTiers": [
+    "catalog-exact",
+    "generation",
+    "estimated-template"
   ]
 }

@@ -44,3 +44,36 @@ This release moves the procedural vehicle from a blocky technical prototype towa
 - Reset restores lights, steering, showroom mode, camera, and movable panels
 
 The model is still a procedural VIN-resolved foundation, not an exact manufacturer CAD scan. An exact licensed GLB can replace it later through the existing model resolver without changing the app workflow.
+
+
+## v7.09 Exact-Scale VIN Resolver
+
+This version separates visual model accuracy from physical scale accuracy.
+
+### New resolver tiers
+
+**Geometry**
+- Exact licensed model
+- Correct vehicle generation
+- Automatic body-style foundation
+- Universal foundation
+
+**Physical scale**
+- Catalog exact
+- Generation dimensions
+- Estimated body-template dimensions
+
+### 2010 Buick LaCrosse scale package
+
+The saved Buick profile is automatically migrated to:
+
+- Length: 196.9 in
+- Width: 73.1 in
+- Height: 59.2 in
+- Wheelbase: 111.7 in
+- Front track: 61.7 in
+- Rear track: 62.0 in
+
+The procedural model is non-uniformly scaled to the resolved exterior envelope. Wheel positions are also adjusted to the resolved wheelbase and track widths.
+
+This makes the Buick physically dimensioned correctly while remaining honest that its current panel geometry is still a generation-style procedural foundation. A licensed exact GLB can later replace the geometry while keeping the same scale resolver and VIN workflow.

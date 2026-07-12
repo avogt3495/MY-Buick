@@ -4794,3 +4794,97 @@ label{
   .twin3dControlGroup{max-width:74%;gap:5px}
   .twin3dControlGroup button{padding:7px 8px;font-size:9px}
 }
+
+
+/* v7.09 Exact-Scale VIN Resolver */
+.twinScaleCard{
+  margin:12px 0;
+  padding:14px;
+  border:1px solid rgba(95,165,255,.16);
+  border-radius:22px;
+  background:
+    radial-gradient(circle at 90% 0%,rgba(72,143,255,.13),transparent 42%),
+    linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.022));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045);
+}
+.twinScaleHead{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+}
+.twinScaleHead span,.twinScaleHead b,.twinScaleHead small{display:block}
+.twinScaleHead>div>span{
+  color:#7facf1;
+  font-size:9px;
+  font-weight:950;
+  letter-spacing:.14em;
+}
+.twinScaleHead b{
+  margin-top:3px;
+  color:#f4f7fc;
+  font-size:16px;
+}
+.twinScaleHead small{
+  margin-top:4px;
+  color:#8f9daf;
+  font-size:10px;
+  line-height:1.35;
+}
+.twinScaleConfidence{
+  flex:0 0 auto;
+  padding:7px 9px;
+  border:1px solid rgba(117,180,255,.22);
+  border-radius:999px;
+  color:#bcd9ff;
+  background:rgba(61,132,238,.10);
+  font-size:9px;
+  font-weight:950;
+  letter-spacing:.10em;
+}
+.twinScaleConfidence.exact{
+  color:#9ff1c4;
+  border-color:rgba(74,218,147,.27);
+  background:rgba(48,190,124,.10);
+}
+.twinScaleConfidence.estimated{
+  color:#ffe2a7;
+  border-color:rgba(255,188,79,.24);
+  background:rgba(224,151,43,.10);
+}
+.twinDimensionGrid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+  margin-top:12px;
+}
+.twinDimensionGrid>div{
+  min-width:0;
+  padding:10px;
+  border:1px solid rgba(255,255,255,.065);
+  border-radius:14px;
+  background:rgba(4,9,16,.30);
+}
+.twinDimensionGrid span,.twinDimensionGrid strong{display:block}
+.twinDimensionGrid span{
+  color:#8290a3;
+  font-size:8px;
+  font-weight:850;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.twinDimensionGrid strong{
+  margin-top:4px;
+  color:#edf4ff;
+  font-size:13px;
+  white-space:nowrap;
+}
+.twinScaleCard p{
+  margin:10px 1px 0;
+  color:#8290a3;
+  font-size:10px;
+  line-height:1.35;
+}
+@media(max-width:410px){
+  .twinDimensionGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}

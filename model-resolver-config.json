@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "enabled": false,
   "endpoint": "",
   "timeoutMs": 3500,
@@ -13,8 +13,11 @@
       "trim",
       "bodyClass",
       "engine",
-      "drivetrain"
+      "drivetrain",
+      "dimensionRequest"
     ]
   },
-  "notes": "Set enabled true and endpoint to a deployed resolver API when the cloud model broker is ready. The static app continues working with local generation and body templates."
+  "notes": "The static app resolves exact, generation, or template dimensions locally. A future cloud resolver may return licensed GLB assets and verified dimensions. The full VIN is never sent to the 3D model service.",
+  "dimensionCatalog": "vehicle-dimensions.json",
+  "dimensionEndpoint": ""
 }
