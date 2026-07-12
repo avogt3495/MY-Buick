@@ -1,11 +1,35 @@
 {
-  "version": 1,
+  "version": 3,
+  "schema": "mycar-model-registry-v3",
+  "defaultFallback": "procedural-universal-v2",
+  "resolutionOrder": [
+    "remote-exact",
+    "local-exact",
+    "generation",
+    "body-template",
+    "universal"
+  ],
   "models": {
-    "2010|buick|lacrosse": {
-      "label": "2010 Buick LaCrosse",
+    "family|buick|lacrosse|2010-2013": {
+      "kind": "generation",
+      "label": "2010-2013 Buick LaCrosse",
+      "generation": "Second generation",
+      "confidence": 0.9,
+      "match": {
+        "yearFrom": 2010,
+        "yearTo": 2013,
+        "make": "buick",
+        "modelIncludes": [
+          "lacrosse"
+        ],
+        "bodyIncludes": [
+          "sedan",
+          "saloon"
+        ]
+      },
       "assetReady": false,
       "asset": "models/2010-buick-lacrosse.glb",
-      "fallback": "procedural-2010-buick-lacrosse-v1",
+      "fallback": "procedural-2010-buick-lacrosse-v2",
       "partNodes": {
         "body": "Body",
         "hood": "Hood",
@@ -20,13 +44,109 @@
         "wheelRR": "Wheel_Rear_Passenger"
       },
       "hinges": {
-        "hood": { "axis": "z", "closed": 0, "open": 1.05 },
-        "trunk": { "axis": "z", "closed": 0, "open": -1.18 },
-        "driverFrontDoor": { "axis": "y", "closed": 0, "open": 1.12 },
-        "passengerFrontDoor": { "axis": "y", "closed": 0, "open": -1.12 },
-        "driverRearDoor": { "axis": "y", "closed": 0, "open": 1.05 },
-        "passengerRearDoor": { "axis": "y", "closed": 0, "open": -1.05 }
+        "hood": {
+          "axis": "z",
+          "closed": 0,
+          "open": 1.05
+        },
+        "trunk": {
+          "axis": "z",
+          "closed": 0,
+          "open": -1.18
+        },
+        "driverFrontDoor": {
+          "axis": "y",
+          "closed": 0,
+          "open": 1.12
+        },
+        "passengerFrontDoor": {
+          "axis": "y",
+          "closed": 0,
+          "open": -1.12
+        },
+        "driverRearDoor": {
+          "axis": "y",
+          "closed": 0,
+          "open": 1.05
+        },
+        "passengerRearDoor": {
+          "axis": "y",
+          "closed": 0,
+          "open": -1.05
+        }
       }
+    },
+    "template|sedan": {
+      "kind": "template",
+      "label": "Automatic sedan foundation",
+      "confidence": 0.62,
+      "assetReady": false,
+      "asset": "",
+      "fallback": "procedural-sedan-v2"
+    },
+    "template|suv": {
+      "kind": "template",
+      "label": "Automatic SUV/crossover foundation",
+      "confidence": 0.58,
+      "assetReady": false,
+      "asset": "",
+      "fallback": "procedural-suv-v2"
+    },
+    "template|pickup": {
+      "kind": "template",
+      "label": "Automatic pickup foundation",
+      "confidence": 0.56,
+      "assetReady": false,
+      "asset": "",
+      "fallback": "procedural-pickup-v2"
+    },
+    "template|hatchback": {
+      "kind": "template",
+      "label": "Automatic hatchback foundation",
+      "confidence": 0.58,
+      "assetReady": false,
+      "asset": "",
+      "fallback": "procedural-hatchback-v2"
+    },
+    "template|wagon": {
+      "kind": "template",
+      "label": "Automatic wagon/estate foundation",
+      "confidence": 0.58,
+      "assetReady": false,
+      "asset": "",
+      "fallback": "procedural-wagon-v2"
+    },
+    "template|coupe": {
+      "kind": "template",
+      "label": "Automatic coupe foundation",
+      "confidence": 0.57,
+      "assetReady": false,
+      "asset": "",
+      "fallback": "procedural-coupe-v2"
+    },
+    "template|convertible": {
+      "kind": "template",
+      "label": "Automatic convertible foundation",
+      "confidence": 0.52,
+      "assetReady": false,
+      "asset": "",
+      "fallback": "procedural-convertible-v2"
+    },
+    "template|van": {
+      "kind": "template",
+      "label": "Automatic van/MPV foundation",
+      "confidence": 0.54,
+      "assetReady": false,
+      "asset": "",
+      "fallback": "procedural-van-v2"
+    },
+    "template|universal": {
+      "kind": "template",
+      "label": "Universal interactive vehicle foundation",
+      "confidence": 0.3,
+      "assetReady": false,
+      "asset": "",
+      "fallback": "procedural-universal-v2"
     }
   }
 }

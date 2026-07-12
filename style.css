@@ -4676,3 +4676,63 @@ label{
 
 /* v7.01 loading optimization */
 .vehicle3DLoading b::after{content:" • optimized";color:#72a7ed;font-size:10px;font-weight:850;letter-spacing:.08em;text-transform:uppercase}
+
+.usSideOrientation{
+  margin:8px 2px 12px;
+  color:#8fa4c0;
+  font-size:10px;
+  font-weight:750;
+  text-align:center;
+  letter-spacing:.02em;
+}
+
+
+/* v7.05 VIN-to-3D model pipeline */
+.vin3dModelCard{
+  position:relative;
+  display:grid;
+  grid-template-columns:46px minmax(0,1fr) auto;
+  gap:12px;
+  align-items:center;
+  margin-top:14px;
+  padding:13px;
+  border:1px solid rgba(100,164,255,.17);
+  border-radius:19px;
+  background:linear-gradient(145deg,rgba(64,126,225,.12),rgba(255,255,255,.025));
+  overflow:hidden;
+}
+.vin3dModelCard::after{content:"";position:absolute;inset:auto -40px -60px auto;width:150px;height:120px;border-radius:50%;background:rgba(75,135,255,.13);filter:blur(30px);pointer-events:none}
+.vin3dModelIcon{position:relative;z-index:1;display:grid;place-items:center;width:46px;height:46px;border:1px solid rgba(133,187,255,.25);border-radius:15px;color:#ddebff;background:rgba(56,115,210,.18);font-size:13px;font-weight:950;letter-spacing:.08em}
+.vin3dModelCopy{position:relative;z-index:1;min-width:0}
+.vin3dModelCopy span,.vin3dModelCopy b,.vin3dModelCopy small{display:block}
+.vin3dModelCopy span{color:#77aaf1;font-size:9px;font-weight:950;letter-spacing:.12em}
+.vin3dModelCopy b{margin-top:3px;font-size:14px;line-height:1.28}
+.vin3dModelCopy small{margin-top:4px;color:#94a4b9;font-size:10px;line-height:1.35}
+.vin3dModelBadge{position:relative;z-index:1;padding:7px 9px;border:1px solid rgba(255,255,255,.11);border-radius:999px;color:#aebed2;background:rgba(7,12,19,.48);font-size:8px;font-weight:950;letter-spacing:.1em;white-space:nowrap}
+.vin3dModelCard.matched{border-color:rgba(77,211,145,.26);background:linear-gradient(145deg,rgba(42,168,111,.13),rgba(255,255,255,.025))}
+.vin3dModelCard.matched .vin3dModelBadge{border-color:rgba(77,211,145,.28);color:#a8f1ca;background:rgba(32,121,79,.15)}
+.vin3dModelCard.exact{border-color:rgba(105,174,255,.38);box-shadow:0 16px 42px rgba(45,105,210,.15)}
+.vin3dModelCard.generic .vin3dModelBadge{color:#f3ca83;border-color:rgba(235,174,75,.26);background:rgba(151,100,27,.12)}
+.twin3dStatusActions{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.twinVinScanButton{min-height:34px;padding:8px 11px;border:1px solid rgba(111,170,255,.22);border-radius:12px;color:#e7f1ff;background:rgba(59,119,217,.13);font-size:10px;font-weight:900;white-space:nowrap}
+.real3dStatusStrip{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:470px){.vin3dModelCard{grid-template-columns:42px minmax(0,1fr)}.vin3dModelBadge{grid-column:2;justify-self:start}.real3dStatusStrip{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+
+/* v7.06 worldwide model resolver + vehicle deletion */
+.garageVehicleActions{grid-template-columns:1.15fr 1fr 1fr auto}
+.garageVehicleActions .deleteVehicleBtn{min-width:42px;padding:0;color:#ffb5ba;border-color:rgba(255,97,110,.2);background:rgba(255,64,82,.08);font-size:16px}
+.garageVehicleActions .deleteVehicleBtn:active{background:rgba(255,64,82,.18)}
+.garageEmptyState{padding:26px 18px;border:1px dashed rgba(125,166,225,.22);border-radius:22px;background:rgba(255,255,255,.025);text-align:center}
+.garageEmptyState span{display:grid;place-items:center;width:48px;height:48px;margin:0 auto 10px;border-radius:17px;background:rgba(72,135,232,.12);color:#8fbaff;font-size:23px}
+.garageEmptyState h3{margin:0;color:#f1f6ff;font-size:17px}.garageEmptyState p{margin:7px auto 14px;max-width:310px;color:#94a2b6;font-size:12px;line-height:1.45}
+.garageEmptyState button{min-height:44px;padding:10px 18px;border:0;border-radius:14px;color:#fff;background:linear-gradient(135deg,#397ef4,#538fff);font-weight:850}
+.deleteVehicleWarning{padding:14px;border:1px solid rgba(255,91,105,.18);border-radius:18px;background:rgba(255,70,86,.07)}
+.deleteVehicleWarning span,.deleteVehicleWarning b,.deleteVehicleWarning small{display:block}.deleteVehicleWarning span{color:#ff929e;font-size:9px;font-weight:950;letter-spacing:.12em}.deleteVehicleWarning b{margin-top:5px;font-size:15px}.deleteVehicleWarning small{margin-top:5px;color:#abb6c6;font-size:11px;line-height:1.4}
+.deleteDanger{color:#fff!important;border-color:rgba(255,92,107,.3)!important;background:linear-gradient(135deg,#b92d3c,#e04755)!important}
+.profileModelResolutionCard{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0;padding:14px;border:1px solid rgba(106,160,239,.14);border-radius:19px;background:linear-gradient(180deg,rgba(68,127,218,.07),rgba(255,255,255,.025))}
+.profileModelResolutionCard span,.profileModelResolutionCard b,.profileModelResolutionCard small{display:block}.profileModelResolutionCard>div>span{color:#79a9ec;font-size:9px;font-weight:950;letter-spacing:.12em}.profileModelResolutionCard b{margin-top:4px;font-size:14px}.profileModelResolutionCard small{margin-top:3px;color:#8f9daf;font-size:10px}
+.vin3dModelCard.generation{border-color:rgba(110,170,255,.24);background:rgba(73,135,230,.07)}
+.vin3dModelCard.approximate{border-color:rgba(255,190,92,.2);background:rgba(229,158,51,.06)}
+.vin3dModelCard.exact{border-color:rgba(89,222,145,.24);background:rgba(51,180,106,.07)}
+@media(max-width:420px){.garageVehicleActions{grid-template-columns:1fr 1fr auto}.garageVehicleActions button:first-child{grid-column:1/3}.garageVehicleActions .deleteVehicleBtn{grid-column:3;grid-row:1/3;height:100%}}

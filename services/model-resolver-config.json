@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "enabled": false,
+  "endpoint": "",
+  "timeoutMs": 3500,
+  "cacheDays": 7,
+  "privacy": {
+    "sendFullVin": false,
+    "fieldsSent": [
+      "year",
+      "make",
+      "model",
+      "trim",
+      "bodyClass",
+      "engine",
+      "drivetrain"
+    ]
+  },
+  "notes": "Set enabled true and endpoint to a deployed resolver API when the cloud model broker is ready. The static app continues working with local generation and body templates."
+}
