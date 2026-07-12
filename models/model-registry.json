@@ -1,11 +1,25 @@
 {
-  "version": 1,
+  "version": 2,
+  "defaultFallback": "procedural-generic-sedan-v1",
   "models": {
     "2010|buick|lacrosse": {
-      "label": "2010 Buick LaCrosse",
+      "label": "2010-2013 Buick LaCrosse",
+      "generation": "Second generation",
+      "match": {
+        "yearFrom": 2010,
+        "yearTo": 2013,
+        "make": "buick",
+        "modelIncludes": [
+          "lacrosse"
+        ],
+        "bodyIncludes": [
+          "sedan",
+          "saloon"
+        ]
+      },
       "assetReady": false,
       "asset": "models/2010-buick-lacrosse.glb",
-      "fallback": "procedural-2010-buick-lacrosse-v1",
+      "fallback": "procedural-2010-buick-lacrosse-v2",
       "partNodes": {
         "body": "Body",
         "hood": "Hood",
@@ -20,13 +34,56 @@
         "wheelRR": "Wheel_Rear_Passenger"
       },
       "hinges": {
-        "hood": { "axis": "z", "closed": 0, "open": 1.05 },
-        "trunk": { "axis": "z", "closed": 0, "open": -1.18 },
-        "driverFrontDoor": { "axis": "y", "closed": 0, "open": 1.12 },
-        "passengerFrontDoor": { "axis": "y", "closed": 0, "open": -1.12 },
-        "driverRearDoor": { "axis": "y", "closed": 0, "open": 1.05 },
-        "passengerRearDoor": { "axis": "y", "closed": 0, "open": -1.05 }
+        "hood": {
+          "axis": "z",
+          "closed": 0,
+          "open": 1.05
+        },
+        "trunk": {
+          "axis": "z",
+          "closed": 0,
+          "open": -1.18
+        },
+        "driverFrontDoor": {
+          "axis": "y",
+          "closed": 0,
+          "open": 1.12
+        },
+        "passengerFrontDoor": {
+          "axis": "y",
+          "closed": 0,
+          "open": -1.12
+        },
+        "driverRearDoor": {
+          "axis": "y",
+          "closed": 0,
+          "open": 1.05
+        },
+        "passengerRearDoor": {
+          "axis": "y",
+          "closed": 0,
+          "open": -1.05
+        }
       }
+    },
+    "generic|sedan": {
+      "label": "Generic four-door sedan",
+      "match": {
+        "bodyIncludes": [
+          "sedan",
+          "saloon"
+        ]
+      },
+      "assetReady": false,
+      "asset": "",
+      "fallback": "procedural-generic-sedan-v1"
+    },
+    "generic|vehicle": {
+      "label": "Generic vehicle foundation",
+      "match": {},
+      "assetReady": false,
+      "asset": "",
+      "fallback": "procedural-generic-vehicle-v1"
     }
   }
 }
