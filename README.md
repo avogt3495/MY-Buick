@@ -37,7 +37,7 @@ The exact-model slot is already wired into `models/model-registry.json`. When a 
 The 3D module receives only vehicle profile details needed to select a model. The full VIN is not passed into the 3D viewer.
 
 
-## v7.01 Fast 3D Load
+## v7.02 Fast 3D Load
 
 - Prevents duplicate initialization and duplicate vehicle builds.
 - Keeps the same 3D vehicle in memory when reopening Digital Twin.
@@ -46,3 +46,10 @@ The 3D module receives only vehicle profile details needed to select a model. Th
 - Uses lower-cost mobile rendering: reduced pixel ratio, no mobile real-time shadows, and a 30 FPS mobile cap.
 - Pauses 3D rendering while another app screen or browser tab is active.
 - Adds module preload and a visible error instead of an endless loading screen if twin3d.bundle.js is missing.
+
+
+## v7.02 critical viewer fix
+
+- Fixed the procedural model crash caused by an unscoped `BoxGeometry` constructor in the front grille.
+- Bumped the Three.js bundle cache key so Safari and GitHub Pages load the corrected file.
+- Preserves the v7.01 mobile loading and performance improvements.
