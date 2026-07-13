@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://mycar.example/schemas/asset-package-v1.json",
-  "title": "MY CAR Vehicle Asset Package",
+  "$id": "https://mycar.example/schemas/asset-package-v1.1.json",
+  "title": "MY CAR Vehicle Asset Package v1.1",
   "type": "object",
   "required": [
     "packageId",
@@ -96,6 +96,58 @@
       "items": {
         "type": "string"
       }
+    },
+    "dimensions": {
+      "type": "object",
+      "properties": {
+        "units": {
+          "enum": [
+            "in",
+            "mm",
+            "cm",
+            "m"
+          ]
+        },
+        "length": {
+          "type": "number"
+        },
+        "width": {
+          "type": "number"
+        },
+        "height": {
+          "type": "number"
+        },
+        "wheelbase": {
+          "type": "number"
+        },
+        "frontTrack": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "rearTrack": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    },
+    "partNodes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "hinges": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object"
+      }
+    },
+    "validation": {
+      "type": "object"
     }
   }
 }

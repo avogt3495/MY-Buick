@@ -7,9 +7,9 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <meta name="theme-color" content="#070a10">
-  <title>MY CAR v8.0 Asset Network</title>
-  <link rel="stylesheet" href="style.css?v=8.0-asset-network">
-  <link rel="modulepreload" href="twin3d.bundle.js?v=8.0-asset-network">
+  <title>MY CAR v8.1 Asset Package Ingestor</title>
+  <link rel="stylesheet" href="style.css?v=8.1-asset-ingestor">
+  <link rel="modulepreload" href="twin3d.bundle.js?v=8.1-asset-ingestor">
 </head>
 <body>
 <div class="app">
@@ -227,6 +227,7 @@
         <div class="assetNetworkHeroBadges">
           <span id="assetNetworkLocalBadge">LOCAL CATALOG ACTIVE</span>
           <span id="assetNetworkCloudBadge" class="muted">CLOUD BROKER NOT CONNECTED</span>
+          <span>PACKAGE INGESTOR READY</span>
         </div>
       </div>
 
@@ -249,6 +250,7 @@
         </div>
         <div id="assetNetworkReleaseNotes" class="assetNetworkReleaseNotes"></div>
         <div class="assetNetworkActions">
+          <button id="assetNetworkIngest" class="ghost" type="button">Build vehicle package</button>
           <button id="assetNetworkCheck" class="ghost" type="button">Check for upgrade</button>
           <button id="assetNetworkInstall" class="primary" type="button" disabled>Package current</button>
         </div>
@@ -269,6 +271,105 @@
         <span>PRIVATE RESOLUTION</span>
         <b>The package broker receives decoded vehicle details, not the full VIN.</b>
         <p>The static prototype currently uses the bundled catalog. When a backend is connected, exact models can be updated without publishing licensed GLB files in the GitHub repository.</p>
+      </div>
+    </section>
+
+    <section id="assetingestor" class="screen assetIngestorScreen">
+      <div class="assetIngestorHero">
+        <span>MY CAR PACKAGE INGESTOR</span>
+        <h2>One model becomes every matching car.</h2>
+        <p>Upload a GLB, identify the vehicle generation, map movable parts, validate scale and phone performance, then generate a reusable Asset Network package. The file stays on this device during validation.</p>
+        <div class="assetIngestorHeroBadges"><span>LOCAL VALIDATION</span><span>GLB 2.0</span><span>VIN MATCH READY</span></div>
+      </div>
+
+      <div class="assetIngestorWorkflow">
+        <div><i>1</i><b>Upload GLB</b><small>Read scene structure locally</small></div>
+        <div><i>2</i><b>Map vehicle</b><small>Identity, scale, parts, hinges</small></div>
+        <div><i>3</i><b>Validate</b><small>Rights and mobile budget</small></div>
+        <div><i>4</i><b>Publish package</b><small>Generate network files</small></div>
+      </div>
+
+      <label class="assetDropZone" for="assetModelFile">
+        <input id="assetModelFile" type="file" accept=".glb,.gltf,model/gltf-binary,model/gltf+json" hidden>
+        <span class="assetDropIcon">3D</span>
+        <b id="assetDropTitle">Choose a vehicle GLB</b>
+        <small id="assetDropSubtitle">Recommended: one self-contained GLB with separate body panels and embedded textures.</small>
+      </label>
+
+      <div class="assetInspectorStats">
+        <div><span>File Size</span><strong id="assetStatSize">—</strong></div>
+        <div><span>Triangles</span><strong id="assetStatTriangles">—</strong></div>
+        <div><span>Nodes</span><strong id="assetStatNodes">—</strong></div>
+        <div><span>Meshes</span><strong id="assetStatMeshes">—</strong></div>
+        <div><span>Materials</span><strong id="assetStatMaterials">—</strong></div>
+        <div><span>Animations</span><strong id="assetStatAnimations">—</strong></div>
+      </div>
+
+      <div class="assetIngestSectionHead"><span>VEHICLE IDENTITY</span><h3>Which VINs receive this model?</h3></div>
+      <div class="assetIngestFormGrid">
+        <label>Package ID<input id="assetPackageId" placeholder="mycar.gm.buick.lacrosse.2010-2013"></label>
+        <label>Package Version<input id="assetPackageVersion" value="1.0.0" inputmode="decimal"></label>
+        <label>Label<input id="assetPackageLabel" placeholder="2010-2013 Buick LaCrosse Exact Twin"></label>
+        <label>Tier<select id="assetPackageTier"><option value="exact">Exact model</option><option value="generation" selected>Generation match</option><option value="body-template">Body foundation</option></select></label>
+        <label>Make<input id="assetMake" placeholder="Buick"></label>
+        <label>Model<input id="assetModel" placeholder="LaCrosse"></label>
+        <label>Year From<input id="assetYearFrom" inputmode="numeric" placeholder="2010"></label>
+        <label>Year To<input id="assetYearTo" inputmode="numeric" placeholder="2013"></label>
+        <label>Generation<input id="assetGeneration" placeholder="Second generation"></label>
+        <label>Body Style<input id="assetBody" placeholder="Sedan"></label>
+      </div>
+      <button id="assetUseActiveVehicle" class="assetInlineButton" type="button">Use active vehicle information</button>
+
+      <div class="assetIngestSectionHead"><span>CATALOG SCALE</span><h3>Physical vehicle dimensions</h3></div>
+      <div class="assetIngestFormGrid dimensionFields">
+        <label>Units<select id="assetDimensionUnits"><option value="in">Inches</option><option value="mm">Millimeters</option><option value="m">Meters</option></select></label>
+        <label>Length<input id="assetDimensionLength" inputmode="decimal"></label>
+        <label>Width<input id="assetDimensionWidth" inputmode="decimal"></label>
+        <label>Height<input id="assetDimensionHeight" inputmode="decimal"></label>
+        <label>Wheelbase<input id="assetDimensionWheelbase" inputmode="decimal"></label>
+        <label>Front Track<input id="assetDimensionFrontTrack" inputmode="decimal"></label>
+        <label>Rear Track<input id="assetDimensionRearTrack" inputmode="decimal"></label>
+        <label>Scale Accuracy<select id="assetScaleAccuracy"><option value="catalog-exact">Catalog exact</option><option value="generation">Generation dimensions</option><option value="estimated-template">Estimated</option></select></label>
+      </div>
+
+      <div class="assetIngestSectionHead"><span>MOVABLE PARTS</span><h3>Map GLB nodes to MY CAR</h3></div>
+      <p class="assetIngestHelp">The ingestor suggests node names automatically. Driver means the vehicle's left side for U.S.-market vehicles. Door pivots still need to be positioned at their real hinges in the source model.</p>
+      <div id="assetNodeMap" class="assetNodeMap"><div class="assetEmptyState">Upload a GLB to inspect its nodes.</div></div>
+
+      <div class="assetIngestSectionHead"><span>RIGHTS & SOURCE</span><h3>Can the network legally deliver it?</h3></div>
+      <div class="assetIngestFormGrid">
+        <label>Source Type<select id="assetSourceType"><option value="community-reviewed">Community contribution</option><option value="licensed-partner">Licensed provider</option><option value="manufacturer">Manufacturer</option><option value="mycar-verified">MY CAR verified</option></select></label>
+        <label>Contributor / Provider<input id="assetSourceLabel" placeholder="Creator or company name"></label>
+        <label class="wide">License or rights note<input id="assetRightsStatus" placeholder="Original work, CC BY, commercial web-app license, etc."></label>
+        <label class="wide assetRightsCheck"><input id="assetRightsConfirm" type="checkbox"><span>I confirm that I own this model or have permission to distribute it through the MY CAR package network.</span></label>
+      </div>
+
+      <div class="assetIngestSectionHead"><span>VALIDATION</span><h3>Package readiness report</h3></div>
+      <div id="assetValidationCards" class="assetValidationCards">
+        <article data-check="format"><i>—</i><div><b>GLB format</b><small>Waiting for model</small></div></article>
+        <article data-check="identity"><i>—</i><div><b>VIN matching identity</b><small>Waiting for fields</small></div></article>
+        <article data-check="scale"><i>—</i><div><b>Physical scale</b><small>Waiting for dimensions</small></div></article>
+        <article data-check="parts"><i>—</i><div><b>Part separation</b><small>Waiting for node map</small></div></article>
+        <article data-check="mobile"><i>—</i><div><b>Phone performance</b><small>Waiting for model statistics</small></div></article>
+        <article data-check="rights"><i>—</i><div><b>Rights declaration</b><small>Waiting for confirmation</small></div></article>
+      </div>
+      <div id="assetValidationSummary" class="assetValidationSummary">Choose a model to begin.</div>
+
+      <div class="assetIngestActions">
+        <button id="assetRunValidation" class="ghost" type="button">Run validation</button>
+        <button id="assetPreviewPackage" class="ghost" type="button" disabled>Preview in MY CAR</button>
+        <button id="assetGeneratePackage" class="primary" type="button" disabled>Generate package files</button>
+      </div>
+
+      <div id="assetPackageOutput" class="assetPackageOutput hidden">
+        <div><span>GENERATED PACKAGE</span><b id="assetGeneratedName">Vehicle package</b><small>Put the original GLB beside these generated JSON files when publishing to the Asset Network.</small></div>
+        <div class="assetDownloadGrid">
+          <button id="assetDownloadManifest" type="button">Download manifest.json</button>
+          <button id="assetDownloadParts" type="button">Download parts-map.json</button>
+          <button id="assetDownloadReport" type="button">Download ingest-report.json</button>
+          <button id="assetDownloadCatalog" type="button">Download catalog-entry.json</button>
+        </div>
+        <pre id="assetManifestPreview"></pre>
       </div>
     </section>
 
@@ -1089,6 +1190,7 @@
     <button data-go="vehicleprofile">◉ Vehicle Profile</button>
     <button data-go="digitaltwin">◇ Digital Twin</button>
     <button data-go="assetnetwork">☁ Asset Network</button>
+    <button data-go="assetingestor">⬡ Package Ingestor</button>
     <button data-go="photos">▧ Owner Photos</button>
     <button data-go="engine">🚗 Engine Bay</button>
     <button data-go="airbox">🌬 Airbox</button>
@@ -1102,8 +1204,8 @@
   <div id="dim" class="dim"></div>
   <aside id="sheet" class="sheet" role="dialog" aria-modal="true" aria-label="Part information" aria-hidden="true" tabindex="-1"><button id="closeSheet" class="icon sheetClose">×</button><div id="sheetData"></div></aside>
 </div>
-<script src="app.js?v=8.0-asset-network"></script>
-<script type="module" src="twin3d.bundle.js?v=8.0-asset-network" onerror="document.getElementById('vehicle3DLoading')?.classList.add('hidden');document.getElementById('vehicle3DError')?.classList.remove('hidden');const message=document.querySelector('#vehicle3DError span');if(message)message.textContent='The 3D engine file did not load. Confirm twin3d.bundle.js was uploaded beside index.html.'"></script>
+<script src="app.js?v=8.1-asset-ingestor"></script>
+<script type="module" src="twin3d.bundle.js?v=8.1-asset-ingestor" onerror="document.getElementById('vehicle3DLoading')?.classList.add('hidden');document.getElementById('vehicle3DError')?.classList.remove('hidden');const message=document.querySelector('#vehicle3DError span');if(message)message.textContent='The 3D engine file did not load. Confirm twin3d.bundle.js was uploaded beside index.html.'"></script>
 
 <script>
 window.addEventListener('load',()=>{

@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "schema": "mycar-asset-ingestor-rules-v1",
+  "deliveryTarget": {
+    "recommendedFileSizeMB": 30,
+    "maximumTestFileSizeMB": 70,
+    "recommendedTriangles": 350000,
+    "maximumTestTriangles": 700000,
+    "recommendedMaterials": 80
+  },
+  "requiredParts": [
+    "body",
+    "hood",
+    "trunk",
+    "driverFrontDoor",
+    "passengerFrontDoor",
+    "wheelFL",
+    "wheelFR",
+    "wheelRL",
+    "wheelRR"
+  ],
+  "orientation": {
+    "market": "US",
+    "driverSide": "left",
+    "passengerSide": "right"
+  },
+  "notes": [
+    "These are MY CAR initial phone delivery targets, not universal glTF limits.",
+    "GLB is preferred because it embeds geometry, buffers, and textures in one deliverable.",
+    "Movable panel pivots must be authored at the real hinge locations before publication."
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "packageId": "mycar.make.model.year-range",
+  "version": "1.0.0",
+  "channel": "development",
+  "tier": "generation",
+  "label": "Vehicle Generation Twin",
+  "match": {
+    "yearFrom": 2020,
+    "yearTo": 2024,
+    "make": "make",
+    "modelIncludes": [
+      "model"
+    ],
+    "bodyIncludes": [
+      "sedan"
+    ]
+  },
+  "geometryAccuracy": "generation",
+  "scaleAccuracy": "catalog-exact",
+  "delivery": {
+    "mode": "public-glb",
+    "assetReady": true,
+    "asset": "packages/mycar.make.model.year-range/1.0.0/vehicle.glb",
+    "fallback": "procedural-sedan-v3",
+    "protected": false
+  },
+  "source": {
+    "type": "community-reviewed",
+    "label": "Contributor",
+    "rightsStatus": "Original work"
+  },
+  "dimensions": {
+    "units": "in",
+    "length": 0,
+    "width": 0,
+    "height": 0,
+    "wheelbase": 0
+  },
+  "partNodes": {},
+  "hinges": {},
+  "features": []
+}
