@@ -1,79 +1,29 @@
-# MY CAR v7.07 Clean Root Deploy
+# MY CAR v8.0 Asset Network
 
-This is a clean deployment package for GitHub Pages. It fixes the broken mixed-version upload and keeps every new runtime dependency in the repository root.
+MY CAR v8.0 moves the prototype from a single-vehicle model registry toward a versioned vehicle asset platform.
 
-Keep your existing `images/` and `data/` folders. Completely replace the root files with the files in this ZIP.
+## Core behavior
 
-## Root files to upload
+1. Scan or enter a VIN.
+2. Decode year, make, model, trim, body type, engine, and drivetrain.
+3. Resolve the best available asset package.
+4. Load exact, generation, body-template, or universal geometry.
+5. Keep the installed package version on the vehicle profile.
+6. Upgrade the vehicle later when the Asset Network publishes a better compatible package.
 
-- `index.html`
-- `style.css`
-- `app.js`
-- `twin3d.bundle.js`
-- `zxing.min.js`
-- `ZXING-LICENSE.txt`
-- `model-registry.json`
-- `model-resolver-config.json`
-- `README.md`
+Photos remain optional. The full VIN is not sent to the asset broker.
 
-This version does not require `models/` or `services/` folders. The model registry and resolver configuration are also embedded as fallbacks.
+## New files
 
-Never keep merge-conflict text such as `<<<<<<< HEAD`, `=======`, or `>>>>>>>` in a deployed file.
+- `asset-network-catalog.json`: bundled package catalog and worldwide fallbacks
+- `asset-network-config.json`: future cloud broker configuration
+- `asset-package-schema.json`: validation format for manufacturer, licensed, community, and generated packages
+- `MODEL-CONTRIBUTOR-GUIDE.md`: rights and package preparation requirements
 
+## Prototype limitation
 
-## v7.08 MY CAR Living Twin
+The cloud broker is intentionally disabled. The bundled catalog works immediately on GitHub Pages. Enabling worldwide protected delivery requires a deployed backend, a model CDN, rights validation, and signed asset URLs. No exact paid model is included in this public package.
 
-This release moves the procedural vehicle from a blocky technical prototype toward a living, interactive MY CAR twin.
+## Buick demonstration
 
-### Vehicle improvements
-- Sculpted sedan body instead of one large rectangular shell
-- Lower and wider Buick-style stance
-- Waterfall grille and simplified tri-shield detail
-- Buick-style hood portholes
-- Better front and rear fascia shaping
-- Improved cabin glass and roofline
-- Better stock-style wheels, rotors, calipers, spokes, and hubs
-- Wheel arches, side mirrors, chrome trim, dual exhaust, subframes, and interior details
-- More complete engine-bay foundation
-
-### Living controls
-- Headlight and taillight toggle
-- Front-wheel steering positions
-- Showroom auto-rotation
-- Smooth steering and panel movement
-- Reset restores lights, steering, showroom mode, camera, and movable panels
-
-The model is still a procedural VIN-resolved foundation, not an exact manufacturer CAD scan. An exact licensed GLB can replace it later through the existing model resolver without changing the app workflow.
-
-
-## v7.09 Exact-Scale VIN Resolver
-
-This version separates visual model accuracy from physical scale accuracy.
-
-### New resolver tiers
-
-**Geometry**
-- Exact licensed model
-- Correct vehicle generation
-- Automatic body-style foundation
-- Universal foundation
-
-**Physical scale**
-- Catalog exact
-- Generation dimensions
-- Estimated body-template dimensions
-
-### 2010 Buick LaCrosse scale package
-
-The saved Buick profile is automatically migrated to:
-
-- Length: 196.9 in
-- Width: 73.1 in
-- Height: 59.2 in
-- Wheelbase: 111.7 in
-- Front track: 61.7 in
-- Rear track: 62.0 in
-
-The procedural model is non-uniformly scaled to the resolved exterior envelope. Wheel positions are also adjusted to the resolved wheelbase and track widths.
-
-This makes the Buick physically dimensioned correctly while remaining honest that its current panel geometry is still a generation-style procedural foundation. A licensed exact GLB can later replace the geometry while keeping the same scale resolver and VIN workflow.
+The existing Buick is migrated to package `mycar.gm.buick.lacrosse.2010-2013` v1.0.0. The bundled catalog offers v1.1.0 so the upgrade workflow can be tested from the Asset Network screen. This update changes package/version metadata and prepares the protected exact-model slot. The visual model changes only when a package includes a newer asset.

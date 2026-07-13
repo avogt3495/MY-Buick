@@ -1,8 +1,10 @@
 const MYCAR_EMBEDDED_MODEL_REGISTRY={"version":3,"schema":"mycar-model-registry-v3","defaultFallback":"procedural-universal-v2","resolutionOrder":["remote-exact","local-exact","generation","body-template","universal"],"models":{"family|buick|lacrosse|2010-2013":{"kind":"generation","label":"2010-2013 Buick LaCrosse","generation":"Second generation","confidence":0.9,"match":{"yearFrom":2010,"yearTo":2013,"make":"buick","modelIncludes":["lacrosse"],"bodyIncludes":["sedan","saloon"]},"assetReady":false,"asset":"models/2010-buick-lacrosse.glb","fallback":"procedural-2010-buick-lacrosse-v2","partNodes":{"body":"Body","hood":"Hood","trunk":"Trunk","driverFrontDoor":"Door_Driver_Front","passengerFrontDoor":"Door_Passenger_Front","driverRearDoor":"Door_Driver_Rear","passengerRearDoor":"Door_Passenger_Rear","wheelFL":"Wheel_Front_Driver","wheelFR":"Wheel_Front_Passenger","wheelRL":"Wheel_Rear_Driver","wheelRR":"Wheel_Rear_Passenger"},"hinges":{"hood":{"axis":"z","closed":0,"open":1.05},"trunk":{"axis":"z","closed":0,"open":-1.18},"driverFrontDoor":{"axis":"y","closed":0,"open":1.12},"passengerFrontDoor":{"axis":"y","closed":0,"open":-1.12},"driverRearDoor":{"axis":"y","closed":0,"open":1.05},"passengerRearDoor":{"axis":"y","closed":0,"open":-1.05}}},"template|sedan":{"kind":"template","label":"Automatic sedan foundation","confidence":0.62,"assetReady":false,"asset":"","fallback":"procedural-sedan-v2"},"template|suv":{"kind":"template","label":"Automatic SUV/crossover foundation","confidence":0.58,"assetReady":false,"asset":"","fallback":"procedural-suv-v2"},"template|pickup":{"kind":"template","label":"Automatic pickup foundation","confidence":0.56,"assetReady":false,"asset":"","fallback":"procedural-pickup-v2"},"template|hatchback":{"kind":"template","label":"Automatic hatchback foundation","confidence":0.58,"assetReady":false,"asset":"","fallback":"procedural-hatchback-v2"},"template|wagon":{"kind":"template","label":"Automatic wagon/estate foundation","confidence":0.58,"assetReady":false,"asset":"","fallback":"procedural-wagon-v2"},"template|coupe":{"kind":"template","label":"Automatic coupe foundation","confidence":0.57,"assetReady":false,"asset":"","fallback":"procedural-coupe-v2"},"template|convertible":{"kind":"template","label":"Automatic convertible foundation","confidence":0.52,"assetReady":false,"asset":"","fallback":"procedural-convertible-v2"},"template|van":{"kind":"template","label":"Automatic van/MPV foundation","confidence":0.54,"assetReady":false,"asset":"","fallback":"procedural-van-v2"},"template|universal":{"kind":"template","label":"Universal interactive vehicle foundation","confidence":0.3,"assetReady":false,"asset":"","fallback":"procedural-universal-v2"}}};
 const MYCAR_EMBEDDED_RESOLVER_CONFIG={"version":1,"enabled":false,"endpoint":"","timeoutMs":3500,"cacheDays":7,"privacy":{"sendFullVin":false,"fieldsSent":["year","make","model","trim","bodyClass","engine","drivetrain"]},"notes":"Set enabled true and endpoint to a deployed resolver API when the cloud model broker is ready. The static app continues working with local generation and body templates."};
 const MYCAR_EMBEDDED_DIMENSION_CATALOG={"version":1,"schema":"mycar-vehicle-dimensions-v1","defaultUnits":"in","resolutionOrder":["exact","generation","body-template"],"entries":{"exact|2010|buick|lacrosse":{"accuracy":"catalog-exact","label":"2010 Buick LaCrosse catalog dimensions","sourceLabel":"Published 2010 Buick LaCrosse specifications","units":"in","length":196.9,"width":73.1,"height":59.2,"wheelbase":111.7,"frontTrack":61.7,"rearTrack":62.0,"match":{"yearFrom":2010,"yearTo":2010,"make":"buick","modelIncludes":["lacrosse"]}},"family|buick|lacrosse|2010-2013":{"accuracy":"generation","label":"2010-2013 Buick LaCrosse generation dimensions","sourceLabel":"Second-generation LaCrosse specification package","units":"in","length":196.9,"width":73.1,"height":59.2,"wheelbase":111.7,"frontTrack":61.7,"rearTrack":62.0,"match":{"yearFrom":2010,"yearTo":2013,"make":"buick","modelIncludes":["lacrosse"]}}},"templates":{"sedan":{"accuracy":"estimated-template","label":"Midsize sedan estimated dimensions","units":"in","length":190.0,"width":72.0,"height":58.0,"wheelbase":109.0,"frontTrack":61.0,"rearTrack":61.0},"suv":{"accuracy":"estimated-template","label":"Midsize SUV estimated dimensions","units":"in","length":188.0,"width":75.0,"height":67.0,"wheelbase":110.0,"frontTrack":64.0,"rearTrack":64.0},"pickup":{"accuracy":"estimated-template","label":"Crew-cab pickup estimated dimensions","units":"in","length":225.0,"width":79.0,"height":74.0,"wheelbase":143.0,"frontTrack":67.0,"rearTrack":67.0},"hatchback":{"accuracy":"estimated-template","label":"Compact hatchback estimated dimensions","units":"in","length":171.0,"width":70.0,"height":57.0,"wheelbase":104.0,"frontTrack":60.0,"rearTrack":60.0},"wagon":{"accuracy":"estimated-template","label":"Midsize wagon estimated dimensions","units":"in","length":190.0,"width":72.0,"height":59.0,"wheelbase":110.0,"frontTrack":61.0,"rearTrack":61.0},"coupe":{"accuracy":"estimated-template","label":"Midsize coupe estimated dimensions","units":"in","length":184.0,"width":73.0,"height":54.0,"wheelbase":108.0,"frontTrack":62.0,"rearTrack":62.0},"convertible":{"accuracy":"estimated-template","label":"Convertible estimated dimensions","units":"in","length":181.0,"width":72.0,"height":52.0,"wheelbase":106.0,"frontTrack":61.0,"rearTrack":61.0},"van":{"accuracy":"estimated-template","label":"Passenger van estimated dimensions","units":"in","length":204.0,"width":79.0,"height":69.0,"wheelbase":121.0,"frontTrack":66.0,"rearTrack":66.0},"universal":{"accuracy":"estimated-template","label":"Universal vehicle estimated dimensions","units":"in","length":185.0,"width":72.0,"height":60.0,"wheelbase":108.0,"frontTrack":61.0,"rearTrack":61.0}}};
-const screens=["garage","vinsetup","vehicleprofile","digitaltwin","photos","home","engine","airbox","guide","learn","maintenance","coolant","coolantguide","coolantlearn","coolantmaintenance","fusebox","fuseguide","fuselearn","fusemaintenance"];
-const names={garage:["MY CAR","Garage"],vinsetup:["GARAGE","Add Vehicle"],vehicleprofile:["GARAGE","Vehicle Profile"],digitaltwin:["VEHICLE","Digital Twin"],photos:["VEHICLE","Owner Photos"],home:["MY BUICK","2010 Buick LaCrosse CXL"],engine:["VEHICLE","Engine Bay"],airbox:["ENGINE BAY","Airbox"],guide:["AIRBOX","Guide Me"],learn:["AIRBOX","Learn"],maintenance:["AIRBOX","Maintenance"],coolant:["ENGINE BAY","Coolant Reservoir"],coolantguide:["COOLANT","Guide Me"],coolantlearn:["COOLANT","Learn"],coolantmaintenance:["COOLANT","Maintenance"],fusebox:["ENGINE BAY","Fuse Box"],fuseguide:["FUSE BOX","Guide Me"],fuselearn:["FUSE BOX","Learn"],fusemaintenance:["FUSE BOX","Maintenance"]};
+const MYCAR_EMBEDDED_ASSET_NETWORK_CATALOG={"version":1,"schema":"mycar-asset-network-catalog-v1","channel":"stable","generatedAt":"2026-07-13","resolutionOrder":["remote-exact","exact","generation","body-template","universal"],"packages":{"mycar.gm.buick.lacrosse.2010-2013":{"packageId":"mycar.gm.buick.lacrosse.2010-2013","version":"1.1.0","channel":"stable","tier":"generation","label":"2010-2013 Buick LaCrosse Generation Twin","generation":"Second generation","match":{"yearFrom":2010,"yearTo":2013,"make":"buick","modelIncludes":["lacrosse"],"bodyIncludes":["sedan","saloon","4 door"]},"geometryAccuracy":"generation","scaleAccuracy":"catalog-exact","confidence":0.92,"delivery":{"mode":"procedural","assetReady":false,"asset":"","fallback":"procedural-2010-buick-lacrosse-living-v4","protected":false,"futureAssetSlot":"signed://mycar/gm/buick/lacrosse/2010-2013/vehicle.glb"},"source":{"type":"mycar-verified","label":"MY CAR verified generation package","rightsStatus":"MY CAR generated procedural package"},"dimensionsKey":"exact|2010|buick|lacrosse","features":["VIN generation matching","catalog-correct exterior scale","movable hood, trunk, and four doors","working lights and steerable front wheels","engine, interior, wheel, trunk, and underside zones","protected exact-model replacement slot"],"releaseNotes":["Adds versioned Asset Network package identity.","Adds protected delivery metadata for a future licensed exact GLB.","Keeps the current generation twin available while exact geometry is sourced."],"updatedAt":"2026-07-13T00:00:00Z"},"mycar.template.sedan":{"packageId":"mycar.template.sedan","version":"1.0.0","channel":"stable","tier":"body-template","label":"Automatic Sedan Foundation","match":{"bodyIncludes":["sedan","saloon","4 door"]},"geometryAccuracy":"approximate","scaleAccuracy":"estimated-template","confidence":0.62,"delivery":{"mode":"procedural","assetReady":false,"asset":"","fallback":"procedural-sedan-v3","protected":false},"source":{"type":"mycar-generator","label":"MY CAR automatic body generator","rightsStatus":"MY CAR generated"},"features":["movable panels","body-style proportions","universal component zones","optional photo personalization"],"releaseNotes":["Initial worldwide sedan foundation."],"updatedAt":"2026-07-13T00:00:00Z"},"mycar.template.suv":{"packageId":"mycar.template.suv","version":"1.0.0","channel":"stable","tier":"body-template","label":"Automatic SUV/Crossover Foundation","match":{"bodyIncludes":["sport utility","suv","crossover"]},"geometryAccuracy":"approximate","scaleAccuracy":"estimated-template","confidence":0.58,"delivery":{"mode":"procedural","assetReady":false,"asset":"","fallback":"procedural-suv-v3","protected":false},"source":{"type":"mycar-generator","label":"MY CAR automatic body generator","rightsStatus":"MY CAR generated"},"features":["movable panels","SUV proportions","universal component zones"],"releaseNotes":["Initial worldwide SUV foundation."],"updatedAt":"2026-07-13T00:00:00Z"},"mycar.template.pickup":{"packageId":"mycar.template.pickup","version":"1.0.0","channel":"stable","tier":"body-template","label":"Automatic Pickup Foundation","match":{"bodyIncludes":["pickup","truck","ute"]},"geometryAccuracy":"approximate","scaleAccuracy":"estimated-template","confidence":0.56,"delivery":{"mode":"procedural","assetReady":false,"asset":"","fallback":"procedural-pickup-v3","protected":false},"source":{"type":"mycar-generator","label":"MY CAR automatic body generator","rightsStatus":"MY CAR generated"},"features":["movable panels","pickup proportions","bed and underside zones"],"releaseNotes":["Initial worldwide pickup foundation."],"updatedAt":"2026-07-13T00:00:00Z"},"mycar.template.hatchback":{"packageId":"mycar.template.hatchback","version":"1.0.0","channel":"stable","tier":"body-template","label":"Automatic Hatchback Foundation","match":{"bodyIncludes":["hatchback","liftback"]},"geometryAccuracy":"approximate","scaleAccuracy":"estimated-template","confidence":0.58,"delivery":{"mode":"procedural","assetReady":false,"asset":"","fallback":"procedural-hatchback-v3","protected":false},"source":{"type":"mycar-generator","label":"MY CAR automatic body generator","rightsStatus":"MY CAR generated"},"features":["movable panels","hatchback proportions","cargo and underside zones"],"releaseNotes":["Initial worldwide hatchback foundation."],"updatedAt":"2026-07-13T00:00:00Z"},"mycar.template.wagon":{"packageId":"mycar.template.wagon","version":"1.0.0","channel":"stable","tier":"body-template","label":"Automatic Wagon/Estate Foundation","match":{"bodyIncludes":["wagon","estate"]},"geometryAccuracy":"approximate","scaleAccuracy":"estimated-template","confidence":0.58,"delivery":{"mode":"procedural","assetReady":false,"asset":"","fallback":"procedural-wagon-v3","protected":false},"source":{"type":"mycar-generator","label":"MY CAR automatic body generator","rightsStatus":"MY CAR generated"},"features":["movable panels","wagon proportions","cargo and underside zones"],"releaseNotes":["Initial worldwide wagon foundation."],"updatedAt":"2026-07-13T00:00:00Z"},"mycar.template.coupe":{"packageId":"mycar.template.coupe","version":"1.0.0","channel":"stable","tier":"body-template","label":"Automatic Coupe Foundation","match":{"bodyIncludes":["coupe","2 door sedan"]},"geometryAccuracy":"approximate","scaleAccuracy":"estimated-template","confidence":0.57,"delivery":{"mode":"procedural","assetReady":false,"asset":"","fallback":"procedural-coupe-v3","protected":false},"source":{"type":"mycar-generator","label":"MY CAR automatic body generator","rightsStatus":"MY CAR generated"},"features":["movable panels","coupe proportions","universal component zones"],"releaseNotes":["Initial worldwide coupe foundation."],"updatedAt":"2026-07-13T00:00:00Z"},"mycar.template.convertible":{"packageId":"mycar.template.convertible","version":"1.0.0","channel":"stable","tier":"body-template","label":"Automatic Convertible Foundation","match":{"bodyIncludes":["convertible","cabriolet","roadster"]},"geometryAccuracy":"approximate","scaleAccuracy":"estimated-template","confidence":0.52,"delivery":{"mode":"procedural","assetReady":false,"asset":"","fallback":"procedural-convertible-v3","protected":false},"source":{"type":"mycar-generator","label":"MY CAR automatic body generator","rightsStatus":"MY CAR generated"},"features":["movable panels","convertible proportions","universal component zones"],"releaseNotes":["Initial worldwide convertible foundation."],"updatedAt":"2026-07-13T00:00:00Z"},"mycar.template.van":{"packageId":"mycar.template.van","version":"1.0.0","channel":"stable","tier":"body-template","label":"Automatic Van/MPV Foundation","match":{"bodyIncludes":["van","minivan","mpv","multi purpose"]},"geometryAccuracy":"approximate","scaleAccuracy":"estimated-template","confidence":0.54,"delivery":{"mode":"procedural","assetReady":false,"asset":"","fallback":"procedural-van-v3","protected":false},"source":{"type":"mycar-generator","label":"MY CAR automatic body generator","rightsStatus":"MY CAR generated"},"features":["movable panels","van proportions","cargo and underside zones"],"releaseNotes":["Initial worldwide van foundation."],"updatedAt":"2026-07-13T00:00:00Z"},"mycar.template.universal":{"packageId":"mycar.template.universal","version":"1.0.0","channel":"stable","tier":"universal","label":"Universal Interactive Vehicle Foundation","match":{},"geometryAccuracy":"universal","scaleAccuracy":"estimated-template","confidence":0.3,"delivery":{"mode":"procedural","assetReady":false,"asset":"","fallback":"procedural-universal-v3","protected":false},"source":{"type":"mycar-generator","label":"MY CAR universal generator","rightsStatus":"MY CAR generated"},"features":["360-degree viewer","movable panels","universal vehicle zones","automatic future upgrade channel"],"releaseNotes":["Universal fallback for unmatched vehicles."],"updatedAt":"2026-07-13T00:00:00Z"}}};
+const MYCAR_EMBEDDED_ASSET_NETWORK_CONFIG={"version":1,"schema":"mycar-asset-network-config-v1","enabled":false,"endpoint":"","timeoutMs":4500,"catalogPath":"asset-network-catalog.json","channel":"stable","autoCheckDays":7,"protectedDelivery":{"enabled":false,"signedUrlField":"assetUrl","expiresField":"expiresAt"},"sourceOrder":["manufacturer","licensed-partner","community-reviewed","mycar-verified","mycar-generator"],"deliveryModes":["signed-glb","public-glb","procedural"],"privacy":{"sendFullVin":false,"fieldsSent":["year","make","model","trim","bodyClass","engine","drivetrain","installedPackageId","installedPackageVersion"]},"notes":"The static prototype uses the local package catalog. Set enabled and endpoint after deploying the MY CAR asset broker. The full VIN is never sent to the package broker."};
+const screens=["garage","vinsetup","vehicleprofile","assetnetwork","digitaltwin","photos","home","engine","airbox","guide","learn","maintenance","coolant","coolantguide","coolantlearn","coolantmaintenance","fusebox","fuseguide","fuselearn","fusemaintenance"];
+const names={garage:["MY CAR","Garage"],vinsetup:["GARAGE","Add Vehicle"],vehicleprofile:["GARAGE","Vehicle Profile"],assetnetwork:["MY CAR","Asset Network"],digitaltwin:["VEHICLE","Digital Twin"],photos:["VEHICLE","Owner Photos"],home:["MY BUICK","2010 Buick LaCrosse CXL"],engine:["VEHICLE","Engine Bay"],airbox:["ENGINE BAY","Airbox"],guide:["AIRBOX","Guide Me"],learn:["AIRBOX","Learn"],maintenance:["AIRBOX","Maintenance"],coolant:["ENGINE BAY","Coolant Reservoir"],coolantguide:["COOLANT","Guide Me"],coolantlearn:["COOLANT","Learn"],coolantmaintenance:["COOLANT","Maintenance"],fusebox:["ENGINE BAY","Fuse Box"],fuseguide:["FUSE BOX","Guide Me"],fuselearn:["FUSE BOX","Learn"],fusemaintenance:["FUSE BOX","Maintenance"]};
 let current="garage";let layer=0;let done=new Set();
 
 const componentMaps=[
@@ -1938,6 +1940,7 @@ function showScreen(id){
   if(id==="garage")renderGarage();
   if(id==="home")renderVehicleHome();
   if(id==="vehicleprofile")renderVehicleProfile();
+  if(id==="assetnetwork")renderAssetNetwork();
   if(id==="vinsetup")renderVinOnboardStep();
   if(id==="digitaltwin")requestAnimationFrame(()=>{renderDigitalTwin();initTwinCanvas();});
   if(id==="photos")renderPhotoGallery();
@@ -1961,7 +1964,7 @@ document.getElementById("backBtn").addEventListener("click",()=>{
     closeCoolantGuideSheet();
     return;
   }
-  const backMap={vinsetup:"garage",vehicleprofile:"garage",digitaltwin:"vehicleprofile",photos:"digitaltwin",home:"garage",engine:"home",airbox:"engine",guide:"airbox",learn:"airbox",maintenance:"airbox",coolant:"engine",coolantguide:"coolant",coolantlearn:"coolant",coolantmaintenance:"coolant",fusebox:"engine",fuseguide:"fusebox",fuselearn:"fusebox",fusemaintenance:"fusebox"};
+  const backMap={vinsetup:"garage",vehicleprofile:"garage",assetnetwork:"digitaltwin",digitaltwin:"vehicleprofile",photos:"digitaltwin",home:"garage",engine:"home",airbox:"engine",guide:"airbox",learn:"airbox",maintenance:"airbox",coolant:"engine",coolantguide:"coolant",coolantlearn:"coolant",coolantmaintenance:"coolant",fusebox:"engine",fuseguide:"fusebox",fuselearn:"fusebox",fusemaintenance:"fusebox"};
   showScreen(backMap[current]||"garage");
 });
 
@@ -2773,7 +2776,7 @@ function globalDockItems(screenId){
   const map={
     garage:[
       {icon:"＋",label:"Add Vehicle",action:"garage-add",primary:true},
-      {icon:"🚗",label:"Open Buick",action:"go",target:"home"},
+      {icon:"☁",label:"Asset Network",action:"go",target:"assetnetwork"},
       {icon:"◇",label:"Digital Twin",action:"go",target:"digitaltwin"}
     ],
     vinsetup:vinSetupDockItems(),
@@ -2785,8 +2788,13 @@ function globalDockItems(screenId){
     ],
     digitaltwin:[
       {icon:"🚗",label:"Engine Bay",action:"go",target:"engine",primary:true},
-      {icon:"＋",label:"Add Photo",action:"photo-add"},
+      {icon:"☁",label:"Asset Network",action:"go",target:"assetnetwork"},
       {icon:"▧",label:"Photos",action:"go",target:"photos"},
+      {icon:"▦",label:"Garage",action:"go",target:"garage"}
+    ],
+    assetnetwork:[
+      {icon:"↻",label:"Check Upgrade",action:"asset-check",primary:true},
+      {icon:"◇",label:"Digital Twin",action:"go",target:"digitaltwin"},
       {icon:"▦",label:"Garage",action:"go",target:"garage"}
     ],
     photos:[
@@ -2921,6 +2929,7 @@ function handleGlobalDockAction(btn){
   if(action==="fuse-info"){openFuseGuideInfo();return;}
   if(action==="fuse-maint-info"){openFuseMaintenanceInfo();return;}
   if(action==="garage-add"){startVinSetup();return;}
+  if(action==="asset-check"){checkActiveVehicleAssetNetwork({force:true});return;}
   if(action==="vin-cancel"){const vehicle=getActiveVehicle();showScreen(vehicle?"digitaltwin":"garage");return;}
   if(action==="vin-back"){vinOnboardStep=Math.max(0,vinOnboardStep-1);renderVinOnboardStep();return;}
   if(action==="vin-next"){advanceVinSetup();return;}
@@ -3354,7 +3363,8 @@ window.addEventListener("resize",()=>{
 const VEHICLE_STORAGE_KEY="mycar_vehicles_v1";
 const ACTIVE_VEHICLE_KEY="mycar_active_vehicle_v1";
 const GARAGE_INITIALIZED_KEY="mycar_garage_initialized_v1";
-const MODEL_RESOLUTION_CACHE_KEY="mycar_model_resolution_cache_v2";
+const MODEL_RESOLUTION_CACHE_KEY="mycar_model_resolution_cache_v3";
+const ASSET_NETWORK_CHECK_KEY="mycar_asset_network_checks_v1";
 const DEFAULT_BUICK_ID="buick-2010-lacrosse";
 const DEFAULT_BUICK={
   id:DEFAULT_BUICK_ID,
@@ -3378,6 +3388,15 @@ const DEFAULT_BUICK={
   modelDimensions:{units:"in",length:196.9,width:73.1,height:59.2,wheelbase:111.7,frontTrack:61.7,rearTrack:62.0},
   modelDimensionAccuracy:"catalog-exact",
   modelDimensionSource:"Published 2010 Buick LaCrosse specifications",
+  modelPackageId:"mycar.gm.buick.lacrosse.2010-2013",
+  modelPackageVersion:"1.0.0",
+  modelPackageTier:"generation",
+  modelPackageChannel:"stable",
+  modelPackageDelivery:"procedural",
+  modelPackageSource:"mycar-verified",
+  modelPackageSourceLabel:"MY CAR verified generation package",
+  modelPackageFeatures:["VIN generation matching","catalog-correct exterior scale","movable panels","working lights and steering","automatic future upgrade channel"],
+  modelPackageInstalledAt:"2026-07-13T00:00:00.000Z",
   moduleSet:"buick-v1",
   representativeImage:"images/vehicles/2010_buick_lacrosse_cxl_front_left.jpg",
   representativeImageType:"representative",
@@ -3476,6 +3495,9 @@ function migrateVehicleImage(vehicle){
   if(is2010BuickLacrosse(next)&&!next.modelDimensions){
     next={...next,modelDimensions:{units:"in",length:196.9,width:73.1,height:59.2,wheelbase:111.7,frontTrack:61.7,rearTrack:62.0},modelDimensionAccuracy:"catalog-exact",modelDimensionLabel:"2010 Buick LaCrosse catalog dimensions",modelDimensionSource:"Published 2010 Buick LaCrosse specifications",modelDimensionConfidence:1,modelDimensionRegistryKey:"exact|2010|buick|lacrosse"};
   }
+  if(is2010BuickLacrosse(next)&&!next.modelPackageId){
+    next={...next,modelPackageId:"mycar.gm.buick.lacrosse.2010-2013",modelPackageVersion:"1.0.0",modelPackageTier:"generation",modelPackageChannel:"stable",modelPackageDelivery:"procedural",modelPackageSource:"mycar-verified",modelPackageSourceLabel:"MY CAR verified generation package",modelPackageFeatures:["VIN generation matching","catalog-correct exterior scale","movable panels","working lights and steering","automatic future upgrade channel"],modelPackageInstalledAt:new Date().toISOString()};
+  }
   return next;
 }
 async function findRepresentativeVehicleImage(data,{force=false}={}){
@@ -3544,6 +3566,10 @@ async function renderGarage(){
 }
 
 document.getElementById("garageInlineAdd")?.addEventListener("click",()=>startVinSetup());
+document.getElementById("profileAssetNetworkButton")?.addEventListener("click",()=>showScreen("assetnetwork"));
+document.getElementById("twinAssetPackageCard")?.addEventListener("click",()=>showScreen("assetnetwork"));
+document.getElementById("assetNetworkCheck")?.addEventListener("click",()=>checkActiveVehicleAssetNetwork({force:true}));
+document.getElementById("assetNetworkInstall")?.addEventListener("click",installPendingAssetPackage);
 
 async function renderVehicleHome(){
   const vehicle=getActiveVehicle();
@@ -3571,7 +3597,7 @@ async function renderVehicleProfile(){
   document.getElementById("profileProgressFill").style.width=completion+"%";
   set("profileProgressText",(vehicle.moduleSet==="buick-v1"?"Engine bay has 3 mapped components. ":"")+photos+" owner photo"+(photos===1?"":"s")+" attached to this vehicle.");
   const accuracyLabels={exact:"Exact prepared model",generation:"Generation match",approximate:"Automatic body-style foundation",universal:"Universal vehicle foundation","exact-asset":"Exact prepared model","generation-asset":"Generation match","generation-fallback":"Generation match",generic:"Automatic foundation"};
-  set("profileModelAccuracy",accuracyLabels[vehicle.modelAccuracy||vehicle.modelMatchType]||"Automatic foundation");set("profileModelSource",vehicle.modelSourceLabel||vehicle.modelSource||"Local model resolver");set("profileModelBadge",vehicle.modelAccuracy==="exact"?"EXACT":vehicle.modelAccuracy==="generation"?"GEN":"AUTO");
+  set("profileModelAccuracy",vehicle.modelPackageId?(assetTierLabel(vehicle.modelPackageTier)+" package • v"+(vehicle.modelPackageVersion||"0.0.0")):(accuracyLabels[vehicle.modelAccuracy||vehicle.modelMatchType]||"Automatic foundation"));set("profileModelSource",vehicle.modelPackageSourceLabel||vehicle.modelSourceLabel||vehicle.modelSource||"Local model resolver");set("profileModelBadge",vehicle.modelPackageTier==="exact"?"EXACT":vehicle.modelPackageTier==="generation"?"GEN":"AUTO");
   revokeVehicleImageUrls("profile");const presentation=await vehicleImagePresentation(vehicle,"profile");applyImageElement(document.getElementById("profileHeroImage"),presentation);
   const credit=document.getElementById("profileImageCredit");if(credit){credit.textContent=presentation.type==="owner"?"Your actual car photo":presentation.credit||"Representative image";credit.classList.toggle("owner",presentation.type==="owner");if(presentation.sourcePage){credit.href=presentation.sourcePage;credit.removeAttribute("aria-disabled")}else{credit.removeAttribute("href");credit.setAttribute("aria-disabled","true")}}
 }
@@ -3608,6 +3634,10 @@ let vinPendingModelMatch=null;
 let vinModelRegistryPromise=null;
 let vinDimensionCatalogPromise=null;
 let vinResolverConfigPromise=null;
+let assetNetworkCatalogPromise=null;
+let assetNetworkConfigPromise=null;
+let assetNetworkPendingMatch=null;
+let assetNetworkPendingVehicleId=null;
 let vinScannerLibraryPromise=null;
 
 function vinSetupDockItems(){
@@ -3701,7 +3731,7 @@ function normalizeModelValue(value){return String(value||"").toLowerCase().repla
 async function loadVinModelRegistry(){
   if(vinModelRegistryPromise)return vinModelRegistryPromise;
   vinModelRegistryPromise=(async()=>{
-    for(const path of ["model-registry.json?v=7.09","models/model-registry.json?v=7.09"]){
+    for(const path of ["model-registry.json?v=8.0","models/model-registry.json?v=8.0"]){
       try{const response=await fetch(path,{cache:"force-cache"});if(response.ok)return await response.json()}catch{}
     }
     return MYCAR_EMBEDDED_MODEL_REGISTRY;
@@ -3711,7 +3741,7 @@ async function loadVinModelRegistry(){
 async function loadModelResolverConfig(){
   if(vinResolverConfigPromise)return vinResolverConfigPromise;
   vinResolverConfigPromise=(async()=>{
-    for(const path of ["model-resolver-config.json?v=7.09","services/model-resolver-config.json?v=7.09"]){
+    for(const path of ["model-resolver-config.json?v=8.0","services/model-resolver-config.json?v=8.0"]){
       try{const response=await fetch(path,{cache:"force-cache"});if(response.ok)return await response.json()}catch{}
     }
     return MYCAR_EMBEDDED_RESOLVER_CONFIG;
@@ -3722,7 +3752,7 @@ async function loadVehicleDimensionCatalog(){
   if(vinDimensionCatalogPromise)return vinDimensionCatalogPromise;
   vinDimensionCatalogPromise=(async()=>{
     try{
-      const response=await fetch("vehicle-dimensions.json?v=7.09",{cache:"force-cache"});
+      const response=await fetch("vehicle-dimensions.json?v=8.0",{cache:"force-cache"});
       if(response.ok)return await response.json();
     }catch{}
     return MYCAR_EMBEDDED_DIMENSION_CATALOG;
@@ -3779,12 +3809,60 @@ function modelResolutionSignature(data){return [data?.year,data?.make,data?.mode
 function readModelResolutionCache(){try{return JSON.parse(localStorage.getItem(MODEL_RESOLUTION_CACHE_KEY)||"{}")||{}}catch{return {}}}
 function writeModelResolutionCache(cache){try{localStorage.setItem(MODEL_RESOLUTION_CACHE_KEY,JSON.stringify(cache))}catch{}}
 function bodyTemplateKey(bodyClass){const body=normalizeModelValue(bodyClass);const rules=[["pickup",/pickup|truck|ute/],["suv",/sport utility|suv|crossover/],["hatchback",/hatchback|liftback/],["wagon",/wagon|estate/],["coupe",/coupe|2 door sedan/],["convertible",/convertible|cabriolet|roadster/],["van",/van|minivan|mpv|multi purpose/],["sedan",/sedan|saloon|4 door/]];return (rules.find(([,pattern])=>pattern.test(body))||["universal"])[0]}
+async function loadAssetNetworkCatalog(){
+  if(assetNetworkCatalogPromise)return assetNetworkCatalogPromise;
+  assetNetworkCatalogPromise=(async()=>{try{const response=await fetch("asset-network-catalog.json?v=8.0",{cache:"force-cache"});if(response.ok)return await response.json()}catch{}return MYCAR_EMBEDDED_ASSET_NETWORK_CATALOG})();
+  return assetNetworkCatalogPromise;
+}
+async function loadAssetNetworkConfig(){
+  if(assetNetworkConfigPromise)return assetNetworkConfigPromise;
+  assetNetworkConfigPromise=(async()=>{try{const response=await fetch("asset-network-config.json?v=8.0",{cache:"force-cache"});if(response.ok)return await response.json()}catch{}return MYCAR_EMBEDDED_ASSET_NETWORK_CONFIG})();
+  return assetNetworkConfigPromise;
+}
+function comparePackageVersions(a,b){
+  const pa=String(a||"0.0.0").split(".").map(value=>Number(value)||0),pb=String(b||"0.0.0").split(".").map(value=>Number(value)||0);
+  for(let index=0;index<Math.max(pa.length,pb.length,3);index++){const left=pa[index]||0,right=pb[index]||0;if(left>right)return 1;if(left<right)return -1}return 0;
+}
+function normalizeAssetPackage(entry){
+  if(!entry)return null;const delivery=entry.delivery||{},source=entry.source||{};
+  return {packageId:entry.packageId||"",packageVersion:entry.version||"0.0.0",packageChannel:entry.channel||"stable",packageTier:entry.tier||"universal",packageLabel:entry.label||"Vehicle package",packageGeometryAccuracy:entry.geometryAccuracy||"universal",packageScaleAccuracy:entry.scaleAccuracy||"estimated-template",packageConfidence:Number(entry.confidence||0),packageDelivery:delivery.mode||"procedural",packageAssetReady:!!delivery.assetReady,packageAsset:delivery.asset||"",packageFallback:delivery.fallback||"procedural-universal-v3",packageProtected:!!delivery.protected,packageSource:source.type||"mycar-generator",packageSourceLabel:source.label||"MY CAR Asset Network",packageRightsStatus:source.rightsStatus||"",packageFeatures:Array.isArray(entry.features)?entry.features:[],packageReleaseNotes:Array.isArray(entry.releaseNotes)?entry.releaseNotes:[],packageUpdatedAt:entry.updatedAt||"",packageEntry:entry};
+}
+async function resolveAssetPackageRemote(data,config){
+  if(!config?.enabled||!config?.endpoint)return null;const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),Number(config.timeoutMs)||4500);
+  try{const response=await fetch(config.endpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({year:data?.year||"",make:data?.make||"",model:data?.model||"",trim:data?.trim||"",bodyClass:data?.bodyClass||"",engine:data?.engine||"",drivetrain:data?.drivetrain||"",installedPackageId:data?.modelPackageId||"",installedPackageVersion:data?.modelPackageVersion||""}),signal:controller.signal});if(!response.ok)throw new Error("Asset broker "+response.status);return normalizeAssetPackage(await response.json())}finally{clearTimeout(timeout)}
+}
+async function resolveAssetPackage(data,modelResult=null){
+  const [catalog,config]=await Promise.all([loadAssetNetworkCatalog(),loadAssetNetworkConfig()]);
+  try{const remote=await resolveAssetPackageRemote(data,config);if(remote)return remote}catch(error){console.warn("Asset Network broker unavailable; using bundled catalog.",error)}
+  const packages=Object.values(catalog?.packages||{});let entry=null;
+  entry=packages.find(item=>item.tier==="exact"&&registryRuleMatches(data,item.match));
+  if(!entry)entry=packages.find(item=>item.tier==="generation"&&registryRuleMatches(data,item.match));
+  if(!entry){const template=bodyTemplateKey(data?.bodyClass);entry=packages.find(item=>item.packageId==="mycar.template."+template)}
+  if(!entry)entry=packages.find(item=>item.tier==="universal")||null;
+  return normalizeAssetPackage(entry);
+}
+function applyAssetPackageToModelResult(result,assetPackage){
+  if(!result||!assetPackage)return result;
+  Object.assign(result,assetPackage);
+  if(assetPackage.packageAssetReady&&assetPackage.packageAsset){result.assetReady=true;result.asset=assetPackage.packageAsset;result.source="asset-network";result.sourceLabel=assetPackage.packageSourceLabel;result.accuracy=assetPackage.packageGeometryAccuracy||result.accuracy;result.matchType=result.accuracy}
+  if(assetPackage.packageFallback)result.fallback=assetPackage.packageFallback;
+  return result;
+}
+function applyResolvedPackageToVehicle(vehicle,match,{installedAt=true}={}){
+  if(!vehicle||!match)return vehicle;
+  return {...vehicle,modelRegistryKey:match.key||vehicle.modelRegistryKey,modelMatchType:match.matchType||vehicle.modelMatchType,modelLabel:match.label||vehicle.modelLabel,modelAssetReady:!!match.assetReady,modelAsset:match.asset||vehicle.modelAsset||"",modelFallback:match.fallback||vehicle.modelFallback,modelAccuracy:match.accuracy||vehicle.modelAccuracy,modelSource:match.source||vehicle.modelSource,modelSourceLabel:match.sourceLabel||vehicle.modelSourceLabel,modelConfidence:Number(match.confidence||vehicle.modelConfidence||0),modelFamilyKey:match.familyKey||vehicle.modelFamilyKey||"",modelPartNodes:match.partNodes||vehicle.modelPartNodes||null,modelHinges:match.hinges||vehicle.modelHinges||null,modelDimensions:match.dimensions||vehicle.modelDimensions||null,modelDimensionAccuracy:match.dimensionAccuracy||vehicle.modelDimensionAccuracy||"",modelDimensionLabel:match.dimensionLabel||vehicle.modelDimensionLabel||"",modelDimensionSource:match.dimensionSourceLabel||vehicle.modelDimensionSource||"",modelDimensionConfidence:Number(match.dimensionConfidence||vehicle.modelDimensionConfidence||0),modelDimensionRegistryKey:match.dimensionRegistryKey||vehicle.modelDimensionRegistryKey||"",modelPackageId:match.packageId||vehicle.modelPackageId||"",modelPackageVersion:match.packageVersion||vehicle.modelPackageVersion||"",modelPackageTier:match.packageTier||vehicle.modelPackageTier||"",modelPackageChannel:match.packageChannel||vehicle.modelPackageChannel||"stable",modelPackageDelivery:match.packageDelivery||vehicle.modelPackageDelivery||"procedural",modelPackageSource:match.packageSource||vehicle.modelPackageSource||"",modelPackageSourceLabel:match.packageSourceLabel||vehicle.modelPackageSourceLabel||"",modelPackageRightsStatus:match.packageRightsStatus||vehicle.modelPackageRightsStatus||"",modelPackageFeatures:match.packageFeatures||vehicle.modelPackageFeatures||[],modelPackageReleaseNotes:match.packageReleaseNotes||vehicle.modelPackageReleaseNotes||[],modelPackageInstalledAt:installedAt?new Date().toISOString():(vehicle.modelPackageInstalledAt||""),modelPackageCheckedAt:new Date().toISOString(),updatedAt:new Date().toISOString()};
+}
+async function ensureVehicleAssetPackage(vehicle){
+  if(!vehicle)return null;if(vehicle.modelPackageId)return vehicle;
+  const match=await resolveVin3DModel(vehicle).catch(()=>null);if(!match)return vehicle;
+  const updated=applyResolvedPackageToVehicle(vehicle,match);upsertVehicle(updated);return updated;
+}
 function normalizeResolverResult(result,data){if(!result)return null;const accuracy=result.accuracy||result.matchType||"approximate";return {key:result.key||result.modelRegistryKey||"template|"+bodyTemplateKey(data?.bodyClass),entry:result.entry||{},matchType:accuracy,accuracy,label:result.label||[data?.year,data?.make,data?.model].filter(Boolean).join(" ")+" 3D twin",assetReady:!!result.assetReady,asset:result.asset||"",fallback:result.fallback||"procedural-"+bodyTemplateKey(data?.bodyClass)+"-v2",source:result.source||"remote-resolver",sourceLabel:result.sourceLabel||"Worldwide model resolver",confidence:Number(result.confidence||0),partNodes:result.partNodes||null,hinges:result.hinges||null,familyKey:result.familyKey||"",dimensions:normalizeDimensions(result.dimensions),dimensionAccuracy:result.dimensionAccuracy||"",dimensionSourceLabel:result.dimensionSourceLabel||""}}
 async function resolveWithRemoteService(data,config){if(!config?.enabled||!config?.endpoint)return null;const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),Number(config.timeoutMs)||3500);try{const payload={year:data?.year||"",make:data?.make||"",model:data?.model||"",trim:data?.trim||"",bodyClass:data?.bodyClass||"",engine:data?.engine||"",drivetrain:data?.drivetrain||""};const response=await fetch(config.endpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload),signal:controller.signal});if(!response.ok)throw new Error("Resolver "+response.status);return normalizeResolverResult(await response.json(),data)}finally{clearTimeout(timeout)}}
-async function resolveVin3DModel(data){
-  const signature=modelResolutionSignature(data),cache=readModelResolutionCache(),cached=cache[signature];if(cached&&Date.now()-cached.savedAt<7*24*60*60*1000)return cached.result;
+async function resolveVin3DModel(data,{force=false}={}){
+  const signature=modelResolutionSignature(data),cache=readModelResolutionCache(),cached=cache[signature];if(!force&&cached&&Date.now()-cached.savedAt<7*24*60*60*1000)return cached.result;if(force&&cache[signature])delete cache[signature];
   const [registry,config]=await Promise.all([loadVinModelRegistry(),loadModelResolverConfig()]);
-  try{const remote=await resolveWithRemoteService(data,config);if(remote){if(!remote.dimensions){const dimensionMatch=await resolveVehicleDimensions(data,remote);remote.dimensions=dimensionMatch?.dimensions||null;remote.dimensionAccuracy=dimensionMatch?.accuracy||"";remote.dimensionLabel=dimensionMatch?.label||"";remote.dimensionSourceLabel=dimensionMatch?.sourceLabel||"";remote.dimensionConfidence=dimensionMatch?.confidence||0;remote.dimensionRegistryKey=dimensionMatch?.key||""}cache[signature]={savedAt:Date.now(),result:remote};writeModelResolutionCache(cache);return remote}}catch(error){console.warn("Remote model resolver unavailable; using local fallback.",error)}
+  try{const remote=await resolveWithRemoteService(data,config);if(remote){if(!remote.dimensions){const dimensionMatch=await resolveVehicleDimensions(data,remote);remote.dimensions=dimensionMatch?.dimensions||null;remote.dimensionAccuracy=dimensionMatch?.accuracy||"";remote.dimensionLabel=dimensionMatch?.label||"";remote.dimensionSourceLabel=dimensionMatch?.sourceLabel||"";remote.dimensionConfidence=dimensionMatch?.confidence||0;remote.dimensionRegistryKey=dimensionMatch?.key||""}applyAssetPackageToModelResult(remote,await resolveAssetPackage(data,remote));cache[signature]={savedAt:Date.now(),result:remote};writeModelResolutionCache(cache);return remote}}catch(error){console.warn("Remote model resolver unavailable; using local fallback.",error)}
   const models=registry?.models||{},exactKey=[data?.year,data?.make,data?.model].map(normalizeModelValue).join("|");let result=null;
   const exact=models[exactKey];if(exact?.assetReady)result={key:exactKey,entry:exact,matchType:"exact",accuracy:"exact",label:exact.label||[data.year,data.make,data.model].filter(Boolean).join(" "),assetReady:true,asset:exact.asset||"",fallback:exact.fallback||registry.defaultFallback,source:"local-exact",sourceLabel:"Prepared exact model",confidence:1,partNodes:exact.partNodes||null,hinges:exact.hinges||null,familyKey:exact.familyKey||""};
   if(!result){const family=Object.entries(models).filter(([key,entry])=>entry.kind==="generation"||key.startsWith("family|")).find(([,entry])=>registryRuleMatches(data,entry.match));if(family){const [key,entry]=family;result={key,entry,matchType:"generation",accuracy:"generation",label:entry.label||[data.year,data.make,data.model].filter(Boolean).join(" "),assetReady:!!entry.assetReady,asset:entry.asset||"",fallback:entry.fallback||registry.defaultFallback,source:"local-generation",sourceLabel:"Generation model package",confidence:Number(entry.confidence||.86),partNodes:entry.partNodes||null,hinges:entry.hinges||null,familyKey:key}}}
@@ -3798,6 +3876,7 @@ async function resolveVin3DModel(data){
     result.dimensionConfidence=dimensionMatch.confidence;
     result.dimensionRegistryKey=dimensionMatch.key;
   }
+  applyAssetPackageToModelResult(result,await resolveAssetPackage(data,result));
   cache[signature]={savedAt:Date.now(),result};writeModelResolutionCache(cache);return result;
 }
 function showVin3DModelMatch(match,error=""){const card=document.getElementById("vin3dModelCard"),title=document.getElementById("vin3dModelTitle"),detail=document.getElementById("vin3dModelDetail"),badge=document.getElementById("vin3dModelBadge");if(!card||!title||!detail||!badge)return;card.classList.remove("matched","exact","generic","generation","approximate");if(!match){title.textContent="Automatic vehicle foundation";detail.textContent=error||"The app will still build a universal interactive 3D vehicle.";badge.textContent="AUTO";card.classList.add("approximate");return}const accuracy=match.accuracy||match.matchType;if(accuracy==="exact")card.classList.add("exact");else if(accuracy==="generation")card.classList.add("generation");else card.classList.add("approximate");title.textContent=match.label;badge.textContent=accuracy==="exact"?"EXACT":accuracy==="generation"?"GENERATION":accuracy==="approximate"?"AUTOMATIC":"FOUNDATION";detail.textContent=accuracy==="exact"?"A prepared exact 3D asset is ready for this decoded vehicle.":accuracy==="generation"?"Matched to the correct vehicle generation. Trim-level differences can be refined later.":accuracy==="approximate"?"No dedicated asset is required. The app generated the closest body-style foundation automatically.":"A universal interactive vehicle foundation will load now. Photos remain optional."}
@@ -3810,7 +3889,7 @@ function extractVinFromScanText(text){
 }
 function loadVinScannerLibrary(){
   if(window.ZXing)return Promise.resolve(window.ZXing);if(vinScannerLibraryPromise)return vinScannerLibraryPromise;
-  vinScannerLibraryPromise=new Promise((resolve,reject)=>{const script=document.createElement("script");script.src="zxing.min.js?v=7.07";script.async=true;script.onload=()=>window.ZXing?resolve(window.ZXing):reject(new Error("VIN scanner library did not initialize."));script.onerror=()=>reject(new Error("VIN scanner library could not load."));document.head.appendChild(script)}).catch(error=>{vinScannerLibraryPromise=null;throw error});return vinScannerLibraryPromise;
+  vinScannerLibraryPromise=new Promise((resolve,reject)=>{const script=document.createElement("script");script.src="zxing.min.js?v=8.0";script.async=true;script.onload=()=>window.ZXing?resolve(window.ZXing):reject(new Error("VIN scanner library did not initialize."));script.onerror=()=>reject(new Error("VIN scanner library could not load."));document.head.appendChild(script)}).catch(error=>{vinScannerLibraryPromise=null;throw error});return vinScannerLibraryPromise;
 }
 async function scanVinWithNativeDetector(file){
   if(!("BarcodeDetector" in window))return "";const formats=await BarcodeDetector.getSupportedFormats();const wanted=["data_matrix","code_39","code_128","pdf417","qr_code"].filter(format=>formats.includes(format));if(!wanted.length)return "";
@@ -3912,7 +3991,19 @@ async function saveVinVehicle(){
     modelDimensionLabel:vinPendingModelMatch?.dimensionLabel||existing?.modelDimensionLabel||"",
     modelDimensionSource:vinPendingModelMatch?.dimensionSourceLabel||existing?.modelDimensionSource||"",
     modelDimensionConfidence:Number(vinPendingModelMatch?.dimensionConfidence||existing?.modelDimensionConfidence||0),
-    modelDimensionRegistryKey:vinPendingModelMatch?.dimensionRegistryKey||existing?.modelDimensionRegistryKey||""
+    modelDimensionRegistryKey:vinPendingModelMatch?.dimensionRegistryKey||existing?.modelDimensionRegistryKey||"",
+    modelPackageId:vinPendingModelMatch?.packageId||existing?.modelPackageId||"",
+    modelPackageVersion:vinPendingModelMatch?.packageVersion||existing?.modelPackageVersion||"",
+    modelPackageTier:vinPendingModelMatch?.packageTier||existing?.modelPackageTier||"",
+    modelPackageChannel:vinPendingModelMatch?.packageChannel||existing?.modelPackageChannel||"stable",
+    modelPackageDelivery:vinPendingModelMatch?.packageDelivery||existing?.modelPackageDelivery||"procedural",
+    modelPackageSource:vinPendingModelMatch?.packageSource||existing?.modelPackageSource||"",
+    modelPackageSourceLabel:vinPendingModelMatch?.packageSourceLabel||existing?.modelPackageSourceLabel||"",
+    modelPackageRightsStatus:vinPendingModelMatch?.packageRightsStatus||existing?.modelPackageRightsStatus||"",
+    modelPackageFeatures:vinPendingModelMatch?.packageFeatures||existing?.modelPackageFeatures||[],
+    modelPackageReleaseNotes:vinPendingModelMatch?.packageReleaseNotes||existing?.modelPackageReleaseNotes||[],
+    modelPackageInstalledAt:new Date().toISOString(),
+    modelPackageCheckedAt:new Date().toISOString()
   };
   if(!vehicle.representativeImage){const match=await findRepresentativeVehicleImage(vehicle).catch(()=>null);if(match){vehicle.representativeImage=match.src;vehicle.representativeImageType="representative";vehicle.representativeImageTitle=match.title;vehicle.representativeImageCredit=match.credit;vehicle.representativeImageLicense=match.license;vehicle.representativeImageSourcePage=match.sourcePage}}
   upsertVehicle(vehicle);
@@ -4021,7 +4112,7 @@ document.querySelectorAll("[data-photo-filter]").forEach(btn=>btn.addEventListen
 let twin3dInitialized=false;
 let twin3dLastVehicleKey="";
 function twin3dVehicleKey(vehicle){
-  return [vehicle?.year,vehicle?.make,vehicle?.model,vehicle?.trim,vehicle?.color,vehicle?.moduleSet,vehicle?.modelRegistryKey,vehicle?.modelMatchType,vehicle?.modelAssetReady,JSON.stringify(vehicle?.modelDimensions||{}),vehicle?.modelDimensionAccuracy].map(value=>String(value||"").toLowerCase().trim()).join("|");
+  return [vehicle?.year,vehicle?.make,vehicle?.model,vehicle?.trim,vehicle?.color,vehicle?.moduleSet,vehicle?.modelRegistryKey,vehicle?.modelMatchType,vehicle?.modelAssetReady,vehicle?.modelPackageId,vehicle?.modelPackageVersion,JSON.stringify(vehicle?.modelDimensions||{}),vehicle?.modelDimensionAccuracy].map(value=>String(value||"").toLowerCase().trim()).join("|");
 }
 function sanitizeVehicleFor3D(vehicle){
   if(!vehicle)return null;
@@ -4053,6 +4144,10 @@ function sanitizeVehicleFor3D(vehicle){
     modelDimensionSource:vehicle.modelDimensionSource||"",
     modelDimensionConfidence:Number(vehicle.modelDimensionConfidence||0),
     modelDimensionRegistryKey:vehicle.modelDimensionRegistryKey||"",
+    modelPackageId:vehicle.modelPackageId||"",
+    modelPackageVersion:vehicle.modelPackageVersion||"",
+    modelPackageTier:vehicle.modelPackageTier||"",
+    modelPackageDelivery:vehicle.modelPackageDelivery||"",
     vinMasked:vehicle.vinLinked?maskVin(vehicle.vin):vehicle.vinMasked||"VIN not linked"
   };
 }
@@ -4095,8 +4190,39 @@ function renderTwinScaleCard(vehicle){
     confidence.className="twinScaleConfidence "+(exact?"exact":"estimated");
   }
 }
+function assetTierLabel(value){return {exact:"Exact",generation:"Generation","body-template":"Generated body",universal:"Universal"}[value]||"Generated"}
+function packageDeliveryLabel(value){return {"signed-glb":"Protected GLB","public-glb":"Web GLB",procedural:"Procedural"}[value]||"Procedural"}
+function renderPackageFeatureList(features=[]){const host=document.getElementById("assetNetworkFeatures");if(!host)return;host.innerHTML=features.length?features.map(feature=>'<span>'+escapeHtml(feature)+'</span>').join(""):'<span>No feature manifest available.</span>'}
+async function getAssetNetworkMatch(vehicle,{force=false}={}){if(!vehicle)return null;return resolveVin3DModel(vehicle,{force})}
+async function renderAssetNetwork(){
+  let vehicle=getActiveVehicle();const catalog=await loadAssetNetworkCatalog(),config=await loadAssetNetworkConfig();
+  const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value};
+  set("assetNetworkPackageCount",Object.keys(catalog?.packages||{}).length);
+  const cloud=document.getElementById("assetNetworkCloudBadge");if(cloud){cloud.textContent=config?.enabled?"CLOUD BROKER CONNECTED":"CLOUD BROKER NOT CONNECTED";cloud.classList.toggle("muted",!config?.enabled)}
+  const licensed=document.getElementById("assetSourceLicensed");if(licensed)licensed.textContent=config?.enabled?"Connected":"Connector ready";
+  if(!vehicle){set("assetNetworkVehicleName","No active vehicle");set("assetNetworkVehicleMeta","Scan a VIN to resolve a package.");set("assetNetworkPackageName","—");set("assetNetworkPackageVersion","—");set("assetNetworkPackageTier","—");set("assetNetworkPackageDelivery","—");renderPackageFeatureList([]);return}
+  vehicle=await ensureVehicleAssetPackage(vehicle);const match=await getAssetNetworkMatch(vehicle).catch(()=>null);assetNetworkPendingMatch=match;assetNetworkPendingVehicleId=vehicle.id;
+  const availableVersion=match?.packageVersion||vehicle.modelPackageVersion||"0.0.0",installedVersion=vehicle.modelPackageVersion||"0.0.0",hasUpdate=comparePackageVersions(availableVersion,installedVersion)>0;
+  set("assetNetworkVehicleName",vehicle.nickname||formatVehicleName(vehicle));set("assetNetworkVehicleMeta",formatVehicleName(vehicle));set("assetNetworkPackageName",match?.packageLabel||vehicle.modelLabel||"Vehicle package");set("assetNetworkPackageVersion","v"+installedVersion+(hasUpdate?" → v"+availableVersion:""));set("assetNetworkPackageTier",assetTierLabel(match?.packageTier||vehicle.modelPackageTier));set("assetNetworkPackageDelivery",packageDeliveryLabel(match?.packageDelivery||vehicle.modelPackageDelivery));
+  const badge=document.getElementById("assetNetworkUpdateBadge");if(badge){badge.textContent=hasUpdate?"UPGRADE READY":"CURRENT";badge.className="assetNetworkUpdateBadge "+(hasUpdate?"update":"current")}
+  const install=document.getElementById("assetNetworkInstall");if(install){install.disabled=!hasUpdate;install.textContent=hasUpdate?"Install v"+availableVersion:"Package current"}
+  const notes=document.getElementById("assetNetworkReleaseNotes");if(notes)notes.innerHTML=(match?.packageReleaseNotes||vehicle.modelPackageReleaseNotes||[]).map(note=>'<div>'+escapeHtml(note)+'</div>').join("")||'<div>No release notes for this package.</div>';
+  renderPackageFeatureList(match?.packageFeatures||vehicle.modelPackageFeatures||[]);
+  const result=document.getElementById("assetNetworkResult");if(result){result.className="assetNetworkResult "+(hasUpdate?"warn":"good");result.textContent=hasUpdate?"A newer package manifest is ready. Installing it updates this vehicle's delivery metadata and future asset channel. The appearance changes only when the package includes a newer model asset.":"This vehicle is using the newest package in the current catalog. The network can replace it automatically when an exact licensed or reviewed package becomes available."}
+}
+async function checkActiveVehicleAssetNetwork({force=false}={}){
+  const result=document.getElementById("assetNetworkResult"),button=document.getElementById("assetNetworkCheck");if(button){button.disabled=true;button.textContent="Checking…"}if(result){result.className="assetNetworkResult";result.textContent="Checking exact, generation, reviewed, and generated package sources…"}
+  const vehicle=getActiveVehicle();if(!vehicle){if(result)result.textContent="Add a vehicle first.";if(button){button.disabled=false;button.textContent="Check for upgrade"}return}
+  try{assetNetworkPendingMatch=await getAssetNetworkMatch(vehicle,{force});assetNetworkPendingVehicleId=vehicle.id;await renderAssetNetwork()}catch(error){if(result){result.className="assetNetworkResult warn";result.textContent="The cloud broker is unavailable, so MY CAR kept the bundled package catalog active. "+error.message}}finally{if(button){button.disabled=false;button.textContent="Check for upgrade"}}
+}
+async function installPendingAssetPackage(){
+  const result=document.getElementById("assetNetworkResult"),button=document.getElementById("assetNetworkInstall");const vehicle=getVehicles().find(item=>item.id===assetNetworkPendingVehicleId)||getActiveVehicle();if(!vehicle||!assetNetworkPendingMatch)return;
+  if(button){button.disabled=true;button.textContent="Installing…"}
+  const updated=applyResolvedPackageToVehicle(vehicle,assetNetworkPendingMatch);upsertVehicle(updated);twin3dLastVehicleKey="";window.MYCAR_ACTIVE_VEHICLE_3D=sanitizeVehicleFor3D(updated);window.dispatchEvent(new CustomEvent("mycar:3d-vehicle",{detail:{vehicle:window.MYCAR_ACTIVE_VEHICLE_3D}}));if(result){result.className="assetNetworkResult good";result.textContent="Package v"+(updated.modelPackageVersion||"")+" installed. This vehicle will use its new asset automatically whenever the package delivers one."}await renderAssetNetwork();renderGarage();renderVehicleProfile();
+}
 async function renderDigitalTwin(){
-  const vehicle=getActiveVehicle();if(!vehicle){showScreen("garage");return}
+  let vehicle=getActiveVehicle();if(!vehicle){showScreen("garage");return}
+  vehicle=await ensureVehicleAssetPackage(vehicle);
   renderTwinScaleCard(vehicle);
   const vehicle3d=sanitizeVehicleFor3D(vehicle);
   const vehicleKey=twin3dVehicleKey(vehicle3d);
@@ -4113,6 +4239,9 @@ async function renderDigitalTwin(){
   const photos=await getPhotos(vehicle.id).catch(()=>[]);
   set("twinPhotoCount",photos.length);
   set("twinCompletionBadge",photos.length?photos.length+" optional photo"+(photos.length===1?"":"s"):"3D Ready");
+  set("twinAssetPackageName",vehicle.modelPackageId?vehicle.modelPackageId:"Automatic package");
+  set("twinAssetPackageSource",vehicle.modelPackageSourceLabel||"MY CAR Asset Network");
+  set("twinAssetPackageVersion",vehicle.modelPackageVersion?"v"+vehicle.modelPackageVersion:"AUTO");
 }
 function openTwinZoneSheet(zone){
   if(zone==="engine"){showScreen("engine");return}

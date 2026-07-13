@@ -1,5 +1,5 @@
 {
-  "version": 5,
+  "version": 6,
   "schema": "mycar-model-registry-v3",
   "defaultFallback": "procedural-universal-v2",
   "resolutionOrder": [
@@ -152,7 +152,7 @@
       "fallback": "procedural-universal-v2"
     }
   },
-  "viewerVersion": "7.09",
+  "viewerVersion": "8.0",
   "proceduralFeatures": [
     "sculpted body geometry",
     "movable hood, trunk, and four doors",
@@ -167,5 +167,8 @@
     "catalog-exact",
     "generation",
     "estimated-template"
-  ]
+  ],
+  "assetNetworkCatalog": "asset-network-catalog.json",
+  "assetNetworkConfig": "asset-network-config.json",
+  "packageSchema": "asset-package-schema.json"
 }

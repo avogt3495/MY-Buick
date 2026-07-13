@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "enabled": false,
   "endpoint": "",
   "timeoutMs": 3500,
@@ -19,5 +19,7 @@
   },
   "notes": "The static app resolves exact, generation, or template dimensions locally. A future cloud resolver may return licensed GLB assets and verified dimensions. The full VIN is never sent to the 3D model service.",
   "dimensionCatalog": "vehicle-dimensions.json",
-  "dimensionEndpoint": ""
+  "dimensionEndpoint": "",
+  "assetNetworkCatalog": "asset-network-catalog.json",
+  "assetNetworkConfig": "asset-network-config.json"
 }

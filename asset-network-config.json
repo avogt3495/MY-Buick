@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "schema": "mycar-asset-network-config-v1",
+  "enabled": false,
+  "endpoint": "",
+  "timeoutMs": 4500,
+  "catalogPath": "asset-network-catalog.json",
+  "channel": "stable",
+  "autoCheckDays": 7,
+  "protectedDelivery": {
+    "enabled": false,
+    "signedUrlField": "assetUrl",
+    "expiresField": "expiresAt"
+  },
+  "sourceOrder": [
+    "manufacturer",
+    "licensed-partner",
+    "community-reviewed",
+    "mycar-verified",
+    "mycar-generator"
+  ],
+  "deliveryModes": [
+    "signed-glb",
+    "public-glb",
+    "procedural"
+  ],
+  "privacy": {
+    "sendFullVin": false,
+    "fieldsSent": [
+      "year",
+      "make",
+      "model",
+      "trim",
+      "bodyClass",
+      "engine",
+      "drivetrain",
+      "installedPackageId",
+      "installedPackageVersion"
+    ]
+  },
+  "notes": "The static prototype uses the local package catalog. Set enabled and endpoint after deploying the MY CAR asset broker. The full VIN is never sent to the package broker."
+}

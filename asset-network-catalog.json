@@ -1,0 +1,403 @@
+{
+  "version": 1,
+  "schema": "mycar-asset-network-catalog-v1",
+  "channel": "stable",
+  "generatedAt": "2026-07-13",
+  "resolutionOrder": [
+    "remote-exact",
+    "exact",
+    "generation",
+    "body-template",
+    "universal"
+  ],
+  "packages": {
+    "mycar.gm.buick.lacrosse.2010-2013": {
+      "packageId": "mycar.gm.buick.lacrosse.2010-2013",
+      "version": "1.1.0",
+      "channel": "stable",
+      "tier": "generation",
+      "label": "2010-2013 Buick LaCrosse Generation Twin",
+      "generation": "Second generation",
+      "match": {
+        "yearFrom": 2010,
+        "yearTo": 2013,
+        "make": "buick",
+        "modelIncludes": [
+          "lacrosse"
+        ],
+        "bodyIncludes": [
+          "sedan",
+          "saloon",
+          "4 door"
+        ]
+      },
+      "geometryAccuracy": "generation",
+      "scaleAccuracy": "catalog-exact",
+      "confidence": 0.92,
+      "delivery": {
+        "mode": "procedural",
+        "assetReady": false,
+        "asset": "",
+        "fallback": "procedural-2010-buick-lacrosse-living-v4",
+        "protected": false,
+        "futureAssetSlot": "signed://mycar/gm/buick/lacrosse/2010-2013/vehicle.glb"
+      },
+      "source": {
+        "type": "mycar-verified",
+        "label": "MY CAR verified generation package",
+        "rightsStatus": "MY CAR generated procedural package"
+      },
+      "dimensionsKey": "exact|2010|buick|lacrosse",
+      "features": [
+        "VIN generation matching",
+        "catalog-correct exterior scale",
+        "movable hood, trunk, and four doors",
+        "working lights and steerable front wheels",
+        "engine, interior, wheel, trunk, and underside zones",
+        "protected exact-model replacement slot"
+      ],
+      "releaseNotes": [
+        "Adds versioned Asset Network package identity.",
+        "Adds protected delivery metadata for a future licensed exact GLB.",
+        "Keeps the current generation twin available while exact geometry is sourced."
+      ],
+      "updatedAt": "2026-07-13T00:00:00Z"
+    },
+    "mycar.template.sedan": {
+      "packageId": "mycar.template.sedan",
+      "version": "1.0.0",
+      "channel": "stable",
+      "tier": "body-template",
+      "label": "Automatic Sedan Foundation",
+      "match": {
+        "bodyIncludes": [
+          "sedan",
+          "saloon",
+          "4 door"
+        ]
+      },
+      "geometryAccuracy": "approximate",
+      "scaleAccuracy": "estimated-template",
+      "confidence": 0.62,
+      "delivery": {
+        "mode": "procedural",
+        "assetReady": false,
+        "asset": "",
+        "fallback": "procedural-sedan-v3",
+        "protected": false
+      },
+      "source": {
+        "type": "mycar-generator",
+        "label": "MY CAR automatic body generator",
+        "rightsStatus": "MY CAR generated"
+      },
+      "features": [
+        "movable panels",
+        "body-style proportions",
+        "universal component zones",
+        "optional photo personalization"
+      ],
+      "releaseNotes": [
+        "Initial worldwide sedan foundation."
+      ],
+      "updatedAt": "2026-07-13T00:00:00Z"
+    },
+    "mycar.template.suv": {
+      "packageId": "mycar.template.suv",
+      "version": "1.0.0",
+      "channel": "stable",
+      "tier": "body-template",
+      "label": "Automatic SUV/Crossover Foundation",
+      "match": {
+        "bodyIncludes": [
+          "sport utility",
+          "suv",
+          "crossover"
+        ]
+      },
+      "geometryAccuracy": "approximate",
+      "scaleAccuracy": "estimated-template",
+      "confidence": 0.58,
+      "delivery": {
+        "mode": "procedural",
+        "assetReady": false,
+        "asset": "",
+        "fallback": "procedural-suv-v3",
+        "protected": false
+      },
+      "source": {
+        "type": "mycar-generator",
+        "label": "MY CAR automatic body generator",
+        "rightsStatus": "MY CAR generated"
+      },
+      "features": [
+        "movable panels",
+        "SUV proportions",
+        "universal component zones"
+      ],
+      "releaseNotes": [
+        "Initial worldwide SUV foundation."
+      ],
+      "updatedAt": "2026-07-13T00:00:00Z"
+    },
+    "mycar.template.pickup": {
+      "packageId": "mycar.template.pickup",
+      "version": "1.0.0",
+      "channel": "stable",
+      "tier": "body-template",
+      "label": "Automatic Pickup Foundation",
+      "match": {
+        "bodyIncludes": [
+          "pickup",
+          "truck",
+          "ute"
+        ]
+      },
+      "geometryAccuracy": "approximate",
+      "scaleAccuracy": "estimated-template",
+      "confidence": 0.56,
+      "delivery": {
+        "mode": "procedural",
+        "assetReady": false,
+        "asset": "",
+        "fallback": "procedural-pickup-v3",
+        "protected": false
+      },
+      "source": {
+        "type": "mycar-generator",
+        "label": "MY CAR automatic body generator",
+        "rightsStatus": "MY CAR generated"
+      },
+      "features": [
+        "movable panels",
+        "pickup proportions",
+        "bed and underside zones"
+      ],
+      "releaseNotes": [
+        "Initial worldwide pickup foundation."
+      ],
+      "updatedAt": "2026-07-13T00:00:00Z"
+    },
+    "mycar.template.hatchback": {
+      "packageId": "mycar.template.hatchback",
+      "version": "1.0.0",
+      "channel": "stable",
+      "tier": "body-template",
+      "label": "Automatic Hatchback Foundation",
+      "match": {
+        "bodyIncludes": [
+          "hatchback",
+          "liftback"
+        ]
+      },
+      "geometryAccuracy": "approximate",
+      "scaleAccuracy": "estimated-template",
+      "confidence": 0.58,
+      "delivery": {
+        "mode": "procedural",
+        "assetReady": false,
+        "asset": "",
+        "fallback": "procedural-hatchback-v3",
+        "protected": false
+      },
+      "source": {
+        "type": "mycar-generator",
+        "label": "MY CAR automatic body generator",
+        "rightsStatus": "MY CAR generated"
+      },
+      "features": [
+        "movable panels",
+        "hatchback proportions",
+        "cargo and underside zones"
+      ],
+      "releaseNotes": [
+        "Initial worldwide hatchback foundation."
+      ],
+      "updatedAt": "2026-07-13T00:00:00Z"
+    },
+    "mycar.template.wagon": {
+      "packageId": "mycar.template.wagon",
+      "version": "1.0.0",
+      "channel": "stable",
+      "tier": "body-template",
+      "label": "Automatic Wagon/Estate Foundation",
+      "match": {
+        "bodyIncludes": [
+          "wagon",
+          "estate"
+        ]
+      },
+      "geometryAccuracy": "approximate",
+      "scaleAccuracy": "estimated-template",
+      "confidence": 0.58,
+      "delivery": {
+        "mode": "procedural",
+        "assetReady": false,
+        "asset": "",
+        "fallback": "procedural-wagon-v3",
+        "protected": false
+      },
+      "source": {
+        "type": "mycar-generator",
+        "label": "MY CAR automatic body generator",
+        "rightsStatus": "MY CAR generated"
+      },
+      "features": [
+        "movable panels",
+        "wagon proportions",
+        "cargo and underside zones"
+      ],
+      "releaseNotes": [
+        "Initial worldwide wagon foundation."
+      ],
+      "updatedAt": "2026-07-13T00:00:00Z"
+    },
+    "mycar.template.coupe": {
+      "packageId": "mycar.template.coupe",
+      "version": "1.0.0",
+      "channel": "stable",
+      "tier": "body-template",
+      "label": "Automatic Coupe Foundation",
+      "match": {
+        "bodyIncludes": [
+          "coupe",
+          "2 door sedan"
+        ]
+      },
+      "geometryAccuracy": "approximate",
+      "scaleAccuracy": "estimated-template",
+      "confidence": 0.57,
+      "delivery": {
+        "mode": "procedural",
+        "assetReady": false,
+        "asset": "",
+        "fallback": "procedural-coupe-v3",
+        "protected": false
+      },
+      "source": {
+        "type": "mycar-generator",
+        "label": "MY CAR automatic body generator",
+        "rightsStatus": "MY CAR generated"
+      },
+      "features": [
+        "movable panels",
+        "coupe proportions",
+        "universal component zones"
+      ],
+      "releaseNotes": [
+        "Initial worldwide coupe foundation."
+      ],
+      "updatedAt": "2026-07-13T00:00:00Z"
+    },
+    "mycar.template.convertible": {
+      "packageId": "mycar.template.convertible",
+      "version": "1.0.0",
+      "channel": "stable",
+      "tier": "body-template",
+      "label": "Automatic Convertible Foundation",
+      "match": {
+        "bodyIncludes": [
+          "convertible",
+          "cabriolet",
+          "roadster"
+        ]
+      },
+      "geometryAccuracy": "approximate",
+      "scaleAccuracy": "estimated-template",
+      "confidence": 0.52,
+      "delivery": {
+        "mode": "procedural",
+        "assetReady": false,
+        "asset": "",
+        "fallback": "procedural-convertible-v3",
+        "protected": false
+      },
+      "source": {
+        "type": "mycar-generator",
+        "label": "MY CAR automatic body generator",
+        "rightsStatus": "MY CAR generated"
+      },
+      "features": [
+        "movable panels",
+        "convertible proportions",
+        "universal component zones"
+      ],
+      "releaseNotes": [
+        "Initial worldwide convertible foundation."
+      ],
+      "updatedAt": "2026-07-13T00:00:00Z"
+    },
+    "mycar.template.van": {
+      "packageId": "mycar.template.van",
+      "version": "1.0.0",
+      "channel": "stable",
+      "tier": "body-template",
+      "label": "Automatic Van/MPV Foundation",
+      "match": {
+        "bodyIncludes": [
+          "van",
+          "minivan",
+          "mpv",
+          "multi purpose"
+        ]
+      },
+      "geometryAccuracy": "approximate",
+      "scaleAccuracy": "estimated-template",
+      "confidence": 0.54,
+      "delivery": {
+        "mode": "procedural",
+        "assetReady": false,
+        "asset": "",
+        "fallback": "procedural-van-v3",
+        "protected": false
+      },
+      "source": {
+        "type": "mycar-generator",
+        "label": "MY CAR automatic body generator",
+        "rightsStatus": "MY CAR generated"
+      },
+      "features": [
+        "movable panels",
+        "van proportions",
+        "cargo and underside zones"
+      ],
+      "releaseNotes": [
+        "Initial worldwide van foundation."
+      ],
+      "updatedAt": "2026-07-13T00:00:00Z"
+    },
+    "mycar.template.universal": {
+      "packageId": "mycar.template.universal",
+      "version": "1.0.0",
+      "channel": "stable",
+      "tier": "universal",
+      "label": "Universal Interactive Vehicle Foundation",
+      "match": {},
+      "geometryAccuracy": "universal",
+      "scaleAccuracy": "estimated-template",
+      "confidence": 0.3,
+      "delivery": {
+        "mode": "procedural",
+        "assetReady": false,
+        "asset": "",
+        "fallback": "procedural-universal-v3",
+        "protected": false
+      },
+      "source": {
+        "type": "mycar-generator",
+        "label": "MY CAR universal generator",
+        "rightsStatus": "MY CAR generated"
+      },
+      "features": [
+        "360-degree viewer",
+        "movable panels",
+        "universal vehicle zones",
+        "automatic future upgrade channel"
+      ],
+      "releaseNotes": [
+        "Universal fallback for unmatched vehicles."
+      ],
+      "updatedAt": "2026-07-13T00:00:00Z"
+    }
+  }
+}
